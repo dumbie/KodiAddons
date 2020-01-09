@@ -177,7 +177,7 @@
             </control>
             <control type="textbox">
                 <left>4</left>
-                <width>358</width>
+                <width>355</width>
                 <height>465</height>
                 <align>left</align>
                 <aligny>top</aligny>
