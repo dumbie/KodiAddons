@@ -1,4 +1,4 @@
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import xml.etree.ElementTree as ET
 import func
 import var
@@ -14,10 +14,10 @@ def enigma_list_bouquets():
         xbmcgui.Dialog().notification(var.addonname, 'Please check the ip address.', notificationIcon, 2500, False)
         return
 
-    downloadUri = 'http://' + SettingHost + '/web/getservices'
-    DownloadDataHttp = urllib2.urlopen(downloadUri)
-    DownloadDataHttp = DownloadDataHttp.read()
-    DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataHttp))
+    RequestUrl = 'http://' + SettingHost + '/web/getservices'
+    DownloadDataHttp = urllib.request.urlopen(RequestUrl)
+    DownloadDataString = DownloadDataHttp.read().decode()
+    DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataString))
     return DownloadDataXml
 
 #Enigma list channels
@@ -29,10 +29,10 @@ def enigma_list_channels(bouquetId):
         xbmcgui.Dialog().notification(var.addonname, 'Please check the ip address.', notificationIcon, 2500, False)
         return
 
-    downloadUri = 'http://' + SettingHost + '/web/getservices?sRef=' + urllib2.quote(bouquetId)
-    DownloadDataHttp = urllib2.urlopen(downloadUri)
-    DownloadDataHttp = DownloadDataHttp.read()
-    DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataHttp))
+    RequestUrl = 'http://' + SettingHost + '/web/getservices?sRef=' + urllib.parse.quote(bouquetId)
+    DownloadDataHttp = urllib.request.urlopen(RequestUrl)
+    DownloadDataString = DownloadDataHttp.read().decode()
+    DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataString))
     return DownloadDataXml
 
 #Enigma epg information
@@ -44,10 +44,10 @@ def enigma_epg_information(channelId):
         xbmcgui.Dialog().notification(var.addonname, 'Please check the ip address.', notificationIcon, 2500, False)
         return
 
-    downloadUri = 'http://' + SettingHost + '/web/epgservicenow?sRef=' + urllib2.quote(channelId)
-    DownloadDataHttp = urllib2.urlopen(downloadUri)
-    DownloadDataHttp = DownloadDataHttp.read()
-    DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataHttp))
+    RequestUrl = 'http://' + SettingHost + '/web/epgservicenow?sRef=' + urllib.parse.quote(channelId)
+    DownloadDataHttp = urllib.request.urlopen(RequestUrl)
+    DownloadDataString = DownloadDataHttp.read().decode()
+    DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataString))
     return DownloadDataXml
 
 #Enigma receiver standby
@@ -60,8 +60,8 @@ def enigma_receiver_standby():
         return
 
     try:
-        downloadUri = 'http://' + SettingHost + '/web/powerstate?newstate=5'
-        urllib2.urlopen(downloadUri)
+        RequestUrl = 'http://' + SettingHost + '/web/powerstate?newstate=5'
+        urllib.request.urlopen(RequestUrl)
         notificationIcon = func.path_resources('resources/skins/default/media/common/shutdown.png')
         xbmcgui.Dialog().notification(var.addonname, 'Receiver is now in standby.', notificationIcon, 2500, False)
     except:
@@ -86,11 +86,11 @@ def enigma_stream(listItem):
     if streamUri.startswith('4097:0:1:0:0:0:0:0:0:0:'):
         streamUri = streamUri.replace('4097:0:1:0:0:0:0:0:0:0:','')
         streamUri = streamUri.replace(':' + streamName,'')
-        streamUri = urllib2.unquote(streamUri)
+        streamUri = urllib.parse.unquote(streamUri)
     elif streamUri.startswith('1:64:0:0:0:0:0:0:0:0:'):
         return
     else:
-        streamUri = urllib2.quote(streamUri)
+        streamUri = urllib.parse.quote(streamUri)
         streamUri = 'http://' + SettingHost + ':8001/' + streamUri
 
     listItem.setLabel(streamName)

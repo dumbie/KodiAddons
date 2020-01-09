@@ -38,8 +38,8 @@ addonid = addon.getAddonInfo('id')
 addonname = addon.getAddonInfo('name')
 addonicon = addon.getAddonInfo('icon')
 addonversion = addon.getAddonInfo('version')
-addonpath = addon.getAddonInfo('path').decode('UTF-8')
-addonstorage = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('UTF-8'), addonid)
+addonpath = addon.getAddonInfo('path')
+addonstorage = os.path.join(xbmc.translatePath('special://profile/addon_data/'), addonid)
 kodiversion = xbmc.getInfoLabel('System.BuildVersion').split(' ')[0].split('-')[0]
 
 #Busy variables
