@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<settings>
+  <category label="General">
+    <setting id="server_id" label="Target host id" type="number" default=""/>
+    <setting id="client_audio_buffer" label="Audio buffer" type="number" default="20000"/>
+    <setting label="You can find the host id by opening manage on host." type="lsep"/>
+  </category>
+</settings>

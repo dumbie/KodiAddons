@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="200" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="200" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="80FFFFFF">common/background.png</texture>
+        </control>
+        <!-- Logo -->
+        <control type="image">
+            <top>40</top>
+            <left>40</left>
+            <width>120</width>
+            <height>120</height>
+            <aspectratio>keep</aspectratio>
+            <texture>../../../icon.png</texture>
+        </control>
+        <!-- Information -->
+        <control type="label">
+            <top>70</top>
+            <left>180</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Parsec</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label" id="1">
+            <top>100</top>
+            <left>180</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Lite</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Clock -->
+        <control type="label">
+            <top>70</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Time]</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label">
+            <top>100</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Panel Main -->
+        <control type="panel" id="1000">
+            <left>50</left>
+            <right>50</right>
+            <top>220</top>
+            <width>1280</width>
+            <height>150</height>
+            <orientation>horizontal</orientation>
+            <itemlayout width="300" height="150">
+                <control type="image">
+                    <width>275</width>
+                    <height>150</height>
+                    <animation effect="zoom" start="110,110" end="100,100" center="auto" time="300">Unfocus</animation>
+                    <texture colordiffuse="90888888">common/background_dark.png</texture>
+                </control>
+                <control type="image">
+                    <centertop>35%</centertop>
+                    <centerleft>45%</centerleft>
+                    <width>75</width>
+                    <height>75</height>
+                    <aspectratio>keep</aspectratio>
+                    <animation effect="zoom" start="110,110" end="100,100" center="auto" time="300">Unfocus</animation>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <top>100</top>
+                    <width>275</width>
+                    <height>30</height>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <align>center</align>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="300" height="150">
+                <control type="image">
+                    <width>275</width>
+                    <height>150</height>
+                    <animation effect="zoom" start="100,100" end="110,110" center="auto" time="300">Focus</animation>
+                    <texture colordiffuse="90888888">common/background_light.png</texture>
+                </control>
+                <control type="image">
+                    <centertop>35%</centertop>
+                    <centerleft>45%</centerleft>
+                    <width>75</width>
+                    <height>75</height>
+                    <aspectratio>keep</aspectratio>
+                    <animation effect="zoom" start="100,100" end="110,110" center="auto" time="300">Focus</animation>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <top>100</top>
+                    <width>275</width>
+                    <height>30</height>
+                    <textcolor>FF888888</textcolor>
+                    <align>center</align>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+    </controls>
+</window>

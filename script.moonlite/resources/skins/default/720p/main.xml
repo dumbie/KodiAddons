@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="200" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="200" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="80FFFFFF">common/background.png</texture>
+        </control>
+        <!-- Logo -->
+        <control type="image">
+            <top>40</top>
+            <left>40</left>
+            <width>120</width>
+            <height>120</height>
+            <aspectratio>keep</aspectratio>
+            <texture>../../../icon.png</texture>
+        </control>
+        <!-- Information -->
+        <control type="label">
+            <top>70</top>
+            <left>180</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Moonlite</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label" id="1">
+            <top>100</top>
+            <left>180</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Loading apps</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Clock -->
+        <control type="label">
+            <top>70</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Time]</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label">
+            <top>100</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Menu Buttons -->
+        <control type="panel" id="1000">
+            <left>50</left>
+            <right>50</right>
+            <top>200</top>
+            <width>1280</width>
+            <height>40</height>
+            <ondown>1001</ondown>
+            <orientation>horizontal</orientation>
+            <itemlayout width="280" height="40">
+                <control type="image">
+                    <width>275</width>
+                    <height>40</height>
+                    <texture colordiffuse="90888888">common/background_dark.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF154664</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="280" height="40">
+                <control type="image">
+                    <width>275</width>
+                    <height>40</height>
+                    <texture colordiffuse="90888888">common/background_light.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FF888888</textcolor>
+                    <selectedcolor>FF154664</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+        <!-- Stream List -->
+        <control type="group">
+            <left>50</left>
+            <right>50</right>
+            <top>255</top>
+            <control type="panel" id="1001">
+                <pagecontrol>2001</pagecontrol>
+                <onup>1000</onup>
+                <onright>2001</onright>
+                <orientation>vertical</orientation>
+                <itemlayout width="1280" height="60">
+                    <control type="image">
+                        <width>1280</width>
+                        <height>58</height>
+                        <texture colordiffuse="90888888">common/background_dark.png</texture>
+                    </control>
+                    <control type="label">
+                        <left>5</left>
+                        <width>1280</width>
+                        <height>58</height>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF154664</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="1280" height="60">
+                    <control type="image">
+                        <width>1280</width>
+                        <height>58</height>
+                        <texture colordiffuse="90888888">common/background_light.png</texture>
+                    </control>
+                    <control type="label">
+                        <left>5</left>
+                        <width>1280</width>
+                        <height>58</height>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF154664</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2001">
+                <right>0</right>
+                <width>8</width>
+                <height>418</height>
+                <onup>1000</onup>
+                <onleft>1001</onleft>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+    </controls>
+</window>

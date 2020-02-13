@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<settings>
+  <category label="General">
+    <setting id="host" label="Host ip address" type="ipaddress" default="192.168.0.3"/>
+    <setting id="width" label="Screen width" type="number" default="1920"/>
+    <setting id="height" label="Screen height" type="number" default="1080"/>
+    <setting id="bitrate" label="Bitrate in Kbps" type="number" default="20000"/>
+    <setting id="fps" label="Frames per second" type="number" default="60"/>
+    <setting id="localaudio" label="Play audio on host" type="bool" default="true"/>
+    <setting id="surroundsound" label="Surround sound" type="bool" default="false"/>
+    <setting label="* Some settings may only work after a restart." type="lsep"/>
+  </category>
+</settings>
