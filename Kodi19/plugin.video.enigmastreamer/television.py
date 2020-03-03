@@ -149,19 +149,20 @@ class Gui(xbmcgui.WindowXML):
             ChannelNumber += 1
 
             if e2servicename[0].isalpha() or e2servicename[0].isdigit():
-                e2servicename = e2servicename
+                ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] ' + e2servicename
                 ProgramNameNow = 'Loading information'
                 ProgramDescription = 'Loading program description.'
             else:
-                ProgramDescription = '[COLOR dimgrey]Channels subgroup:[/COLOR]\n' + e2servicename
-                e2servicename = '[COLOR dimgrey]' + e2servicename + '[/COLOR]'
+                ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] [COLOR dimgrey]' + e2servicename + '[/COLOR]'
                 ProgramNameNow = ''
+                ProgramDescription = '[COLOR dimgrey]Channels subgroup:[/COLOR]\n' + e2servicename
 
             listitem = xbmcgui.ListItem()
             listitem.setProperty('ChannelNumber', str(ChannelNumber))
-            listitem.setProperty('e2servicename', '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] ' + e2servicename)
+            listitem.setProperty('ChannelName', ChannelName)
             listitem.setProperty('ProgramNameNow', ProgramNameNow)
             listitem.setProperty('ProgramDescription', ProgramDescription)
+            listitem.setProperty('e2servicename', e2servicename)
             listitem.setProperty('e2servicereference', e2servicereference)
             listcontainer.addItem(listitem)
 
@@ -228,7 +229,7 @@ class Gui(xbmcgui.WindowXML):
                     if e2eventdescriptionextended == None: e2eventdescriptionextended = ''
 
                     if not func.string_isnullorempty(e2eventdescriptionextended):
-                        ProgramDescription = e2eventdescriptionextended + '\n'
+                        ProgramDescription = e2eventdescriptionextended + '\n\n'
                     else:
                         ProgramDescription = 'Full description is not available.\n\n'
 

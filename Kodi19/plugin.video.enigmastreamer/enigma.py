@@ -80,17 +80,18 @@ def enigma_stream(listItem):
 
     #Get the stream reference
     streamName = listItem.getProperty('e2servicename')
+    streamName = urllib.parse.unquote(streamName)
     streamUri = listItem.getProperty('e2servicereference')
+    streamUri = urllib.parse.unquote(streamUri)
 
-    #Check if channel is a webstream
-    if streamUri.startswith('4097:0:1:0:0:0:0:0:0:0:'):
-        streamUri = streamUri.replace('4097:0:1:0:0:0:0:0:0:0:','')
-        streamUri = streamUri.replace(':' + streamName,'')
-        streamUri = urllib.parse.unquote(streamUri)
-    elif streamUri.startswith('1:64:0:0:0:0:0:0:0:0:'):
+    #Check if channel is a bouquet
+    if streamUri.startswith('1:64:'):
         return
+    #Check if channel is a webstream
+    elif streamUri.startswith('4097:') or streamUri.startswith('5001:') or streamUri.startswith('5002:'):
+        streamUri = streamUri[23:]
+        streamUri = streamUri.replace(':' + streamName,'')
     else:
-        streamUri = urllib.parse.quote(streamUri)
         streamUri = 'http://' + SettingHost + ':8001/' + streamUri
 
     listItem.setLabel(streamName)

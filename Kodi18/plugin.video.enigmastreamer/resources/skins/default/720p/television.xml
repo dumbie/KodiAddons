@@ -220,7 +220,7 @@
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF154664</selectedcolor>
-                        <info>ListItem.Property(e2servicename)</info>
+                        <info>ListItem.Property(ChannelName)</info>
                     </control>
                     <control type="progress">
                         <top>31</top>
@@ -256,7 +256,7 @@
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF154664</selectedcolor>
-                        <info>ListItem.Property(e2servicename)</info>
+                        <info>ListItem.Property(ChannelName)</info>
                     </control>
                     <control type="progress">
                         <top>31</top>
