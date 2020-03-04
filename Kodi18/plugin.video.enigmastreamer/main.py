@@ -1,10 +1,12 @@
 import default
 import enigma
 import func
+import recordings
 import television
 import var
 import xbmc
 import xbmcgui
+import zap
 
 def switch_to_page():
     if var.guiMain == None:
@@ -38,6 +40,11 @@ class Gui(xbmcgui.WindowXML):
         listitem = xbmcgui.ListItem('Refresh bouquets')
         listitem.setProperty('Action', 'refresh_list')
         listitem.setArt({'thumb': func.path_resources('resources/skins/default/media/common/refresh.png'),'icon': func.path_resources('resources/skins/default/media/common/refresh.png')})
+        listcontainer.addItem(listitem)
+
+        listitem = xbmcgui.ListItem('Show recordings')
+        listitem.setProperty('Action', 'show_recordings')
+        listitem.setArt({'thumb': func.path_resources('resources/skins/default/media/common/record.png'),'icon': func.path_resources('resources/skins/default/media/common/record.png')})
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Settings')
@@ -89,12 +96,17 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #List enigma bouquets
+        ChannelNumber = 0
         controls = list_items.findall('e2service')
         for control in controls:
             e2servicereference = control.find('e2servicereference').text
             e2servicename = control.find('e2servicename').text
 
-            listitem = xbmcgui.ListItem(e2servicename)
+            ChannelNumber += 1
+            ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] ' + e2servicename
+
+            listitem = xbmcgui.ListItem(ChannelName)
+            listitem.setProperty('ChannelNumber', str(ChannelNumber))
             listitem.setProperty('e2servicereference', e2servicereference)
             listitem.setProperty('e2servicename', e2servicename)
             listcontainer.addItem(listitem)
@@ -110,6 +122,27 @@ class Gui(xbmcgui.WindowXML):
 
         var.busy_main = False
 
+    def onClick(self, clickId):
+        if var.thread_zap_wait_timer == None:
+            clickedControl = self.getControl(clickId)
+            if clickId == 1000:
+                listItemSelected = clickedControl.getSelectedItem()
+                listItemAction = listItemSelected.getProperty('Action')
+                if listItemAction == 'refresh_list':
+                    self.list_update_bouquets(True)
+                if listItemAction == 'show_recordings':
+                    recordings.switch_to_page()
+                elif listItemAction == 'addon_settings':
+                    var.addon.openSettings()
+            elif clickId == 1001:
+                listItemSelected = clickedControl.getSelectedItem()
+                var.currentBouquet = listItemSelected.getProperty('e2servicereference')
+                television.switch_to_page()
+            elif clickId == 3000:
+                xbmc.executebuiltin('Action(FullScreen)')
+            elif clickId == 3001:
+                close_the_page()
+
     def onAction(self, action):
         actionId = action.getId()
         if actionId == var.ACTION_PREVIOUS_MENU: close_the_page()
@@ -118,21 +151,4 @@ class Gui(xbmcgui.WindowXML):
             xbmc.executebuiltin('Action(PageDown)')
         elif actionId == var.ACTION_PREV_ITEM:
             xbmc.executebuiltin('Action(PageUp)')
-
-    def onClick(self, clickId):
-        clickedControl = self.getControl(clickId)
-        if clickId == 1000:
-            listItemSelected = clickedControl.getSelectedItem()
-            listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'refresh_list':
-                self.list_update_bouquets(True)
-            elif listItemAction == 'addon_settings':
-                var.addon.openSettings()
-        elif clickId == 1001:
-            listItemSelected = clickedControl.getSelectedItem()
-            var.currentBouquet = listItemSelected.getProperty('e2servicereference')
-            television.switch_to_page()
-        elif clickId == 3000:
-            xbmc.executebuiltin('Action(FullScreen)')
-        elif clickId == 3001:
-            close_the_page()
+        else: zap.check_remote_number(self, 1001, actionId, True, False)

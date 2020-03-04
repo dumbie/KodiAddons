@@ -45,10 +45,12 @@ kodiversion = xbmc.getInfoLabel('System.BuildVersion').split(' ')[0].split('-')[
 #Busy variables
 busy_main = False
 busy_television = False
+busy_recordings = False
 
 #Window variables
 guiMain = None
 guiTelevision = None
+guiRecordings = None
 windowHome = xbmcgui.Window(10000)
 
 #Thread variables

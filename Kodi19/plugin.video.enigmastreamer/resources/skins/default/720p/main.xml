@@ -82,6 +82,32 @@
             <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
             <textcolor>FF888888</textcolor>
         </control>
+        <!-- Zap Number -->
+        <control type="group" id="7000">
+            <top>50</top>
+            <width>200</width>
+            <height>60</height>
+            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Sidebar -->
+            <control type="image">
+                <right>0</right>
+                <width>5</width>
+                <height>60</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Number -->
+            <control type="label" id="7001">
+                <right>15</right>
+                <width>200</width>
+                <height>60</height>
+                <align>right</align>
+                <aligny>center</aligny>
+            </control>
+        </control>
         <!-- Menu Buttons -->
         <control type="panel" id="1000">
             <left>50</left>

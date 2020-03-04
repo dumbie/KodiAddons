@@ -51,7 +51,7 @@ class Gui(xbmcgui.WindowXML):
                     enigma.enigma_receiver_standby()
             elif clickId == 1001:
                 listItemSelected = clickedControl.getSelectedItem()
-                enigma.enigma_stream(listItemSelected)
+                enigma.enigma_stream_channel(listItemSelected)
             elif clickId == 3000:
                 xbmc.executebuiltin('Action(FullScreen)')
             elif clickId == 3001:
@@ -164,6 +164,7 @@ class Gui(xbmcgui.WindowXML):
             listitem.setProperty('ProgramDescription', ProgramDescription)
             listitem.setProperty('e2servicename', e2servicename)
             listitem.setProperty('e2servicereference', e2servicereference)
+            listitem.setInfo('video', {'Genre': 'Television'})
             listcontainer.addItem(listitem)
 
         #Update the total list count

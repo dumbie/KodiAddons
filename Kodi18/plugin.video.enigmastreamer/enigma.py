@@ -35,6 +35,21 @@ def enigma_list_channels(bouquetId):
     DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataString))
     return DownloadDataXml
 
+#Enigma list recordings
+def enigma_list_recordings():
+    #Check the current settings
+    SettingHost = var.addon.getSetting('host')
+    if SettingHost.endswith('.') or SettingHost.endswith('0') or not SettingHost[-1].isdigit():
+        notificationIcon = func.path_resources('resources/skins/default/media/common/settings.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Please check the ip address.', notificationIcon, 2500, False)
+        return
+
+    RequestUrl = 'http://' + SettingHost + '/web/movielist'
+    DownloadDataHttp = urllib2.urlopen(RequestUrl)
+    DownloadDataString = DownloadDataHttp.read()
+    DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataString))
+    return DownloadDataXml
+
 #Enigma epg information
 def enigma_epg_information(channelId):
     #Check the current settings
@@ -70,7 +85,7 @@ def enigma_receiver_standby():
         return
 
 #Enigma stream channel
-def enigma_stream(listItem):
+def enigma_stream_channel(listItem):
     #Check the current settings
     SettingHost = var.addon.getSetting('host')
     if SettingHost.endswith('.') or SettingHost.endswith('0') or not SettingHost[-1].isdigit():
@@ -93,6 +108,27 @@ def enigma_stream(listItem):
         streamUri = streamUri.replace(':' + streamName,'')
     else:
         streamUri = 'http://' + SettingHost + ':8001/' + streamUri
+
+    listItem.setLabel(streamName)
+    xbmc.Player().play(streamUri, listItem)
+
+#Enigma stream recording
+def enigma_stream_recording(listItem):
+    #Check the current settings
+    SettingHost = var.addon.getSetting('host')
+    if SettingHost.endswith('.') or SettingHost.endswith('0') or not SettingHost[-1].isdigit():
+        notificationIcon = func.path_resources('resources/skins/default/media/common/settings.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Please check the ip address.', notificationIcon, 2500, False)
+        return
+
+    #Get the stream reference
+    streamName = listItem.getProperty('e2title')
+    streamName = urllib2.unquote(streamName)
+    streamFile = listItem.getProperty('e2filename')
+    streamFile = urllib2.quote(streamFile)
+
+    #Set the stream uri
+    streamUri = 'http://' + SettingHost + '/file?file=' + streamFile
 
     listItem.setLabel(streamName)
     xbmc.Player().play(streamUri, listItem)

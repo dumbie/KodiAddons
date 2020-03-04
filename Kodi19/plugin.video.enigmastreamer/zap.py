@@ -78,7 +78,7 @@ def zap_remote_number(_self):
         return
 
     listItemSelected = listcontainer.getListItem(itemnum)
-    enigma.enigma_stream(listItemSelected)
+    enigma.enigma_stream_channel(listItemSelected)
 
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
     while var.thread_zap_wait_timer != None and var.addonmonitor.abortRequested() == False:
