@@ -157,7 +157,7 @@ class Gui(xbmcgui.WindowXML):
             ProgramRecordedString = e2servicename + ' on ' + ProgramRecordedDate + ' at ' + ProgramRecordedTime + ' duration ' + e2length
 
             #Set the recording description
-            ProgramDescription = ProgramRecordedString + '\n\n' + e2descriptionextended + '\n\n[COLOR dimgrey]' + e2description + '[/COLOR]'
+            ProgramDescription = '[COLOR dimgrey]' + ProgramRecordedString + '[/COLOR]\n\n' + e2descriptionextended + '\n\n[COLOR dimgrey]' + e2description + '[/COLOR]'
 
             listitem = xbmcgui.ListItem()
             listitem.setProperty('ChannelNumber', str(ChannelNumber))
