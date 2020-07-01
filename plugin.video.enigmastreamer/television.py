@@ -242,13 +242,15 @@ class Gui(xbmcgui.WindowXML):
                         ProgramEndTimeNow = ProgramStartTimeNow + timedelta(seconds=int(ProgramDurationNow))
                         ProgramNameNow = '(' + ProgramStartTimeNow.strftime('%H:%M') + '/' + ProgramEndTimeNow.strftime('%H:%M') + ') '
                         ProgramProgressPercentVisible = 'true'
-                        ProgramProgressPercent = str(int(((datetime.now() - ProgramStartTimeNow).total_seconds() / 60) * 100 / ((ProgramEndTimeNow - ProgramStartTimeNow).total_seconds() / 60)))
 
-                        ProgramTimeLeftNow = str(int(((ProgramEndTimeNow - datetime.now()).total_seconds() / 60)))
-                        if ProgramTimeLeftNow == '0':
-                            ProgramDescription = '[COLOR gray]Almost ending, was ' + str(int(ProgramDurationNow) / 60) + ' minutes long and started around ' + ProgramStartTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
+                        ProgramProgressPercent = func.number_to_single_string(((datetime.now() - ProgramStartTimeNow).total_seconds() / 60) * 100 / ((ProgramEndTimeNow - ProgramStartTimeNow).total_seconds() / 60))
+                        ProgramTimeLeftMin = func.number_to_single_string((ProgramEndTimeNow - datetime.now()).total_seconds() / 60)
+                        ProgramDurationMin = func.number_to_single_string(int(ProgramDurationNow) / 60)
+
+                        if ProgramTimeLeftMin == '0':
+                            ProgramDescription = '[COLOR gray]Almost ending, was ' + ProgramDurationMin + ' minutes long and started around ' + ProgramStartTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
                         else:
-                            ProgramDescription = '[COLOR gray]' + ProgramTimeLeftNow + ' min remaining from the ' + str(int(ProgramDurationNow) / 60) + ' minutes, started around ' + ProgramStartTimeNow.strftime('%H:%M') + ' and ends at ' + ProgramEndTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
+                            ProgramDescription = '[COLOR gray]' + ProgramTimeLeftMin + ' min remaining from the ' + ProgramDurationMin + ' minutes, started around ' + ProgramStartTimeNow.strftime('%H:%M') + ' and ends at ' + ProgramEndTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
 
                     ProgramNameNow += e2eventtitle
                     if 'N/A' in ProgramNameNow:

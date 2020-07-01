@@ -12,6 +12,17 @@ def string_isnullorempty(string):
     else:
         return True
 
+#String decode
+def string_decode(string):
+    if string and string.strip():
+        return False
+    else:
+        return True
+
+#Convert number to single string
+def number_to_single_string(number):
+    return str(int(number))
+
 #Search for ChannelNumber in container
 def search_channelnumber_listcontainer(listcontainer, searchChannelNumber):
     listitemcount = listcontainer.size()

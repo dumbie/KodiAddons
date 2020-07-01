@@ -60,7 +60,6 @@
             <width>500</width>
             <height>30</height>
             <align>left</align>
-            <label>Loading bouquets</label>
             <textcolor>FF888888</textcolor>
         </control>
         <!-- Clock -->
@@ -166,56 +165,127 @@
                 </control>
             </focusedlayout>
         </control>
-        <!-- Bouquet List -->
+        <!-- Program Description -->
+        <control type="group">
+            <top>255</top>
+            <right>50</right>
+            <width>370</width>
+            <height>465</height>
+            <control type="image">
+                <texture colordiffuse="90888888">common/background_dark.png</texture>
+            </control>
+            <control type="textbox">
+                <left>4</left>
+                <width>355</width>
+                <height>465</height>
+                <align>left</align>
+                <aligny>top</aligny>
+                <wrapmultiline>true</wrapmultiline>
+                <textcolor>FFFFFFFF</textcolor>
+                <label>$INFO[Container(1001).ListItem().Property(ProgramDescription)]</label>
+                <pagecontrol>2000</pagecontrol>
+            </control>
+            <control type="scrollbar" id="2000">
+                <width>370</width>
+                <height>465</height>
+                <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="50888888">common/scrollbar_dark_400.png</texturesliderbar>
+                <texturesliderbackground colordiffuse="60888888">common/scrollbar_light_400.png</texturesliderbackground>
+                <onleft>2001</onleft>
+            </control>
+        </control>
+        <!-- Channel List -->
         <control type="group">
             <left>50</left>
             <right>50</right>
             <top>255</top>
+            <width>800</width>
             <control type="panel" id="1001">
                 <pagecontrol>2001</pagecontrol>
                 <onup>1000</onup>
                 <onleft condition="Player.HasVideo">SendClick(3000)</onleft>
                 <onright>2001</onright>
                 <orientation>vertical</orientation>
-                <itemlayout width="1280" height="50">
+                <itemlayout width="800" height="70">
                     <control type="image">
-                        <width>1280</width>
-                        <height>48</height>
+                        <width>800</width>
+                        <height>68</height>
                         <texture colordiffuse="90888888">common/background_dark.png</texture>
                     </control>
                     <control type="label">
                         <left>10</left>
-                        <width>1280</width>
-                        <height>48</height>
+                        <width>780</width>
+                        <height>30</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF154664</selectedcolor>
-                        <info>ListItem.Label</info>
+                        <info>ListItem.Property(ChannelName)</info>
+                    </control>
+                    <control type="progress">
+                        <top>31</top>
+                        <left>10</left>
+                        <width>780</width>
+                        <height>5</height>
+                        <texturebg colordiffuse="90888888">common/background_light.png</texturebg>
+                        <midtexture>common/background_accent.png</midtexture>
+                        <visible>ListItem.Property(ProgramProgressPercentVisible)</visible>
+                        <info>ListItem.Property(ProgramProgressPercent)</info>
+                    </control>
+                    <control type="label">
+                        <left>10</left>
+                        <top>36</top>
+                        <width>780</width>
+                        <height>30</height>
+                        <aligny>center</aligny>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF154664</selectedcolor>
+                        <info>ListItem.Property(ProgramNameNow)</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="1280" height="50">
+                <focusedlayout width="800" height="70">
                     <control type="image">
-                        <width>1280</width>
-                        <height>48</height>
+                        <width>800</width>
+                        <height>68</height>
                         <texture colordiffuse="90888888">common/background_light.png</texture>
                     </control>
                     <control type="label">
                         <left>10</left>
-                        <width>1280</width>
-                        <height>48</height>
+                        <width>780</width>
+                        <height>30</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF154664</selectedcolor>
-                        <info>ListItem.Label</info>
+                        <info>ListItem.Property(ChannelName)</info>
+                    </control>
+                    <control type="progress">
+                        <top>31</top>
+                        <left>10</left>
+                        <width>780</width>
+                        <height>5</height>
+                        <texturebg colordiffuse="90888888">common/background_light.png</texturebg>
+                        <midtexture>common/background_accent.png</midtexture>
+                        <visible>ListItem.Property(ProgramProgressPercentVisible)</visible>
+                        <info>ListItem.Property(ProgramProgressPercent)</info>
+                    </control>
+                    <control type="label">
+                        <left>10</left>
+                        <top>36</top>
+                        <width>780</width>
+                        <height>30</height>
+                        <aligny>center</aligny>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF154664</selectedcolor>
+                        <info>ListItem.Property(ProgramNameNow)</info>
                     </control>
                 </focusedlayout>
             </control>
             <control type="scrollbar" id="2001">
                 <right>0</right>
                 <width>8</width>
-                <height>448</height>
+                <height>418</height>
                 <onup>1000</onup>
                 <onleft>1001</onleft>
+                <onright>2000</onright>
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>

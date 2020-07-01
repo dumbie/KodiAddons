@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<settings>
-  <category label="General">
-    <setting id="host" label="Host ip address" type="ipaddress" default="192.168.0.134" />
-    <setting label="* Some settings may only work after a restart." type="lsep"/>
-  </category>
-</settings>

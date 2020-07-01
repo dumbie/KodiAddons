@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.enigmastreamer" name="Enigma Streamer" provider-name="Arnold Vink" version="1.0.14">
-  <requires>
-    <import addon="xbmc.python" version="3.0.0"/>
-  </requires>
+<addon id="plugin.video.enigmastreamer" name="Enigma Streamer" provider-name="Arnold Vink" version="1.0.19">
   <extension point="xbmc.python.script" library="default.py">
     <provides>video</provides>
   </extension>
@@ -18,11 +15,11 @@
     <summary lang="nl">Simpele Enigma2 Streamer</summary>
     <description lang="nl">Enigma Streamer is een enigma2 ontvanger streamer.[CR][CR]Enigma2 Streamer heeft de volgende benodigdheden nodig: Enigma2 ontvanger.</description>
     <news>
+v1.0.19 (30 June 2020)
+- Add-on is now compatible with both Kodi 18 and 19.
+
 v1.0.13 (4 March 2020)
 - Added recordings playback support.
-
-v1.0.12 (9 January 2020)
-- Add-on updated for Kodi 19 and now makes use of Python 3.
 
 v1.0.0 (28 September 2018)
 - First public released test version.

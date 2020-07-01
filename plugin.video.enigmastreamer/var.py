@@ -1,7 +1,8 @@
 import os
+import sys
 from datetime import datetime, timedelta
+import hybrid
 import player
-import var
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -38,9 +39,10 @@ addonid = addon.getAddonInfo('id')
 addonname = addon.getAddonInfo('name')
 addonicon = addon.getAddonInfo('icon')
 addonversion = addon.getAddonInfo('version')
-addonpath = addon.getAddonInfo('path').decode('UTF-8')
-addonstorage = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('UTF-8'), addonid)
+addonpath = hybrid.string_decode_utf8(addon.getAddonInfo('path'))
+addonstorage = os.path.join(hybrid.string_decode_utf8(xbmc.translatePath('special://profile/addon_data/')), addonid)
 kodiversion = xbmc.getInfoLabel('System.BuildVersion').split(' ')[0].split('-')[0]
+pythonversion = sys.version_info[0]
 
 #Busy variables
 busy_main = False
