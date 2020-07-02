@@ -144,9 +144,12 @@ class Gui(xbmcgui.WindowXML):
         ChannelNumber = 0
         controls = list_items.findall('e2service')
         for control in controls:
+            ChannelNumber += 1
             e2servicereference = control.find('e2servicereference').text
             e2servicename = control.find('e2servicename').text
-            ChannelNumber += 1
+            e2servicenameLower = e2servicename.lower()
+            if 'n/a' in e2servicenameLower or '<n/a>' in e2servicenameLower:
+                e2servicename = 'Unknown channel'
 
             if e2servicename[0].isalpha() or e2servicename[0].isdigit():
                 ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] ' + e2servicename
@@ -197,66 +200,75 @@ class Gui(xbmcgui.WindowXML):
         for channelNum in range(0, listitemcount):
             updateItem = listcontainer.getListItem(channelNum)
             ProgramNameNow = updateItem.getProperty('ProgramNameNow')
+            e2servicename = updateItem.getProperty('e2servicename')
             e2servicereference = updateItem.getProperty('e2servicereference')
 
             if not func.string_isnullorempty(ProgramNameNow):
-                #Get epg info from enigma
-                try:
-                    epg_data = enigma.enigma_epg_information(e2servicereference)
-                except:
-                    updateItem.setProperty('ProgramNameNow', 'Information not available')
-                    continue
-
-                #Check epg data
-                if epg_data == None:
-                    updateItem.setProperty('ProgramNameNow', 'Information not available')
-                    continue
-
-                #Get program information
-                controls = epg_data.findall('e2event')
-                for control in controls:
-                    ProgramDurationNow = control.find('e2eventduration').text
-                    ProgramStartTimeNow = control.find('e2eventstart').text
+                if enigma.enigma_check_webstream(e2servicereference):
+                    streamUrl = enigma.enigma_get_webstreamurl(e2servicename, e2servicereference)
+                    ProgramDescription = '[COLOR dimgrey]Webstream:[/COLOR]\n' + streamUrl
                     ProgramProgressPercent = '0'
                     ProgramProgressPercentVisible = 'false'
+                    ProgramNameNow = ''
+                else:
+                    #Get epg info from enigma
+                    try:
+                        epg_data = enigma.enigma_epg_information(e2servicereference)
+                    except:
+                        updateItem.setProperty('ProgramNameNow', 'Information not available')
+                        continue
 
-                    e2eventtitle = control.find('e2eventtitle').text
-                    if e2eventtitle == None: e2eventtitle = 'Unknown program'
+                    #Check epg data
+                    if epg_data == None:
+                        updateItem.setProperty('ProgramNameNow', 'Information not available')
+                        continue
 
-                    e2eventdescription = control.find('e2eventdescription').text
-                    if e2eventdescription == None: e2eventdescription = ''
+                    #Get program information
+                    controls = epg_data.findall('e2event')
+                    for control in controls:
+                        ProgramDurationNow = control.find('e2eventduration').text
+                        ProgramStartTimeNow = control.find('e2eventstart').text
+                        ProgramProgressPercent = '0'
+                        ProgramProgressPercentVisible = 'false'
 
-                    e2eventdescriptionextended = control.find('e2eventdescriptionextended').text
-                    if e2eventdescriptionextended == None: e2eventdescriptionextended = ''
+                        e2eventtitle = control.find('e2eventtitle').text
+                        if e2eventtitle == None: e2eventtitle = 'Unknown program'
 
-                    if not func.string_isnullorempty(e2eventdescriptionextended):
-                        ProgramDescription = e2eventdescriptionextended + '\n\n'
-                    else:
-                        ProgramDescription = 'Full description is not available.\n\n'
+                        e2eventdescription = control.find('e2eventdescription').text
+                        if e2eventdescription == None: e2eventdescription = ''
 
-                    if not func.string_isnullorempty(e2eventdescription):
-                        ProgramDescription = ProgramDescription + '[COLOR grey]' + e2eventdescription + '[/COLOR]'
+                        e2eventdescriptionextended = control.find('e2eventdescriptionextended').text
+                        if e2eventdescriptionextended == None: e2eventdescriptionextended = ''
 
-                    if ProgramStartTimeNow != '0' and ProgramDurationNow != '0':
-                        ProgramStartTimeNow = datetime.fromtimestamp(int(ProgramStartTimeNow))
-                        ProgramEndTimeNow = ProgramStartTimeNow + timedelta(seconds=int(ProgramDurationNow))
-                        ProgramNameNow = '(' + ProgramStartTimeNow.strftime('%H:%M') + '/' + ProgramEndTimeNow.strftime('%H:%M') + ') '
-                        ProgramProgressPercentVisible = 'true'
-
-                        ProgramProgressPercent = func.number_to_single_string(((datetime.now() - ProgramStartTimeNow).total_seconds() / 60) * 100 / ((ProgramEndTimeNow - ProgramStartTimeNow).total_seconds() / 60))
-                        ProgramTimeLeftMin = func.number_to_single_string((ProgramEndTimeNow - datetime.now()).total_seconds() / 60)
-                        ProgramDurationMin = func.number_to_single_string(int(ProgramDurationNow) / 60)
-
-                        if ProgramTimeLeftMin == '0':
-                            ProgramDescription = '[COLOR gray]Almost ending, was ' + ProgramDurationMin + ' minutes long and started around ' + ProgramStartTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
+                        if not func.string_isnullorempty(e2eventdescriptionextended):
+                            ProgramDescription = e2eventdescriptionextended + '\n\n'
                         else:
-                            ProgramDescription = '[COLOR gray]' + ProgramTimeLeftMin + ' min remaining from the ' + ProgramDurationMin + ' minutes, started around ' + ProgramStartTimeNow.strftime('%H:%M') + ' and ends at ' + ProgramEndTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
+                            ProgramDescription = 'Full description is not available.\n\n'
 
-                    ProgramNameNow += e2eventtitle
-                    if 'N/A' in ProgramNameNow:
-                        ProgramNameNow = 'Information not available'                        
+                        if not func.string_isnullorempty(e2eventdescription):
+                            ProgramDescription = ProgramDescription + '[COLOR grey]' + e2eventdescription + '[/COLOR]'
 
-                    updateItem.setProperty('ProgramDescription', ProgramDescription)
-                    updateItem.setProperty('ProgramProgressPercent', ProgramProgressPercent)
-                    updateItem.setProperty('ProgramProgressPercentVisible', ProgramProgressPercentVisible)
-                    updateItem.setProperty('ProgramNameNow', ProgramNameNow)
+                        if ProgramStartTimeNow != '0' and ProgramDurationNow != '0':
+                            ProgramStartTimeNow = datetime.fromtimestamp(int(ProgramStartTimeNow))
+                            ProgramEndTimeNow = ProgramStartTimeNow + timedelta(seconds=int(ProgramDurationNow))
+                            ProgramNameNow = '(' + ProgramStartTimeNow.strftime('%H:%M') + '/' + ProgramEndTimeNow.strftime('%H:%M') + ') '
+                            ProgramProgressPercentVisible = 'true'
+
+                            ProgramProgressPercent = func.number_to_single_string(((datetime.now() - ProgramStartTimeNow).total_seconds() / 60) * 100 / ((ProgramEndTimeNow - ProgramStartTimeNow).total_seconds() / 60))
+                            ProgramTimeLeftMin = func.number_to_single_string((ProgramEndTimeNow - datetime.now()).total_seconds() / 60)
+                            ProgramDurationMin = func.number_to_single_string(int(ProgramDurationNow) / 60)
+
+                            if ProgramTimeLeftMin == '0':
+                                ProgramDescription = '[COLOR gray]Almost ending, was ' + ProgramDurationMin + ' minutes long and started around ' + ProgramStartTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
+                            else:
+                                ProgramDescription = '[COLOR gray]' + ProgramTimeLeftMin + ' min remaining from the ' + ProgramDurationMin + ' minutes, started around ' + ProgramStartTimeNow.strftime('%H:%M') + ' and ends at ' + ProgramEndTimeNow.strftime('%H:%M') + '[/COLOR]\n\n' + ProgramDescription
+
+                        ProgramNameNow += e2eventtitle
+                        ProgramNameNowLower = ProgramNameNow.lower()
+                        if 'n/a' in ProgramNameNowLower or '<n/a>' in ProgramNameNowLower:
+                            ProgramNameNow = 'Information not available'
+
+                updateItem.setProperty('ProgramDescription', ProgramDescription)
+                updateItem.setProperty('ProgramProgressPercent', ProgramProgressPercent)
+                updateItem.setProperty('ProgramProgressPercentVisible', ProgramProgressPercentVisible)
+                updateItem.setProperty('ProgramNameNow', ProgramNameNow)

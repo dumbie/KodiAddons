@@ -99,10 +99,9 @@ class Gui(xbmcgui.WindowXML):
         ChannelNumber = 0
         controls = list_items.findall('e2service')
         for control in controls:
+            ChannelNumber += 1
             e2servicereference = control.find('e2servicereference').text
             e2servicename = control.find('e2servicename').text
-
-            ChannelNumber += 1
             ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] ' + e2servicename
 
             listitem = xbmcgui.ListItem(ChannelName)
