@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from threading import Thread
 import enigma
 import func
+import hybrid
 import var
 import xbmc
 import xbmcgui
@@ -144,24 +145,26 @@ class Gui(xbmcgui.WindowXML):
         ChannelNumber = 0
         controls = list_items.findall('e2service')
         for control in controls:
-            ChannelNumber += 1
+            listitem = xbmcgui.ListItem()
             e2servicereference = control.find('e2servicereference').text
+            e2servicereference = hybrid.urllib_unquote(e2servicereference)
             e2servicename = control.find('e2servicename').text
+            e2servicename = hybrid.urllib_unquote(e2servicename)
             e2servicenameLower = e2servicename.lower()
             if 'n/a' in e2servicenameLower or '<n/a>' in e2servicenameLower:
                 e2servicename = 'Unknown channel'
 
             if e2servicename[0].isalpha() or e2servicename[0].isdigit():
+                ChannelNumber += 1
+                listitem.setProperty('ChannelNumber', str(ChannelNumber))
                 ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] ' + e2servicename
                 ProgramNameNow = 'Loading information'
                 ProgramDescription = 'Loading program description.'
             else:
-                ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] [COLOR dimgrey]' + e2servicename + '[/COLOR]'
+                ChannelName = '[COLOR dimgrey]' + e2servicename + '[/COLOR]'
                 ProgramNameNow = ''
-                ProgramDescription = '[COLOR dimgrey]Channels subgroup:[/COLOR]\n' + e2servicename
+                ProgramDescription = '[COLOR dimgrey]Subgroup[/COLOR]'
 
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('ChannelNumber', str(ChannelNumber))
             listitem.setProperty('ChannelName', ChannelName)
             listitem.setProperty('ProgramNameNow', ProgramNameNow)
             listitem.setProperty('ProgramDescription', ProgramDescription)
@@ -199,17 +202,18 @@ class Gui(xbmcgui.WindowXML):
         #Set the current channel id
         for channelNum in range(0, listitemcount):
             updateItem = listcontainer.getListItem(channelNum)
+
+            #Get the stream reference
             ProgramNameNow = updateItem.getProperty('ProgramNameNow')
-            e2servicename = updateItem.getProperty('e2servicename')
             e2servicereference = updateItem.getProperty('e2servicereference')
 
             if not func.string_isnullorempty(ProgramNameNow):
                 if enigma.enigma_check_webstream(e2servicereference):
-                    streamUrl = enigma.enigma_get_webstreamurl(e2servicename, e2servicereference)
-                    ProgramDescription = '[COLOR dimgrey]Webstream:[/COLOR]\n' + streamUrl
+                    streamUrl = enigma.enigma_get_webstreamurl(e2servicereference)
+                    ProgramDescription = '[COLOR dimgrey]Webstream[/COLOR]'
                     ProgramProgressPercent = '0'
                     ProgramProgressPercentVisible = 'false'
-                    ProgramNameNow = ''
+                    ProgramNameNow = streamUrl
                 else:
                     #Get epg info from enigma
                     try:

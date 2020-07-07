@@ -1,6 +1,7 @@
 import default
 import enigma
 import func
+import hybrid
 import recordings
 import television
 import var
@@ -101,7 +102,9 @@ class Gui(xbmcgui.WindowXML):
         for control in controls:
             ChannelNumber += 1
             e2servicereference = control.find('e2servicereference').text
+            e2servicereference = hybrid.urllib_unquote(e2servicereference)
             e2servicename = control.find('e2servicename').text
+            e2servicename = hybrid.urllib_unquote(e2servicename)
             ChannelName = '[COLOR grey]' + str(ChannelNumber) + '[/COLOR] ' + e2servicename
 
             listitem = xbmcgui.ListItem(ChannelName)

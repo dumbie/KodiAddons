@@ -21,7 +21,7 @@ def enigma_list_bouquets():
     return DownloadDataXml
 
 #Enigma list channels
-def enigma_list_channels(bouquetId):
+def enigma_list_channels(e2servicereference):
     #Check the current settings
     SettingHost = var.addon.getSetting('host')
     if SettingHost.endswith('.') or SettingHost.endswith('0') or not SettingHost[-1].isdigit():
@@ -29,7 +29,7 @@ def enigma_list_channels(bouquetId):
         xbmcgui.Dialog().notification(var.addonname, 'Please check the ip address.', notificationIcon, 2500, False)
         return
 
-    RequestUrl = 'http://' + SettingHost + '/web/getservices?sRef=' + hybrid.urllib_quote(bouquetId)
+    RequestUrl = 'http://' + SettingHost + '/web/getservices?sRef=' + hybrid.urllib_quote(e2servicereference)
     DownloadDataHttp = hybrid.urllib_urlopen(RequestUrl)
     DownloadDataString = DownloadDataHttp.read()
     DownloadDataXml = ET.ElementTree(ET.fromstring(DownloadDataString))
@@ -95,16 +95,14 @@ def enigma_stream_channel(listItem):
 
     #Get the stream reference
     e2servicename = listItem.getProperty('e2servicename')
-    e2servicename = hybrid.urllib_unquote(e2servicename)
     e2servicereference = listItem.getProperty('e2servicereference')
-    e2servicereference = hybrid.urllib_unquote(e2servicereference)
 
     #Check if channel is a bouquet
     if e2servicereference.startswith('1:64:'):
         return
     #Check if channel is a webstream
     elif enigma_check_webstream(e2servicereference):
-        e2servicereference = enigma_get_webstreamurl(e2servicename, e2servicereference)
+        e2servicereference = enigma_get_webstreamurl(e2servicereference)
     else:
         e2servicereference = 'http://' + SettingHost + ':8001/' + e2servicereference
 
@@ -121,15 +119,13 @@ def enigma_stream_recording(listItem):
         return
 
     #Get the stream reference
-    streamName = listItem.getProperty('e2title')
-    streamName = hybrid.urllib_unquote(streamName)
-    streamFile = listItem.getProperty('e2filename')
-    streamFile = hybrid.urllib_quote(streamFile)
+    e2title = listItem.getProperty('e2title')
+    e2filename = listItem.getProperty('e2filename')
 
     #Set the stream uri
-    streamUri = 'http://' + SettingHost + '/file?file=' + streamFile
+    streamUri = 'http://' + SettingHost + '/file?file=' + e2filename
 
-    listItem.setLabel(streamName)
+    listItem.setLabel(e2title)
     xbmc.Player().play(streamUri, listItem)
 
 #Check if service is web stream
@@ -139,7 +135,7 @@ def enigma_check_webstream(e2servicereference):
     return False
 
 #Get enigma web stream url
-def enigma_get_webstreamurl(e2servicename, e2servicereference):
+def enigma_get_webstreamurl(e2servicereference):
     streamUrl = e2servicereference[23:]
-    streamUrl = streamUrl.replace(':' + e2servicename,'')
-    return hybrid.urllib_unquote(streamUrl)
+    lastSplit = streamUrl.count(':') 
+    return func.string_remove_after_char(streamUrl, ':', lastSplit)

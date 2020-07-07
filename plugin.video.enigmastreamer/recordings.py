@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from threading import Thread
 import enigma
 import func
+import hybrid
 import var
 import xbmc
 import xbmcgui
@@ -129,8 +130,10 @@ class Gui(xbmcgui.WindowXML):
         ChannelNumber = 0
         controls = list_items.findall('e2movie')
         for control in controls:
-            e2filename = control.find('e2filename').text
             e2title = control.find('e2title').text
+            e2title = hybrid.urllib_unquote(e2title)
+            e2filename = control.find('e2filename').text
+            e2filename = hybrid.urllib_quote(e2filename)
 
             e2servicename = control.find('e2servicename').text
             if func.string_isnullorempty(e2servicename):

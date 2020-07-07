@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-    <animation effect="fade" time="200" start="50" end="100">WindowOpen</animation>
-    <animation effect="fade" time="200" start="100" end="50">WindowClose</animation>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
     <controls>
         <!-- Hidden Controls -->
         <control type="button" id="3000">
@@ -256,6 +256,8 @@
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF154664</selectedcolor>
                         <info>ListItem.Property(ChannelName)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
                     </control>
                     <control type="progress">
                         <top>31</top>
@@ -276,6 +278,8 @@
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF154664</selectedcolor>
                         <info>ListItem.Property(ProgramNameNow)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
                     </control>
                 </focusedlayout>
             </control>

@@ -19,6 +19,10 @@ def string_decode(string):
     else:
         return True
 
+#String remove after char
+def string_remove_after_char(string, char, nth):
+    return char.join(string.split(char)[:nth])
+
 #Convert number to single string
 def number_to_single_string(number):
     return str(int(number))
