@@ -247,7 +247,7 @@ class Gui(xbmcgui.WindowXML):
                         if not func.string_isnullorempty(e2eventdescriptionextended):
                             ProgramDescription = e2eventdescriptionextended + '\n\n'
                         else:
-                            ProgramDescription = 'Full description is not available.\n\n'
+                            ProgramDescription = 'Description is not available.\n\n'
 
                         if not func.string_isnullorempty(e2eventdescription):
                             ProgramDescription = ProgramDescription + '[COLOR grey]' + e2eventdescription + '[/COLOR]'

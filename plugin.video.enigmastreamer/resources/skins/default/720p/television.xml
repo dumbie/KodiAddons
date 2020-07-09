@@ -120,7 +120,7 @@
                 <control type="image">
                     <width>275</width>
                     <height>40</height>
-                    <texture colordiffuse="90888888">common/background_dark.png</texture>
+                    <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                 </control>
                 <control type="image">
                     <left>4</left>
@@ -136,7 +136,7 @@
                     <height>40</height>
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
-                    <selectedcolor>FF154664</selectedcolor>
+                    <selectedcolor>FF888888</selectedcolor>
                     <info>ListItem.Label</info>
                 </control>
             </itemlayout>
@@ -144,7 +144,7 @@
                 <control type="image">
                     <width>275</width>
                     <height>40</height>
-                    <texture colordiffuse="90888888">common/background_light.png</texture>
+                    <texture colordiffuse="78FFFFFF">common/background_accent.png</texture>
                 </control>
                 <control type="image">
                     <left>4</left>
@@ -159,8 +159,8 @@
                     <width>225</width>
                     <height>40</height>
                     <aligny>center</aligny>
-                    <textcolor>FF888888</textcolor>
-                    <selectedcolor>FF154664</selectedcolor>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
                     <info>ListItem.Label</info>
                 </control>
             </focusedlayout>
@@ -172,7 +172,7 @@
             <width>370</width>
             <height>465</height>
             <control type="image">
-                <texture colordiffuse="90888888">common/background_dark.png</texture>
+                <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
             </control>
             <control type="textbox">
                 <left>4</left>
@@ -189,7 +189,7 @@
                 <width>370</width>
                 <height>465</height>
                 <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
-                <texturesliderbar colordiffuse="50888888">common/scrollbar_dark_400.png</texturesliderbar>
+                <texturesliderbar colordiffuse="60888888">common/scrollbar_dark_400.png</texturesliderbar>
                 <texturesliderbackground colordiffuse="60888888">common/scrollbar_light_400.png</texturesliderbackground>
                 <onleft>2001</onleft>
             </control>
@@ -210,7 +210,7 @@
                     <control type="image">
                         <width>800</width>
                         <height>68</height>
-                        <texture colordiffuse="90888888">common/background_dark.png</texture>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="label">
                         <left>10</left>
@@ -218,7 +218,7 @@
                         <height>30</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF154664</selectedcolor>
+                        <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelName)</info>
                     </control>
                     <control type="progress">
@@ -238,7 +238,7 @@
                         <height>30</height>
                         <aligny>center</aligny>
                         <textcolor>FF888888</textcolor>
-                        <selectedcolor>FF154664</selectedcolor>
+                        <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ProgramNameNow)</info>
                     </control>
                 </itemlayout>
@@ -246,7 +246,7 @@
                     <control type="image">
                         <width>800</width>
                         <height>68</height>
-                        <texture colordiffuse="90888888">common/background_light.png</texture>
+                        <texture colordiffuse="78FFFFFF">common/background_accent.png</texture>
                     </control>
                     <control type="label">
                         <left>10</left>
@@ -254,7 +254,7 @@
                         <height>30</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF154664</selectedcolor>
+                        <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelName)</info>
                         <scroll>true</scroll>
                         <scrollspeed>60</scrollspeed>
@@ -276,7 +276,7 @@
                         <height>30</height>
                         <aligny>center</aligny>
                         <textcolor>FF888888</textcolor>
-                        <selectedcolor>FF154664</selectedcolor>
+                        <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ProgramNameNow)</info>
                         <scroll>true</scroll>
                         <scrollspeed>60</scrollspeed>

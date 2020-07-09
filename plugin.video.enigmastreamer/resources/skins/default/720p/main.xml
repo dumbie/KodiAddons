@@ -121,7 +121,7 @@
                 <control type="image">
                     <width>275</width>
                     <height>40</height>
-                    <texture colordiffuse="90888888">common/background_dark.png</texture>
+                    <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                 </control>
                 <control type="image">
                     <left>4</left>
@@ -137,7 +137,7 @@
                     <height>40</height>
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
-                    <selectedcolor>FF154664</selectedcolor>
+                    <selectedcolor>FF888888</selectedcolor>
                     <info>ListItem.Label</info>
                 </control>
             </itemlayout>
@@ -145,7 +145,7 @@
                 <control type="image">
                     <width>275</width>
                     <height>40</height>
-                    <texture colordiffuse="90888888">common/background_light.png</texture>
+                    <texture colordiffuse="78FFFFFF">common/background_accent.png</texture>
                 </control>
                 <control type="image">
                     <left>4</left>
@@ -160,8 +160,8 @@
                     <width>225</width>
                     <height>40</height>
                     <aligny>center</aligny>
-                    <textcolor>FF888888</textcolor>
-                    <selectedcolor>FF154664</selectedcolor>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
                     <info>ListItem.Label</info>
                 </control>
             </focusedlayout>
@@ -181,7 +181,7 @@
                     <control type="image">
                         <width>1280</width>
                         <height>48</height>
-                        <texture colordiffuse="90888888">common/background_dark.png</texture>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="label">
                         <left>10</left>
@@ -189,7 +189,7 @@
                         <height>48</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF154664</selectedcolor>
+                        <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
@@ -197,7 +197,7 @@
                     <control type="image">
                         <width>1280</width>
                         <height>48</height>
-                        <texture colordiffuse="90888888">common/background_light.png</texture>
+                        <texture colordiffuse="78FFFFFF">common/background_accent.png</texture>
                     </control>
                     <control type="label">
                         <left>10</left>
@@ -205,7 +205,7 @@
                         <height>48</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF154664</selectedcolor>
+                        <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Label</info>
                         <scroll>true</scroll>
                         <scrollspeed>60</scrollspeed>
