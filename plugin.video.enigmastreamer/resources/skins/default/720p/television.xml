@@ -144,7 +144,7 @@
                 <control type="image">
                     <width>275</width>
                     <height>40</height>
-                    <texture colordiffuse="78FFFFFF">common/background_accent.png</texture>
+                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
                 </control>
                 <control type="image">
                     <left>4</left>
@@ -246,7 +246,7 @@
                     <control type="image">
                         <width>800</width>
                         <height>68</height>
-                        <texture colordiffuse="78FFFFFF">common/background_accent.png</texture>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
                     </control>
                     <control type="label">
                         <left>10</left>
