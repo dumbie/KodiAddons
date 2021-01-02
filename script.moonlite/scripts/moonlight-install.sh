@@ -8,7 +8,7 @@ sudo systemctl stop mediacenter
 #Install the Parsec client
 sudo openvt -c7 -s -f echo "Adding Moonlight apt sources..."
 sudo openvt -c7 -s -f echo ""
-sudo echo "deb http://archive.itimmer.nl/raspbian/moonlight stretch main" > /etc/apt/sources.list.d/moonlight.list
+sudo echo "deb http://archive.itimmer.nl/raspbian/moonlight $(lsb_release -c -s) main" > /etc/apt/sources.list.d/moonlight.list
 
 sudo openvt -c7 -s -f echo "Installing the Moonlight key..."
 sudo openvt -c7 -s -f echo ""
