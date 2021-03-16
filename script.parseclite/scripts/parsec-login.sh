@@ -14,10 +14,10 @@ sudo rm -f /root/.parsec/lock
 sleep 2
 
 #Launch and log in to Parsec
-sudo openvt -c7 -s -f echo "Trying to log in to Parsec, please connect a keyboard and save the password."
+sudo openvt -c7 -s -f echo "Trying to log in to Parsec, please connect a keyboard."
 sudo openvt -c7 -s -f echo "Login attempt will automatically timeout in 60 seconds."
 sudo openvt -c7 -s -f echo ""
-sudo timeout 60 openvt -c7 -s -f -w -- parsec
+sudo timeout 60 openvt -c7 -s -f -w -- parsecd
 
 sleep 2
 

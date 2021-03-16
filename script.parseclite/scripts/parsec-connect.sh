@@ -8,7 +8,7 @@ sudo systemctl stop mediacenter
 #Launch and connect Parsec
 sudo openvt -c7 -s -f echo "Connecting to Parsec host..."
 sudo openvt -c7 -s -f echo ""
-sudo openvt -c7 -s -f -w -- parsec "$1"
+sudo openvt -c7 -s -f -w -- parsecd "$1"
 
 sleep 2
 
