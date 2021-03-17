@@ -17,7 +17,9 @@ def parsec_connect():
 
     #Get Parsec connection arguments
     set_client_audio_buffer = var.addon.getSetting('client_audio_buffer')
-    connectArguments = 'peer_id=' + set_server_id + ':client_audio_max_buffer_ms=' + set_client_audio_buffer + ':client_overlay=0:client_immersive=1'
+    set_client_vsync = int(var.addon.getSetting('client_vsync') == 'true')
+
+    connectArguments = 'peer_id=' + set_server_id + ':client_audio_max_buffer_ms=' + set_client_audio_buffer + ':client_vsync=' + str(set_client_vsync) + ':client_overlay=0:client_immersive=1'
     scriptVars = [connectArguments]
 
     process = subprocess.Popen(scriptRun + scriptCode + scriptVars)

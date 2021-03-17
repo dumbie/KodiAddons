@@ -2,7 +2,8 @@
 <settings>
   <category label="General">
     <setting id="server_id" label="Target host peer id" type="text" default=""/>
+    <setting id="client_vsync" label="Vertical sync" type="bool" default="false"/>
     <setting id="client_audio_buffer" label="Audio buffer" type="number" default="80"/>
-    <setting label="You can find the peer id by opening config file on host." type="lsep"/>
+    <setting label="You can find the peer id by opening computers tab on host." type="lsep"/>
   </category>
 </settings>
