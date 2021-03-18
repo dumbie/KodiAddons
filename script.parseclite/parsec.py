@@ -27,6 +27,9 @@ def parsec_connect():
 
 #Parsec login
 def parsec_login():
+    dialogResult = xbmcgui.Dialog().yesno("Keyboard required", "To login you need a keyboard, do you currently have a keyboard connected?")
+    if dialogResult == 0: return
+
     scriptRun = [var.addonpath + '/scripts/script-run.sh']
     scriptCode = [var.addonpath + '/scripts/parsec-login.sh']
 
