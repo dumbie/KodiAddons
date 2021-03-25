@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.vogelspot" name="Vogelspot" provider-name="Arnold Vink" version="1.0.4">
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <website>https://arnoldvink.com</website>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <screenshot>resources/screenshot1.jpg</screenshot>
+    </assets>
+    <summary>Watch live bird streams</summary>
+    <description>Vogelspot is an addon that allows you to watch live bird streams from Beleefdelente, Nestkastlive and more.</description>
+    <summary lang="nl">Kijk live vogel streams</summary>
+    <description lang="nl">Vogelspot is een addon die je toegang geeft tot live vogel streams van Beleefdelente, Nestkastlive en meer.</description>
+    <news>
+v1.0.0 (19 March 2021)
+- First public released test version.
+    </news>
+  </extension>
+</addon>

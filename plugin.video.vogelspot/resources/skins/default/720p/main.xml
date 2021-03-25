@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="80FFFFFF">common/background.png</texture>
+        </control>
+        <!-- Video Window -->
+        <control type="group">
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="videowindow">
+                <hitrect x="0" y="0" w="0" h="0"/>
+            </control>
+            <control type="image">
+                <texture colordiffuse="AAFFFFFF">common/background_dark.png</texture>
+            </control>
+        </control>
+        <!-- Logo -->
+        <control type="image">
+            <top>40</top>
+            <left>40</left>
+            <width>120</width>
+            <height>120</height>
+            <aspectratio>keep</aspectratio>
+            <texture>../../../icon.png</texture>
+        </control>
+        <!-- Information -->
+        <control type="label">
+            <top>70</top>
+            <left>180</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Vogelspot</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label" id="1">
+            <top>100</top>
+            <left>180</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Loading streams</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Clock -->
+        <control type="label">
+            <top>70</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Time]</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label">
+            <top>100</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Fullscreen Button -->
+        <control type="group">
+            <left>10</left>
+            <top>180</top>
+            <width>35</width>
+            <height>545</height>
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="button" id="9000">
+                <width>35</width>
+                <height>545</height>
+                <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
+                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+            </control>
+            <control type="image">
+                <top>5</top>
+                <left>5</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/fullscreen.png</texture>
+            </control>
+        </control>
+        <!-- Stream List -->
+        <control type="group">
+            <left>50</left>
+            <right>50</right>
+            <top>180</top>
+            <control type="panel" id="1001">
+                <pagecontrol>2001</pagecontrol>
+                <onup>1000</onup>
+                <onleft condition="Player.HasVideo">SendClick(9000)</onleft>
+                <onright>2001</onright>
+                <orientation>vertical</orientation>
+                <itemlayout width="1280" height="60">
+                    <control type="image">
+                        <width>1280</width>
+                        <height>58</height>
+                        <texture colordiffuse="90888888">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <left>58</left>
+                        <width>1200</width>
+                        <height>58</height>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF26671E</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="1280" height="60">
+                    <control type="image">
+                        <width>1280</width>
+                        <height>58</height>
+                        <texture colordiffuse="90888888">common/background_light.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <left>58</left>
+                        <width>1200</width>
+                        <height>58</height>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF26671E</selectedcolor>
+                        <info>ListItem.Label</info>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2001">
+                <right>0</right>
+                <width>8</width>
+                <height>540</height>
+                <onleft>1001</onleft>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+    </controls>
+</window>
