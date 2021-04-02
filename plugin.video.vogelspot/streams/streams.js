@@ -145,18 +145,18 @@
   },
   {
     "id": "steenuil",
-    "name": "Steenuil Binnen",
-    "location": "Sprundel, Noord-Brabant",
-    "source": "Nestkastlive",
-    "stream": "https://5d881567b7568.streamlock.net/live/Steenuil2Binnen.stream/playlist.m3u8",
-    "token": ""
-  },
-  {
-    "id": "steenuil",
     "name": "Steenuil Buiten",
     "location": "Sprundel, Noord-Brabant",
     "source": "Nestkastlive",
     "stream": "https://5d881567b7568.streamlock.net/live/Steenuil2Buiten.stream/playlist.m3u8",
+    "token": ""
+  },
+  {
+    "id": "steenuil",
+    "name": "Steenuil Binnen",
+    "location": "Sprundel, Noord-Brabant",
+    "source": "Nestkastlive",
+    "stream": "https://5d881567b7568.streamlock.net/live/Steenuil2Binnen.stream/playlist.m3u8",
     "token": ""
   },
   {
@@ -414,5 +414,13 @@
     "source": "Beleefdelente",
     "stream": "https://rrr.sz.xlcdn.com/?account=bdl&file=huiszwaluw2&type=live&service=wowza&protocol=https&output=playlist.m3u8",
     "token": "https://www.vogelbescherming.nl/cfc/bdl/CFJetStream/JetStream.cfc?method=GenerateToken&streamname=huiszwaluw2"
+  },
+  {
+    "id": "roodstaart",
+    "name": "[COLOR ffe80707]X[/COLOR] Gekraagde roodstaart",
+    "location": "Winterswijk, Gelderland",
+    "source": "Beleefdelente",
+    "stream": "https://rrr.sz.xlcdn.com/?account=bdl&file=roodstaart2&type=live&service=wowza&protocol=https&output=playlist.m3u8",
+    "token": "https://www.vogelbescherming.nl/cfc/bdl/CFJetStream/JetStream.cfc?method=GenerateToken&streamname=roodstaart2"
   }
 ]

@@ -3,13 +3,22 @@ import unicodedata
 
 pythonversion = sys.version_info[0]
 if pythonversion < 3:
+    import xbmc
     import urllib2
     from HTMLParser import HTMLParser
     inputstreamname = 'inputstreamaddon'
 else:
+    import xbmcvfs
     import urllib.request, urllib.parse
     from html.parser import HTMLParser
     inputstreamname = 'inputstream'
+
+#Xbmc translate path
+def xbmc_translate_path(path):
+    if pythonversion < 3:
+        return xbmc.translatePath(path)
+    else:
+        return xbmcvfs.translatePath(path)
 
 #Remove character accents from string
 def string_remove_accents(string):
