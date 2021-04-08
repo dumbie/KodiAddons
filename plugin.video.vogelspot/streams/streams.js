@@ -77,7 +77,7 @@
     "location": "Biesbosch, Noord-Brabant",
     "source": "Beleefdelente",
     "stream": "https://rrr.sz.xlcdn.com/?account=bdl&file=Visarend1&type=live&service=wowza&protocol=https&output=playlist.m3u8",
-    "token": ""
+    "token": "https://www.vogelbescherming.nl/cfc/bdl/CFJetStream/JetStream.cfc?method=GenerateToken&streamname=Visarend1"
   },
   {
     "id": "ooievaar",
@@ -86,6 +86,22 @@
     "source": "Beleefdelente",
     "stream": "https://rrr.sz.xlcdn.com/?account=bdl&file=Ooievaar1&type=live&service=wowza&protocol=https&output=playlist.m3u8",
     "token": "https://www.vogelbescherming.nl/cfc/bdl/CFJetStream/JetStream.cfc?method=GenerateToken&streamname=Ooievaar1"
+  },
+  {
+    "id": "scholekster",
+    "name": "Scholekster",
+    "location": "Assen, Drenthe",
+    "source": "Beleefdelente",
+    "stream": "https://rrr.sz.xlcdn.com/?account=bdl&file=Scholekster1&type=live&service=wowza&protocol=https&output=playlist.m3u8",
+    "token": "https://www.vogelbescherming.nl/cfc/bdl/CFJetStream/JetStream.cfc?method=GenerateToken&streamname=Scholekster1"
+  },
+  {
+    "id": "torenvalk",
+    "name": "Torenvalk",
+    "location": "Hoogeveen, Drenthe",
+    "source": "Beleefdelente",
+    "stream": "https://rrr.sz.xlcdn.com/?account=bdl&file=Torenvalk1&type=live&service=wowza&protocol=https&output=playlist.m3u8",
+    "token": "https://www.vogelbescherming.nl/cfc/bdl/CFJetStream/JetStream.cfc?method=GenerateToken&streamname=Torenvalk1"
   },
   {
     "id": "slechtvalk",
