@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+        </control>
+        <!-- Window Popup -->
+        <control type="group">
+            <top>50</top>
+            <left>300</left>
+            <!-- Border -->
+            <control type="image">
+                <left>-3</left>
+                <width>726</width>
+                <height>603</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Background -->
+            <control type="image">
+                <width>720</width>
+                <height>600</height>
+                <texture>common/background_dark.png</texture>
+            </control>
+            <!-- Header Background -->
+            <control type="image">
+                <width>720</width>
+                <height>60</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Header Label -->
+            <control type="label">
+                <left>10</left>
+                <width>700</width>
+                <height>60</height>
+                <aligny>center</aligny>
+                <label>Help</label>
+            </control>
+            <!-- Button Close -->
+            <control type="button" id="4000">
+                <left>650</left>
+                <top>10</top>
+                <width>60</width>
+                <height>40</height>
+                <texturefocus colordiffuse="50FFFFFF">common/background_dark.png</texturefocus>
+                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+                <align>center</align>
+                <label>X</label>
+                <textcolor>FFFFFFFF</textcolor>
+                <ondown>2000</ondown>
+            </control>
+            <!-- Help Description -->
+            <control type="group">
+                <top>65</top>
+                <left>10</left>
+                <width>700</width>
+                <height>525</height>
+                <control type="textbox" id="3000">
+                    <width>690</width>
+                    <height>525</height>
+                    <align>left</align>
+                    <aligny>top</aligny>
+                    <wrapmultiline>true</wrapmultiline>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <pagecontrol>2000</pagecontrol>
+                    <onup>4000</onup>
+                </control>
+                <control type="scrollbar" id="2000">
+                    <width>700</width>
+                    <height>525</height>
+                    <texturesliderbarfocus>common/scrollbar_accent_800.png</texturesliderbarfocus>
+                    <texturesliderbar colordiffuse="60888888">common/scrollbar_dark_800.png</texturesliderbar>
+                    <texturesliderbackground colordiffuse="60888888">common/scrollbar_light_800.png</texturesliderbackground>
+                    <onup>4000</onup>
+                </control>
+            </control>
+        </control>
+    </controls>
+</window>

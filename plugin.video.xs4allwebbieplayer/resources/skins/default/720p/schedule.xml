@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+        </control>
+        <!-- Window Popup -->
+        <control type="group">
+            <top>50</top>
+            <left>300</left>
+            <!-- Border -->
+            <control type="image" id="8001">
+                <left>-3</left>
+                <width>726</width>
+                <height>558</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Background -->
+            <control type="image" id="8000">
+                <width>720</width>
+                <height>555</height>
+                <texture>common/background_dark.png</texture>
+            </control>
+            <!-- Header Background -->
+            <control type="image">
+                <width>720</width>
+                <height>60</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Header Label -->
+            <control type="label" id="3000">
+                <left>10</left>
+                <width>700</width>
+                <height>60</height>
+                <aligny>center</aligny>
+            </control>
+            <!-- Footer Label -->
+            <control type="label" id="3002">
+                <left>10</left>
+                <top>540</top>
+                <width>700</width>
+                <height>60</height>
+                <aligny>center</aligny>
+            </control>
+            <!-- Description Label -->
+            <control type="label" id="3001">
+                <top>64</top>
+                <left>10</left>
+                <width>700</width>
+                <height>60</height>
+                <aligny>top</aligny>
+                <wrapmultiline>true</wrapmultiline>
+            </control>
+            <!-- Button Remove All -->
+            <control type="button" id="4001">
+                <left>390</left>
+                <top>10</top>
+                <width>250</width>
+                <height>40</height>
+                <texturefocus colordiffuse="50FFFFFF">common/background_dark.png</texturefocus>
+                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+                <align>center</align>
+                <label>Alles annuleren</label>
+                <textcolor>FFFFFFFF</textcolor>
+                <ondown>1000</ondown>
+                <onleft>4000</onleft>
+                <onright>4000</onright>
+            </control>
+            <!-- Button Close -->
+            <control type="button" id="4000">
+                <left>650</left>
+                <top>10</top>
+                <width>60</width>
+                <height>40</height>
+                <texturefocus colordiffuse="50FFFFFF">common/background_dark.png</texturefocus>
+                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+                <align>center</align>
+                <label>X</label>
+                <textcolor>FFFFFFFF</textcolor>
+                <ondown>1000</ondown>
+                <onleft>4001</onleft>
+                <onright>4001</onright>
+            </control>
+            <!-- Schedule List -->
+            <control type="group">
+                <left>10</left>
+                <top>130</top>
+                <width>700</width>
+                <height>420</height>
+                <control type="panel" id="1000">
+                    <onup>4000</onup>
+                    <onright>2000</onright>
+                    <pagecontrol>2000</pagecontrol>
+                    <orientation>vertical</orientation>
+                    <itemlayout width="700" height="70">
+                        <control type="image">
+                            <width>700</width>
+                            <height>65</height>
+                            <texture colordiffuse="50888888">common/background_light.png</texture>
+                        </control>
+                        <control type="image">
+                            <top>3</top>
+                            <left>3</left>
+                            <width>50</width>
+                            <height>50</height>
+                            <aspectratio>keep</aspectratio>
+                            <texture>$INFO[ListItem.Art(thumb)]</texture>
+                        </control>
+                        <control type="label">
+                            <left>60</left>
+                            <width>630</width>
+                            <height>30</height>
+                            <align>left</align>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <selectedcolor>FF888888</selectedcolor>
+                            <info>ListItem.Property(ProgramName)</info>
+                        </control>
+                        <control type="label">
+                            <top>30</top>
+                            <left>60</left>
+                            <width>630</width>
+                            <height>30</height>
+                            <align>left</align>
+                            <textcolor>FF888888</textcolor>
+                            <selectedcolor>FF888888</selectedcolor>
+                            <info>ListItem.Property(ProgramDescription)</info>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout width="690" height="70">
+                        <control type="image">
+                            <width>700</width>
+                            <height>65</height>
+                            <texture colordiffuse="DC888888">common/background_accent.png</texture>
+                        </control>
+                        <control type="image">
+                            <top>3</top>
+                            <left>3</left>
+                            <width>50</width>
+                            <height>50</height>
+                            <aspectratio>keep</aspectratio>
+                            <texture>$INFO[ListItem.Art(thumb)]</texture>
+                        </control>
+                        <control type="label">
+                            <left>60</left>
+                            <width>630</width>
+                            <height>30</height>
+                            <align>left</align>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <selectedcolor>FF888888</selectedcolor>
+                            <info>ListItem.Property(ProgramName)</info>
+                            <scroll>true</scroll>
+                            <scrollspeed>60</scrollspeed>
+                        </control>
+                        <control type="label">
+                            <top>30</top>
+                            <left>60</left>
+                            <width>630</width>
+                            <height>30</height>
+                            <align>left</align>
+                            <textcolor>FF888888</textcolor>
+                            <selectedcolor>FF888888</selectedcolor>
+                            <info>ListItem.Property(ProgramDescription)</info>
+                        </control>
+                    </focusedlayout>
+                </control>
+                <control type="scrollbar" id="2000">
+                    <onup>4000</onup>
+                    <onleft>1000</onleft>
+                    <right>0</right>
+                    <width>8</width>
+                    <height>415</height>
+                    <orientation>vertical</orientation>
+                    <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                    <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                    <texturesliderbackground>-</texturesliderbackground>
+                </control>
+            </control>
+        </control>
+    </controls>
+</window>

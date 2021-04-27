@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.15.0">
+  <requires>
+    <import addon="inputstream.adaptive" version="2.0.10"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point='xbmc.service' library='service.py' start='login'/>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <website>https://arnoldvink.com</website>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <screenshot>resources/screenshot1.jpg</screenshot>
+    </assets>
+    <summary>Webbie Player</summary>
+    <description>Webbie Player is a Kodi add-on, which enables you to watch tv online if you are a television consumer at the internet service provider XS4ALL, KPN or Telfort.[CR][CR]This is not an official add-on made by XS4ALL, KPN or Telfort but developed by Arnold Vink, use this add-on at your own risk.[CR][CR]Webbie Player requires the following: Kodi 18 or newer, InputStream Adaptive add-on and your subscription login details.</description>
+    <summary lang="nl">Webbie Player</summary>
+    <description lang="nl">Webbie Player is een Kodi add-on, waarmee u online TV kunt kijken als u televisie klant bent bij de internet provider XS4ALL, KPN of Telfort.[CR][CR]Dit is geen officiële add-on gemaakt door XS4ALL, KPN of Telfort maar ontwikkeld door Arnold Vink, gebruik deze add-on op eigen risico.[CR][CR]Webbie Player heeft de volgende benodigdheden nodig: Kodi 18 of nieuwer, InputStream Adaptive add-on en je abonnements inlog gegevens.</description>
+    <news>
+v1.15.0 (9 April 2021)
+- Check om te kijken als gebruiker buitenshuis is toegevoegd.
+
+v1.14.0 (29 December 2020)
+- Stream spoelbalk toegevoegd voor muis gebruikers.
+
+v1.12.1 (3 November 2020)
+- Instelling toegevoegd om bij verlaten Kids pagina een pincode te vereisen.
+
+v1.12.0 (2 November 2020)
+- Gister Gemist pagina toont nu alle beschikbare programma's.
+- Kids pagina toegevoegd met alleen series en films voor kinderen.
+
+v1.11.0 (23 October 2020)
+- Series pagina toont nu ook series uitgezonden in de afgelopen week.
+
+v1.10.0 (21 October 2020)
+- Sport pagina toegevoegd met uitzendingen van de afgelopen week.
+- Film pagina toont nu ook films uitgezonden in de afgelopen week.
+
+v1.9.12 (5 Augustus 2020)
+- Zoekgeschiedenis toegevoegd op de zoek pagina.
+
+v1.9.0 (30 Juni 2020)
+- De add-on werkt nu zowel met Kodi 18 als Kodi 19.
+
+v1.8.0 (25 Juni 2020)
+- U kunt nu ook aangeboden films en series kijken.
+- U kunt nu ook zoeken naar een programma.
+
+v1.6.8 (13 Maart 2020)
+- U kunt nu een dag selecteren in de TV Gids.
+
+v1.6.5 (2 Maart 2020)
+- De TV Gids toont nu als een programma niet beschikbaar is.
+
+v1.6.0 (3 November 2019)
+- U kunt nu spoelen met de linker en rechter pijltjes toetsen.
+
+v1.5.0 (23 Mei 2019)
+- U kunt nu ook alle geplande series in een lijst bekijken.
+
+v1.4.5 (2 Mei 2019)
+- U kunt nu ook alle geplande opnames in een lijst bekijken.
+
+v1.4.0 (1 Mei 2019)
+- U kunt nu ook televisie zenders markeren als favoriet.
+- De TV Gids laat nu ook een aantal uur terug zien.
+
+v1.3.8 (18 April 2019)
+- U kunt nu ook de tv zenderlijst in meerdere stijlen weergeven.
+
+v1.3.0 (12 April 2019)
+- U kunt nu langer terug spoelen tijdens het kijken.
+
+v1.2.0 (16 Maart 2019)
+- U kunt nu uw eigen achtergrond afbeelding gebruiken.
+
+v1.1.0 (10 Februari 2019)
+- U kunt nu ook programma's opnemen en terug kijken.
+
+v1.0.2 (5 Februari 2019)
+- Programma alarmen werken nu ook als Webbie Player gesloten is.
+
+v1.0.1 (30 Januari 2019)
+- U kunt nu Webbie Player automatisch starten bij het opstarten van Kodi.
+
+v1.0.0 (22 Januari 2019)
+- Experimentele ondersteuning voor het nieuwe web tv systeem.
+- On Demand pagina toegevoegd, zodat u programma's terug kunt kijken.
+
+v0.9.0 (5 November 2018)
+- U kunt vanaf nu de volume in stappen regelen.
+
+v0.8.5 (19 September 2018)
+- Help pagina toegevoegd met handige tips en weetjes.
+- U kunt nu een slaap timer zetten voor het einde van een programma.
+- Geoptimaliseerd voor gebruik met Kodi versie 18.
+
+v0.8.0 (30 Augustus 2018)
+- U kunt nu makkelijker een alarm zetten voor volgend programma.
+
+v0.7.2 (11 Augustus 2018)
+- Widevine ondersteuning wordt nu automatisch geinstalleerd.
+
+v0.7.0 (9 Augustus 2018)
+- U kunt nu ook een alarm zetten voor aankomende programma's.
+
+v0.6.2 (6 Augustus 2018)
+- Slaap timer functie toegevoegd die apparaat kan afsluiten.
+
+v0.6.0 (2 Augustus 2018)
+- U kunt nu ook een zender selecteren door nummers te gebruiken.
+
+v0.5.2 (31 Juli 2018)
+- Info wordt nu weer gegeven voor de geselecteerde zender in de speler.
+- U kunt nu een zender terug door op de terug spoel knop te klikken.
+
+v0.5.0 (29 Juli 2018)
+- Zender balk toegevoegd aan de player interface.
+- TV Gids op televisie pagina vernieuwt nu automatisch.
+
+v0.4.3 (27 Juli 2018)
+- Programma's die later komen toegevoegd aan beschrijving.
+- Klikken op het XS4ALL logo gaat nu een stap terug.
+- Huidige radio zender titel wordt nu weergegeven.
+
+v0.4.0 (26 Juli 2018)
+- Player interface toegevoegd die programma informatie update.
+
+v0.0.1 (10 Juli 2018)
+- Eerste publieke test versie uitgebracht.
+    </news>
+  </extension>
+</addon>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<settings>
+  <category label="Abonnement">
+    <setting id="LoginProvider" type="select" label="Kleurenschema" default="XS4ALL" values="XS4ALL|Telfort|KPN"/>
+    <setting id="LoginType" type="select" label="Inloggen met" default="Abonnementsnummer" values="Abonnementsnummer|Emailadres"/>
+    <setting type="sep"/>
+    <setting id="LoginUsername" type="text" label="Abonnementsnummer" default=""/>
+    <setting id="LoginPassword" type="text" label="Pincode" option="hidden" default=""/>
+    <setting type="sep"/>
+    <setting id="LoginEmail" type="text" label="Emailadres" default=""/>
+    <setting id="LoginPasswordEmail" type="text" label="Wachtwoord" option="hidden" default=""/>
+    <setting label="* Sommige opties werken pas na het opnieuw starten." type="lsep"/>
+  </category>
+  <category label="Algemeen">
+    <setting id="TelevisionChannelFavorite" label="Televisie zenders open met favorieten lijst" type="bool" default="false"/>
+    <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media inhoud" type="bool" default="true"/>
+    <setting id="TelevisionChannelView" type="select" label="Televisie zenders weergave stijl" default="lijst" values="lijst|blokken|minimaal"/>
+    <setting id="ResetUserdata" type="action" label="Verwijder user data bestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,ResetUserdata)"/>
+    <setting id="ResetThumbnails" type="action" label="Alle zender logo's vernieuwen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,ResetThumbnails)"/>
+    <setting label="* Sommige opties werken pas na het opnieuw starten." type="lsep"/>
+  </category>
+  <category label="Afspelen">
+    <setting id="PlayerSubtitlesOff" label="Zet ondertiteling bij begin afspelen uit" type="bool" default="true"/>
+    <setting id="PlayerInformationCloseTime" label="Tijd voordat de informatie sluit in speler (sec)" type="slider" default="10" range="4,2,30" option="int"/>
+    <setting id="PlayerVolumeStep" label="Geluidsvolume niveau aanpas stap (%)" type="slider" default="5" range="1,1,30" option="int"/>
+    <setting id="StreamSeekMinutes" label="Minuten dat terug gespoeld kan worden" type="slider" default="185" range="5,5,365" option="int"/>
+    <setting label="* Sommige opties werken pas na het opnieuw starten." type="lsep"/>
+  </category>
+  <category label="Opstarten">
+    <setting id="RunAddonOnKodiLaunch" label="Start Webbie Player bij opstarten van Kodi" type="bool" default="false"/>
+    <setting id="StartWithLastChannel" label="Open laatst bekeken tv zender bij opstarten" type="bool" default="false"/>
+    <setting id="StartWithKids" label="Ga bij het opstarten gelijk naar kids pagina" type="bool" default="false"/>
+    <setting id="StartWithTelevision" label="Ga bij het opstarten gelijk naar televisie pagina" type="bool" default="false"/>
+    <setting label="* Sommige opties werken pas na het opnieuw starten." type="lsep"/>
+  </category>
+  <category label="Kids Slot">
+    <setting id="KidsPageLock" label="Bij sluiten van Kids pagina om pincode vragen" type="bool" default="false"/>
+    <setting id="KidsPincode" type="text" label="Pincode" option="hidden" default="1234"/>
+    <setting label="* Sommige opties werken pas na het opnieuw starten." type="lsep"/>
+  </category>
+  <category label="Slaap Timer">
+    <setting id="SleepTimerCloseKodi" label="Sluit alleen Kodi in de plaats van dit apparaat" type="bool" default="true"/>
+    <setting label="* Sommige opties werken pas na het opnieuw starten." type="lsep"/>
+  </category>
+  <category label="Stream">
+    <setting id="StreamResolution" type="select" label="Maximale video stream resolutie" default="1080p" values="360p|432p|576p|720p|1080p|2160p"/>
+    <setting id="CustomUserAgent" type="text" label="User-agent verbind identificatie" default="Webbie Player"/>
+    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine beveiliging bestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,UpdateWidevineFiles)"/>
+    <setting id="InputAdaptiveSettings" type="action" label="Open de input stream adaptive add-on instellingen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,InputAdaptiveSettings)"/>
+    <setting label="* Hier kunt u de stream kwaliteit instellingen optimaliseren." type="lsep"/>
+    <!-- Hidden variable settings -->
+    <setting id="LoginDeviceId120" type="text" visible="false" default=""/>
+    <setting id="WidevineVersion" type="text" visible="false" default=""/>
+    <setting id="CurrentRadioId" type="text" visible="false" default=""/>
+    <setting id="CurrentAssetId" type="text" visible="false" default=""/>
+    <setting id="CurrentChannelId" type="text" visible="false" default=""/>
+    <setting id="CurrentExternalId" type="text" visible="false" default=""/>
+    <setting id="CurrentChannelName" type="text" visible="false" default="Onbekende zender"/>
+    <setting id="LastAssetId" type="text" visible="false" default=""/>
+    <setting id="LastChannelId" type="text" visible="false" default=""/>
+    <setting id="LastExternalId" type="text" visible="false" default=""/>
+    <setting id="LastChannelName" type="text" visible="false" default="Onbekende zender"/>
+  </category>
+</settings>

@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <controls>
+        <!-- Buffer Status -->
+        <control type="image">
+            <top>300</top>
+            <left>580</left>
+            <width>120</width>
+            <height>120</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/loading.gif</texture>
+            <visible>Player.Caching</visible>
+        </control>
+        <!-- Pause Status -->
+        <control type="image">
+            <top>300</top>
+            <left>580</left>
+            <width>120</width>
+            <height>120</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/pause.png</texture>
+            <visible>Player.Paused</visible>
+        </control>
+        <!-- Video Block/Click -->
+        <control type="button" id="4000">
+            <width>1280</width>
+            <height>720</height>
+            <texturefocus>-</texturefocus>
+            <texturenofocus>-</texturenofocus>
+        </control>
+        <!-- Zap Number -->
+        <control type="group" id="7000">
+            <top>50</top>
+            <width>200</width>
+            <height>60</height>
+            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Sidebar -->
+            <control type="image">
+                <right>0</right>
+                <width>5</width>
+                <height>60</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Number -->
+            <control type="label" id="7001">
+                <right>15</right>
+                <width>200</width>
+                <height>60</height>
+                <align>right</align>
+                <aligny>center</aligny>
+            </control>
+        </control>
+        <!-- Player Progress -->
+        <control type="group">
+            <width>880</width>
+            <height>50</height>
+            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
+            <animation effect="fade" time="100" start="50" end="100">Visible</animation>
+            <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Seek amount -->
+            <control type="label">
+                <left>5</left>
+                <height>30</height>
+                <width>380</width>
+                <textcolor>FFFFFFFF</textcolor>
+                <label>$INFO[Player.SeekTime]$INFO[Player.Duration, / ]$INFO[Player.SeekStepSize, ]$INFO[Player.SeekOffset, ]</label>
+            </control>
+            <!-- Control List Name -->
+            <control type="label">
+                <right>5</right>
+                <height>30</height>
+                <width>380</width>
+                <align>right</align>
+                <visible>Control.IsVisible(1002) + Control.HasFocus(1002)</visible>
+                <textcolor>FFFFFFFF</textcolor>
+                <label>$INFO[Container(1002).ListItem().Label]</label>
+            </control>
+            <!-- Player Forwarding and Rewinding -->
+            <control type="image">
+                <top>2</top>
+                <left>305</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/seekforward.png</texture>
+                <visible>Player.Forwarding</visible>
+            </control>
+            <control type="image">
+                <top>2</top>
+                <left>305</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/seekback.png</texture>
+                <visible>Player.Rewinding</visible>
+            </control>
+            <control type="label">
+                <top>2</top>
+                <left>335</left>
+                <width>150</width>
+                <height>25</height>
+                <label>2x</label>
+                <aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor>
+                <visible>Player.Forwarding2x | Player.Rewinding2x</visible>
+            </control>
+            <control type="label">
+                <top>2</top>
+                <left>335</left>
+                <width>150</width>
+                <height>25</height>
+                <label>4x</label>
+                <aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor>
+                <visible>Player.Forwarding4x | Player.Rewinding4x</visible>
+            </control>
+            <control type="label">
+                <top>2</top>
+                <left>335</left>
+                <width>150</width>
+                <height>25</height>
+                <label>8x</label>
+                <aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor>
+                <visible>Player.Forwarding8x | Player.Rewinding8x</visible>
+            </control>
+            <control type="label">
+                <top>2</top>
+                <left>335</left>
+                <width>150</width>
+                <height>25</height>
+                <label>16x</label>
+                <aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor>
+                <visible>Player.Forwarding16x | Player.Rewinding16x</visible>
+            </control>
+            <control type="label">
+                <top>2</top>
+                <left>335</left>
+                <width>150</width>
+                <height>25</height>
+                <label>32x</label>
+                <aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor>
+                <visible>Player.Forwarding32x | Player.Rewinding32x</visible>
+            </control>
+            <!-- Progress Bar -->
+            <control type="progress">
+                <left>0</left>
+                <top>40</top>
+                <width>880</width>
+                <height>10</height>
+                <info>Player.ProgressCache</info>
+                <texturebg>common/background_light.png</texturebg>
+                <midtexture>common/background_light.png</midtexture>
+            </control>
+            <control type="progress">
+                <left>0</left>
+                <top>40</top>
+                <width>880</width>
+                <height>10</height>
+                <info>Player.Progress</info>
+                <texturebg>common/background_transp.png</texturebg>
+                <midtexture>common/background_accent.png</midtexture>
+            </control>
+            <control type="slider">
+                <left>0</left>
+                <top>40</top>
+                <width>880</width>
+                <height>10</height>
+                <action>Seek</action>
+                <info>Player.Seekbar</info>
+                <orientation>horizontal</orientation>
+                <texturesliderbar>common/background_transp.png</texturesliderbar>
+                <textureslidernib colordiffuse="FF888888">common/background_light.png</textureslidernib>
+                <textureslidernibfocus colordiffuse="FF888888">common/background_light.png</textureslidernibfocus>
+            </control>
+        </control>
+        <!-- Control List -->
+        <control type="group">
+            <bottom>0</bottom>
+            <right>470</right>
+            <width>60</width>
+            <height>665</height>
+            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true)</visible>
+            <animation effect="fade" time="100" start="50" end="100">Visible</animation>
+            <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
+            <control type="panel" id="1002">
+                <pagecontrol>2002</pagecontrol>
+                <orientation>vertical</orientation>
+                <onright>1001</onright>
+                <itemlayout width="60" height="60">
+                    <control type="image">
+                        <width>55</width>
+                        <height>55</height>
+                        <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="60" height="60">
+                    <control type="image">
+                        <width>55</width>
+                        <height>55</height>
+                        <texture colordiffuse="F0FFFFFF">common/background_accent.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2002">
+                <right>5</right>
+                <width>8</width>
+                <height>720</height>
+                <orientation>vertical</orientation>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+        <!-- Channel List -->
+        <control type="group">
+            <bottom>0</bottom>
+            <right>400</right>
+            <width>70</width>
+            <height>665</height>
+            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true)</visible>
+            <animation effect="fade" time="100" start="50" end="100">Visible</animation>
+            <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
+            <control type="panel" id="1001">
+                <pagecontrol>2001</pagecontrol>
+                <orientation>vertical</orientation>
+                <onleft>1002</onleft>
+                <onright>2001</onright>
+                <itemlayout width="70" height="70">
+                    <control type="image">
+                        <width>65</width>
+                        <height>65</height>
+                        <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>60</width>
+                        <height>60</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <top>40</top>
+                        <width>65</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelSubtitle)</info>
+                    </control>
+                    <control type="label">
+                        <top>38</top>
+                        <width>65</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelNumber)</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="70" height="70">
+                    <control type="image">
+                        <width>65</width>
+                        <height>65</height>
+                        <texture colordiffuse="F0FFFFFF">common/background_accent.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>60</width>
+                        <height>60</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <top>40</top>
+                        <width>65</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelSubtitle)</info>
+                    </control>
+                    <control type="label">
+                        <top>38</top>
+                        <width>65</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelNumber)</info>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2001">
+                <right>5</right>
+                <width>8</width>
+                <height>720</height>
+                <orientation>vertical</orientation>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+                <onleft>1001</onleft>
+                <onright>2004</onright>
+            </control>
+        </control>
+        <!-- Sidebar and Information -->
+        <control type="group" id="5000">
+            <right>0</right>
+            <width>400</width>
+            <height>720</height>
+            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Forwarding | Player.Rewinding | Player.Paused</visible>
+            <animation effect="fade" time="100" start="50" end="100">Visible</animation>
+            <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
+            <!-- Background -->
+            <control type="image">
+                <height>720</height>
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Sidebar -->
+            <control type="image">
+                <left>0</left>
+                <width>5</width>
+                <height>720</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Clock -->
+            <control type="label">
+                <left>10</left>
+                <width>500</width>
+                <height>30</height>
+                <align>left</align>
+                <label>$INFO[System.Time]</label>
+                <textcolor>FFFFFFFF</textcolor>
+            </control>
+            <control type="label">
+                <right>5</right>
+                <width>500</width>
+                <height>30</height>
+                <align>right</align>
+                <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+                <textcolor>FF888888</textcolor>
+            </control>
+            <!-- Volume Muted -->
+            <control type="image">
+                <top>28</top>
+                <left>10</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/volumemute.png</texture>
+                <visible>Player.Muted</visible>
+            </control>
+            <!-- Sleep Timer -->
+            <control type="image">
+                <top>28</top>
+                <left>40</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/sleep.png</texture>
+                <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
+            </control>
+            <!-- Program Alarm -->
+            <control type="image">
+                <top>28</top>
+                <left>75</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/alarm.png</texture>
+                <visible>String.IsEqual(Container(1001).ListItem.Property(ProgramNextAlarm), true)</visible>
+            </control>
+            <!-- Program Recording Event -->
+            <control type="image">
+                <top>28</top>
+                <left>110</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/record.png</texture>
+                <visible>String.IsEqual(Container(1001).ListItem.Property(ProgramNowRecordEvent), true)</visible>
+            </control>
+            <!-- Program Recording Series -->
+            <control type="image">
+                <top>28</top>
+                <left>145</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/recordseries.png</texture>
+                <visible>String.IsEqual(Container(1001).ListItem.Property(ProgramNowRecordSeries), true)</visible>
+            </control>
+            <!-- Program Rerun -->
+            <control type="image">
+                <top>28</top>
+                <left>180</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/rerun.png</texture>
+                <visible>String.IsEqual(Container(1001).ListItem.Property(ProgramNowRerun), true)</visible>
+            </control>
+            <!-- Channel name -->
+            <control type="label">
+                <top>52</top>
+                <left>10</left>
+                <width>380</width>
+                <height>30</height>
+                <textcolor>FFFFFFFF</textcolor>
+                <info>Container(1001).ListItem.Property(ChannelName)</info>
+                <scroll>true</scroll>
+                <scrollspeed>60</scrollspeed>
+            </control>
+            <!-- Seek Information -->
+            <control type="group">
+                <visible>Player.Seeking + !String.IsEmpty(Player.SeekStepSize)</visible>
+                <!-- Background -->
+                <control type="image">
+                    <top>52</top>
+                    <left>5</left>
+                    <height>30</height>
+                    <width>400</width>
+                    <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+                </control>
+                <!-- Seek amount -->
+                <control type="label">
+                    <top>52</top>
+                    <left>10</left>
+                    <height>30</height>
+                    <width>380</width>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <label>$INFO[Player.SeekStepSize] ($INFO[Player.SeekTime]$INFO[Player.Duration, / ])</label>
+                </control>
+            </control>
+            <!-- Program Progress -->
+            <control type="image">
+                <top>82</top>
+                <left>10</left>
+                <width>380</width>
+                <height>5</height>
+                <texture colordiffuse="FF888888">common/background_light.png</texture>
+            </control>
+            <control type="progress">
+                <top>82</top>
+                <left>10</left>
+                <width>380</width>
+                <height>5</height>
+                <texturebg>common/background_transp.png</texturebg>
+                <midtexture colordiffuse="F0FFFFFF">common/background_light.png</midtexture>
+                <info>Container(1001).ListItem.Property(ProgramProgressPercent)</info>
+            </control>
+            <control type="progress">
+                <top>82</top>
+                <left>10</left>
+                <width>380</width>
+                <height>5</height>
+                <texturebg>common/background_transp.png</texturebg>
+                <midtexture>common/background_accent.png</midtexture>
+                <info>Container(1001).ListItem.Property(ProgramSeekPercent)</info>
+            </control>
+            <!-- Program Description -->
+            <control type="group">
+                <top>88</top>
+                <left>10</left>
+                <width>390</width>
+                <height>635</height>
+                <control type="textbox">
+                    <width>380</width>
+                    <height>635</height>
+                    <align>left</align>
+                    <aligny>top</aligny>
+                    <wrapmultiline>true</wrapmultiline>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <info>Container(1001).ListItem.Property(ProgramDescription)</info>
+                    <pagecontrol>2004</pagecontrol>
+                </control>
+                <control type="scrollbar" id="2004">
+                    <width>390</width>
+                    <height>635</height>
+                    <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
+                    <texturesliderbar colordiffuse="60888888">common/scrollbar_dark_400.png</texturesliderbar>
+                    <texturesliderbackground colordiffuse="60888888">common/scrollbar_light_400.png</texturesliderbackground>
+                    <onleft>2001</onleft>
+                </control>
+            </control>
+        </control>
+    </controls>
+</window>

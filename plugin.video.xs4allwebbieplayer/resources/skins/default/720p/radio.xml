@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture>common/background_addon.png</texture>
+        </control>
+        <!-- Music Animation -->
+        <control type="image">
+            <bottom>0</bottom>
+            <centerleft>50%</centerleft>
+            <centerright>50%</centerright>
+            <width>670</width>
+            <height>230</height>
+            <aspectratio>keep</aspectratio>
+            <texture colordiffuse="20888888">common/radioanimation.gif</texture>
+            <visible>Player.HasAudio</visible>
+        </control>
+        <!-- Music Information -->
+        <control type="image">
+            <top>162</top>
+            <left>47</left>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/play.png</texture>
+            <visible>Player.Playing + Player.HasAudio + !Player.Muted</visible>
+        </control>
+        <control type="image">
+            <top>162</top>
+            <left>47</left>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/pause.png</texture>
+            <visible>Player.Paused + Player.HasAudio + !Player.Muted</visible>
+        </control>
+        <control type="image">
+            <top>162</top>
+            <left>50</left>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/volumemute.png</texture>
+            <visible>Player.HasAudio + Player.Muted</visible>
+        </control>
+        <control type="label">
+            <top>162</top>
+            <left>85</left>
+            <width>1230</width>
+            <height>30</height>
+            <label>$INFO[MusicPlayer.Artist,, ]$INFO[MusicPlayer.Title]</label>
+            <textcolor>FFFFFFFF</textcolor>
+            <visible>Player.HasAudio</visible>
+        </control>
+        <!-- Video Window -->
+        <control type="group">
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="videowindow">
+                <hitrect x="0" y="0" w="0" h="0"/>
+            </control>
+            <control type="image">
+                <texture colordiffuse="A0FFFFFF">common/background_dark.png</texture>
+            </control>
+        </control>
+        <!-- Logo -->
+        <control type="group">
+            <control type="image">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/logo.png</texture>
+            </control>
+            <control type="button" id="3001">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+        </control>
+        <!-- Information -->
+        <control type="label">
+            <top>70</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Radio</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label" id="1">
+            <top>100</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Zenders laden</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Volume Muted -->
+        <control type="image">
+            <top>162</top>
+            <right>45</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/volumemute.png</texture>
+            <visible>Player.Muted</visible>
+        </control>
+        <!-- Media paused -->
+        <control type="image">
+            <top>162</top>
+            <right>85</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/pause.png</texture>
+            <visible>Player.Paused</visible>
+        </control>
+        <!-- Sleep Timer -->
+        <control type="image">
+            <top>162</top>
+            <right>125</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/sleep.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
+        </control>
+        <!-- Roaming -->
+        <control type="image">
+            <top>162</top>
+            <right>165</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/roaming.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerHomeAccess), false)</visible>
+        </control>
+        <!-- Clock -->
+        <control type="label">
+            <top>70</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Time]</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label">
+            <top>100</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Zap Number -->
+        <control type="group" id="7000">
+            <top>50</top>
+            <width>200</width>
+            <height>60</height>
+            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Sidebar -->
+            <control type="image">
+                <right>0</right>
+                <width>5</width>
+                <height>60</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Number -->
+            <control type="label" id="7001">
+                <right>15</right>
+                <width>200</width>
+                <height>60</height>
+                <align>right</align>
+                <aligny>center</aligny>
+            </control>
+        </control>
+        <!-- Navigation Buttons -->
+        <control type="panel" id="1001">
+            <left>50</left>
+            <right>50</right>
+            <top>200</top>
+            <width>1280</width>
+            <height>40</height>
+            <ondown>1000</ondown>
+            <orientation>horizontal</orientation>
+            <itemlayout width="265" height="40">
+                <control type="image">
+                    <width>260</width>
+                    <height>40</height>
+                    <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="265" height="40">
+                <control type="image">
+                    <width>260</width>
+                    <height>40</height>
+                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+        <!-- Channel List -->
+        <control type="group">
+            <left>50</left>
+            <right>50</right>
+            <top>245</top>
+            <control type="panel" id="1000">
+                <onup>1001</onup>
+                <onleft>1001</onleft>
+                <onright>2001</onright>
+                <pagecontrol>2001</pagecontrol>
+                <orientation>vertical</orientation>
+                <itemlayout width="1280" height="60">
+                    <control type="image">
+                        <width>1280</width>
+                        <height>58</height>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <top>30</top>
+                        <width>50</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelNumber)</info>
+                    </control>
+                    <control type="label">
+                        <left>60</left>
+                        <width>1280</width>
+                        <height>58</height>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelName)</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="1280" height="60">
+                    <control type="image">
+                        <width>1280</width>
+                        <height>58</height>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <top>30</top>
+                        <width>50</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelNumber)</info>
+                    </control>
+                    <control type="label">
+                        <left>60</left>
+                        <width>1280</width>
+                        <height>58</height>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelName)</info>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2001">
+                <onup>1001</onup>
+                <onleft>1000</onleft>
+                <right>0</right>
+                <width>8</width>
+                <height>418</height>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+    </controls>
+</window>

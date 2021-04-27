@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture>common/background_addon.png</texture>
+        </control>
+        <!-- Music Animation -->
+        <control type="image">
+            <bottom>0</bottom>
+            <centerleft>50%</centerleft>
+            <centerright>50%</centerright>
+            <width>670</width>
+            <height>230</height>
+            <aspectratio>keep</aspectratio>
+            <texture colordiffuse="20888888">common/radioanimation.gif</texture>
+            <visible>Player.HasAudio</visible>
+        </control>
+        <!-- Video Window -->
+        <control type="group">
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="videowindow">
+                <hitrect x="0" y="0" w="0" h="0"/>
+            </control>
+            <control type="image">
+                <texture colordiffuse="A0FFFFFF">common/background_dark.png</texture>
+            </control>
+        </control>
+        <!-- Logo -->
+        <control type="group">
+            <control type="image">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/logo.png</texture>
+            </control>
+            <control type="button" id="3001">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+        </control>
+        <!-- Information -->
+        <control type="label">
+            <top>70</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>TV Gids</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label" id="1">
+            <top>100</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>TV Gids laadt</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Volume Muted -->
+        <control type="image">
+            <top>172</top>
+            <right>45</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/volumemute.png</texture>
+            <visible>Player.Muted</visible>
+        </control>
+        <!-- Media paused -->
+        <control type="image">
+            <top>172</top>
+            <right>85</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/pause.png</texture>
+            <visible>Player.Paused</visible>
+        </control>
+        <!-- Sleep Timer -->
+        <control type="image">
+            <top>172</top>
+            <right>125</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/sleep.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
+        </control>
+        <!-- Roaming -->
+        <control type="image">
+            <top>172</top>
+            <right>165</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/roaming.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerHomeAccess), false)</visible>
+        </control>
+        <!-- Clock -->
+        <control type="label">
+            <top>70</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Time]</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label">
+            <top>100</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Zap Number -->
+        <control type="group" id="7000">
+            <top>50</top>
+            <width>200</width>
+            <height>60</height>
+            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Sidebar -->
+            <control type="image">
+                <right>0</right>
+                <width>5</width>
+                <height>60</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Number -->
+            <control type="label" id="7001">
+                <right>15</right>
+                <width>200</width>
+                <height>60</height>
+                <align>right</align>
+                <aligny>center</aligny>
+            </control>
+        </control>
+        <!-- Header -->
+        <control type="label" id="2">
+            <top>170</top>
+            <left>50</left>
+            <width>1230</width>
+            <height>30</height>
+            <label>TV Gids wordt geladen, nog even geduld...</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <!-- Epg Description -->
+        <control type="group">
+            <bottom>0</bottom>
+            <left>50</left>
+            <right>50</right>
+            <width>1180</width>
+            <height>90</height>
+            <control type="image">
+                <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+            </control>
+            <control type="textbox" id="2000">
+                <left>5</left>
+                <width>1170</width>
+                <height>90</height>
+                <align>left</align>
+                <aligny>top</aligny>
+                <wrapmultiline>true</wrapmultiline>
+                <textcolor>FFFFFFFF</textcolor>
+                <label>$INFO[Container(1002).ListItem().Property(ProgramDescription)]</label>
+                <autoscroll delay="4000" time="2500" repeat="5000"/>
+            </control>
+        </control>
+        <!-- Fullscreen Button -->
+        <control type="group">
+            <bottom>0</bottom>
+            <left>1235</left>
+            <width>35</width>
+            <height>90</height>
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="button" id="9000">
+                <width>35</width>
+                <height>90</height>
+                <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
+                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+            </control>
+            <control type="image">
+                <top>5</top>
+                <left>5</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/fullscreen.png</texture>
+            </control>
+        </control>
+        <!-- Navigation Buttons -->
+        <control type="panel" id="1000">
+            <left>50</left>
+            <right>50</right>
+            <top>220</top>
+            <width>1180</width>
+            <height>40</height>
+            <ondown>1001</ondown>
+            <orientation>horizontal</orientation>
+            <itemlayout width="280" height="40">
+                <control type="image">
+                    <width>275</width>
+                    <height>40</height>
+                    <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="280" height="40">
+                <control type="image">
+                    <width>275</width>
+                    <height>40</height>
+                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+        <!-- Channel List -->
+        <control type="group">
+            <left>50</left>
+            <top>270</top>
+            <width>70</width>
+            <height>350</height>
+            <control type="panel" id="1001">
+                <pagecontrol>2001</pagecontrol>
+                <orientation>vertical</orientation>
+                <onup>1000</onup>
+                <onleft>1000</onleft>
+                <onright>2001</onright>
+                <itemlayout width="70" height="70">
+                    <control type="image">
+                        <width>65</width>
+                        <height>65</height>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>60</width>
+                        <height>60</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="image">
+                        <right>8</right>
+                        <top>2</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelAlarm), true)</visible>
+                    </control>
+                    <control type="image">
+                        <left>2</left>
+                        <top>2</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/record.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelRecordEvent), true)</visible>
+                    </control>
+                    <control type="image">
+                        <left>2</left>
+                        <top>44</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelRecordSeries), true)</visible>
+                    </control>
+                    <control type="label">
+                        <top>38</top>
+                        <width>65</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelNumber)</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="70" height="70">
+                    <control type="image">
+                        <width>65</width>
+                        <height>65</height>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>3</top>
+                        <left>3</left>
+                        <width>60</width>
+                        <height>60</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="image">
+                        <right>8</right>
+                        <top>2</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelAlarm), true)</visible>
+                    </control>
+                    <control type="image">
+                        <left>2</left>
+                        <top>2</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/record.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelRecordEvent), true)</visible>
+                    </control>
+                    <control type="image">
+                        <left>2</left>
+                        <top>44</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelRecordSeries), true)</visible>
+                    </control>
+                    <control type="label">
+                        <top>38</top>
+                        <width>65</width>
+                        <height>30</height>
+                        <align>center</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelNumber)</info>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2001">
+                <right>5</right>
+                <width>8</width>
+                <height>345</height>
+                <onup>1000</onup>
+                <onleft>1001</onleft>
+                <onright>1002</onright>
+                <orientation>vertical</orientation>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+        <!-- Epg List -->
+        <control type="group">
+            <left>120</left>
+            <top>270</top>
+            <width>1110</width>
+            <height>350</height>
+            <control type="panel" id="1002">
+                <pagecontrol>2002</pagecontrol>
+                <orientation>horizontal</orientation>
+                <onup>1000</onup>
+                <ondown condition="Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive">SendClick(9000)</ondown>
+                <onleft>2001</onleft>
+                <itemlayout width="275" height="70">
+                    <control type="image">
+                        <width>270</width>
+                        <height>65</height>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <right>8</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramAlarm), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>28</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/record.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventPlanned), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>28</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recorddone.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventDone), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>48</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordSeries), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>68</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/rerun.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRerun), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>88</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/vodno.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramAvailable), false)</visible>
+                    </control>
+                    <control type="label">
+                        <left>2</left>
+                        <width>265</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramName)</info>
+                    </control>
+                    <control type="image">
+                        <top>30</top>
+                        <left>2</left>
+                        <width>265</width>
+                        <height>5</height>
+                        <texture colordiffuse="FF888888">common/background_light.png</texture>
+                    </control>
+                    <control type="progress">
+                        <top>30</top>
+                        <left>2</left>
+                        <width>265</width>
+                        <height>5</height>
+                        <texturebg>common/background_transp.png</texturebg>
+                        <midtexture>common/background_accent.png</midtexture>
+                        <visible>Integer.IsGreater(ListItem().Property(ProgramProgressPercent), 0)</visible>
+                        <info>ListItem.Property(ProgramProgressPercent)</info>
+                    </control>
+                    <control type="label">
+                        <top>33</top>
+                        <left>2</left>
+                        <width>265</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramTimeStartDuration)</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="275" height="70">
+                    <control type="image">
+                        <width>270</width>
+                        <height>65</height>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    </control>
+                    <control type="image">
+                        <right>8</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramAlarm), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>28</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/record.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventPlanned), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>28</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recorddone.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventDone), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>48</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordSeries), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>68</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/rerun.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRerun), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>88</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/vodno.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramAvailable), false)</visible>
+                    </control>
+                    <control type="label">
+                        <left>2</left>
+                        <width>265</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramName)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
+                    </control>
+                    <control type="image">
+                        <top>30</top>
+                        <left>2</left>
+                        <width>265</width>
+                        <height>5</height>
+                        <texture colordiffuse="FF888888">common/background_light.png</texture>
+                    </control>
+                    <control type="progress">
+                        <top>30</top>
+                        <left>2</left>
+                        <width>265</width>
+                        <height>5</height>
+                        <texturebg>common/background_transp.png</texturebg>
+                        <midtexture>common/background_accent.png</midtexture>
+                        <visible>Integer.IsGreater(ListItem().Property(ProgramProgressPercent), 0)</visible>
+                        <info>ListItem.Property(ProgramProgressPercent)</info>
+                    </control>
+                    <control type="label">
+                        <top>33</top>
+                        <left>2</left>
+                        <width>265</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramTimeStartDuration)</info>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2002">
+                <bottom>-7</bottom>
+                <width>1110</width>
+                <height>8</height>
+                <orientation>horizontal</orientation>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+    </controls>
+</window>

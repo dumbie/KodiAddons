@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image" id="8000">
+            <width>1280</width>
+            <height>720</height>
+            <texture>common/background_addon.png</texture>
+        </control>
+        <!-- Music Animation -->
+        <control type="image">
+            <bottom>0</bottom>
+            <centerleft>50%</centerleft>
+            <centerright>50%</centerright>
+            <width>670</width>
+            <height>230</height>
+            <aspectratio>keep</aspectratio>
+            <texture colordiffuse="20888888">common/radioanimation.gif</texture>
+            <visible>Player.HasAudio</visible>
+        </control>
+        <!-- Video Window -->
+        <control type="group">
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="videowindow">
+                <hitrect x="0" y="0" w="0" h="0"/>
+            </control>
+            <control type="image">
+                <texture colordiffuse="A0FFFFFF">common/background_dark.png</texture>
+            </control>
+        </control>
+        <!-- Logo -->
+        <control type="group">
+            <control type="image">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/logo.png</texture>
+            </control>
+            <control type="button" id="3001">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+        </control>
+        <!-- Information -->
+        <control type="label" id="3">
+            <top>70</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label" id="1">
+            <top>100</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <control type="label" id="4">
+            <top>162</top>
+            <left>50</left>
+            <width>1230</width>
+            <height>30</height>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <!-- Volume Muted -->
+        <control type="image">
+            <top>205</top>
+            <right>45</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/volumemute.png</texture>
+            <visible>Player.Muted</visible>
+        </control>
+        <!-- Media paused -->
+        <control type="image">
+            <top>205</top>
+            <right>85</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/pause.png</texture>
+            <visible>Player.Paused</visible>
+        </control>
+        <!-- Sleep Timer -->
+        <control type="image">
+            <top>205</top>
+            <right>125</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/sleep.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
+        </control>
+        <!-- Roaming -->
+        <control type="image">
+            <top>205</top>
+            <right>165</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/roaming.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerHomeAccess), false)</visible>
+        </control>
+        <!-- Clock -->
+        <control type="label">
+            <top>70</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Time]</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label">
+            <top>100</top>
+            <right>50</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Fullscreen Button -->
+        <control type="group">
+            <left>10</left>
+            <top>245</top>
+            <width>35</width>
+            <height>480</height>
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="button" id="9000">
+                <width>35</width>
+                <height>480</height>
+                <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
+                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+            </control>
+            <control type="image">
+                <top>5</top>
+                <left>5</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/fullscreen.png</texture>
+            </control>
+        </control>
+        <!-- Navigation Buttons -->
+        <control type="panel" id="1001">
+            <left>50</left>
+            <right>50</right>
+            <top>200</top>
+            <width>1280</width>
+            <height>40</height>
+            <ondown>1000</ondown>
+            <orientation>horizontal</orientation>
+            <itemlayout width="265" height="40">
+                <control type="image">
+                    <width>260</width>
+                    <height>40</height>
+                    <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="265" height="40">
+                <control type="image">
+                    <width>260</width>
+                    <height>40</height>
+                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+        <!-- Serie List -->
+        <control type="group">
+            <left>50</left>
+            <top>245</top>
+            <width>485</width>
+            <control type="panel" id="1000">
+                <onup>1001</onup>
+                <onleft>SendClick(9000)</onleft>
+                <onright>2000</onright>
+                <pagecontrol>2000</pagecontrol>
+                <orientation>vertical</orientation>
+                <itemlayout width="485" height="95">
+                    <control type="image">
+                        <width>485</width>
+                        <height>90</height>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>2</top>
+                        <left>2</left>
+                        <width>58</width>
+                        <height>85</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <top>2</top>
+                        <left>65</left>
+                        <width>400</width>
+                        <height>30</height>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramName)</info>
+                    </control>
+                    <control type="label">
+                        <top>28</top>
+                        <left>65</left>
+                        <width>400</width>
+                        <height>30</height>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramDetails)</info>
+                    </control>
+                    <control type="image">
+                        <top>60</top>
+                        <left>65</left>
+                        <width>25</width>
+                        <height>25</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(image1)]</texture>
+                    </control>
+                    <control type="image">
+                        <top>60</top>
+                        <left>95</left>
+                        <width>25</width>
+                        <height>25</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(image2)]</texture>
+                    </control>
+                    <control type="image">
+                        <top>60</top>
+                        <left>125</left>
+                        <width>25</width>
+                        <height>25</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(image3)]</texture>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="485" height="95">
+                    <control type="image">
+                        <width>485</width>
+                        <height>90</height>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>2</top>
+                        <left>2</left>
+                        <width>58</width>
+                        <height>85</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <top>2</top>
+                        <left>65</left>
+                        <width>400</width>
+                        <height>30</height>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramName)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
+                    </control>
+                    <control type="label">
+                        <top>28</top>
+                        <left>65</left>
+                        <width>400</width>
+                        <height>30</height>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramDetails)</info>
+                    </control>
+                    <control type="image">
+                        <top>60</top>
+                        <left>65</left>
+                        <width>25</width>
+                        <height>25</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(image1)]</texture>
+                    </control>
+                    <control type="image">
+                        <top>60</top>
+                        <left>95</left>
+                        <width>25</width>
+                        <height>25</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(image2)]</texture>
+                    </control>
+                    <control type="image">
+                        <top>60</top>
+                        <left>125</left>
+                        <width>25</width>
+                        <height>25</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(image3)]</texture>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2000">
+                <right>0</right>
+                <width>8</width>
+                <height>470</height>
+                <onup>1001</onup>
+                <onleft>1000</onleft>
+                <onright>1002</onright>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+        <!-- Episode Status -->
+        <control type="label" id="2">
+            <top>240</top>
+            <right>50</right>
+            <width>688</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Afleveringen</label>
+            <textcolor>FFFFFFFF</textcolor>
+            <scroll>true</scroll>
+            <scrollspeed>60</scrollspeed>
+        </control>
+        <!-- Episode List -->
+        <control type="group" id="3002">
+            <top>270</top>
+            <right>50</right>
+            <width>688</width>
+            <control type="panel" id="1002">
+                <onup>1001</onup>
+                <onleft>2000</onleft>
+                <onright>2002</onright>
+                <pagecontrol>2002</pagecontrol>
+                <orientation>vertical</orientation>
+                <itemlayout width="688" height="90">
+                    <control type="image">
+                        <width>688</width>
+                        <height>88</height>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>2</top>
+                        <left>2</left>
+                        <width>62</width>
+                        <height>82</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <left>65</left>
+                        <width>668</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramName)</info>
+                    </control>
+                    <control type="label">
+                        <top>28</top>
+                        <left>65</left>
+                        <width>668</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramDetails)</info>
+                    </control>
+                    <control type="label">
+                        <top>56</top>
+                        <left>65</left>
+                        <width>668</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramAvailability)</info>
+                    </control>
+                </itemlayout>
+                <focusedlayout width="688" height="90">
+                    <control type="image">
+                        <width>688</width>
+                        <height>88</height>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    </control>
+                    <control type="image">
+                        <top>2</top>
+                        <left>2</left>
+                        <width>62</width>
+                        <height>82</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="label">
+                        <left>65</left>
+                        <width>668</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramName)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
+                    </control>
+                    <control type="label">
+                        <top>28</top>
+                        <left>65</left>
+                        <width>668</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramDetails)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
+                    </control>
+                    <control type="label">
+                        <top>56</top>
+                        <left>65</left>
+                        <width>668</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramAvailability)</info>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="2002">
+                <right>0</right>
+                <width>8</width>
+                <height>448</height>
+                <onup>1001</onup>
+                <onleft>1002</onleft>
+                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+        <!-- Serie Description -->
+        <control type="group">
+            <top>245</top>
+            <left>50</left>
+            <width>485</width>
+            <height>475</height>
+            <visible>Control.HasFocus(1002) | Control.HasFocus(2002)</visible>
+            <animation effect="fade" time="100" start="50" end="100">Visible</animation>
+            <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
+            <control type="image">
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <control type="textbox">
+                <left>5</left>
+                <width>465</width>
+                <height>475</height>
+                <align>left</align>
+                <aligny>top</aligny>
+                <wrapmultiline>true</wrapmultiline>
+                <textcolor>FFFFFFFF</textcolor>
+                <label>$INFO[Container(1002).ListItem().Property(ProgramName)][CR]$INFO[Container(1002).ListItem().Property(ProgramDetails)][CR]$INFO[Container(1002).ListItem().Property(ProgramAvailability)][CR][CR]$INFO[Container(1002).ListItem().Property(ProgramDescription)]</label>
+                <autoscroll delay="4000" time="2500" repeat="5000"/>
+            </control>
+        </control>
+        <!-- Movie Description -->
+        <control type="group">
+            <top>245</top>
+            <left>540</left>
+            <width>690</width>
+            <height>475</height>
+            <visible>Control.HasFocus(1000) + String.IsEqual(Container(1000).ListItem().Property(Action), play_episode_week) | Control.HasFocus(2000) + String.IsEqual(Container(1000).ListItem().Property(Action), play_episode_week)</visible>
+            <animation effect="fade" time="100" start="50" end="100">Visible</animation>
+            <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
+            <control type="image">
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <control type="textbox">
+                <left>5</left>
+                <width>660</width>
+                <height>475</height>
+                <align>left</align>
+                <aligny>top</aligny>
+                <wrapmultiline>true</wrapmultiline>
+                <textcolor>FFFFFFFF</textcolor>
+                <label>$INFO[Container(1000).ListItem().Property(ProgramName)][CR]$INFO[Container(1000).ListItem().Property(ProgramDetails)][CR]$INFO[Container(1000).ListItem().Property(ProgramAvailability)][CR][CR]$INFO[Container(1000).ListItem().Property(ProgramDescription)]</label>
+                <autoscroll delay="4000" time="2500" repeat="5000"/>
+            </control>
+        </control>
+    </controls>
+</window>

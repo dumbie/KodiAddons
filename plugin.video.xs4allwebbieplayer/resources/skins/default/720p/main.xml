@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture>common/background_addon.png</texture>
+        </control>
+        <!-- Music Animation -->
+        <control type="image">
+            <bottom>0</bottom>
+            <centerleft>50%</centerleft>
+            <centerright>50%</centerright>
+            <width>670</width>
+            <height>230</height>
+            <aspectratio>keep</aspectratio>
+            <texture colordiffuse="20888888">common/radioanimation.gif</texture>
+            <visible>Player.HasAudio</visible>
+        </control>
+        <!-- Music Information -->
+        <control type="label">
+            <top>685</top>
+            <width>1280</width>
+            <height>30</height>
+            <align>center</align>
+            <label>$INFO[MusicPlayer.Artist,, ]$INFO[MusicPlayer.Title]</label>
+            <textcolor>80FFFFFF</textcolor>
+            <visible>Player.HasAudio</visible>
+        </control>
+        <!-- Video Window -->
+        <control type="group">
+            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <control type="videowindow">
+                <hitrect x="0" y="0" w="0" h="0"/>
+            </control>
+            <control type="image">
+                <texture colordiffuse="A0FFFFFF">common/background_dark.png</texture>
+            </control>
+        </control>
+        <!-- Logo -->
+        <control type="group">
+            <control type="image">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/logo.png</texture>
+            </control>
+            <control type="button" id="3001">
+                <top>50</top>
+                <left>50</left>
+                <width>284</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
+        </control>
+        <!-- Information -->
+        <control type="label">
+            <top>70</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Welkom bij Webbie Player</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label" id="1">
+            <top>100</top>
+            <left>350</left>
+            <width>500</width>
+            <height>30</height>
+            <align>left</align>
+            <label>Aan het aanmelden.</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Volume Muted -->
+        <control type="image">
+            <top>170</top>
+            <right>95</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/volumemute.png</texture>
+            <visible>Player.Muted</visible>
+        </control>
+        <!-- Media paused -->
+        <control type="image">
+            <top>170</top>
+            <right>135</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/pause.png</texture>
+            <visible>Player.Paused</visible>
+        </control>
+        <!-- Sleep Timer -->
+        <control type="image">
+            <top>170</top>
+            <right>175</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/sleep.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
+        </control>
+        <!-- Roaming -->
+        <control type="image">
+            <top>170</top>
+            <right>215</right>
+            <width>30</width>
+            <height>30</height>
+            <aspectratio>keep</aspectratio>
+            <texture>common/roaming.png</texture>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerHomeAccess), false)</visible>
+        </control>
+        <!-- Clock -->
+        <control type="label">
+            <top>70</top>
+            <right>100</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Time]</label>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="label">
+            <top>100</top>
+            <right>100</right>
+            <width>500</width>
+            <height>30</height>
+            <align>right</align>
+            <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
+            <textcolor>FF888888</textcolor>
+        </control>
+        <!-- Panel Media Control -->
+        <control type="panel" id="1001">
+            <left>50</left>
+            <right>50</right>
+            <top>165</top>
+            <width>1280</width>
+            <height>40</height>
+            <visible>Player.HasMedia</visible>
+            <ondown>Control.setFocus(1000, $INFO[Container(1001).Position])</ondown>
+            <orientation>horizontal</orientation>
+            <itemlayout width="285" height="40">
+                <control type="image">
+                    <width>275</width>
+                    <height>40</height>
+                    <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="285" height="40">
+                <control type="image">
+                    <width>275</width>
+                    <height>40</height>
+                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                </control>
+                <control type="image">
+                    <left>4</left>
+                    <centertop>50%</centertop>
+                    <width>30</width>
+                    <height>30</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <left>45</left>
+                    <width>225</width>
+                    <height>40</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+        <!-- Panel Main -->
+        <control type="panel" id="1000">
+            <left>50</left>
+            <right>50</right>
+            <top>215</top>
+            <width>1280</width>
+            <height>460</height>
+            <onup condition="Control.IsVisible(1001)">Control.setFocus(1001, $INFO[Container(1000).Position])</onup>
+            <orientation>vertical</orientation>
+            <itemlayout width="285" height="150">
+                <control type="image">
+                    <width>275</width>
+                    <height>140</height>
+                    <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                </control>
+                <control type="image">
+                    <centertop>35%</centertop>
+                    <centerleft>48%</centerleft>
+                    <width>75</width>
+                    <height>75</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <top>95</top>
+                    <width>275</width>
+                    <height>30</height>
+                    <textcolor>FF888888</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <align>center</align>
+                    <info>ListItem.Label</info>
+                </control>
+            </itemlayout>
+            <focusedlayout width="285" height="150">
+                <control type="image">
+                    <width>275</width>
+                    <height>140</height>
+                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                </control>
+                <control type="image">
+                    <centertop>35%</centertop>
+                    <centerleft>48%</centerleft>
+                    <width>75</width>
+                    <height>75</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[ListItem.Art(thumb)]</texture>
+                </control>
+                <control type="label">
+                    <top>95</top>
+                    <width>275</width>
+                    <height>30</height>
+                    <textcolor>FF888888</textcolor>
+                    <selectedcolor>FF888888</selectedcolor>
+                    <align>center</align>
+                    <info>ListItem.Label</info>
+                </control>
+            </focusedlayout>
+        </control>
+    </controls>
+</window>
