@@ -59,7 +59,7 @@ class Gui(xbmcgui.WindowXML):
                 StreamTokenUrl = channel['token']
                 StreamName += ' [COLOR ff71c6fe]' + StreamLocation + '[/COLOR]'
                 StreamName += ' [COLOR ff26671e]' + StreamSource + '[/COLOR]'
-                StreamImage = path.addon('https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.vogelspot/streams/' + channel['id'] + '.png')
+                StreamImage = 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.vogelspot/streams/' + channel['id'] + '.png'
 
                 #Add stream to the list
                 listitem = xbmcgui.ListItem(StreamName)
