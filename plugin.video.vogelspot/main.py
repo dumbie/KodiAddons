@@ -3,7 +3,6 @@ import xbmc
 import xbmcgui
 import default
 import download
-import files
 import func
 import hybrid
 import path
@@ -43,8 +42,8 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 1, 'Loading streams')
 
         #Open streams json file
-        string_streams = files.openFile(path.addon('streams/streams.js'))
-        json_streams = json.loads(hybrid.string_decode_utf8(string_streams))
+        string_streams = download.download_streams()
+        json_streams = json.loads(string_streams)
 
         #Update the load status
         func.updateLabelText(self, 1, 'Adding streams')
@@ -60,7 +59,7 @@ class Gui(xbmcgui.WindowXML):
                 StreamTokenUrl = channel['token']
                 StreamName += ' [COLOR ff71c6fe]' + StreamLocation + '[/COLOR]'
                 StreamName += ' [COLOR ff26671e]' + StreamSource + '[/COLOR]'
-                StreamImage = path.addon('streams/' + channel['id'] + '.png')
+                StreamImage = path.addon('https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.vogelspot/streams/' + channel['id'] + '.png')
 
                 #Add stream to the list
                 listitem = xbmcgui.ListItem(StreamName)
