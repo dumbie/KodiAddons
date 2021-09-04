@@ -562,7 +562,7 @@ def record_series_add(ChannelId, liveSeriesId):
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen planning mislukt.', notificationIcon, 2500, False)
         return False
 
-def record_series_remove(SeriesId):
+def record_series_remove(SeriesId, KeepRecordings=True):
     #Check if user is logged in
     if var.ApiLoggedIn == False:
         apilogin.ApiLogin(False)
@@ -575,7 +575,7 @@ def record_series_remove(SeriesId):
             "X-Xsrf-Token": var.ApiLoginToken
         }
 
-        DownloadData = json.dumps({"seriesIds":[SeriesId],"isKeepRecordingEnabled":True}).encode('ascii')
+        DownloadData = json.dumps({"seriesIds":[int(SeriesId)],"isKeepRecordingsEnabled":KeepRecordings}).encode('ascii')
         DownloadRequest = hybrid.urllib_request(path.recording_series_add_remove(), data=DownloadData, headers=DownloadHeaders)
         DownloadRequest.get_method = lambda: 'DELETE'
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)

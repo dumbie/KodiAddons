@@ -125,7 +125,6 @@ def play_stream_recorded(listItem, Windowed):
         StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
         StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
         StreamUrl += '&drm=clear'
-        StreamUrl += '|' + StreamHeaders
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -151,6 +150,9 @@ def play_stream_recorded(listItem, Windowed):
 
     #Set stream start offset in seconds
     listItem.setProperty('StartOffset', '120')
+
+    #Set internet stream property
+    listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
@@ -249,7 +251,6 @@ def play_stream_program(listItem, Windowed):
         StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
         StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
         StreamUrl += '&drm=clear'
-        StreamUrl += '|' + StreamHeaders
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -275,6 +276,9 @@ def play_stream_program(listItem, Windowed):
 
     #Set stream start offset in seconds
     listItem.setProperty('StartOffset', '120')
+
+    #Set internet stream property
+    listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
@@ -372,7 +376,6 @@ def play_stream_vod(listItem, Windowed):
         StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
         StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
         StreamUrl += '&drm=clear'
-        StreamUrl += '|' + StreamHeaders
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -395,6 +398,9 @@ def play_stream_vod(listItem, Windowed):
 
     #Update the list item name label
     listItem.setLabel(listItem.getProperty('ProgramName'))
+
+    #Set internet stream property
+    listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
@@ -480,7 +486,6 @@ def play_stream_television(listItem, Windowed):
         StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
         StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
         StreamUrl += '&drm=clear'
-        StreamUrl += '|' + StreamHeaders
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -516,6 +521,9 @@ def play_stream_television(listItem, Windowed):
 
     #Update the list item name label
     listItem.setLabel(NewChannelName)
+
+    #Set internet stream property
+    listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, True)

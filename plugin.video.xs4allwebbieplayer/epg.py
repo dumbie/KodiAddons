@@ -341,7 +341,21 @@ class Gui(xbmcgui.WindowXML):
                 xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt.', notificationIcon, 2500, False)
                 return
 
-            seriesRemove = download.record_series_remove(ProgramRecordSeriesIdLive)
+            #Ask user to remove recordings
+            dialogAnswers = ['Opnames verwijderen', 'Opnames houden']
+            dialogHeader = 'Serie opnames verwijderen'
+            dialogSummary = 'Wilt u ook alle opnames van deze serie seizoen verwijderen?'
+            dialogFooter = ''
+            dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+            if dialogResult == 'Opnames verwijderen':
+                KeepRecording = False
+            elif dialogResult == 'Opnames houden': 
+                KeepRecording = True
+            else:
+                return
+
+            #Remove record series
+            seriesRemove = download.record_series_remove(ProgramRecordSeriesIdLive, KeepRecording)
             if seriesRemove == True:
                 self.update_channel_record_event_icon(ChannelId)
                 self.update_program_record_event()

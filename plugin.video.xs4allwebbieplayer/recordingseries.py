@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
+import dialog
 import download
 import func
 import metadatainfo
@@ -57,7 +58,22 @@ class Gui(xbmcgui.WindowXMLDialog):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             SeriesId = listItemSelected.getProperty('SeriesId')
-            recordingRemoved = download.record_series_remove(SeriesId)
+
+            #Ask user to remove recordings
+            dialogAnswers = ['Opnames verwijderen', 'Opnames houden']
+            dialogHeader = 'Serie opnames verwijderen'
+            dialogSummary = 'Wilt u ook alle opnames van deze serie seizoen verwijderen?'
+            dialogFooter = ''
+            dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+            if dialogResult == 'Opnames verwijderen':
+                KeepRecording = False
+            elif dialogResult == 'Opnames houden': 
+                KeepRecording = True
+            else:
+                return
+
+            #Remove record series
+            recordingRemoved = download.record_series_remove(SeriesId, KeepRecording)
             if recordingRemoved == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()
@@ -155,7 +171,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             func.updateLabelText(self, 3000, 'Geplande Series (' + str(listcontainer.size()) + ')')
-            func.updateLabelText(self, 3001, 'U kunt een serie seizoen annuleren door er op te klikken, alle opnames van dit seizoen zullen worden verwijderd.')
+            func.updateLabelText(self, 3001, 'U kunt een serie seizoen annuleren door er op te klikken.')
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
