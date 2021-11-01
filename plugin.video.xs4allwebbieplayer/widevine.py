@@ -44,10 +44,10 @@ def enable_widevine_support(forceUpdate=False):
     input_addon = xbmcaddon.Addon('inputstream.adaptive')
     decrypter_path = input_addon.getSetting('DECRYPTERPATH')
     if func.string_isnullorempty(decrypter_path):
-        widevine_path = hybrid.string_decode_utf8(xbmc.translatePath('special://home/cdm'))
+        widevine_path = hybrid.string_decode_utf8(hybrid.xbmc_translate_path('special://home/cdm'))
         input_addon.setSetting('DECRYPTERPATH', 'special://home/cdm')
     else:
-        widevine_path = hybrid.string_decode_utf8(xbmc.translatePath(decrypter_path))
+        widevine_path = hybrid.string_decode_utf8(hybrid.xbmc_translate_path(decrypter_path))
 
     #Set the download headers
     DownloadHeaders = {

@@ -6,11 +6,13 @@ if pythonversion < 3:
     import xbmc
     import urllib2
     from HTMLParser import HTMLParser
+    htmlx = HTMLParser()
     inputstreamname = 'inputstreamaddon'
 else:
     import xbmcvfs
     import urllib.request, urllib.parse
-    from html.parser import HTMLParser
+    import html
+    htmlx = html
     inputstreamname = 'inputstream'
 
 #Xbmc translate path
@@ -97,4 +99,4 @@ def urllib_unquote(string):
 
 #Htmlparser unescape
 def htmlparser_unescape(string):
-    return HTMLParser().unescape(string)
+    return htmlx.unescape(string)

@@ -211,8 +211,8 @@ def program_summary_playergui(updateItem):
     if func.string_isnullorempty(ProgramLater) == False:
         ProgramDescription += '\n\n' + ProgramLater
 
-    #Append earlier programs to the description
-    if func.string_isnullorempty(ProgramEarlier) == False:
+    #Append earlier programs to the description and check if earlier program info is enabled
+    if func.string_isnullorempty(ProgramEarlier) == False and var.addon.getSetting('TelevisionHideEarlierAired') == 'false':
         ProgramDescription += '\n\n' + ProgramEarlier
 
     #Update the information in list item
@@ -420,8 +420,8 @@ def program_summary_television(updateItem):
     if func.string_isnullorempty(ProgramLater) == False:
         ProgramDescription += '\n\n' + ProgramLater
 
-    #Append earlier programs to the description
-    if func.string_isnullorempty(ProgramEarlier) == False:
+    #Append earlier programs to the description and check if earlier program info is enabled
+    if func.string_isnullorempty(ProgramEarlier) == False and var.addon.getSetting('TelevisionHideEarlierAired') == 'false':
         ProgramDescription += '\n\n' + ProgramEarlier
 
     #Update the information in list item

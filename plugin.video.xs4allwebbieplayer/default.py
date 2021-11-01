@@ -42,7 +42,7 @@ def reset_thumbnails():
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == "Alle zender logo's vernieuwen":
-            textureFolder = hybrid.string_decode_utf8(xbmc.translatePath('special://home/userdata/Thumbnails'))
+            textureFolder = hybrid.string_decode_utf8(hybrid.xbmc_translate_path('special://home/userdata/Thumbnails'))
             files.removeDirectory(textureFolder)
             xbmc.sleep(100)
             files.createDirectory(textureFolder)
