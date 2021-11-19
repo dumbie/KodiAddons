@@ -77,6 +77,10 @@ class Gui(xbmcgui.WindowXML):
             elif clickId == 9000:
                 if xbmc.Player().isPlayingVideo():
                     var.PlayerCustom.Fullscreen(True)
+                else:
+                    listcontainer = self.getControl(1000)
+                    self.setFocus(listcontainer)
+                    xbmc.sleep(100)
             elif clickId == 3001:
                 close_the_page()
 
@@ -553,9 +557,11 @@ class Gui(xbmcgui.WindowXML):
                 #Check if the current program is airing
                 if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
                     ProgramNowTimeLeftMinutes = int((ProgramTimeEndDateTime - dateTimeNow).total_seconds() / 60)
-                    ProgramTimeDurationString = ' (' + ProgramDurationString + '/' + str(ProgramNowTimeLeftMinutes) + 'min)'
+                    ProgramTimeDurationString = ' duurt nog ' + ProgramDurationString + ' van de ' + str(ProgramNowTimeLeftMinutes) + ' minuten'
+                elif dateTimeNow > ProgramTimeEndDateTime:
+                    ProgramTimeDurationString = ' duurde ' + ProgramDurationString + ' minuten'
                 else:
-                    ProgramTimeDurationString = ' (' + ProgramDurationString + 'min)'
+                    ProgramTimeDurationString = ' duurt ' + ProgramDurationString + ' minuten'
 
                 #Check if program has active alarm
                 if alarm.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:
