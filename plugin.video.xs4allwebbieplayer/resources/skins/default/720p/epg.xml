@@ -419,7 +419,15 @@
                         <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="image">
-                        <right>8</right>
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="image">
+                        <right>15</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -428,7 +436,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramAlarm), true)</visible>
                     </control>
                     <control type="image">
-                        <right>28</right>
+                        <right>35</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -437,7 +445,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordEventPlanned), true)</visible>
                     </control>
                     <control type="image">
-                        <right>28</right>
+                        <right>55</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -446,7 +454,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordEventDone), true)</visible>
                     </control>
                     <control type="image">
-                        <right>48</right>
+                        <right>75</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -455,7 +463,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordSeries), true)</visible>
                     </control>
                     <control type="image">
-                        <right>68</right>
+                        <right>95</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -464,7 +472,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRerun), true)</visible>
                     </control>
                     <control type="image">
-                        <right>88</right>
+                        <right>115</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -473,8 +481,8 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramAvailable), false)</visible>
                     </control>
                     <control type="label">
-                        <left>2</left>
-                        <width>715</width>
+                        <left>60</left>
+                        <width>650</width>
                         <height>30</height>
                         <align>left</align>
                         <textcolor>FFFFFFFF</textcolor>
@@ -483,15 +491,15 @@
                     </control>
                     <control type="image">
                         <top>30</top>
-                        <left>2</left>
-                        <width>715</width>
+                        <left>60</left>
+                        <width>650</width>
                         <height>5</height>
                         <texture colordiffuse="FF888888">common/background_light.png</texture>
                     </control>
                     <control type="progress">
                         <top>30</top>
-                        <left>2</left>
-                        <width>715</width>
+                        <left>60</left>
+                        <width>650</width>
                         <height>5</height>
                         <texturebg>common/background_transp.png</texturebg>
                         <midtexture>common/background_accent.png</midtexture>
@@ -500,8 +508,8 @@
                     </control>
                     <control type="label">
                         <top>33</top>
-                        <left>2</left>
-                        <width>500</width>
+                        <left>60</left>
+                        <width>450</width>
                         <height>30</height>
                         <align>left</align>
                         <textcolor>FF888888</textcolor>
@@ -516,7 +524,15 @@
                         <texture colordiffuse="A0888888">common/background_accent.png</texture>
                     </control>
                     <control type="image">
-                        <right>8</right>
+                        <top>3</top>
+                        <left>3</left>
+                        <width>50</width>
+                        <height>50</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="image">
+                        <right>15</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -525,7 +541,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramAlarm), true)</visible>
                     </control>
                     <control type="image">
-                        <right>28</right>
+                        <right>35</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -534,7 +550,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordEventPlanned), true)</visible>
                     </control>
                     <control type="image">
-                        <right>28</right>
+                        <right>55</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -543,7 +559,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordEventDone), true)</visible>
                     </control>
                     <control type="image">
-                        <right>48</right>
+                        <right>75</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -552,7 +568,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordSeries), true)</visible>
                     </control>
                     <control type="image">
-                        <right>68</right>
+                        <right>95</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -561,7 +577,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRerun), true)</visible>
                     </control>
                     <control type="image">
-                        <right>88</right>
+                        <right>115</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -570,8 +586,8 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramAvailable), false)</visible>
                     </control>
                     <control type="label">
-                        <left>2</left>
-                        <width>715</width>
+                        <left>60</left>
+                        <width>650</width>
                         <height>30</height>
                         <align>left</align>
                         <textcolor>FFFFFFFF</textcolor>
@@ -582,15 +598,15 @@
                     </control>
                     <control type="image">
                         <top>30</top>
-                        <left>2</left>
-                        <width>715</width>
+                        <left>60</left>
+                        <width>650</width>
                         <height>5</height>
                         <texture colordiffuse="FF888888">common/background_light.png</texture>
                     </control>
                     <control type="progress">
                         <top>30</top>
-                        <left>2</left>
-                        <width>715</width>
+                        <left>60</left>
+                        <width>650</width>
                         <height>5</height>
                         <texturebg>common/background_transp.png</texturebg>
                         <midtexture>common/background_accent.png</midtexture>
@@ -599,8 +615,8 @@
                     </control>
                     <control type="label">
                         <top>33</top>
-                        <left>2</left>
-                        <width>500</width>
+                        <left>60</left>
+                        <width>450</width>
                         <height>30</height>
                         <align>left</align>
                         <textcolor>FF888888</textcolor>
