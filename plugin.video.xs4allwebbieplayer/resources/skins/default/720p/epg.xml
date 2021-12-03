@@ -514,7 +514,7 @@
                         <align>left</align>
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramTimeStartDuration)</info>
+                        <info>ListItem.Property(ProgramEpgList)</info>
                     </control>
                 </itemlayout>
                 <focusedlayout width="725" height="70">
@@ -621,7 +621,7 @@
                         <align>left</align>
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramTimeStartDuration)</info>
+                        <info>ListItem.Property(ProgramEpgList)</info>
                     </control>
                 </focusedlayout>
             </control>

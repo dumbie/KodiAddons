@@ -545,23 +545,40 @@ class Gui(xbmcgui.WindowXML):
                 updateItem = listcontainer.getListItem(programNum)
                 ChannelId = updateItem.getProperty('ChannelId')
                 ProgramId = updateItem.getProperty('ProgramId')
+                ProgramName = updateItem.getProperty('ProgramName')
+                ProgramDescriptionRaw = updateItem.getProperty('ProgramDescriptionRaw')
+                ProgramDetailsProp = updateItem.getProperty('ProgramDetails')
                 ProgramRecordSeriesId = updateItem.getProperty('ProgramRecordSeriesId')
-                ProgramTimeStartDateTime = func.datetime_from_string(updateItem.getProperty('ProgramTimeStart'), '%Y-%m-%d %H:%M:%S')
+                ProgramTimeStartProp = updateItem.getProperty('ProgramTimeStart')
+                ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
                 ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
-                ProgramTimeEndDateTime = func.datetime_from_string(updateItem.getProperty('ProgramTimeEnd'), '%Y-%m-%d %H:%M:%S')
+                ProgramTimeEndProp = updateItem.getProperty('ProgramTimeEnd')
+                ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndProp, '%Y-%m-%d %H:%M:%S')
+                ProgramTimeEndString = ProgramTimeEndDateTime.strftime('%H:%M')
+                ProgramTimeLeftMinutes = int((ProgramTimeEndDateTime - dateTimeNow).total_seconds() / 60)
+                ProgramTimeLeftString = str(ProgramTimeLeftMinutes)
                 ProgramDurationString = updateItem.getProperty('ProgramDuration')
 
                 #Update program progress
                 ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
 
-                #Check if the current program is airing
+                #Set program duration text
+                if ProgramDurationString == '0':
+                    ProgramTimingEpgList = ' onbekend programmaduur'
+                    ProgramTimingDescription = ' onbekend programmaduur'
                 if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                    ProgramNowTimeLeftMinutes = int((ProgramTimeEndDateTime - dateTimeNow).total_seconds() / 60)
-                    ProgramTimeDurationString = ' duurt nog ' + ProgramDurationString + ' van de ' + str(ProgramNowTimeLeftMinutes) + ' minuten'
+                    if ProgramTimeLeftString == '0':
+                        ProgramTimingEpgList = ' is bijna afgelopen, duurde ' + ProgramDurationString + ' minuten'
+                        ProgramTimingDescription = ' is bijna afgelopen, duurde ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString
+                    else:
+                        ProgramTimingEpgList = ' duurt nog ' + ProgramTimeLeftString + ' van de ' + ProgramDurationString + ' minuten'
+                        ProgramTimingDescription = ' duurt nog ' + ProgramTimeLeftString + ' van de ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString + ' eindigt rond ' + ProgramTimeEndString
                 elif dateTimeNow > ProgramTimeEndDateTime:
-                    ProgramTimeDurationString = ' duurde ' + ProgramDurationString + ' minuten'
+                    ProgramTimingEpgList = ' duurde ' + ProgramDurationString + ' minuten'
+                    ProgramTimingDescription = ' duurde ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString
                 else:
-                    ProgramTimeDurationString = ' duurt ' + ProgramDurationString + ' minuten'
+                    ProgramTimingEpgList = ' duurt ' + ProgramDurationString + ' minuten'
+                    ProgramTimingDescription = ' duurt ' + ProgramDurationString + ' minuten, eindigt rond ' + ProgramTimeEndString
 
                 #Check if program has active alarm
                 if alarm.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:
@@ -593,7 +610,13 @@ class Gui(xbmcgui.WindowXML):
                 else:
                     ProgramRecordSeries = 'false'
 
+                #Combine the program description
+                ProgramEpgList = ProgramTimeStartString + ProgramTimingEpgList
+                ProgramDescription = '[COLOR white]' + ProgramName + ProgramTimingDescription + '[/COLOR]\n\n[COLOR gray]' + ProgramDetailsProp + '[/COLOR]\n\n[COLOR white]' + ProgramDescriptionRaw + '[/COLOR]'
+
                 #Update program list item
+                updateItem.setProperty('ProgramEpgList', ProgramEpgList)
+                updateItem.setProperty('ProgramDescription', ProgramDescription)
                 updateItem.setProperty('ProgramAlarm', ProgramAlarm)
                 updateItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
                 updateItem.setProperty('ProgramRecordEventPlanned', ProgramRecordEventPlanned)
@@ -601,7 +624,6 @@ class Gui(xbmcgui.WindowXML):
                 updateItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
                 updateItem.setProperty('ProgramRecordSeries', ProgramRecordSeries)
                 updateItem.setProperty('ProgramProgressPercent', str(ProgramProgressPercent))
-                updateItem.setProperty('ProgramTimeStartDuration', ProgramTimeStartString + ProgramTimeDurationString)
             except:
                 pass
 
@@ -690,7 +712,9 @@ class Gui(xbmcgui.WindowXML):
                 ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
                 ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
                 ProgramGenres = metadatainfo.programgenres_from_json_metadata(program)
-                ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
+                ProgramDescriptionRaw = metadatainfo.programdescription_from_json_metadata(program)
+                ProgramDescription = 'Programmabeschrijving wordt geladen.'
+                ProgramEpgList = 'Programmaduur wordt geladen'
 
                 #Combine program details
                 stringJoin = [ EpisodeTitle, ProgramYear, ProgramSeason, ProgramEpisode, ProgramStarRating, ProgramAgeRating, ProgramGenres ]
@@ -716,9 +740,6 @@ class Gui(xbmcgui.WindowXML):
                 else:
                     ProgramRerun = 'false'
 
-                #Combine the program description
-                ProgramDescription = '[COLOR gray]' + ProgramDetails + '[/COLOR]\n[COLOR white]' + ProgramDescription + '[/COLOR]'
-
                 #Add program to the list container
                 listitem = xbmcgui.ListItem()
                 listitem.setProperty('ProgramId', ProgramId)
@@ -730,10 +751,14 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty('ProgramRerun', ProgramRerun)
                 listitem.setProperty('ProgramDuration', ProgramDurationString)
                 listitem.setProperty('ProgramRecordSeriesId', ProgramRecordSeriesId)
+                listitem.setProperty('ProgramDescriptionRaw', ProgramDescriptionRaw)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
+                listitem.setProperty('ProgramEpgList', ProgramEpgList)
+                listitem.setProperty('ProgramDetails', ProgramDetails)
                 listitem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
                 listitem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
-                listitem.setInfo('video', {'Genre': 'TV Gids', 'Plot': ProgramDescription})
+                listitem.setInfo('video', {'Genre': 'TV Gids', 'Plot': ProgramDescriptionRaw})
+                listitem.setArt({'thumb': path.icon_television(self.EpgCurrentExternalId), 'icon': path.icon_television(self.EpgCurrentExternalId)})
 
                 #Check if program finished airing
                 if ProgramProgressPercent >= 100:

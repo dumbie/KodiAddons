@@ -198,9 +198,9 @@ def program_summary_playergui(updateItem):
 
     #Combine the program timing
     if ProgramNowTimeDurationString == '0':
-        ProgramTiming = ProgramNowName
+        ProgramTiming = ProgramNowName + ' onbekend programmaduur'
     elif ProgramNowTimeLeftString == '0':
-        ProgramTiming = ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten en begon om ' + ProgramNowTimeStartString
+        ProgramTiming = ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
     else:
         ProgramTiming = ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
 
@@ -407,9 +407,9 @@ def program_summary_television(updateItem):
 
     #Combine the program timing
     if ProgramNowTimeDurationString == '0':
-        ProgramTiming = channelName + '\n\n' + ProgramNowName
+        ProgramTiming = channelName + '\n\n' + ProgramNowName + ' onbekend programmaduur'
     elif ProgramNowTimeLeftString == '0':
-        ProgramTiming = channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten en begon om ' + ProgramNowTimeStartString
+        ProgramTiming = channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
     else:
         ProgramTiming = channelName + '\n\n' + ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
 
