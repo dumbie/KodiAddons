@@ -12,7 +12,8 @@ import var
 
 def check_requirements():
     enable_inputstreamadaptive()
-    settings_inputstreamadaptive()
+    if var.addon.getSetting('InputAdaptiveAdjust') == 'true':
+        adjust_inputstreamadaptive()
     enable_widevine_support()
 
 def enable_inputstreamadaptive():
@@ -36,7 +37,7 @@ def enable_inputstreamadaptive():
     if failed == True:
         xbmcgui.Dialog().notification(var.addonname, 'Inputstream add-on inschakelen mislukt.', var.addonicon, 2500, False)
 
-def settings_inputstreamadaptive():
+def adjust_inputstreamadaptive():
     try:
         input_addon = xbmcaddon.Addon('inputstream.adaptive')
         input_addon.setSetting('MAXRESOLUTION', '4')

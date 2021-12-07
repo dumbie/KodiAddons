@@ -46,8 +46,9 @@
   <category label="Stream">
     <setting id="StreamResolution" type="select" label="Maximale video stream resolutie" default="1080p" values="360p|432p|576p|720p|1080p|2160p"/>
     <setting id="CustomUserAgent" type="text" label="User-agent verbind identificatie" default="Webbie Player"/>
+    <setting id="InputAdaptiveAdjust" label="Zet inputstream adaptive automatisch op 1080p" type="bool" default="true"/>
+    <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream adaptive add-on instellingen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,InputAdaptiveSettings)"/>
     <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine beveiliging bestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,UpdateWidevineFiles)"/>
-    <setting id="InputAdaptiveSettings" type="action" label="Open de input stream adaptive add-on instellingen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,InputAdaptiveSettings)"/>
     <setting label="* Hier kunt u de stream kwaliteit instellingen optimaliseren." type="lsep"/>
     <!-- Hidden variable settings -->
     <setting id="LoginDeviceId120" type="text" visible="false" default=""/>
