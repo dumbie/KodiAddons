@@ -4,7 +4,6 @@ import func
 import metadatainfo
 import path
 import var
-import zap
 
 #Add channels to list
 def channel_list_load(listContainer, checkStatus=False):
@@ -41,7 +40,7 @@ def channel_list_load(listContainer, checkStatus=False):
 
             #Load channel details
             ExternalId = metadatainfo.externalId_from_json_metadata(channel)
-            ChannelNumber = zap.check_double_number(listContainer, metadatainfo.orderId_from_json_metadata(channel))
+            ChannelNumber = metadatainfo.orderId_from_json_metadata(channel)
             ChannelRecordEvent = 'false'
             ChannelRecordSeries = 'false'
             ChannelAlarm = 'false'

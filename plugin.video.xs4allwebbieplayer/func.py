@@ -17,6 +17,16 @@ def run_addon(forceLaunch=False):
         xbmcgui.Dialog().notification(var.addonname, 'Webbie Player wordt gestart.', var.addonicon, 2500, False)
         xbmc.executebuiltin('RunScript(plugin.video.xs4allwebbieplayer)')
 
+#Get provider color string
+def get_provider_color_string():
+    currentProvider = var.addon.getSetting('LoginProvider').lower()
+    if currentProvider == 'xs4all':
+        return '[COLOR FFF5AF00]'
+    elif currentProvider == 'telfort':
+        return '[COLOR FF2F41B7]'
+    elif currentProvider == 'kpn':
+        return '[COLOR FF009900]'
+
 #Search filter string
 def search_filter_string(searchString):
     searchFilterTerm = searchString.lower()

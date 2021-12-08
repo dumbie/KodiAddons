@@ -171,12 +171,13 @@ EpgRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabe
 EpgCacheArray = []
 
 #Program variables
-ProgramTitleStripStrings = ['B.O.Z.: ', "Telekids Mini's: ", 'Doc: ', 'Marathon: ', 'Zappbios: ', 'Film: ', 'Premiere: ', u'Premi\xe8re: ']
+ProgramTitleStripStrings = ['B.O.Z.: ', "Telekids Mini's: ", 'Doc: ', 'Marathon: ', 'Zappbios: ', 'Film: ', 'Premiere: ', u'Premi\xe8re: ', 'Countdown to christmas: ']
 ProgramTitleStripRegEx = ['Detectives op (.*?): ']
 
 #Zap variables
 ZapControlId = 0
-ZapNumber = ''
+ZapNumberString = ''
+ZapHintString = ''
 ZapTimerForce = False
 ZapDelayDateTime = datetime(1970,1,1)
 

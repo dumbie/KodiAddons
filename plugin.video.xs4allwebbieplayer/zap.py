@@ -5,16 +5,7 @@ import xbmcgui
 import func
 import path
 import stream
-import television
 import var
-
-def check_double_number(listcontainer, channelNumber):
-    itemnum = func.search_channelnumber_listcontainer(listcontainer, str(channelNumber))
-    if itemnum == None:
-        return channelNumber
-    else:
-        newnum = '7' + channelNumber
-        return check_double_number(listcontainer, newnum)
 
 def check_remote_number(_self, controlId, actionId, selectMode, clickOnSelection):
     var.ZapControlId = controlId
@@ -55,24 +46,41 @@ def check_remote_number(_self, controlId, actionId, selectMode, clickOnSelection
 
 def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
     var.ZapDelayDateTime = datetime.now()
-    var.ZapNumber += str(ZapNumberPress)
-    func.updateLabelText(_self, 7001, str(var.ZapNumber))
-    _self.setProperty('ZapVisible', 'true')
+    var.ZapNumberString += ZapNumberPress
+    var.ZapHintString = ''
 
+    #Set channel string
+    listcontainer = _self.getControl(var.ZapControlId)
+    listitemcount = listcontainer.size()
+    for itemNum in range(0, listitemcount):
+        try:
+            channelNameProp = listcontainer.getListItem(itemNum).getProperty('ChannelName')
+            channelNumberProp = listcontainer.getListItem(itemNum).getProperty('ChannelNumber')
+            if channelNumberProp.startswith(var.ZapNumberString):
+                var.ZapHintString += func.get_provider_color_string() + channelNumberProp + '[/COLOR] [COLOR white]' + channelNameProp + '[/COLOR] '
+        except:
+            continue
+
+    #Check if channel is found
+    if func.string_isnullorempty(var.ZapHintString):
+        var.ZapHintString = 'Zender ' + var.ZapNumberString + ' niet gevonden.'
+        var.ZapTimerForce = True
+
+    #Start zap wait thread
     if var.thread_zap_wait_timer == None:
         var.thread_zap_wait_timer = Thread(target=thread_zap_wait_timer, args=(_self, selectMode, clickOnSelection))
         var.thread_zap_wait_timer.start()
 
 def select_remote_number(_self, clickOnSelection):
     listcontainer = _self.getControl(var.ZapControlId)
-    _self.setFocus(listcontainer)
-    xbmc.sleep(100)
-    itemnum = func.search_channelnumber_listcontainer(listcontainer, str(var.ZapNumber))
+    itemnum = func.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
     if itemnum == None:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Zender ' + str(var.ZapNumber) + ' niet gevonden.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Zender ' + var.ZapNumberString + ' niet gevonden.', notificationIcon, 2500, False)
         return
 
+    _self.setFocus(listcontainer)
+    xbmc.sleep(100)
     listcontainer.selectItem(itemnum)
     xbmc.sleep(100)
     if clickOnSelection:
@@ -80,10 +88,10 @@ def select_remote_number(_self, clickOnSelection):
 
 def zap_remote_number(_self):
     listcontainer = _self.getControl(var.ZapControlId)
-    itemnum = func.search_channelnumber_listcontainer(listcontainer, str(var.ZapNumber))
+    itemnum = func.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
     if itemnum == None:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Zender ' + str(var.ZapNumber) + ' niet gevonden.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Zender ' + var.ZapNumberString + ' niet gevonden.', notificationIcon, 2500, False)
         return
 
     listItemSelected = listcontainer.getListItem(itemnum)
@@ -92,18 +100,29 @@ def zap_remote_number(_self):
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
     while var.thread_zap_wait_timer != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
         xbmc.sleep(100)
-        lastinteractseconds = int((datetime.now() - var.ZapDelayDateTime).total_seconds())
-        if (var.ZapTimerForce or lastinteractseconds >= 3 or len(var.ZapNumber) == 4) and func.string_isnullorempty(var.ZapNumber) == False:
+        interactSecond = 3
+        lastInteractSeconds = int((datetime.now() - var.ZapDelayDateTime).total_seconds())
+        if (var.ZapTimerForce or lastInteractSeconds >= interactSecond or len(var.ZapNumberString) == 4) and func.string_isnullorempty(var.ZapNumberString) == False:
             #Handle remote action
-            if selectMode: select_remote_number(_self, clickOnSelection)
-            else: zap_remote_number(_self)
+            if selectMode:
+                select_remote_number(_self, clickOnSelection)
+            else:
+                zap_remote_number(_self)
 
             #Reset remote variables
             var.ZapControlId = 0
-            var.ZapNumber = ''
+            var.ZapNumberString = ''
             var.ZapTimerForce = False
             var.thread_zap_wait_timer = None
 
             #Hide remote number popup
             _self.setProperty('ZapVisible', 'false')
             func.updateLabelText(_self, 7001, '')
+        else:
+            #Countdown string
+            ZapCountInt = interactSecond - lastInteractSeconds
+            ZapCountDownString = '[COLOR gray]' + str(ZapCountInt) + '[/COLOR] '
+
+            #Show remote number popup
+            func.updateLabelText(_self, 7001, ZapCountDownString + var.ZapHintString)
+            _self.setProperty('ZapVisible', 'true')

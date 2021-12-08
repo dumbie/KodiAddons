@@ -204,8 +204,18 @@ class Gui(xbmcgui.WindowXMLDialog):
             interactSecond = 3
             lastInteractSeconds = int((datetime.now() - var.ChannelDelayDateTime).total_seconds())
 
+            #Channel information
+            listcontainer = self.getControl(1001)
+            listItemSelected = listcontainer.getSelectedItem()
+            channelNameProp = listItemSelected.getProperty("ChannelName")
+            channelNumberProp = listItemSelected.getProperty("ChannelNumber")
+
+            #Countdown string
+            delayCountInt = interactSecond - lastInteractSeconds
+            delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR] ' + func.get_provider_color_string() + channelNumberProp + '[/COLOR] [COLOR white]' + channelNameProp + '[/COLOR]'
+
             #Show remaining time
-            func.updateLabelText(self, 7001, 'Schakelt in ' + str(interactSecond - lastInteractSeconds))
+            func.updateLabelText(self, 7001, delayCountString)
             self.setProperty('ZapVisible', 'true')
 
             #Change the channel
@@ -214,9 +224,7 @@ class Gui(xbmcgui.WindowXMLDialog):
                 var.thread_channel_delay_timer = None
                 self.setProperty('ZapVisible', 'false')
 
-                #Switch to current selected channel
-                listcontainer = self.getControl(1001)
-                listItemSelected = listcontainer.getSelectedItem()
+                #Switch to selected channel
                 stream.switch_channel_tv_listitem(listItemSelected, False, False)
 
     def buttons_add_sidebar(self):

@@ -130,27 +130,23 @@
         </control>
         <!-- Zap Number -->
         <control type="group" id="7000">
-            <top>50</top>
-            <width>200</width>
-            <height>60</height>
+            <height>110</height>
             <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
             <!-- Background -->
             <control type="image">
                 <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
             </control>
-            <!-- Sidebar -->
+            <!-- Underbar -->
             <control type="image">
-                <right>0</right>
-                <width>5</width>
-                <height>60</height>
+                <top>105</top>
+                <height>5</height>
                 <texture>common/background_accent.png</texture>
             </control>
-            <!-- Number -->
+            <!-- Text -->
             <control type="label" id="7001">
-                <right>15</right>
-                <width>200</width>
+                <top>50</top>
+                <left>5</left>
                 <height>60</height>
-                <align>right</align>
                 <aligny>center</aligny>
             </control>
         </control>
