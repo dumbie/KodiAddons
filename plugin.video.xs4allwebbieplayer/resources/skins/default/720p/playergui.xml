@@ -212,7 +212,7 @@
                     <control type="image">
                         <width>55</width>
                         <height>55</height>
-                        <texture colordiffuse="F0FFFFFF">common/background_accent.png</texture>
+                        <texture colordiffuse="F0888888">common/background_accent.png</texture>
                     </control>
                     <control type="image">
                         <top>3</top>
@@ -255,10 +255,10 @@
                         <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="image">
-                        <top>3</top>
-                        <left>3</left>
-                        <width>60</width>
-                        <height>60</height>
+                        <top>2</top>
+                        <left>8</left>
+                        <width>50</width>
+                        <height>50</height>
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
                     </control>
@@ -278,20 +278,20 @@
                         <align>center</align>
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ChannelNumber)</info>
+                        <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
                 </itemlayout>
                 <focusedlayout width="70" height="70">
                     <control type="image">
                         <width>65</width>
                         <height>65</height>
-                        <texture colordiffuse="F0FFFFFF">common/background_accent.png</texture>
+                        <texture colordiffuse="F0888888">common/background_accent.png</texture>
                     </control>
                     <control type="image">
-                        <top>3</top>
-                        <left>3</left>
-                        <width>60</width>
-                        <height>60</height>
+                        <top>2</top>
+                        <left>8</left>
+                        <width>50</width>
+                        <height>50</height>
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
                     </control>
@@ -311,7 +311,7 @@
                         <align>center</align>
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ChannelNumber)</info>
+                        <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
                 </focusedlayout>
             </control>
@@ -431,7 +431,7 @@
                 <width>380</width>
                 <height>30</height>
                 <textcolor>FFFFFFFF</textcolor>
-                <info>Container(1001).ListItem.Property(ChannelName)</info>
+                <label>$INFO[Container(1001).ListItem.Property(ChannelNumberAccent)] $INFO[Container(1001).ListItem.Property(ChannelName)]</label>
                 <scroll>true</scroll>
                 <scrollspeed>60</scrollspeed>
             </control>

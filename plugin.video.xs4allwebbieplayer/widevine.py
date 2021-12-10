@@ -10,7 +10,7 @@ import hybrid
 import path
 import var
 
-def check_requirements():
+def thread_check_requirements():
     enable_inputstreamadaptive()
     if var.addon.getSetting('InputAdaptiveAdjust') == 'true':
         adjust_inputstreamadaptive()

@@ -41,6 +41,7 @@ def channel_list_load(listContainer, checkStatus=False):
             #Load channel details
             ExternalId = metadatainfo.externalId_from_json_metadata(channel)
             ChannelNumber = metadatainfo.orderId_from_json_metadata(channel)
+            ChannelNumberAccent = func.get_provider_color_string() + ChannelNumber + '[/COLOR]'
             ChannelRecordEvent = 'false'
             ChannelRecordSeries = 'false'
             ChannelAlarm = 'false'
@@ -68,6 +69,7 @@ def channel_list_load(listContainer, checkStatus=False):
             listitem.setProperty('AssetId', AssetId)
             listitem.setProperty('ChannelId', ChannelId)
             listitem.setProperty('ChannelNumber', ChannelNumber)
+            listitem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
             listitem.setProperty('ChannelFavorite', ChannelFavorite)
             listitem.setProperty('ExternalId', ExternalId)
             listitem.setProperty('ChannelName', ChannelName)

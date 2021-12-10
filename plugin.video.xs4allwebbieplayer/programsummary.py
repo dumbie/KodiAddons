@@ -240,6 +240,7 @@ def program_summary_television(updateItem):
     #Get channel information from item
     channelId = updateItem.getProperty('ChannelId')
     channelName = updateItem.getProperty('ChannelName')
+    channelNumberAccent = updateItem.getProperty('ChannelNumberAccent')
 
     #Set the current player play time
     currentDateTime = datetime.now()
@@ -407,11 +408,11 @@ def program_summary_television(updateItem):
 
     #Combine the program timing
     if ProgramNowTimeDurationString == '0':
-        ProgramTiming = channelName + '\n\n' + ProgramNowName + ' onbekend programmaduur'
+        ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' onbekend programmaduur'
     elif ProgramNowTimeLeftString == '0':
-        ProgramTiming = channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
+        ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
     else:
-        ProgramTiming = channelName + '\n\n' + ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
+        ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
 
     #Combine the program description
     ProgramDescription = '[COLOR white]' + ProgramTiming + '[/COLOR]\n\n[COLOR gray]' + ProgramNowDetails + '[/COLOR]\n\n[COLOR white]' + ProgramNowDescription + '[/COLOR]'

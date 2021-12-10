@@ -46,16 +46,16 @@ def close_the_page():
         var.guiMain.close()
 
 def dialog_close():
-    dialogAnswers = ['Webbie Player afsluiten', 'Apparaat uitschakelen', 'Kodi afsluiten']
+    dialogAnswers = ['Webbie Player afsluiten', 'Apparaat uitschakelen', 'Apparaat herstarten', 'Kodi afsluiten']
     if xbmc.Player().isPlayingVideo():
         dialogAnswers.insert(0, 'Toon video speler')
 
     dialogHeader = 'Sluiten'
 
     if xbmc.Player().isPlaying():
-        dialogSummary = 'Weet u zeker dat u wilt afsluiten? als u afsluit zal de spelende media ook stoppen.'
+        dialogSummary = 'Wat wilt u doen? als u afsluit zal de spelende media ook stoppen.'
     else:
-        dialogSummary = 'Weet u zeker dat u wilt afsluiten?'
+        dialogSummary = 'Wat wilt u doen?'
 
     dialogFooter = ''
 
@@ -63,9 +63,11 @@ def dialog_close():
     if dialogResult == 'Webbie Player afsluiten':
         close_the_page()
     elif dialogResult == 'Apparaat uitschakelen':
-        func.close_device()
+        func.device_shutdown_dialog()
+    elif dialogResult == 'Apparaat herstarten':
+        func.device_reboot_dialog()
     elif dialogResult == 'Kodi afsluiten':
-        func.close_kodi()
+        func.close_kodi_force()
     elif dialogResult == 'Toon video speler':
         var.PlayerCustom.Fullscreen(True)
     else:
@@ -113,7 +115,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Check if Widevine is installed
         if var.thread_check_requirements == None:
-            var.thread_check_requirements = Thread(target=widevine.check_requirements)
+            var.thread_check_requirements = Thread(target=widevine.thread_check_requirements)
             var.thread_check_requirements.start()
 
         #Check television favorite setting

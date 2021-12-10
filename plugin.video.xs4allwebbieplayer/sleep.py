@@ -74,11 +74,11 @@ def sleep_close():
     xbmcgui.Dialog().notification(var.addonname, 'Tot ziens', notificationIcon, 5000, False)
     sleep_timeroff(False)
 
-    #Close Kodi or device
+    #Close Kodi or shutdown device
     if var.addon.getSetting('SleepTimerCloseKodi') == 'true':
-        func.close_kodi()
+        func.close_kodi_force()
     else:
-        func.close_device()
+        func.device_shutdown_force()
 
 def sleep_timeroff(showDialog):
     var.thread_sleep_timer = None

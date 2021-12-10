@@ -82,7 +82,7 @@ def vod_yesterday():
     return downloadPath
 
 def vod_movies():
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentSubtype=VOD&filter_technicalPackages=10078,10081&from=0&to=9999')
+    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentSubtype=VOD&dfilter_packageType=SVOD&from=0&to=9999')
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
@@ -90,7 +90,7 @@ def vod_movies():
     return downloadPath
 
 def vod_series():
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&filter_technicalPackages=10078,10081&from=0&to=9999')
+    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999')
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
@@ -98,7 +98,7 @@ def vod_series():
     return downloadPath
 
 def vod_series_kids():
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&filter_technicalPackages=10078,10081&from=0&to=9999&filter_genres=kinderen,kids')
+    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999&filter_genres=kinderen,kids')
     return downloadPath
 
 def vod_series_season(parentId):

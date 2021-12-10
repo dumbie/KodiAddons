@@ -132,7 +132,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add channels to the list
         func.updateLabelText(self, 1, 'Zenders laden')
-        ChannelNumber = 0
+        ChannelNumberInt = 0
         for channel in var.ChannelsDataJsonRadio['radios']:
             try:
                 #Load channel basics
@@ -148,13 +148,18 @@ class Gui(xbmcgui.WindowXML):
                 ChannelId = channel['id']
                 ChannelStream = channel['stream']
 
+                #Update channel number
+                ChannelNumberInt += 1
+                ChannelNumberString = str(ChannelNumberInt)
+                ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
+
                 #Add radio channel
-                ChannelNumber += 1
                 listitem = xbmcgui.ListItem()
                 listitem.setProperty('Action', 'play_stream')
                 listitem.setProperty('ChannelId', ChannelId)
                 listitem.setProperty('ChannelName', ChannelName)
-                listitem.setProperty('ChannelNumber', str(ChannelNumber))
+                listitem.setProperty('ChannelNumber', ChannelNumberString)
+                listitem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
                 listitem.setProperty('StreamUrl', ChannelStream)
                 listitem.setInfo('music', {'Genre': 'Radio'})
                 listitem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})

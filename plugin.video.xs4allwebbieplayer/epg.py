@@ -575,10 +575,10 @@ class Gui(xbmcgui.WindowXML):
                         ProgramTimingDescription = ' duurt nog ' + ProgramTimeLeftString + ' van de ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString + ' eindigt rond ' + ProgramTimeEndString
                 elif dateTimeNow > ProgramTimeEndDateTime:
                     ProgramTimingEpgList = ' duurde ' + ProgramDurationString + ' minuten'
-                    ProgramTimingDescription = ' duurde ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString
+                    ProgramTimingDescription = ' duurde ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString + ' eindigde rond ' + ProgramTimeEndString
                 else:
                     ProgramTimingEpgList = ' duurt ' + ProgramDurationString + ' minuten'
-                    ProgramTimingDescription = ' duurt ' + ProgramDurationString + ' minuten, eindigt rond ' + ProgramTimeEndString
+                    ProgramTimingDescription = ' duurt ' + ProgramDurationString + ' minuten, begint om ' + ProgramTimeStartString + ' eindigt rond ' + ProgramTimeEndString
 
                 #Check if program has active alarm
                 if alarm.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:

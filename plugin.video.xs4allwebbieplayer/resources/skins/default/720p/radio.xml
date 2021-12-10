@@ -277,7 +277,7 @@
                         <align>center</align>
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ChannelNumber)</info>
+                        <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
                     <control type="label">
                         <left>60</left>
@@ -310,7 +310,7 @@
                         <align>center</align>
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ChannelNumber)</info>
+                        <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
                     <control type="label">
                         <left>60</left>

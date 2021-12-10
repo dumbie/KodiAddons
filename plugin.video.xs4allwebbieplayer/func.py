@@ -6,7 +6,7 @@ from threading import Thread
 import _strptime
 import xbmc
 import xbmcgui
-import download
+import dialog
 import hybrid
 import metadatainfo
 import var
@@ -321,9 +321,31 @@ def round_integer_base(integer, base=5):
     return int(base * round(float(integer) / base))
 
 #Shutdown Kodi
-def close_kodi():
+def close_kodi_force():
     xbmc.shutdown()
 
-#Shutdown device
-def close_device():
+#Shutdown device with dialog
+def device_shutdown_dialog():
+    dialogAnswers = ['Ja', 'Nee']
+    dialogHeader = 'Apparaat uitschakelen?'
+    dialogSummary = 'Weet u zeker dat u dit apparaat wilt uitschakelen?'
+    dialogFooter = ''
+
+    dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+    if dialogResult == 'Ja':
+        xbmc.executebuiltin('Powerdown')
+
+#Shutdown device forced
+def device_shutdown_force():
     xbmc.executebuiltin('Powerdown')
+
+#Reboot device with dialog
+def device_reboot_dialog():
+    dialogAnswers = ['Ja', 'Nee']
+    dialogHeader = 'Apparaat herstarten?'
+    dialogSummary = 'Weet u zeker dat u dit apparaat wilt herstarten?'
+    dialogFooter = ''
+
+    dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+    if dialogResult == 'Ja':
+        xbmc.executebuiltin('Reboot')
