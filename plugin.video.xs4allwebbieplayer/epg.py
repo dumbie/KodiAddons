@@ -8,9 +8,9 @@ import dialog
 import download
 import favorite
 import func
-import hybrid
 import metadatainfo
 import path
+import recordingfunc
 import stream
 import var
 import zap
@@ -231,13 +231,13 @@ class Gui(xbmcgui.WindowXML):
         if dialogResult == 'Alarm zetten of annuleren':
             self.set_program_alarm(listItemSelected)
         elif dialogResult == 'Programma opnemen of annuleren':
-            self.set_program_record(listItemSelected)
+            recordingfunc.record_event_epg(self, listItemSelected)
+        elif dialogResult == 'Serie seizoen opnemen of annuleren':
+            recordingfunc.record_series_epg(self, listItemSelected)
         elif dialogResult == 'Live programma kijken':
             stream.switch_channel_tv_listitem(listItemSelected, False, False)
         elif dialogResult == 'Programma terug kijken':
             stream.play_stream_program(listItemSelected, False)
-        elif dialogResult == 'Serie seizoen opnemen of annuleren':
-            self.set_series_record(listItemSelected, False)
 
     def update_program_record_event(self):
         #Get the epg list control
@@ -317,76 +317,6 @@ class Gui(xbmcgui.WindowXML):
             listItemSelected.setProperty('ChannelAlarm', 'true')
         else:
             listItemSelected.setProperty('ChannelAlarm', 'false')
-
-    def set_series_record(self, listItemSelected, forceRecord=False):
-        ChannelId = listItemSelected.getProperty('ChannelId')
-        ProgramRecordSeries = listItemSelected.getProperty('ProgramRecordSeries')
-        ProgramRecordSeriesId = listItemSelected.getProperty('ProgramRecordSeriesId')
-
-        if ProgramRecordSeriesId == '':
-            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen kan niet worden opgenomen.', notificationIcon, 2500, False)
-            return
-
-        if ProgramRecordSeries == 'false' or forceRecord == True:
-            seriesAdd = download.record_series_add(ChannelId, ProgramRecordSeriesId)
-            if seriesAdd == True:
-                self.update_channel_record_event_icon(ChannelId)
-                self.update_program_record_event()
-                self.update_channel_record_series_icon(ChannelId)
-                self.update_program_record_series()
-        else:
-            #Get the removal series id
-            recordProgramSeries = func.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
-            if recordProgramSeries:
-                ProgramRecordSeriesIdLive = metadatainfo.seriesId_from_json_metadata(recordProgramSeries)
-            else:
-                notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
-                xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt.', notificationIcon, 2500, False)
-                return
-
-            #Ask user to remove recordings
-            dialogAnswers = ['Opnames verwijderen', 'Opnames houden']
-            dialogHeader = 'Serie opnames verwijderen'
-            dialogSummary = 'Wilt u ook alle opnames van deze serie seizoen verwijderen?'
-            dialogFooter = ''
-            dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-            if dialogResult == 'Opnames verwijderen':
-                KeepRecording = False
-            elif dialogResult == 'Opnames houden': 
-                KeepRecording = True
-            else:
-                return
-
-            #Remove record series
-            seriesRemove = download.record_series_remove(ProgramRecordSeriesIdLive, KeepRecording)
-            if seriesRemove == True:
-                self.update_channel_record_event_icon(ChannelId)
-                self.update_program_record_event()
-                self.update_channel_record_series_icon(ChannelId)
-                self.update_program_record_series()
-
-    def set_program_record(self, listItemSelected, forceRecord=False):
-        ChannelId = listItemSelected.getProperty('ChannelId')
-        ProgramId = listItemSelected.getProperty('ProgramId')
-        ProgramRecordEventId = listItemSelected.getProperty('ProgramRecordEventId')
-        ProgramStartDeltaTime = listItemSelected.getProperty('ProgramStartDeltaTime')
-
-        #Check if recording is already set
-        if ProgramRecordEventId == '' or forceRecord == True:
-            recordAdd = download.record_program_add(ProgramId)
-            if recordAdd != '':
-                self.update_channel_record_event_icon(ChannelId)
-                self.update_program_record_event()
-                self.update_channel_record_series_icon(ChannelId)
-                self.update_program_record_series()
-        else:
-            recordRemove = download.record_program_remove(ProgramRecordEventId, ProgramStartDeltaTime)
-            if recordRemove == True:
-                self.update_channel_record_event_icon(ChannelId)
-                self.update_program_record_event()
-                self.update_channel_record_series_icon(ChannelId)
-                self.update_program_record_series()
 
     def set_program_alarm(self, listItemSelected):
         ProgramTimeStartString = listItemSelected.getProperty('ProgramTimeStart')

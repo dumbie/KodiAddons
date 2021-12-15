@@ -8,10 +8,9 @@ import channellist
 import download
 import favorite
 import func
-import hybrid
-import metadatainfo
 import path
 import programsummary
+import recordingfunc
 import sleep
 import stream
 import var
@@ -71,19 +70,25 @@ class Gui(xbmcgui.WindowXMLDialog):
             clickedControl = self.getControl(clickId)
             playerFull = self.getProperty('WebbiePlayerFull') == 'true'
             if clickId == 1001 and playerFull == True:
-                listItemSelected = clickedControl.getSelectedItem()
-                stream.switch_channel_tv_listitem(listItemSelected, False, True)
+                listItemSelectedClicked = clickedControl.getSelectedItem()
+                stream.switch_channel_tv_listitem(listItemSelectedClicked, False, True)
             elif clickId == 1002 and playerFull == True:
-                listItemSelected = clickedControl.getSelectedItem()
-                listItemAction = listItemSelected.getProperty('Action')
+                listItemSelectedClicked = clickedControl.getSelectedItem()
+                listItemAction = listItemSelectedClicked.getProperty('Action')
                 if listItemAction == 'media_lastchannel':
                     self.switch_channel_lasttv()
                 elif listItemAction == 'media_sleep':
                     sleep.dialog_sleep()
                 elif listItemAction == 'media_alarmnext':
                     self.set_alarm_next()
-                elif listItemAction == 'media_record':
-                    self.set_program_record_now()
+                elif listItemAction == 'media_record_event':
+                    listcontainer = self.getControl(1001)
+                    listItemSelectedChannel = listcontainer.getSelectedItem()
+                    recordingfunc.record_event_now_television_playergui(listItemSelectedChannel)
+                elif listItemAction == 'media_record_series':
+                    listcontainer = self.getControl(1001)
+                    listItemSelectedChannel = listcontainer.getSelectedItem()
+                    recordingfunc.record_series_television_playergui(listItemSelectedChannel)
                 elif listItemAction == 'media_volumeup':
                     self.media_volume_up()
                 elif listItemAction == 'media_volumedown':
@@ -265,8 +270,13 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         if var.RecordingAccess == True:
             listitem = xbmcgui.ListItem('Programma opnemen of annuleren')
-            listitem.setProperty('Action', 'media_record')
+            listitem.setProperty('Action', 'media_record_event')
             listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/record.png'),'icon': path.resources('resources/skins/default/media/common/record.png')})
+            listcontainer.addItem(listitem)
+
+            listitem = xbmcgui.ListItem('Serie seizoen opnemen of annuleren')
+            listitem.setProperty('Action', 'media_record_series')
+            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/recordseries.png'),'icon': path.resources('resources/skins/default/media/common/recordseries.png')})
             listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Beheer de slaap timer')
@@ -331,32 +341,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Select list item
         listcontainer.selectItem(0)
         xbmc.sleep(100)
-
-    def set_program_record_now(self):
-        #Get and check the list container
-        listcontainer = self.getControl(1001)
-        selectedItem = listcontainer.getSelectedItem()
-        ProgramNowId = selectedItem.getProperty('ProgramNowId')
-        ProgramNextTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNextTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
-
-        #Check the program time
-        if ProgramNextTimeStartDateTime != datetime(1970, 1, 1) and datetime.now() > ProgramNextTimeStartDateTime:
-            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Programma is al afgelopen.', notificationIcon, 2500, False)
-            return
-
-        #Check the program recording state
-        recordProgramEvent = func.search_programid_jsonrecording_event(ProgramNowId)
-        if recordProgramEvent:
-            ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-            ProgramStartDeltaTime = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-            recordRemove = download.record_program_remove(ProgramRecordEventId, ProgramStartDeltaTime)
-            if recordRemove == True:
-                selectedItem.setProperty("ProgramNowRecordEvent", 'false')
-        else:
-            recordAdd = download.record_program_add(ProgramNowId)
-            if recordAdd != '':
-                selectedItem.setProperty("ProgramNowRecordEvent", 'true')
 
     def set_alarm_next(self):
         #Get and check the list container

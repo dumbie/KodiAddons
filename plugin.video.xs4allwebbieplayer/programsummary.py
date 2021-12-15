@@ -2,8 +2,6 @@ from datetime import datetime, timedelta
 import alarm
 import download
 import func
-import hybrid
-import playergui
 import metadatainfo
 import var
 import xbmc
@@ -93,15 +91,16 @@ def program_summary_playergui(updateItem):
             ProgramNowRecordEvent = 'false'
 
         #Check if the program is part of series
-        ProgramNowSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
+        ProgramNowRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
         #Check if program is recording series
-        if func.search_seriesid_jsonrecording_series(ProgramNowSeriesId):
+        if func.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId):
             ProgramNowRecordSeries = 'true'
         else:
             ProgramNowRecordSeries = 'false'
     except:
         ProgramNowId = ''
+        ProgramNowRecordSeriesId = ''
         ProgramNowName = 'Onbekend programma'
         ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
         ProgramNowDetails = 'Onbekend seizoen en aflevering'
@@ -145,15 +144,16 @@ def program_summary_playergui(updateItem):
             ProgramNextRecordEvent = 'false'
 
         #Check if the program is part of series
-        ProgramNextSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
+        ProgramNextRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
         #Check if program is recording series
-        if func.search_seriesid_jsonrecording_series(ProgramNextSeriesId):
+        if func.search_seriesid_jsonrecording_series(ProgramNextRecordSeriesId):
             ProgramNextRecordSeries = 'true'
         else:
             ProgramNextRecordSeries = 'false'
     except:
         ProgramNextId = ''
+        ProgramNextRecordSeriesId = ''
         ProgramNextName = 'Onbekend programma'
         ProgramNextTimeStartDateTime = datetime(1970, 1, 1)
         ProgramNextTimeStartString = 'Onbekend'
@@ -217,10 +217,12 @@ def program_summary_playergui(updateItem):
 
     #Update the information in list item
     updateItem.setProperty("ProgramNowId", ProgramNowId)
+    updateItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
     updateItem.setProperty("ProgramNowName", ProgramNowName)
     updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
     updateItem.setProperty("ProgramNextId", ProgramNextId)
+    updateItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)
     updateItem.setProperty("ProgramNextName", ProgramNextTimeStartString + ': ' + ProgramNextName)
     updateItem.setProperty("ProgramNextNameRaw", ProgramNextName)
     updateItem.setProperty("ProgramNextTimeStartDateTime", str(ProgramNextTimeStartDateTime))
@@ -304,15 +306,16 @@ def program_summary_television(updateItem):
             ProgramNowRecordEvent = 'false'
 
         #Check if the program is part of series
-        ProgramNowSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
+        ProgramNowRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
         #Check if program is recording series
-        if func.search_seriesid_jsonrecording_series(ProgramNowSeriesId):
+        if func.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId):
             ProgramNowRecordSeries = 'true'
         else:
             ProgramNowRecordSeries = 'false'
     except:
         ProgramNowId = ''
+        ProgramNowRecordSeriesId = ''
         ProgramNowName = 'Onbekend programma'
         ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
         ProgramNowDetails = 'Onbekend seizoen en aflevering'
@@ -355,15 +358,16 @@ def program_summary_television(updateItem):
             ProgramNextRecordEvent = 'false'
 
         #Check if the program is part of series
-        ProgramNextSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
+        ProgramNextRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
         #Check if program is recording series
-        if func.search_seriesid_jsonrecording_series(ProgramNextSeriesId):
+        if func.search_seriesid_jsonrecording_series(ProgramNextRecordSeriesId):
             ProgramNextRecordSeries = 'true'
         else:
             ProgramNextRecordSeries = 'false'
     except:
         ProgramNextId = ''
+        ProgramNextRecordSeriesId = ''
         ProgramNextName = 'Onbekend programma'
         ProgramNextTimeStartDateTime = datetime(1970, 1, 1)
         ProgramNextTimeStartString = 'Onbekend'
@@ -427,9 +431,11 @@ def program_summary_television(updateItem):
 
     #Update the information in list item
     updateItem.setProperty("ProgramNowId", ProgramNowId)
+    updateItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
     updateItem.setProperty("ProgramNowName", ProgramNowName)
     updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNextId", ProgramNextId)
+    updateItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)
     updateItem.setProperty("ProgramNextName", ProgramNextTimeStartString + ': ' + ProgramNextName)
     updateItem.setProperty("ProgramNextNameRaw", ProgramNextName)
     updateItem.setProperty("ProgramNextTimeStartDateTime", str(ProgramNextTimeStartDateTime))

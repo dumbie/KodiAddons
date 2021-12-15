@@ -8,10 +8,10 @@ import dialog
 import download
 import favorite
 import func
-import hybrid
 import metadatainfo
 import path
 import programsummary
+import recordingfunc
 import stream
 import var
 import zap
@@ -121,6 +121,7 @@ class Gui(xbmcgui.WindowXML):
         if var.RecordingAccess == True:
             dialogAnswers.append('Huidig programma opnemen of annuleren')
             dialogAnswers.append('Volgend programma opnemen of annuleren')
+            dialogAnswers.append('Huidig serie seizoen opnemen of annuleren')
 
         #Add set alarm for next program
         dialogAnswers.append('Alarm volgend programma zetten of annuleren')
@@ -145,45 +146,15 @@ class Gui(xbmcgui.WindowXML):
                 #Update the status
                 self.count_channels(False)
         elif dialogResult == 'Huidig programma opnemen of annuleren':
-            self.set_program_record_now(listItemSelected)
+            recordingfunc.record_event_now_television_playergui(listItemSelected)
         elif dialogResult == 'Volgend programma opnemen of annuleren':
-            self.set_program_record_next(listItemSelected)
+            recordingfunc.record_event_next_television_playergui(listItemSelected)
+        elif dialogResult == 'Huidig serie seizoen opnemen of annuleren':
+            recordingfunc.record_series_television_playergui(listItemSelected)
         elif dialogResult == 'Alarm volgend programma zetten of annuleren':
             self.set_program_alarm_next(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_allfavorites()
-
-    def set_program_record_now(self, listItemSelected):
-        ProgramNowId = listItemSelected.getProperty('ProgramNowId')
-
-        #Check the program recording state
-        recordProgramEvent = func.search_programid_jsonrecording_event(ProgramNowId)
-        if recordProgramEvent:
-            ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-            ProgramStartDeltaTime = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-            recordRemove = download.record_program_remove(ProgramRecordEventId, ProgramStartDeltaTime)
-            if recordRemove == True:
-                listItemSelected.setProperty("ProgramNowRecordEvent", 'false')
-        else:
-            recordAdd = download.record_program_add(ProgramNowId)
-            if recordAdd != '':
-                listItemSelected.setProperty("ProgramNowRecordEvent", 'true')
-
-    def set_program_record_next(self, listItemSelected):
-        ProgramNextId = listItemSelected.getProperty('ProgramNextId')
-
-        #Check the program recording state
-        recordProgramEvent = func.search_programid_jsonrecording_event(ProgramNextId)
-        if recordProgramEvent:
-            ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-            ProgramStartDeltaTime = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-            recordRemove = download.record_program_remove(ProgramRecordEventId, ProgramStartDeltaTime)
-            if recordRemove == True:
-                listItemSelected.setProperty("ProgramNextRecordEvent", 'false')
-        else:
-            recordAdd = download.record_program_add(ProgramNextId)
-            if recordAdd != '':
-                listItemSelected.setProperty("ProgramNextRecordEvent", 'true')
 
     def set_program_alarm_next(self, listItemSelected):
         ExternalId = listItemSelected.getProperty("ExternalId")

@@ -612,7 +612,7 @@ def record_series_remove(SeriesId, KeepRecordings=True):
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt.', notificationIcon, 2500, False)
         return False
 
-def record_program_add(ProgramId):
+def record_event_add(ProgramId):
     #Check if user is logged in
     if var.ApiLoggedIn == False:
         apilogin.ApiLogin(False)
@@ -657,7 +657,7 @@ def record_program_add(ProgramId):
         xbmcgui.Dialog().notification(var.addonname, 'Opname planning mislukt.', notificationIcon, 2500, False)
         return ''
 
-def record_program_remove(RecordId, StartDeltaTime=0):
+def record_event_remove(RecordId, StartDeltaTime=0):
     #Check if user is logged in
     if var.ApiLoggedIn == False:
         apilogin.ApiLogin(False)
