@@ -7,26 +7,41 @@
         <control type="image">
             <width>1280</width>
             <height>720</height>
-            <texture colordiffuse="80FFFFFF">common/background.png</texture>
+            <texture colordiffuse="DCFFFFFF">common/background.png</texture>
         </control>
         <!-- Video Window -->
         <control type="group">
-            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
-            <control type="videowindow">
-                <hitrect x="0" y="0" w="0" h="0"/>
-            </control>
+            <width>665</width>
+            <height>540</height>
+            <right>10</right>
+            <top>175</top>
             <control type="image">
-                <texture colordiffuse="AAFFFFFF">common/background_dark.png</texture>
+                <texture colordiffuse="90888888">common/background_dark.png</texture>
+            </control>
+            <control type="videowindow">
+                <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+                <hitrect x="0" y="0" w="0" h="0"/>
             </control>
         </control>
         <!-- Logo -->
-        <control type="image">
-            <top>40</top>
-            <left>40</left>
-            <width>120</width>
-            <height>120</height>
-            <aspectratio>keep</aspectratio>
-            <texture>../../../icon.png</texture>
+        <control type="group">
+            <control type="image">
+                <top>40</top>
+                <left>40</left>
+                <width>120</width>
+                <height>120</height>
+                <aspectratio>keep</aspectratio>
+                <texture>../../../icon.png</texture>
+            </control>
+            <control type="button" id="3000">
+                <top>40</top>
+                <left>40</left>
+                <width>120</width>
+                <height>120</height>
+                <aspectratio>keep</aspectratio>
+                <texturefocus>-</texturefocus>
+                <texturenofocus>-</texturenofocus>
+            </control>
         </control>
         <!-- Information -->
         <control type="label">
@@ -50,7 +65,7 @@
         <!-- Clock -->
         <control type="label">
             <top>70</top>
-            <right>50</right>
+            <right>10</right>
             <width>500</width>
             <height>30</height>
             <align>right</align>
@@ -59,23 +74,35 @@
         </control>
         <control type="label">
             <top>100</top>
-            <right>50</right>
+            <right>10</right>
             <width>500</width>
             <height>30</height>
             <align>right</align>
             <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
             <textcolor>FF888888</textcolor>
         </control>
+        <!-- Playing -->
+        <control type="label">
+            <left>10</left>
+            <top>140</top>
+            <width>1260</width>
+            <height>30</height>
+            <align>center</align>
+            <label>$INFO[VideoPlayer.Title]</label>
+            <scroll>true</scroll>
+            <scrollspeed>100</scrollspeed>
+            <visible>Player.HasVideo</visible>
+        </control>
         <!-- Fullscreen Button -->
         <control type="group">
             <left>10</left>
-            <top>180</top>
+            <top>175</top>
             <width>35</width>
-            <height>545</height>
+            <height>540</height>
             <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
             <control type="button" id="9000">
                 <width>35</width>
-                <height>545</height>
+                <height>540</height>
                 <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
                 <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
             </control>
@@ -91,17 +118,18 @@
         <!-- Stream List -->
         <control type="group">
             <left>50</left>
-            <right>50</right>
-            <top>180</top>
+            <top>175</top>
+            <width>550</width>
+            <height>540</height>
             <control type="panel" id="1001">
                 <pagecontrol>2001</pagecontrol>
                 <onup>1000</onup>
                 <onleft condition="Player.HasVideo">SendClick(9000)</onleft>
                 <onright>2001</onright>
                 <orientation>vertical</orientation>
-                <itemlayout width="1280" height="60">
+                <itemlayout width="550" height="60">
                     <control type="image">
-                        <width>1280</width>
+                        <width>550</width>
                         <height>58</height>
                         <texture colordiffuse="90888888">common/background_dark.png</texture>
                     </control>
@@ -115,7 +143,7 @@
                     </control>
                     <control type="label">
                         <left>58</left>
-                        <width>1200</width>
+                        <width>480</width>
                         <height>58</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
@@ -123,9 +151,9 @@
                         <info>ListItem.Label</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="1280" height="60">
+                <focusedlayout width="550" height="60">
                     <control type="image">
-                        <width>1280</width>
+                        <width>550</width>
                         <height>58</height>
                         <texture colordiffuse="90888888">common/background_light.png</texture>
                     </control>
@@ -139,12 +167,14 @@
                     </control>
                     <control type="label">
                         <left>58</left>
-                        <width>1200</width>
+                        <width>480</width>
                         <height>58</height>
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF26671E</selectedcolor>
                         <info>ListItem.Label</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>100</scrollspeed>
                     </control>
                 </focusedlayout>
             </control>

@@ -4,8 +4,6 @@ import xbmcgui
 import default
 import download
 import func
-import hybrid
-import path
 import var
 
 def switch_to_page():
@@ -16,6 +14,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiMain != None:
+        #Stop the playing media
+        xbmc.Player().stop()
+
         #Clear used global variables
         default.clear_home_variables()
 
@@ -66,6 +67,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty('StreamUrl', StreamUrl)
                 listitem.setProperty('StreamTokenUrl', StreamTokenUrl)
                 listitem.setArt({'thumb': StreamImage, 'icon': StreamImage})
+                listitem.setInfo('video', {'Genre': 'Vogel', 'Plot': StreamName})
                 listcontainer.addItem(listitem)
             except:
                 continue
@@ -95,6 +97,8 @@ class Gui(xbmcgui.WindowXML):
         if clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()
             self.open_stream(listItemSelected)
+        elif clickId == 3000:
+            close_the_page()
         elif clickId == 9000:
             xbmc.executebuiltin('Action(FullScreen)')
 
@@ -107,4 +111,4 @@ class Gui(xbmcgui.WindowXML):
             DownloadToken = DownloadToken.replace('|', '%7C')
             StreamUrl += '&' + DownloadToken
 
-        xbmc.Player().play(item=StreamUrl, listitem=listItem)
+        xbmc.Player().play(item=StreamUrl, listitem=listItem, windowed=True)

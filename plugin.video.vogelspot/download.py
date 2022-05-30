@@ -1,4 +1,3 @@
-import json
 import xbmc
 import xbmcgui
 import hybrid
