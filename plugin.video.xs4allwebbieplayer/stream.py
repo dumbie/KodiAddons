@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timedelta
 import xbmcgui
 import apilogin
+import re
 import func
 import hybrid
 import metadatainfo
@@ -90,20 +91,6 @@ def play_stream_recorded(listItem, Windowed):
             xbmcgui.Dialog().notification(var.addonname, 'Opname is niet beschikbaar: ' + resultMessage, notificationIcon, 2500, False)
             return
 
-    #Check the target resolution
-    if var.addon.getSetting('StreamResolution') == '2160p':
-        targetResolution = '10000000'
-    elif var.addon.getSetting('StreamResolution') == '1080p':
-        targetResolution = '6000000'
-    elif var.addon.getSetting('StreamResolution') == '720p':
-        targetResolution = '4000000'
-    elif var.addon.getSetting('StreamResolution') == '576p':
-        targetResolution = '2500000'
-    elif var.addon.getSetting('StreamResolution') == '432p':
-        targetResolution = '1600000'
-    elif var.addon.getSetting('StreamResolution') == '360p':
-        targetResolution = '1200000'
-
     #Set stream headers dictionary
     StreamHeadersDict = {
         "User-Agent": var.addon.getSetting('CustomUserAgent')
@@ -118,12 +105,7 @@ def play_stream_recorded(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = StreamUrl.replace('&max_bitrate=1200000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=1600000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=2500000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=4000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
+        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
@@ -216,20 +198,6 @@ def play_stream_program(listItem, Windowed):
             xbmcgui.Dialog().notification(var.addonname, 'Programma is niet beschikbaar: ' + resultMessage, notificationIcon, 2500, False)
             return
 
-    #Check the target resolution
-    if var.addon.getSetting('StreamResolution') == '2160p':
-        targetResolution = '10000000'
-    elif var.addon.getSetting('StreamResolution') == '1080p':
-        targetResolution = '6000000'
-    elif var.addon.getSetting('StreamResolution') == '720p':
-        targetResolution = '4000000'
-    elif var.addon.getSetting('StreamResolution') == '576p':
-        targetResolution = '2500000'
-    elif var.addon.getSetting('StreamResolution') == '432p':
-        targetResolution = '1600000'
-    elif var.addon.getSetting('StreamResolution') == '360p':
-        targetResolution = '1200000'
-
     #Set stream headers dictionary
     StreamHeadersDict = {
         "User-Agent": var.addon.getSetting('CustomUserAgent')
@@ -244,12 +212,7 @@ def play_stream_program(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = StreamUrl.replace('&max_bitrate=1200000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=1600000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=2500000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=4000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
+        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
@@ -341,20 +304,6 @@ def play_stream_vod(listItem, Windowed):
             xbmcgui.Dialog().notification(var.addonname, 'Vod is niet beschikbaar: ' + resultMessage, notificationIcon, 2500, False)
             return
 
-    #Check the target resolution
-    if var.addon.getSetting('StreamResolution') == '2160p':
-        targetResolution = '10000000'
-    elif var.addon.getSetting('StreamResolution') == '1080p':
-        targetResolution = '6000000'
-    elif var.addon.getSetting('StreamResolution') == '720p':
-        targetResolution = '4000000'
-    elif var.addon.getSetting('StreamResolution') == '576p':
-        targetResolution = '2500000'
-    elif var.addon.getSetting('StreamResolution') == '432p':
-        targetResolution = '1600000'
-    elif var.addon.getSetting('StreamResolution') == '360p':
-        targetResolution = '1200000'
-
     #Set stream headers dictionary
     StreamHeadersDict = {
         "User-Agent": var.addon.getSetting('CustomUserAgent')
@@ -369,12 +318,7 @@ def play_stream_vod(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = StreamUrl.replace('&max_bitrate=1200000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=1600000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=2500000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=4000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
+        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
@@ -451,20 +395,6 @@ def play_stream_television(listItem, Windowed):
             xbmcgui.Dialog().notification(var.addonname, 'Zender is niet beschikbaar: ' + resultMessage, notificationIcon, 2500, False)
             return
 
-    #Check the target resolution
-    if var.addon.getSetting('StreamResolution') == '2160p':
-        targetResolution = '10000000'
-    elif var.addon.getSetting('StreamResolution') == '1080p':
-        targetResolution = '6000000'
-    elif var.addon.getSetting('StreamResolution') == '720p':
-        targetResolution = '4000000'
-    elif var.addon.getSetting('StreamResolution') == '576p':
-        targetResolution = '2500000'
-    elif var.addon.getSetting('StreamResolution') == '432p':
-        targetResolution = '1600000'
-    elif var.addon.getSetting('StreamResolution') == '360p':
-        targetResolution = '1200000'
-
     #Set stream headers dictionary
     StreamHeadersDict = {
         "User-Agent": var.addon.getSetting('CustomUserAgent')
@@ -479,12 +409,7 @@ def play_stream_television(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = StreamUrl.replace('&max_bitrate=1200000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=1600000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=2500000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=4000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=6000000', '&max_bitrate=' + targetResolution)
-        StreamUrl = StreamUrl.replace('&max_bitrate=10000000', '&max_bitrate=' + targetResolution)
+        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')

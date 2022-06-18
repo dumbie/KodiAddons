@@ -353,6 +353,26 @@ def get_stream_assetid(assetsArray):
     except:
         return ''
 
+#Get stream target resolution
+def get_stream_targetresolution():
+    try:
+        if var.addon.getSetting('StreamResolution') == '2160p':
+            return '10000000'
+        elif var.addon.getSetting('StreamResolution') == '1080p':
+            return '7500000'
+        elif var.addon.getSetting('StreamResolution') == '720p':
+            return '4000000'
+        elif var.addon.getSetting('StreamResolution') == '576p':
+            return '2500000'
+        elif var.addon.getSetting('StreamResolution') == '432p':
+            return '1600000'
+        elif var.addon.getSetting('StreamResolution') == '360p':
+            return '1200000'
+        else:
+            return '7500000'
+    except:
+        return '7500000'
+
 #Get recording available time
 def recording_available_time(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
