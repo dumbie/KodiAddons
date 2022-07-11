@@ -36,6 +36,48 @@ def thread_login_auto():
         else:
             xbmc.sleep(5000)
 
+def ApiSetEndpointAdresNumber():
+    try:
+        DownloadHeaders = {
+            "User-Agent": var.addon.getSetting('CustomUserAgent'),
+            "Content-Type": "application/json"
+        }
+
+        DownloadRequest = hybrid.urllib_request(path.api_endpoint_number(), headers=DownloadHeaders)
+        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
+        DownloadDataJson = json.load(DownloadDataHttp)
+
+        path.apiUrlEndpoint = str(DownloadDataJson['result']['url'])
+        return True
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
+        return False
+
+def ApiSetEndpointAdresIdentifier():
+    try:
+        DownloadHeaders = {
+            "User-Agent": var.addon.getSetting('CustomUserAgent'),
+            "Content-Type": "application/json"
+        }
+        
+        apiEndpoint = classes.Class_ApiEndpoint()
+        apiEndpoint.username = var.addon.getSetting('LoginEmail')
+        apiEndpoint.password = var.addon.getSetting('LoginPasswordEmail')
+        apiEndpoint = apiEndpoint.__dict__
+
+        DownloadData = json.dumps(apiEndpoint).encode('ascii')
+        DownloadRequest = hybrid.urllib_request(path.api_endpoint_identifier(), data=DownloadData, headers=DownloadHeaders)
+        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
+        DownloadDataJson = json.load(DownloadDataHttp)
+
+        path.apiUrlEndpoint = str(DownloadDataJson['result']['url'])
+        return True
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
+        return False
+
 def ApiLogin(LoginNotification=False):
     #Check login retry limit
     if var.ApiLoginCount > 2:
@@ -54,6 +96,9 @@ def ApiLogin(LoginNotification=False):
         if var.addon.getSetting('LoginUsername') == '' or var.addon.getSetting('LoginPassword') == '':
             var.addon.openSettings()
             return False
+
+        #Download and set api endpoint adres
+        ApiSetEndpointAdresNumber()
 
         loginDevice = classes.Class_ApiLogin_deviceRegistrationData()
         loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')
@@ -77,6 +122,9 @@ def ApiLogin(LoginNotification=False):
         if var.addon.getSetting('LoginEmail') == '' or var.addon.getSetting('LoginPasswordEmail') == '':
             var.addon.openSettings()
             return False
+
+        #Download and set api endpoint adres
+        ApiSetEndpointAdresIdentifier()
 
         loginDevice = classes.Class_ApiLogin_deviceInfo()
         loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')

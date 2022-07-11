@@ -25,8 +25,15 @@ def icon_epg(pictureUrl):
 def icon_radio(channelId):
     return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/' + channelId + '.png'
 
+apiEndpointUrl = 'api.tv.kpn.com'
 def api_url_120(arguments):
-    return 'https://api.tv.kpn.com/101/1.2.0/A/nld/pctv/kpn/' + arguments
+    return 'https://' + apiEndpointUrl + '/101/1.2.0/A/nld/pctv/kpn/' + arguments
+
+def api_endpoint_number():
+    return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott&tan=' + var.addon.getSetting('LoginUsername')
+
+def api_endpoint_identifier():
+    return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott'
 
 def api_login():
     return api_url_120('USER/SESSIONS/')
