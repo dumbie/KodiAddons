@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
   <category label="Abonnement">
-    <setting id="LoginProvider" type="select" label="Kleurenschema" default="XS4ALL" values="XS4ALL|Telfort|KPN"/>
     <setting id="LoginType" type="select" label="Inloggen met" default="Abonnementsnummer" values="Abonnementsnummer|Emailadres"/>
     <setting type="sep"/>
     <setting id="LoginUsername" type="text" label="Abonnementsnummer" default=""/>

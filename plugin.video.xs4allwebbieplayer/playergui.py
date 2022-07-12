@@ -247,7 +247,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/playpause.png'),'icon': path.resources('resources/skins/default/media/common/playpause.png')})
         listcontainer.addItem(listitem)
 
-        listitem = xbmcgui.ListItem('Stop met het afspelen')
+        listitem = xbmcgui.ListItem('Stop met afspelen')
         listitem.setProperty('Action', 'media_stop')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/stop.png'),'icon': path.resources('resources/skins/default/media/common/stop.png')})
         listcontainer.addItem(listitem)

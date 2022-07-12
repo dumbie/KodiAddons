@@ -19,13 +19,7 @@ def run_addon(forceLaunch=False):
 
 #Get provider color string
 def get_provider_color_string():
-    currentProvider = var.addon.getSetting('LoginProvider').lower()
-    if currentProvider == 'xs4all':
-        return '[COLOR FFF5AF00]'
-    elif currentProvider == 'telfort':
-        return '[COLOR FF2F41B7]'
-    elif currentProvider == 'kpn':
-        return '[COLOR FF009900]'
+    return '[COLOR FF009900]'
 
 #Search filter string
 def search_filter_string(searchString):

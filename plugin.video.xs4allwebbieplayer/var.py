@@ -114,6 +114,7 @@ PlayerWindowed = False
 PlayerOverlay = False
 
 #Api variables
+ApiEndpointUrl = 'api.tv.kpn.com'
 ApiLoggedIn = False
 ApiHomeAccess = True
 ApiLastLogin = datetime(1970, 1, 1)

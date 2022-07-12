@@ -47,14 +47,14 @@ def ApiSetEndpointAdresNumber():
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
-        path.apiUrlEndpoint = str(DownloadDataJson['result']['url'])
+        var.ApiEndpointUrl = str(DownloadDataJson['result']['url'])
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
         xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
         return False
 
-def ApiSetEndpointAdresIdentifier():
+def ApiSetEndpointAdresEmail():
     try:
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
@@ -67,11 +67,11 @@ def ApiSetEndpointAdresIdentifier():
         apiEndpoint = apiEndpoint.__dict__
 
         DownloadData = json.dumps(apiEndpoint).encode('ascii')
-        DownloadRequest = hybrid.urllib_request(path.api_endpoint_identifier(), data=DownloadData, headers=DownloadHeaders)
+        DownloadRequest = hybrid.urllib_request(path.api_endpoint_email(), data=DownloadData, headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
-        path.apiUrlEndpoint = str(DownloadDataJson['result']['url'])
+        var.ApiEndpointUrl = str(DownloadDataJson['result']['url'])
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
@@ -124,7 +124,7 @@ def ApiLogin(LoginNotification=False):
             return False
 
         #Download and set api endpoint adres
-        ApiSetEndpointAdresIdentifier()
+        ApiSetEndpointAdresEmail()
 
         loginDevice = classes.Class_ApiLogin_deviceInfo()
         loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')

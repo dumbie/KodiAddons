@@ -116,55 +116,18 @@ def clear_home_variables():
     var.windowHome.clearProperty('WebbiePlayerRunning')
     var.windowHome.clearProperty('WebbiePlayerSleepTimer')
 
-#Change add-on accent to provider
-def change_addon_accent():
-    #Set image destination paths
-    logo = path.resources("resources/skins/default/media/common/logo.png")
-    backgroundAddon = path.resources("resources/skins/default/media/common/background_addon.png")
-    backgroundAccent = path.resources("resources/skins/default/media/common/background_accent.png")
-    scrollbar400 = path.resources("resources/skins/default/media/common/scrollbar_accent_400.png")
-    scrollbar800 = path.resources("resources/skins/default/media/common/scrollbar_accent_800.png")
-
-    #Copy provider accent images
-    currentProvider = var.addon.getSetting('LoginProvider').lower()
-    if currentProvider == 'xs4all':
-        files.removeFile(logo)
-        files.copyFile(path.resources('resources/skins/default/media/common/logo_xs4all.png'), logo)
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_xs4all.png'), backgroundAddon)
-        files.removeFile(backgroundAccent)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_accent_xs4all.png'), backgroundAccent)
-        files.removeFile(scrollbar400)
-        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_xs4all.png'), scrollbar400)
-        files.removeFile(scrollbar800)
-        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_xs4all.png'), scrollbar800)
-    elif currentProvider == 'telfort':
-        files.removeFile(logo)
-        files.copyFile(path.resources('resources/skins/default/media/common/logo_telfort.png'), logo)
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_telfort.png'), backgroundAddon)
-        files.removeFile(backgroundAccent)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_accent_telfort.png'), backgroundAccent)
-        files.removeFile(scrollbar400)
-        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_telfort.png'), scrollbar400)
-        files.removeFile(scrollbar800)
-        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_telfort.png'), scrollbar800)
-    elif currentProvider == 'kpn':
-        files.removeFile(logo)
-        files.copyFile(path.resources('resources/skins/default/media/common/logo_kpn.png'), logo)
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_kpn.png'), backgroundAddon)
-        files.removeFile(backgroundAccent)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_accent_kpn.png'), backgroundAccent)
-        files.removeFile(scrollbar400)
-        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_kpn.png'), scrollbar400)
-        files.removeFile(scrollbar800)
-        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_kpn.png'), scrollbar800)
+#Change to custom background
+def change_addon_background():
+    #Set background image destination path
+    backgroundPath = path.resources("resources/skins/default/media/common/background_addon.png")
 
     #Copy custom background image
     if files.existFile(path.addonstorage("background.png")):
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.addonstorage("background.png"), backgroundAddon)
+        files.removeFile(backgroundPath)
+        files.copyFile(path.addonstorage("background.png"), backgroundPath)
+    else:
+        files.removeFile(backgroundPath)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_kpn.png'), backgroundPath)
 
 #Add-on launch
 if __name__ == '__main__':
@@ -174,5 +137,5 @@ if __name__ == '__main__':
         reset_home_variables()
         check_player_status()
         check_login_settings()
-        change_addon_accent()
+        change_addon_background()
         main.switch_to_page()
