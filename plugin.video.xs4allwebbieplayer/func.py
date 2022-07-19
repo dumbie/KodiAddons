@@ -19,7 +19,13 @@ def run_addon(forceLaunch=False):
 
 #Get provider color string
 def get_provider_color_string():
-    return '[COLOR FF009900]'
+    currentProvider = var.addon.getSetting('AddonAccent').lower()
+    if currentProvider == 'geel':
+        return '[COLOR FFF5AF00]'
+    elif currentProvider == 'blauw':
+        return '[COLOR FF2F41B7]'
+    elif currentProvider == 'groen':
+        return '[COLOR FF009900]'
 
 #Search filter string
 def search_filter_string(searchString):
@@ -317,6 +323,17 @@ def round_integer_base(integer, base=5):
 #Shutdown Kodi
 def close_kodi_force():
     xbmc.shutdown()
+
+#Shutdown Kodi with dialog
+def close_kodi_dialog():
+    dialogAnswers = ['Ja', 'Nee']
+    dialogHeader = 'Kodi afsluiten?'
+    dialogSummary = 'Weet u zeker dat u Kodi wilt afsluiten?'
+    dialogFooter = ''
+
+    dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+    if dialogResult == 'Ja':
+        xbmc.shutdown()
 
 #Shutdown device with dialog
 def device_shutdown_dialog():

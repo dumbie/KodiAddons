@@ -18,11 +18,12 @@ import zap
 
 def switch_to_page():
     if var.guiTelevision == None:
-        if var.addon.getSetting('TelevisionChannelView') == 'lijst':
+        channelView = var.addon.getSetting('TelevisionChannelView').lower()
+        if channelView == 'lijst':
             var.guiTelevision = Gui('television.xml', var.addonpath, 'default', '720p')
-        elif var.addon.getSetting('TelevisionChannelView') == 'blokken':
+        elif channelView == 'blokken':
             var.guiTelevision = Gui('television-grid.xml', var.addonpath, 'default', '720p')
-        elif var.addon.getSetting('TelevisionChannelView') == 'minimaal':
+        elif channelView == 'minimaal':
             var.guiTelevision = Gui('television-min.xml', var.addonpath, 'default', '720p')
         var.guiTelevision.show()
 

@@ -72,7 +72,7 @@
             <control type="image">
                 <top>50</top>
                 <left>50</left>
-                <width>284</width>
+                <width>223</width>
                 <height>100</height>
                 <aspectratio>keep</aspectratio>
                 <texture>common/logo.png</texture>
@@ -80,7 +80,7 @@
             <control type="button" id="3001">
                 <top>50</top>
                 <left>50</left>
-                <width>284</width>
+                <width>223</width>
                 <height>100</height>
                 <aspectratio>keep</aspectratio>
                 <texturefocus>-</texturefocus>
@@ -90,7 +90,7 @@
         <!-- Information -->
         <control type="label">
             <top>70</top>
-            <left>350</left>
+            <left>325</left>
             <width>500</width>
             <height>30</height>
             <align>left</align>
@@ -99,7 +99,7 @@
         </control>
         <control type="label" id="1">
             <top>100</top>
-            <left>350</left>
+            <left>325</left>
             <width>500</width>
             <height>30</height>
             <align>left</align>

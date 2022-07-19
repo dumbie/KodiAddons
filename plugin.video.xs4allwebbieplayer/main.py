@@ -67,7 +67,7 @@ def dialog_close():
     elif dialogResult == 'Apparaat herstarten':
         func.device_reboot_dialog()
     elif dialogResult == 'Kodi afsluiten':
-        func.close_kodi_force()
+        func.close_kodi_dialog()
     elif dialogResult == 'Toon video speler':
         var.PlayerCustom.Fullscreen(True)
     else:

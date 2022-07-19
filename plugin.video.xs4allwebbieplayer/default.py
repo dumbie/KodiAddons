@@ -116,18 +116,48 @@ def clear_home_variables():
     var.windowHome.clearProperty('WebbiePlayerRunning')
     var.windowHome.clearProperty('WebbiePlayerSleepTimer')
 
-#Change to custom background
-def change_addon_background():
-    #Set background image destination path
-    backgroundPath = path.resources("resources/skins/default/media/common/background_addon.png")
+#Change add-on accent images
+def change_addon_accent():
+    #Set image destination paths
+    backgroundAddon = path.resources("resources/skins/default/media/common/background_addon.png")
+    backgroundAccent = path.resources("resources/skins/default/media/common/background_accent.png")
+    scrollbar400 = path.resources("resources/skins/default/media/common/scrollbar_accent_400.png")
+    scrollbar800 = path.resources("resources/skins/default/media/common/scrollbar_accent_800.png")
+
+    #Copy add-on accent images
+    currentProvider = var.addon.getSetting('AddonAccent').lower()
+    if currentProvider == 'geel':
+        files.removeFile(backgroundAddon)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_yellow.png'), backgroundAddon)
+        files.removeFile(backgroundAccent)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_accent_yellow.png'), backgroundAccent)
+        files.removeFile(scrollbar400)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_yellow.png'), scrollbar400)
+        files.removeFile(scrollbar800)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_yellow.png'), scrollbar800)
+    elif currentProvider == 'blauw':
+        files.removeFile(backgroundAddon)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_blue.png'), backgroundAddon)
+        files.removeFile(backgroundAccent)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_accent_blue.png'), backgroundAccent)
+        files.removeFile(scrollbar400)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_blue.png'), scrollbar400)
+        files.removeFile(scrollbar800)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_blue.png'), scrollbar800)
+    elif currentProvider == 'groen':
+        files.removeFile(backgroundAddon)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_green.png'), backgroundAddon)
+        files.removeFile(backgroundAccent)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_accent_green.png'), backgroundAccent)
+        files.removeFile(scrollbar400)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_green.png'), scrollbar400)
+        files.removeFile(scrollbar800)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_green.png'), scrollbar800)
 
     #Copy custom background image
     if files.existFile(path.addonstorage("background.png")):
-        files.removeFile(backgroundPath)
-        files.copyFile(path.addonstorage("background.png"), backgroundPath)
-    else:
-        files.removeFile(backgroundPath)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_kpn.png'), backgroundPath)
+        files.removeFile(backgroundAddon)
+        files.copyFile(path.addonstorage("background.png"), backgroundAddon)
 
 #Add-on launch
 if __name__ == '__main__':
@@ -137,5 +167,5 @@ if __name__ == '__main__':
         reset_home_variables()
         check_player_status()
         check_login_settings()
-        change_addon_background()
+        change_addon_accent()
         main.switch_to_page()
