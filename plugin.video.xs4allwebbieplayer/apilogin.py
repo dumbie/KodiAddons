@@ -7,6 +7,7 @@ import xbmc
 import xbmcgui
 import alarm
 import classes
+import default
 import dialog
 import download
 import func
@@ -90,13 +91,11 @@ def ApiLogin(LoginNotification=False):
     #Generate the device id
     ApiGenerateDeviceId()
 
+    #Check login settings
+    default.check_login_settings()
+
     #Check the login type
     if var.addon.getSetting('LoginType') == 'Abonnementsnummer':
-        #Check login settings
-        if var.addon.getSetting('LoginUsername') == '' or var.addon.getSetting('LoginPassword') == '':
-            var.addon.openSettings()
-            return False
-
         #Download and set api endpoint adres
         ApiSetEndpointAdresNumber()
 
@@ -118,11 +117,6 @@ def ApiLogin(LoginNotification=False):
         loginData.credentialsStdAuth = loginAuth
         loginData = loginData.__dict__
     else:
-        #Check login settings
-        if var.addon.getSetting('LoginEmail') == '' or var.addon.getSetting('LoginPasswordEmail') == '':
-            var.addon.openSettings()
-            return False
-
         #Download and set api endpoint adres
         ApiSetEndpointAdresEmail()
 

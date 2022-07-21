@@ -4,10 +4,16 @@
     <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
     <controls>
         <!-- Background -->
-        <control type="image" id="8000">
+        <control type="image">
             <width>1280</width>
             <height>720</height>
             <texture>common/background_addon.png</texture>
+        </control>
+        <!-- Background Kids -->
+        <control type="image" id="8000">
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="C8FFFFFF">-</texture>
         </control>
         <!-- Music Animation -->
         <control type="image">

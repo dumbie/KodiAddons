@@ -94,7 +94,15 @@ def check_multi_launch():
         return True
 
 def check_login_settings():
-    if var.addon.getSetting('LoginUsername') == '' or var.addon.getSetting('LoginPassword') == '':
+    loginNotSet = False
+    if var.addon.getSetting('LoginUsername') == '' and var.addon.getSetting('LoginEmail') == '':
+        loginNotSet = True
+    elif var.addon.getSetting('LoginPassword') == '' and var.addon.getSetting('LoginPasswordEmail') == '':
+        loginNotSet = True
+
+    if loginNotSet == True:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Stel uw abonnementsgegevens in', notificationIcon, 2500, False)
         var.addon.openSettings()
 
 def stop_addon_threads():
@@ -153,6 +161,15 @@ def change_addon_accent():
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_green.png'), scrollbar400)
         files.removeFile(scrollbar800)
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_green.png'), scrollbar800)
+    elif currentProvider == 'grijs':
+        files.removeFile(backgroundAddon)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_gray.png'), backgroundAddon)
+        files.removeFile(backgroundAccent)
+        files.copyFile(path.resources('resources/skins/default/media/common/background_accent_gray.png'), backgroundAccent)
+        files.removeFile(scrollbar400)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_400_gray.png'), scrollbar400)
+        files.removeFile(scrollbar800)
+        files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_gray.png'), scrollbar800)
 
     #Copy custom background image
     if files.existFile(path.addonstorage("background.png")):

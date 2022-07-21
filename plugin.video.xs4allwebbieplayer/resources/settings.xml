@@ -11,7 +11,7 @@
     <setting label="* Sommige opties werken pas na het opnieuw starten." type="lsep"/>
   </category>
   <category label="Algemeen">
-    <setting id="AddonAccent" type="select" label="Add-on kleurenschema" default="Groen" values="Groen|Blauw|Geel"/>
+    <setting id="AddonAccent" type="select" label="Add-on kleurenschema" default="Groen" values="Groen|Blauw|Geel|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisie zenders weergave stijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="TelevisionChannelFavorite" label="Televisie zenders open met favorieten lijst" type="bool" default="false"/>
     <setting id="TelevisionHideEarlierAired" label="Toon geen eerder programma informatie" type="bool" default="false"/>
