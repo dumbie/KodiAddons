@@ -12,8 +12,6 @@ import var
 
 def thread_check_requirements():
     enable_inputstreamadaptive()
-    if var.addon.getSetting('InputAdaptiveAdjust') == 'true':
-        adjust_inputstreamadaptive()
     enable_widevine_support()
 
 def enable_inputstreamadaptive():
@@ -36,15 +34,6 @@ def enable_inputstreamadaptive():
         failed = True
     if failed == True:
         xbmcgui.Dialog().notification(var.addonname, 'Inputstream add-on inschakelen mislukt.', var.addonicon, 2500, False)
-
-def adjust_inputstreamadaptive():
-    try:
-        input_addon = xbmcaddon.Addon('inputstream.adaptive')
-        input_addon.setSetting('MAXRESOLUTION', '4')
-        input_addon.setSetting('MAXRESOLUTIONSECURE', '4')
-        input_addon.setSetting('IGNOREDISPLAY', 'true')
-    except:
-        xbmcgui.Dialog().notification(var.addonname, 'Inputstream add-on instellen mislukt.', var.addonicon, 2500, False)
 
 def enable_widevine_support(forceUpdate=False):
     #Check if Widevine is already updating
