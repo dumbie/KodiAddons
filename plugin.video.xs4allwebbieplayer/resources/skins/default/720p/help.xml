@@ -73,8 +73,8 @@
                     <width>700</width>
                     <height>525</height>
                     <texturesliderbarfocus>common/scrollbar_accent_800.png</texturesliderbarfocus>
-                    <texturesliderbar colordiffuse="60888888">common/scrollbar_dark_800.png</texturesliderbar>
-                    <texturesliderbackground colordiffuse="60888888">common/scrollbar_light_800.png</texturesliderbackground>
+                    <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_800.png</texturesliderbar>
+                    <texturesliderbackground>-</texturesliderbackground>
                     <onup>4000</onup>
                 </control>
             </control>

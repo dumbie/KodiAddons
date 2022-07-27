@@ -422,7 +422,7 @@
                 <onup>1001</onup>
                 <onleft>1000</onleft>
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
-                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
             </control>
         </control>

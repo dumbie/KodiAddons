@@ -330,7 +330,7 @@
                 <width>8</width>
                 <height>418</height>
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
-                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
             </control>
         </control>

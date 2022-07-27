@@ -182,8 +182,8 @@
                 <width>375</width>
                 <height>475</height>
                 <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
-                <texturesliderbar colordiffuse="60888888">common/scrollbar_dark_400.png</texturesliderbar>
-                <texturesliderbackground colordiffuse="60888888">common/scrollbar_light_400.png</texturesliderbackground>
+                <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
                 <onleft>2001</onleft>
             </control>
         </control>
@@ -557,7 +557,7 @@
                 <onleft>1000</onleft>
                 <onright>2000</onright>
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
-                <texturesliderbar colordiffuse="60888888">common/background_light.png</texturesliderbar>
+                <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
             </control>
         </control>
