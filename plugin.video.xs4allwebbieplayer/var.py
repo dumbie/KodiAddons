@@ -62,7 +62,7 @@ guiTelevision = None
 guiRecorded = None
 guiRecordingEvent = None
 guiRecordingSeries = None
-guiYesterday = None
+guiVod = None
 guiKids = None
 guiSearch = None
 guiMovies = None
@@ -147,9 +147,11 @@ LoadChannelFavoritesOnly = False
 ChannelIdsPlayable = []
 ChannelsDataJsonTelevision = []
 
-#Yesterday variables
-YesterdaySearchLastUpdate = datetime(1970,1,1)
-YesterdaySearchDataJson = []
+#Vod variables
+VodDataJson = []
+VodDaysOffset = 0
+VodDaysOffsetPast = 10
+VodDaysOffsetFuture = 1
 
 #Movies variables
 MovieSearchDataJson = []
@@ -166,7 +168,6 @@ ChannelsDataJsonRecordingEvent = []
 ChannelsDataJsonRecordingSeries = []
 
 #Epg variables
-EpgDaysOffsetPast = 7
 EpgDaysOffsetFuture = 7
 EpgRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten']
 EpgCacheArray = []

@@ -184,6 +184,7 @@ class Gui(xbmcgui.WindowXML):
                 if func.string_isnullorempty(ProgramDetails):
                     ProgramDetails = '(?)'
                 ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
+                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
 
                 #Add vod program
                 listitem = xbmcgui.ListItem()
@@ -193,7 +194,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty('ProgramDetails', ProgramDetails)
                 listitem.setProperty("ProgramAvailability", ProgramAvailability)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Genre': selectedSeriesName, 'Plot': ProgramDescription})
+                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
                 listitem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
                 listcontainer.addItem(listitem)
             except:
@@ -251,6 +252,7 @@ class Gui(xbmcgui.WindowXML):
                 if func.string_isnullorempty(ProgramDetails):
                     ProgramDetails = '(?)'
                 ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
+                ProgramTitle = EpisodeTitle + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
 
                 #Add vod program
                 listitem = xbmcgui.ListItem()
@@ -262,7 +264,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty('ProgramDetails', ProgramDetails)
                 listitem.setProperty("ProgramAvailability", ProgramAvailability)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Genre': selectedSeriesName, 'Plot': ProgramDescription})
+                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
                 listitem.setArt({'thumb': path.icon_epg(selectedPictureUrl), 'icon': path.icon_epg(selectedPictureUrl)})
                 listcontainersort.append(listitem)
             except:
@@ -413,6 +415,7 @@ class Gui(xbmcgui.WindowXML):
                 if func.string_isnullorempty(ProgramDetails):
                     ProgramDetails = '(?)'
                 ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
+                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
 
                 #Add week program
                 listitem = xbmcgui.ListItem()
@@ -425,7 +428,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty('ProgramDetails', ProgramDetails)
                 listitem.setProperty("ProgramAvailability", ProgramAvailability)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Genre': 'Kids', 'Plot': ProgramDetails})
+                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Kids', 'Plot': ProgramDescription})
                 iconStreamType = "common/calendarweek.png"
                 iconProgram = path.icon_epg(PictureUrl)
                 iconChannel = path.icon_television(ExternalId)
@@ -442,7 +445,7 @@ class Gui(xbmcgui.WindowXML):
             func.updateVisibility(self, 3002, True)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 4, "Zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 4, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
                 func.updateLabelText(self, 4, "")
@@ -460,7 +463,7 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 4, "Geen zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 4, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen programma's")

@@ -281,14 +281,10 @@ def programdescription_from_json_metadata(metaData):
 #Check if program is pay to play
 def program_check_paytoplay(technicalPackageIds):
     try:
-        for packageId in technicalPackageIds:
-            try:
-                packageIdInt = int(packageId)
-                if packageIdInt != 101 and packageIdInt != 10078 and packageIdInt != 10081:
-                    return True
-            except:
-                continue
-        return False
+        technicalPackageIdsInt = technicalPackageIds.astype(int)
+        if 101 and 10078 in technicalPackageIdsInt:
+            return False
+        return True
     except:
         return False
 
@@ -410,10 +406,9 @@ def recording_available_time(metaData):
 def vod_week_available_time(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
     try:
-        DateTimeEndTime = programenddatetime_from_json_metadata(metaData)
-        DateTimeExpireEnd = DateTimeEndTime + timedelta(days=8)
-        DateTimeExpireMidnight = func.datetime_to_midnight(DateTimeExpireEnd)
-        TimeRemainingSeconds = int((DateTimeExpireMidnight - datetime.now()).total_seconds())
+        DateTimeStartTime = programstartdatetime_from_json_metadata(metaData)
+        DateTimeExpireTime = DateTimeStartTime + timedelta(days=var.VodDaysOffsetPast)
+        TimeRemainingSeconds = int((DateTimeExpireTime - datetime.now()).total_seconds())
         if TimeRemainingSeconds > 0:
             TimeRemainingDays = TimeRemainingSeconds // 86400
             TimeRemainingHours = (TimeRemainingSeconds - TimeRemainingDays * 86400) // 3600
@@ -443,8 +438,8 @@ def vod_week_available_time(metaData):
 def vod_ondemand_available_time(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
     try:
-        DateTimeExpire = contractenddatetime_from_json_metadata(metaData)
-        TimeRemainingSeconds = int((DateTimeExpire - datetime.now()).total_seconds())
+        DateTimeExpireTime = contractenddatetime_from_json_metadata(metaData)
+        TimeRemainingSeconds = int((DateTimeExpireTime - datetime.now()).total_seconds())
         if TimeRemainingSeconds > 0:
             TimeRemainingDays = TimeRemainingSeconds // 86400
             TimeRemainingHours = (TimeRemainingSeconds - TimeRemainingDays * 86400) // 3600

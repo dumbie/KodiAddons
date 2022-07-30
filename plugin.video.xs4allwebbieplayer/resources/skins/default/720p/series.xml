@@ -13,7 +13,7 @@
         <control type="image" id="8000">
             <width>1280</width>
             <height>720</height>
-            <texture colordiffuse="C8FFFFFF">-</texture>
+            <texture colordiffuse="BEFFFFFF">-</texture>
         </control>
         <!-- Music Animation -->
         <control type="image">

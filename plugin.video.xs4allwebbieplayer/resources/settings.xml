@@ -24,7 +24,6 @@
     <setting id="PlayerSubtitlesOff" label="Ondertiteling bij begin van stream uitzetten" type="bool" default="true"/>
     <setting id="PlayerVolumeStep" label="Geluidsvolume aanpas stapgrootte in procenten" type="slider" default="5" range="1,1,30" option="int"/>
     <setting id="PlayerInformationCloseTime" label="Aantal seconden voordat informatie sluit in speler" type="slider" default="10" range="4,2,30" option="int"/>
-    <setting id="StreamSeekMinutes" label="Aantal minuten dat teruggespoeld kan worden" type="slider" default="365" range="5,5,365" option="int"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Opstarten">

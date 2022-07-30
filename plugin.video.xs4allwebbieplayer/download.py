@@ -151,9 +151,9 @@ def download_recording_series(forceUpdate=False):
         xbmcgui.Dialog().notification(var.addonname, 'Serie opnames download mislukt.', notificationIcon, 2500, False)
         return False
 
-def download_vod_yesterday(forceUpdate=False):
+def download_vod_day(forceUpdate=False, dayOffset=0):
     #Check if data is already cached
-    if var.YesterdaySearchDataJson != [] and forceUpdate == False:
+    if var.VodDataJson != [] and forceUpdate == False:
         return None
 
     #Check if user is logged in
@@ -167,7 +167,7 @@ def download_vod_yesterday(forceUpdate=False):
             "X-Xsrf-Token": var.ApiLoginToken
         }
 
-        DownloadRequest = hybrid.urllib_request(path.vod_yesterday(), headers=DownloadHeaders)
+        DownloadRequest = hybrid.urllib_request(path.vod_day(dayOffset), headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
@@ -178,15 +178,14 @@ def download_vod_yesterday(forceUpdate=False):
             if resultCode == 'KO':
                 var.ApiLoggedIn = False
                 notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
-                xbmcgui.Dialog().notification(var.addonname, 'Gister gemist download mislukt: ' + resultMessage, notificationIcon, 2500, False)
+                xbmcgui.Dialog().notification(var.addonname, 'Programma gemist download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.YesterdaySearchLastUpdate = datetime.now()
-        var.YesterdaySearchDataJson = DownloadDataJson
+        var.VodDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Gister gemist download mislukt.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Programma gemist download mislukt.', notificationIcon, 2500, False)
         return False
 
 def download_vod_movies(forceUpdate=False):

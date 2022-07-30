@@ -73,14 +73,21 @@ def recording_event():
 def recording_series():
     return api_url_120('TRAY/USER/RECORDING/SERIES?sortOrder=desc&orderBy=StartTime&from=0&to=9999')
 
-def vod_yesterday():
+def vod_day(dayOffset=0):
     #Set download time range
-    dateTimeMidnight = func.datetime_to_midnight(datetime.now())
-    startTimeEpoch = func.datetime_to_ticks(dateTimeMidnight - timedelta(days=1), True)
-    endTimeEpoch = func.datetime_to_ticks(dateTimeMidnight + timedelta(hours=1), True)
+    if dayOffset == 0:
+        dateTimeMidnight = func.datetime_to_midnight(datetime.now())
+        startTimeEpoch = func.datetime_to_ticks(dateTimeMidnight - timedelta(hours=1), True)
+        endTimeEpoch = func.datetime_to_ticks(datetime.now() + timedelta(hours=1), True)
+    else:
+        dateTimeMidnight = func.datetime_to_midnight(datetime.now() - timedelta(days=dayOffset))
+        startTimeEpoch = func.datetime_to_ticks(dateTimeMidnight - timedelta(hours=1), True)
+        endTimeEpoch = func.datetime_to_ticks(dateTimeMidnight + timedelta(hours=25), True)
 
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999')
-    downloadPath += '&filter_airingStartTime=' + str(startTimeEpoch) + '&filter_airingEndTime=' + str(endTimeEpoch)
+    downloadPath += '&filter_endTime=' + str(endTimeEpoch)
+    downloadPath += '&filter_startTime=' + str(startTimeEpoch)
+
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
@@ -113,16 +120,19 @@ def vod_series_season(parentId):
 def search_sport():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999&filter_genre=sport')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
     return downloadPath
 
 def search_kids():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999&filter_genre=kinderen,kids')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
     return downloadPath
 
 def search_movies():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999&filter_programType=film')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
@@ -132,6 +142,7 @@ def search_movies():
 def search_series():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999&filter_programType=serie')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
@@ -141,6 +152,7 @@ def search_series():
 def search_program(programName):
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isTvPremiere=true&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999&orderBy=airingStartTime&sortOrder=desc')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=erotiek'
     return downloadPath

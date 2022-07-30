@@ -132,7 +132,7 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
-        listitem = xbmcgui.ListItem('Selecteer gids dag')
+        listitem = xbmcgui.ListItem('Selecteer dag')
         listitem.setProperty('Action', 'set_load_day')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/calendar.png'),'icon': path.resources('resources/skins/default/media/common/calendar.png')})
         listcontainer.addItem(listitem)
@@ -142,43 +142,25 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listcontainer.addItem(listitem)
 
-    def string_day_number(self, numberDay):
-        todayDateTime = datetime.today().date()
-        dayDateTime = todayDateTime + timedelta(days=numberDay)
-        dayString = dayDateTime.strftime('%a, %d %B %Y')
-
-        if dayDateTime == todayDateTime + timedelta(days=2):
-            dayString += ' (Overmorgen)'
-        elif dayDateTime == todayDateTime + timedelta(days=1):
-            dayString += ' (Morgen)'
-        elif dayDateTime == todayDateTime:
-            dayString += ' (Vandaag)'
-        elif dayDateTime == todayDateTime + timedelta(days=-1):
-            dayString += ' (Gisteren)'
-        elif dayDateTime == todayDateTime + timedelta(days=-2):
-            dayString += ' (Eergister)'
-
-        return dayString
-
     def dialog_set_day(self):
         #Set dates to array
         dialogAnswers = []
 
-        for x in range(var.EpgDaysOffsetPast + var.EpgDaysOffsetFuture):
-            dayString = self.string_day_number(x - var.EpgDaysOffsetPast)
+        for x in range(var.VodDaysOffsetPast + var.EpgDaysOffsetFuture):
+            dayString = func.string_day_number(x - var.VodDaysOffsetPast)
             dialogAnswers.append(dayString)
 
-        dialogHeader = 'Televisie gids dag'
+        dialogHeader = 'Selecteer dag'
         dialogSummary = 'Selecteer de gewenste televisie gids dag.'
         dialogFooter = ''
 
-        selectIndex = self.EpgCurrentLoadDayInt + var.EpgDaysOffsetPast
+        selectIndex = self.EpgCurrentLoadDayInt + var.VodDaysOffsetPast
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, selectIndex)
         if dialogResult == 'DialogCancel':
             return
 
         #Calculate epg day offset
-        self.EpgCurrentLoadDayInt = (dialogAnswers.index(dialogResult) - var.EpgDaysOffsetPast)
+        self.EpgCurrentLoadDayInt = (dialogAnswers.index(dialogResult) - var.VodDaysOffsetPast)
 
         #Load the channel epg
         self.load_epg()
@@ -343,7 +325,7 @@ class Gui(xbmcgui.WindowXML):
                 self.EpgCurrentLoadDayInt = self.EpgCurrentLoadDayInt + 1
                 self.load_epg()
         else:
-            if self.EpgCurrentLoadDayInt > (var.EpgDaysOffsetPast * -1):
+            if self.EpgCurrentLoadDayInt > (var.VodDaysOffsetPast * -1):
                 self.EpgCurrentLoadDayInt = self.EpgCurrentLoadDayInt - 1
                 self.load_epg()
 
@@ -721,7 +703,7 @@ class Gui(xbmcgui.WindowXML):
     #Update the status
     def count_epg(self, ChannelName):
         #Set the epg day string
-        epgLoadDayString = self.string_day_number(self.EpgCurrentLoadDayInt)
+        epgLoadDayString = func.string_day_number(self.EpgCurrentLoadDayInt)
 
         #Update the label texts
         listcontainer = self.getControl(1002)

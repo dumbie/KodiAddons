@@ -361,7 +361,7 @@ def play_stream_television(listItem, Windowed):
     CurrentChannelName = var.addon.getSetting('CurrentChannelName')
 
     #Allow longer back seeking
-    DateTimeUtc = datetime.utcnow() - timedelta(minutes=int(var.addon.getSetting('StreamSeekMinutes')))
+    DateTimeUtc = datetime.utcnow() - timedelta(minutes=400)
     StartString = '&time=' + str(func.datetime_to_ticks(DateTimeUtc))
 
     #Check if user is logged in

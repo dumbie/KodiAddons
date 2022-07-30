@@ -10,27 +10,21 @@ import stream
 import var
 
 def switch_to_page():
-    if var.guiYesterday == None:
-        var.guiYesterday = Gui('vod.xml', var.addonpath, 'default', '720p')
-        var.guiYesterday.show()
+    if var.guiVod == None:
+        var.guiVod = Gui('vod.xml', var.addonpath, 'default', '720p')
+        var.guiVod.show()
 
 def close_the_page():
-    if var.guiYesterday != None:
+    if var.guiVod != None:
         #Close the shown window
-        var.guiYesterday.close()
-        var.guiYesterday = None
+        var.guiVod.close()
+        var.guiVod = None
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
-        func.updateLabelText(self, 2, "Gister Gemist")
+        func.updateLabelText(self, 2, "Programma Gemist")
         self.buttons_add_navigation()
-
-        #Check if the day has changed
-        dateTimeNowString = datetime.now().strftime('%Y-%m-%d')
-        dateTimeYesterdayString = var.YesterdaySearchLastUpdate.strftime('%Y-%m-%d')
-        ForceDownloadUpdate = dateTimeYesterdayString != dateTimeNowString
-
-        self.load_program(False, ForceDownloadUpdate)
+        self.load_program(False, False, var.VodDaysOffset)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -46,8 +40,10 @@ class Gui(xbmcgui.WindowXML):
                 close_the_page()
             elif listItemAction == 'search_program':
                 self.search_program()
+            elif listItemAction == 'set_load_day':
+                self.dialog_set_day()
             elif listItemAction == 'refresh_program':
-                self.load_program(True, True, False)
+                self.load_program(True, True, var.VodDaysOffset, False)
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
                 var.PlayerCustom.Fullscreen(True)
@@ -67,10 +63,35 @@ class Gui(xbmcgui.WindowXML):
             xbmc.executebuiltin('Action(PageDown)')
         elif actionId == var.ACTION_PREV_ITEM:
             xbmc.executebuiltin('Action(PageUp)')
+        elif actionId == var.ACTION_PLAYER_PLAY:
+            self.dialog_set_day()
         elif actionId == var.ACTION_SEARCH_FUNCTION:
             self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
             self.open_context_menu()
+
+    def dialog_set_day(self):
+        #Set dates to array
+        dialogAnswers = []
+
+        for x in range(var.VodDaysOffsetPast + var.VodDaysOffsetFuture):
+            dayString = func.string_day_number(x - var.VodDaysOffsetPast)
+            dialogAnswers.append(dayString)
+
+        dialogHeader = 'Selecteer dag'
+        dialogSummary = 'Selecteer de gewenste programma gemist dag.'
+        dialogFooter = ''
+
+        selectIndex = var.VodDaysOffsetPast - var.VodDaysOffset
+        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, selectIndex)
+        if dialogResult == 'DialogCancel':
+            return
+
+        #Calculate day offset
+        var.VodDaysOffset = abs(dialogAnswers.index(dialogResult) - var.VodDaysOffsetPast)
+
+        #Load day programs
+        self.load_program(True, True, var.VodDaysOffset)
 
     def open_context_menu(self):
         dialogAnswers = ['Programma zoeken']
@@ -85,7 +106,7 @@ class Gui(xbmcgui.WindowXML):
                 listItemSelected = listcontainer.getSelectedItem()
                 ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
                 var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
-                self.load_program(True, False)
+                self.load_program(True, False, var.VodDaysOffset)
             except:
                 pass
             var.SearchFilterTerm = ''
@@ -104,6 +125,11 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
+        listitem = xbmcgui.ListItem('Selecteer dag')
+        listitem.setProperty('Action', 'set_load_day')
+        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/calendar.png'),'icon': path.resources('resources/skins/default/media/common/calendar.png')})
+        listcontainer.addItem(listitem)
+
         listitem = xbmcgui.ListItem("Vernieuwen")
         listitem.setProperty('Action', 'refresh_program')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
@@ -118,12 +144,12 @@ class Gui(xbmcgui.WindowXML):
             keyboard.doModal()
             if keyboard.isConfirmed() == True:
                 var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-                self.load_program(True, False)
+                self.load_program(True, False, var.VodDaysOffset)
         except:
             pass
         var.SearchFilterTerm = ''
 
-    def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True):
+    def load_program(self, forceLoad=False, forceUpdate=False, dayOffset=0, silentUpdate=True):
         if forceUpdate == True and silentUpdate == False:
             notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
             xbmcgui.Dialog().notification(var.addonname, "Programma's worden vernieuwd.", notificationIcon, 2500, False)
@@ -137,7 +163,8 @@ class Gui(xbmcgui.WindowXML):
 
         #Download the programs
         func.updateLabelText(self, 1, "Programma's downloaden")
-        downloadResult = download.download_vod_yesterday(forceUpdate)
+        func.updateLabelText(self, 3, "")
+        downloadResult = download.download_vod_day(forceUpdate, dayOffset)
         if downloadResult == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listcontainer = self.getControl(1001)
@@ -149,7 +176,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add programs to the list
         func.updateLabelText(self, 1, "Programma's laden")
-        for program in var.YesterdaySearchDataJson['resultObj']['containers']:
+        for program in var.VodDataJson['resultObj']['containers']:
             try:
                 #Load program basics
                 ProgramName = metadatainfo.programtitle_from_json_metadata(program)
@@ -201,7 +228,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty("ProgramNameRaw", ProgramNameRaw)
                 listitem.setProperty("ProgramDetails", ProgramTime)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Genre': 'Gister Gemist', 'Plot': ProgramDescription})
+                listitem.setInfo('video', {'Genre': 'Programma Gemist', 'Plot': ProgramDescription})
                 listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
                 listcontainer.addItem(listitem)
             except:
@@ -212,14 +239,17 @@ class Gui(xbmcgui.WindowXML):
 
     #Update the status
     def count_program(self, resetSelect=False):
+        #Set the day string
+        loadDayString = func.string_day_number(-var.VodDaysOffset)
+
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 3, "Zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] op " + loadDayString)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-                func.updateLabelText(self, 3, "")
+                func.updateLabelText(self, 3, "Beschikbare programma's voor " + loadDayString)
 
             if resetSelect == True:
                 self.setFocus(listcontainer)
@@ -232,10 +262,10 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 3, "Geen zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] op " + loadDayString)
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen programma's")
-                func.updateLabelText(self, 3, "")
+                func.updateLabelText(self, 3, "Geen programma's beschikbaar voor " + loadDayString)
                 listcontainer.selectItem(0)
             xbmc.sleep(100)

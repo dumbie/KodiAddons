@@ -124,7 +124,7 @@ class Gui(xbmcgui.WindowXML):
         #Check if search result is available
         if var.SearchDownloadResultJson == []:
             notificationIcon = path.resources('resources/skins/default/media/common/searchresult.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Geen zoek resultaten.', notificationIcon, 2500, False)
+            xbmcgui.Dialog().notification(var.addonname, 'Geen zoekresultaten.', notificationIcon, 2500, False)
             return
 
         #Keyboard enter filter term
@@ -288,16 +288,22 @@ class Gui(xbmcgui.WindowXML):
     def count_program(self, resetSelect=False):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
-            func.updateLabelText(self, 1, str(listcontainer.size()) + " zoek resultaten")
-            func.updateLabelText(self, 3, "Zoek resultaten voor " + var.SearchDownloadSearchTerm + " [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
+            func.updateLabelText(self, 1, str(listcontainer.size()) + " zoekresultaten")
+            if func.string_isnullorempty(var.SearchFilterTerm):
+                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
+            else:
+                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] in [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
                 listcontainer.selectItem(0)
                 xbmc.sleep(100)
         else:
-            func.updateLabelText(self, 1, "Geen zoek resultaten")
-            func.updateLabelText(self, 3, "Geen zoek resultaten voor " + var.SearchDownloadSearchTerm + " [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
+            func.updateLabelText(self, 1, "Geen zoekresultaten")
+            if func.string_isnullorempty(var.SearchFilterTerm):
+                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
+            else:
+                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] in [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
             xbmc.sleep(100)

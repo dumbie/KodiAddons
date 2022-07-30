@@ -164,6 +164,7 @@ class Gui(xbmcgui.WindowXML):
                 if func.string_isnullorempty(ProgramDetails):
                     ProgramDetails = '(?)'
                 ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
+                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
 
                 #Add vod program
                 listitem = xbmcgui.ListItem()
@@ -173,7 +174,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty("ProgramDetails", ProgramDetails)
                 listitem.setProperty("ProgramAvailability", ProgramAvailability)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Genre': 'Films', 'Plot': ProgramDescription})
+                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
                 iconStreamType = "common/vod.png"
                 iconProgram = path.icon_vod(PictureUrl)
                 listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})
@@ -211,6 +212,7 @@ class Gui(xbmcgui.WindowXML):
                 if func.string_isnullorempty(ProgramDetails):
                     ProgramDetails = '(?)'
                 ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
+                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
 
                 #Add week program
                 listitem = xbmcgui.ListItem()
@@ -221,7 +223,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty("ProgramDetails", ProgramDetails)
                 listitem.setProperty("ProgramAvailability", ProgramAvailability)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Genre': 'Films', 'Plot': ProgramDescription})
+                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
                 iconStreamType = "common/calendarweek.png"
                 iconProgram = path.icon_epg(PictureUrl)
                 iconChannel = path.icon_television(ExternalId)
@@ -236,7 +238,7 @@ class Gui(xbmcgui.WindowXML):
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " gevonden films")
-                func.updateLabelText(self, 3, "Zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " films")
                 func.updateLabelText(self, 3, "")
@@ -252,7 +254,7 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, "Geen films gevonden")
-                func.updateLabelText(self, 3, "Geen zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen films")

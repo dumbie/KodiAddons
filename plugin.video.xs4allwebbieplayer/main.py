@@ -23,7 +23,7 @@ import stream
 import television
 import var
 import widevine
-import yesterday
+import vod
 
 def switch_to_page():
     if var.guiMain == None:
@@ -246,8 +246,8 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.addItem(listitem)
 
         if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Gister Gemist')
-            listitem.setProperty('Action', 'page_yesterday')
+            listitem = xbmcgui.ListItem('Programma Gemist')
+            listitem.setProperty('Action', 'page_vod')
             listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/vod.png'), 'icon': path.resources('resources/skins/default/media/common/vod.png')})
             listcontainer.addItem(listitem)
 
@@ -394,8 +394,8 @@ class Gui(xbmcgui.WindowXML):
                 television.switch_to_page()
             elif listItemAction == 'page_radio':
                 radio.switch_to_page()
-            elif listItemAction == 'page_yesterday':
-                yesterday.switch_to_page()
+            elif listItemAction == 'page_vod':
+                vod.switch_to_page()
             elif listItemAction == 'page_kids':
                 kids.switch_to_page()
             elif listItemAction == 'page_recorded':

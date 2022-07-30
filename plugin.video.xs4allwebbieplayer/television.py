@@ -309,7 +309,7 @@ class Gui(xbmcgui.WindowXML):
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' gevonden zenders')
-                func.updateLabelText(self, 3, "Zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
             elif var.LoadChannelFavoritesOnly == True:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' favorieten zenders')
                 if var.ApiHomeAccess == True:
@@ -332,7 +332,7 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 3, "Geen zoek resultaten voor " + var.SearchFilterTerm)
+                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
                 listcontainer.selectItem(2)
             elif var.LoadChannelFavoritesOnly == True:
                 func.updateLabelText(self, 1, 'Geen favorieten zenders')
