@@ -218,6 +218,7 @@
             <top>220</top>
             <width>1180</width>
             <height>40</height>
+            <onup>Control.setFocus(1001, 99999)</onup>
             <ondown>1001</ondown>
             <orientation>horizontal</orientation>
             <itemlayout width="280" height="40">
