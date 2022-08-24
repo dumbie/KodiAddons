@@ -32,7 +32,12 @@ class Gui(xbmcgui.WindowXML):
         listcontainer = self.getControl(1000)
         if listcontainer.size() == 0:
             if var.SearchDownloadResultJson == []:
-                self.search_program()
+                func.updateLabelText(self, 1, 'Geen zoek term')
+                listcontainer = self.getControl(1001)
+                self.setFocus(listcontainer)
+                xbmc.sleep(100)
+                listcontainer.selectItem(1)
+                xbmc.sleep(100)
             else:
                 self.search_list(var.SearchDownloadResultJson)
 

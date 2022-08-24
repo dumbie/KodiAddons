@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.19.1">
+<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.19.2">
   <requires>
     <import addon="inputstream.adaptive" version="2.0.10"/>
   </requires>

@@ -69,6 +69,54 @@ def download_channels_tv(forceUpdate=False):
         xbmcgui.Dialog().notification(var.addonname, 'Televisie download mislukt.', notificationIcon, 2500, False)
         return False
 
+def download_recording_profile(forceUpdate=False):
+    #Check if data is already cached
+    if var.RecordingProfileDataJson != [] and forceUpdate == False:
+        return None
+
+    #Check if user is logged in
+    if var.ApiLoggedIn == False:
+        apilogin.ApiLogin(False)
+
+    try:
+        DownloadHeaders = {
+            "User-Agent": var.addon.getSetting('CustomUserAgent'),
+            "Cookie": var.ApiLoginCookie,
+            "X-Xsrf-Token": var.ApiLoginToken
+        }
+
+        DownloadRequest = hybrid.urllib_request(path.recording_profile(), headers=DownloadHeaders)
+        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
+        DownloadDataJson = json.load(DownloadDataHttp)
+
+        #Check if connection is successful
+        if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
+            resultCode = DownloadDataJson['resultCode']
+            resultMessage = DownloadDataJson['message']
+            if resultCode == 'KO':
+                var.ApiLoggedIn = False
+                notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+                xbmcgui.Dialog().notification(var.addonname, 'Opname profiel download mislukt: ' + resultMessage, notificationIcon, 2500, False)
+                return False
+
+        #Update recording access
+        var.RecordingAccess = bool(DownloadDataJson['resultObj']['profile']['recordingProfileData']['isRecordingEnabled'])
+
+        #Update recording space
+        usedMinutes = int(DownloadDataJson['resultObj']['profile']['recordingProfileData']['usedMinutes'])
+        totalMinutes = int(DownloadDataJson['resultObj']['profile']['recordingProfileData']['totalMinutes'])
+        if usedMinutes != 0 and totalMinutes != 0:
+            var.RecordingSpaceString = str(round(100 - (usedMinutes * 100 / totalMinutes))) + '% ruimte beschikbaar'
+        else:
+            var.RecordingSpaceString = "Onbekende ruimte beschikbaar"
+
+        var.RecordingProfileDataJson = DownloadDataJson
+        return True
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Opname profiel download mislukt.', notificationIcon, 2500, False)
+        return False
+
 def download_recording_event(forceUpdate=False):
     #Check if data is already cached
     if var.ChannelsDataJsonRecordingEvent != [] and forceUpdate == False:
@@ -543,11 +591,10 @@ def record_series_add(ChannelId, liveSeriesId):
         notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen wordt opgenomen.', notificationIcon, 2500, False)
 
-        #Download the recording series
+        #Update recording information
         download_recording_series(True)
-
-        #Download the recording event
         download_recording_event(True)
+        download_recording_profile(True)
 
         #Update the main page count
         if var.guiMain != None:
@@ -593,11 +640,10 @@ def record_series_remove(SeriesId, KeepRecordings=True):
         notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen opname is geannuleerd.', notificationIcon, 2500, False)
 
-        #Download the recording series
+        #Update recording information
         download_recording_series(True)
-
-        #Download the recording event
         download_recording_event(True)
+        download_recording_profile(True)
 
         #Update the main page count
         if var.guiMain != None:
@@ -642,8 +688,9 @@ def record_event_add(ProgramId):
         notificationIcon = path.resources('resources/skins/default/media/common/record.png')
         xbmcgui.Dialog().notification(var.addonname, 'Programma wordt opgenomen.', notificationIcon, 2500, False)
 
-        #Download the recording event
+        #Update recording information
         download_recording_event(True)
+        download_recording_profile(True)
 
         #Update the main page count
         if var.guiMain != None:
@@ -688,8 +735,9 @@ def record_event_remove(RecordId, StartDeltaTime=0):
         notificationIcon = path.resources('resources/skins/default/media/common/record.png')
         xbmcgui.Dialog().notification(var.addonname, 'Opname is geannuleerd of verwijderd.', notificationIcon, 2500, False)
 
-        #Download the recording event
+        #Update recording information
         download_recording_event(True)
+        download_recording_profile(True)
 
         #Update the main page count
         if var.guiMain != None:

@@ -6,6 +6,7 @@ import alarm
 import apilogin
 import default
 import dialog
+import download
 import epg
 import func
 import helpx
@@ -85,6 +86,9 @@ class Gui(xbmcgui.WindowXML):
             func.updateLabelText(self, 1, "Aangemeld, veel kijkplezier.")
         else:
             func.updateLabelText(self, 1, "Aanmelden is mislukt.")
+
+        #Update recording profile
+        download.download_recording_profile(False)
 
         #Add menu buttons to the page
         menuButtons = self.buttons_add_menu()

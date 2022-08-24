@@ -61,6 +61,9 @@ def channels_list_radio():
 def channels_list_tv():
     return api_url_120('TRAY/LIVECHANNELS/?orderBy=orderId&sortOrder=asc&dfilter_channels=subscription&from=0&to=9999')
 
+def recording_profile():
+    return api_url_120('USER/PROFILE/RECORDING')
+
 def recording_event_add_remove():
     return api_url_120('CONTENT/RECORDING/EVENT')
 

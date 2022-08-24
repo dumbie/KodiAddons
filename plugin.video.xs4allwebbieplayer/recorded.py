@@ -165,8 +165,9 @@ class Gui(xbmcgui.WindowXML):
 
         #Download the programs
         func.updateLabelText(self, 1, "Opnames downloaden")
-        downloadResult = download.download_recording_event(forceUpdate)
-        if downloadResult == False:
+        downloadResultProfile = download.download_recording_profile(forceUpdate)
+        downloadResultEvent = download.download_recording_event(forceUpdate)
+        if downloadResultProfile == False and downloadResultEvent == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
@@ -267,7 +268,7 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " opnames")
-                func.updateLabelText(self, 3, "")
+                func.updateLabelText(self, 3, var.RecordingSpaceString)
 
             if resetSelect == True:
                 self.setFocus(listcontainer)
@@ -284,6 +285,6 @@ class Gui(xbmcgui.WindowXML):
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, 'Geen opnames')
-                func.updateLabelText(self, 3, "")
+                func.updateLabelText(self, 3, var.RecordingSpaceString)
                 listcontainer.selectItem(0)
             xbmc.sleep(100)

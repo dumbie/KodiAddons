@@ -105,7 +105,10 @@ def play_stream_recorded(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        if "&max_bitrate=" in StreamUrl:
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        else:
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetresolution()
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
@@ -212,7 +215,10 @@ def play_stream_program(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        if "&max_bitrate=" in StreamUrl:
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        else:
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetresolution()
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
@@ -318,7 +324,10 @@ def play_stream_vod(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        if "&max_bitrate=" in StreamUrl:
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        else:
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetresolution()
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
@@ -409,7 +418,10 @@ def play_stream_television(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        if "&max_bitrate=" in StreamUrl:
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetresolution(), StreamUrl)
+        else:
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetresolution()
         StreamUrl += '&drm=clear'
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')

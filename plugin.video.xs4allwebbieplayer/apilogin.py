@@ -209,9 +209,6 @@ def ApiLogin(LoginNotification=False):
     if LoginNotification == True:
         xbmcgui.Dialog().notification(var.addonname, 'Aangemeld, veel kijkplezier.', var.addonicon, 2500, False)
 
-    #Check if user has pvr access
-    ApiCheckPvrAccess(DownloadDataJson)
-
     #Check if user has home access
     ApiCheckHomeAccess(DownloadDataJson)
 
@@ -226,17 +223,6 @@ def ApiLogin(LoginNotification=False):
         var.thread_login_auto.start()
 
     return True
-
-def ApiCheckPvrAccess(DownloadDataJson):
-    try:
-        if 'NPVR' in DownloadDataJson['resultObj']['profile']['profileData']['userOptions']:
-            var.RecordingAccess = True
-            return True
-        else:
-            var.RecordingAccess = False
-            return False
-    except:
-        return True
 
 def ApiCheckHomeAccess(DownloadDataJson):
     try:

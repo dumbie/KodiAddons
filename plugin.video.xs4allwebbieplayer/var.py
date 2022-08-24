@@ -162,8 +162,10 @@ SeriesSearchDataJson = []
 ChannelsDataJsonSeries = []
 
 #Recording variables
-RecordingAccess = True
+RecordingAccess = False
+RecordingSpaceString = "Onbekende ruimte beschikbaar"
 RecordingProcessMinutes = 15
+RecordingProfileDataJson = []
 ChannelsDataJsonRecordingEvent = []
 ChannelsDataJsonRecordingSeries = []
 
