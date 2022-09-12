@@ -6,7 +6,7 @@ import playergui
 import var
 
 class PlayerCustom(xbmc.Player):
-    def PlayCustom(self, title='Onbekend', listitem=None, Windowed=False, Overlay=False):
+    def PlayCustom(self, title='Onbekend', listitem=None, Windowed=False, Overlay=False, SeekOffset=0):
         #Check if audio is playing in visualization
         if xbmc.Player().isPlayingAudio():
             func.close_window_id(var.WINDOW_VISUALISATION)
@@ -15,6 +15,7 @@ class PlayerCustom(xbmc.Player):
         #Update the video player settings
         var.PlayerWindowed = Windowed
         var.PlayerOverlay = Overlay
+        var.PlayerSeekOffset = SeekOffset
 
         #Check which video player should be used for playback
         super(PlayerCustom, self).play(title, listitem, Windowed)
@@ -43,6 +44,11 @@ class PlayerCustom(xbmc.Player):
         if xbmc.Player().isPlayingVideo():
             #Switch to full screen video player
             self.Fullscreen()
+
+            #Player seek back stream
+            if var.PlayerSeekOffset != 0:
+                xbmc.executebuiltin('Seek(-' + str(var.PlayerSeekOffset) + ')')
+                var.PlayerSeekOffset = 0
 
             #Enable or disable the subtitles
             if var.addon.getSetting('PlayerSubtitlesOff') == 'true':

@@ -112,6 +112,7 @@ thread_login_auto = None
 PlayerCustom = player.PlayerCustom()
 PlayerWindowed = False
 PlayerOverlay = False
+PlayerSeekOffset = 0
 
 #Api variables
 ApiEndpointUrl = 'api.tv.kpn.com'

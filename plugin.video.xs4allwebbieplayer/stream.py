@@ -10,8 +10,8 @@ import path
 import var
 
 #Switch to a new channel by listitem
-def switch_channel_tv_listitem(listitem, Windowed=False, showInformation=False):
-    play_stream_television(listitem, Windowed)
+def switch_channel_tv_listitem(listitem, Windowed=False, showInformation=False, SeekOffset=0):
+    play_stream_television(listitem, Windowed, SeekOffset)
 
     if showInformation and var.guiPlayer != None:
         var.guiPlayer.show_epg(True)
@@ -358,7 +358,7 @@ def play_stream_vod(listItem, Windowed):
     #Start playing the media
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
 
-def play_stream_television(listItem, Windowed):
+def play_stream_television(listItem, Windowed, SeekOffset=0):
     #Get channel settings and variables
     NewAssetId = listItem.getProperty('AssetId')
     NewChannelId = listItem.getProperty('ChannelId')
@@ -463,4 +463,4 @@ def play_stream_television(listItem, Windowed):
     listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
-    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, True)
+    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, True, SeekOffset)

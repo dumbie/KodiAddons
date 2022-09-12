@@ -433,6 +433,7 @@ def program_summary_television(updateItem):
     updateItem.setProperty("ProgramNowId", ProgramNowId)
     updateItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
     updateItem.setProperty("ProgramNowName", ProgramNowName)
+    updateItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
     updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNextId", ProgramNextId)
     updateItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)

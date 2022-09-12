@@ -112,6 +112,9 @@ class Gui(xbmcgui.WindowXML):
         listcontainer = self.getControl(1000)
         listItemSelected = listcontainer.getSelectedItem()
 
+        #Add watch program from beginning
+        dialogAnswers.append('Programma vanaf begin kijken')
+
         #Check if channel is favorite
         if listItemSelected.getProperty('ChannelFavorite') == 'true':
             dialogAnswers.append('Zender onmarkeren als favoriet')
@@ -134,7 +137,12 @@ class Gui(xbmcgui.WindowXML):
             dialogAnswers.append('Toon favorieten zenders')
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-        if dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
+        if dialogResult == 'Programma vanaf begin kijken':
+            ProgramTimeStartProp = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
+            ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
+            ProgramTimeStartOffset = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
+            stream.switch_channel_tv_listitem(listItemSelected, False, False, ProgramTimeStartOffset)
+        elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
             favoriteRemoved = favorite.favorite_add(listItemSelected)
             if favoriteRemoved == 'Removed' and var.LoadChannelFavoritesOnly == True:
                 #Remove item from the list
