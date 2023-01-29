@@ -20,7 +20,8 @@ import zap
 def ApiGenerateDeviceId():
     if var.addon.getSetting('LoginDeviceId120') == '':
         DeviceId = ''
-        random.seed(datetime.utcnow())
+        CurrentTime = str(datetime.utcnow())
+        random.seed(CurrentTime)
         for _ in range(64):
             DeviceId += str(random.randint(0,9))
 
