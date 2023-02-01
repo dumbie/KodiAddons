@@ -153,7 +153,7 @@
                 <left>0</left>
                 <top>40</top>
                 <width>880</width>
-                <height>10</height>
+                <height>15</height>
                 <info>Player.ProgressCache</info>
                 <texturebg>common/background_light.png</texturebg>
                 <midtexture>common/background_light.png</midtexture>
@@ -162,7 +162,7 @@
                 <left>0</left>
                 <top>40</top>
                 <width>880</width>
-                <height>10</height>
+                <height>15</height>
                 <info>Player.Progress</info>
                 <texturebg>common/background_transp.png</texturebg>
                 <midtexture>common/background_accent.png</midtexture>
@@ -171,7 +171,7 @@
                 <left>0</left>
                 <top>40</top>
                 <width>880</width>
-                <height>10</height>
+                <height>15</height>
                 <action>Seek</action>
                 <info>Player.Seekbar</info>
                 <orientation>horizontal</orientation>
@@ -185,7 +185,7 @@
             <bottom>0</bottom>
             <right>470</right>
             <width>60</width>
-            <height>665</height>
+            <height>660</height>
             <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true)</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
@@ -239,7 +239,7 @@
             <bottom>0</bottom>
             <right>400</right>
             <width>70</width>
-            <height>665</height>
+            <height>660</height>
             <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true)</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
