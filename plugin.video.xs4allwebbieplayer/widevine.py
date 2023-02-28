@@ -75,9 +75,14 @@ def enable_widevine_support(forceUpdate=False):
     downloadArchitecture = ''
     systemArchitecture = platform.machine().lower()
     systemBits = platform.architecture()[0].lower()
-    if 'arm' in systemArchitecture: downloadArchitecture = 'arm'
-    elif systemBits == '32bit': downloadArchitecture = 'x86'
-    elif systemBits == '64bit': downloadArchitecture = 'x64'
+    if ('arm' in systemArchitecture or 'aarch' in systemArchitecture) and '64' in systemArchitecture:
+        downloadArchitecture = 'arm64'
+    elif 'arm' in systemArchitecture or 'aarch' in systemArchitecture:
+        downloadArchitecture = 'arm32'
+    elif systemBits == '32bit':
+        downloadArchitecture = 'x86'
+    elif systemBits == '64bit':
+        downloadArchitecture = 'x64'
 
     #Check if operating system is supported
     downloadOperatingSystem = ''
