@@ -197,12 +197,15 @@ def program_summary_playergui(updateItem):
         ProgramEarlier = ''
 
     #Combine the program timing
-    if ProgramNowTimeDurationString == '0':
-        ProgramTiming = ProgramNowName + ' onbekend programmaduur'
-    elif ProgramNowTimeLeftString == '0':
-        ProgramTiming = ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
-    else:
-        ProgramTiming = ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
+    try:
+        if ProgramNowTimeDurationString == '0':
+            ProgramTiming = ProgramNowName + ' onbekend programmaduur'
+        elif ProgramNowTimeLeftString == '0':
+            ProgramTiming = ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
+        else:
+            ProgramTiming = ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
+    except:
+        ProgramTiming = 'Onbekende zender en programma'
 
     #Combine the program description
     ProgramDescription = '[COLOR white]' + ProgramTiming + '[/COLOR]\n\n[COLOR gray]' + ProgramNowDetails + '[/COLOR]\n\n[COLOR white]' + ProgramNowDescription + '[/COLOR]'
@@ -219,8 +222,8 @@ def program_summary_playergui(updateItem):
     updateItem.setProperty("ProgramNowId", ProgramNowId)
     updateItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
     updateItem.setProperty("ProgramNowName", ProgramNowName)
-    updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
+    updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNextId", ProgramNextId)
     updateItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)
     updateItem.setProperty("ProgramNextName", ProgramNextTimeStartString + ': ' + ProgramNextName)
@@ -411,12 +414,15 @@ def program_summary_television(updateItem):
         ProgramEarlier = ''
 
     #Combine the program timing
-    if ProgramNowTimeDurationString == '0':
-        ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' onbekend programmaduur'
-    elif ProgramNowTimeLeftString == '0':
-        ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
-    else:
-        ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
+    try:
+        if ProgramNowTimeDurationString == '0':
+            ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' onbekend programmaduur'
+        elif ProgramNowTimeLeftString == '0':
+            ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
+        else:
+            ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
+    except:
+        ProgramTiming = 'Onbekende zender en programma'
 
     #Combine the program description
     ProgramDescription = '[COLOR white]' + ProgramTiming + '[/COLOR]\n\n[COLOR gray]' + ProgramNowDetails + '[/COLOR]\n\n[COLOR white]' + ProgramNowDescription + '[/COLOR]'

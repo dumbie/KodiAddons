@@ -380,11 +380,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmc.executebuiltin('Action(Mute)')
 
         #Change the volume up
-        JSONRPC = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["volume"]}, "id": 1}')
-        volumeCurrent = json.loads(JSONRPC)["result"]["volume"]
-        volumeStep = int(var.addon.getSetting('PlayerVolumeStep')) * -1
-        volumeTarget = str(volumeCurrent - volumeStep)
-        xbmc.executebuiltin('SetVolume(' + volumeTarget + ',showVolumeBar)')
+        xbmc.executebuiltin('Action(VolumeUp)')
 
     def media_volume_down(self):
         #Check if volume is muted
@@ -393,11 +389,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmc.executebuiltin('Action(Mute)')
 
         #Change the volume down
-        JSONRPC = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["volume"]}, "id": 1}')
-        volumeCurrent = json.loads(JSONRPC)["result"]["volume"]
-        volumeStep = int(var.addon.getSetting('PlayerVolumeStep')) * -1
-        volumeTarget = str(volumeCurrent + volumeStep)
-        xbmc.executebuiltin('SetVolume(' + volumeTarget + ',showVolumeBar)')
+        xbmc.executebuiltin('Action(VolumeDown)')
 
     def seek_forward(self, showEpg=False):
         xbmc.executebuiltin('Action(StepForward)')

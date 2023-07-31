@@ -27,7 +27,7 @@ def get_provider_color_string():
     elif currentProvider == 'groen':
         return '[COLOR FF009900]'
     elif currentProvider == 'grijs':
-        return '[COLOR FFFFFFFF]'
+        return '[COLOR FF888888]'
 
 #Search filter string
 def search_filter_string(searchString):

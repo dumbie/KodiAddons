@@ -38,16 +38,16 @@ def api_login():
     return api_url_120('USER/SESSIONS/')
 
 def stream_url_tv(channelId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=G04')
+    return api_url_120('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + var.StreamTargetProfile)
 
 def stream_url_recording(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=G04')
+    return api_url_120('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + var.StreamTargetProfile)
 
 def stream_url_vod(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=G04')
+    return api_url_120('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + var.StreamTargetProfile)
 
 def stream_url_program(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=G04')
+    return api_url_120('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + var.StreamTargetProfile)
 
 def userdata_vod(programId):
     return api_url_120('CONTENT/USERDATA/VOD/' + programId)
