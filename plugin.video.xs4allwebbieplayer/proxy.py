@@ -17,9 +17,12 @@ class ProxyRequestHandler(hybrid.proxyRequestHandler):
         except:
             pass
 
+class ProxyRequestThreading(hybrid.proxyThreading, hybrid.proxyServer):
+    pass
+
 def start_proxy_server():
     if var.ProxyServer == None:
-        var.ProxyServer = hybrid.proxyServer(('', 4444), ProxyRequestHandler)
+        var.ProxyServer = ProxyRequestThreading(('127.0.0.1', 4444), ProxyRequestHandler)
         var.ProxyServer.serve_forever()
 
 def stop_proxy_server():

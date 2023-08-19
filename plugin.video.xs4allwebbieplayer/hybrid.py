@@ -11,6 +11,7 @@ if pythonversion < 3:
     import SimpleHTTPServer
     import SocketServer
     proxyServer = SocketServer.TCPServer
+    proxyThreading = SocketServer.ThreadingMixIn
     proxyRequestHandler = SimpleHTTPServer.SimpleHTTPRequestHandler
 else:
     import xbmcvfs
@@ -19,7 +20,9 @@ else:
     htmlx = html
     inputstreamname = 'inputstream'
     import http.server as SimpleHTTPServer
-    proxyServer = SimpleHTTPServer.HTTPServer
+    import socketserver
+    proxyServer = socketserver.TCPServer
+    proxyThreading = socketserver.ThreadingMixIn
     proxyRequestHandler = SimpleHTTPServer.BaseHTTPRequestHandler
 
 #Xbmc translate path
