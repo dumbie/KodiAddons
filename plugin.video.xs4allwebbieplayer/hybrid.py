@@ -8,12 +8,19 @@ if pythonversion < 3:
     from HTMLParser import HTMLParser
     htmlx = HTMLParser()
     inputstreamname = 'inputstreamaddon'
+    import SimpleHTTPServer
+    import SocketServer
+    proxyServer = SocketServer.TCPServer
+    proxyRequestHandler = SimpleHTTPServer.SimpleHTTPRequestHandler
 else:
     import xbmcvfs
     import urllib.request, urllib.parse
     import html
     htmlx = html
     inputstreamname = 'inputstream'
+    import http.server as SimpleHTTPServer
+    proxyServer = SimpleHTTPServer.HTTPServer
+    proxyRequestHandler = SimpleHTTPServer.BaseHTTPRequestHandler
 
 #Xbmc translate path
 def xbmc_translate_path(path):

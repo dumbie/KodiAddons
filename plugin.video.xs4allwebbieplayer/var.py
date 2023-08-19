@@ -105,7 +105,6 @@ thread_update_epg_progress = None
 thread_update_playergui_info = None
 thread_hide_playergui_info = None
 thread_sleep_timer = None
-thread_alarm_timer = None
 thread_login_auto = None
 
 #Player variables
@@ -198,3 +197,9 @@ AlarmDataJson = []
 
 #Widevine variables
 WidevineUpdating = False
+
+#Service - Alarm variables
+thread_alarm_timer = None
+
+#Service - Proxy variables
+ProxyServer = None
