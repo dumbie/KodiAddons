@@ -1,3 +1,4 @@
+from threading import Thread
 import hybrid
 import var
 
@@ -20,12 +21,18 @@ class ProxyRequestHandler(hybrid.proxyRequestHandler):
 class ProxyRequestThreading(hybrid.proxyThreading, hybrid.proxyServer):
     pass
 
+def thread_proxy_server():
+    while var.thread_proxy_server != None and var.addonmonitor.abortRequested() == False: #Service thread no need to check addon running
+        var.ProxyServer.handle_request()
+
 def start_proxy_server():
     if var.ProxyServer == None:
         var.ProxyServer = ProxyRequestThreading(('127.0.0.1', 4444), ProxyRequestHandler)
-        var.ProxyServer.serve_forever()
+        var.thread_proxy_server = Thread(target=thread_proxy_server)
+        var.thread_proxy_server.start()
 
 def stop_proxy_server():
     if var.ProxyServer != None:
         var.ProxyServer.shutdown()
         var.ProxyServer = None
+        var.thread_proxy_server = None
