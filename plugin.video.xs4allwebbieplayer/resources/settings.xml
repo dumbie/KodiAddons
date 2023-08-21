@@ -43,6 +43,7 @@
   </category>
   <category label="Stream">
     <setting id="CustomUserAgent" type="text" label="User-agent verbindingsidentificatie" default="Webbie Player"/>
+    <setting id="UseLocalhostProxy" label="Gebruik lokale proxy server voor stream verbinding" type="bool" default="false"/>
     <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream-adaptive add-on instellingen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,InputAdaptiveSettings)"/>
     <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,UpdateWidevineFiles)"/>
     <setting label="* Hier kunt u de streamkwaliteit-instellingen optimaliseren." type="lsep"/>

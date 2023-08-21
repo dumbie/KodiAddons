@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timedelta
+import xbmc
 import xbmcgui
 import apilogin
 import re
@@ -109,11 +110,14 @@ def play_stream_recorded(listItem, Windowed):
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
         else:
             StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
-        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
         return
+
+    #Update stream url with localhost proxy
+    if xbmc.getCondVisibility('System.Platform.Android') or var.addon.getSetting('UseLocalhostProxy') == 'true':
+        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
 
     #Set input adaptive stream
     listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
@@ -219,11 +223,14 @@ def play_stream_program(listItem, Windowed):
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
         else:
             StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
-        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
         return
+
+    #Update stream url with localhost proxy
+    if xbmc.getCondVisibility('System.Platform.Android') or var.addon.getSetting('UseLocalhostProxy') == 'true':
+        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
 
     #Set input adaptive stream
     listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
@@ -328,11 +335,14 @@ def play_stream_vod(listItem, Windowed):
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
         else:
             StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
-        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
         return
+
+    #Update stream url with localhost proxy
+    if xbmc.getCondVisibility('System.Platform.Android') or var.addon.getSetting('UseLocalhostProxy') == 'true':
+        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
 
     #Set input adaptive stream
     listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
@@ -422,11 +432,14 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
         else:
             StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
-        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
         return
+
+    #Update stream url with localhost proxy
+    if xbmc.getCondVisibility('System.Platform.Android') or var.addon.getSetting('UseLocalhostProxy') == 'true':
+        StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
 
     #Update channel settings and variables
     if CurrentChannelId != NewChannelId:
@@ -444,6 +457,7 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
     listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
     listItem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     listItem.setProperty('inputstream.adaptive.stream_headers', StreamHeaders)
+    listItem.setProperty('inputstream.adaptive.manifest_update_parameter', 'full')
 
     #Get and set stream license key
     try:
