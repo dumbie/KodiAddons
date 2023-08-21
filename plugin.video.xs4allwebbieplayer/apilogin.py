@@ -93,7 +93,8 @@ def ApiLogin(LoginNotification=False):
     ApiGenerateDeviceId()
 
     #Check login settings
-    default.check_login_settings()
+    if default.check_login_settings() == False:
+        return False
 
     #Check the login type
     if var.addon.getSetting('LoginType') == 'Abonnementsnummer':

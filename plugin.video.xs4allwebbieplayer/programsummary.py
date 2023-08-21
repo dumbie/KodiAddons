@@ -270,12 +270,13 @@ def program_summary_television(updateItem):
         ProgramNowName = metadatainfo.programtitle_from_json_metadata(metaData)
         ProgramNowTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
         ProgramNowTimeStartDateTime = func.datetime_remove_seconds(ProgramNowTimeStartDateTime)
-        ProgramNowTimeStartString = ProgramNowTimeStartDateTime.strftime('%H:%M')
+        ProgramNowTimeStartStringTime = ProgramNowTimeStartDateTime.strftime('%H:%M')
+        ProgramNowTimeStartStringDay = ProgramNowTimeStartDateTime.strftime('%Y-%m-%d')
         ProgramNowTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
         ProgramNowTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData, False, False)
         ProgramNowTimeLeftMinutes = int((ProgramNowTimeEndDateTime - currentDateTime).total_seconds() / 60)
         ProgramNowTimeLeftString = str(ProgramNowTimeLeftMinutes)
-        ProgramNowTimeEndString = ProgramNowTimeEndDateTime.strftime('%H:%M')
+        ProgramNowTimeEndStringTime = ProgramNowTimeEndDateTime.strftime('%H:%M')
         ProgramProgressPercent = str(int(((currentDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
 
         #Load program details
@@ -323,8 +324,9 @@ def program_summary_television(updateItem):
         ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
         ProgramNowDetails = 'Onbekend seizoen en aflevering'
         ProgramNowTimeStartDateTime = datetime(1970, 1, 1)
-        ProgramNowTimeStartString = 'Onbekend'
-        ProgramNowTimeEndString = 'Onbekend'
+        ProgramNowTimeStartStringTime = 'Onbekend'
+        ProgramNowTimeStartStringDay = '1970-01-01'
+        ProgramNowTimeEndStringTime = 'Onbekend'
         ProgramNowTimeDurationString = '0'
         ProgramNowTimeLeftString = '0'
         ProgramProgressPercent = '100'
@@ -418,9 +420,9 @@ def program_summary_television(updateItem):
         if ProgramNowTimeDurationString == '0':
             ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' onbekend programmaduur'
         elif ProgramNowTimeLeftString == '0':
-            ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
+            ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartStringTime
         else:
-            ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
+            ProgramTiming = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartStringTime + ' eindigt rond ' + ProgramNowTimeEndStringTime
     except:
         ProgramTiming = 'Onbekende zender en programma'
 
@@ -439,6 +441,7 @@ def program_summary_television(updateItem):
     updateItem.setProperty("ProgramNowId", ProgramNowId)
     updateItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
     updateItem.setProperty("ProgramNowName", ProgramNowName)
+    updateItem.setProperty("ProgramNowDay", ProgramNowTimeStartStringDay)
     updateItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
     updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNextId", ProgramNextId)

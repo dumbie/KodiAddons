@@ -174,6 +174,17 @@ ChannelsDataJsonRecordingEvent = []
 ChannelsDataJsonRecordingSeries = []
 
 #Epg variables
+EpgCurrentLoadDateTimeString = '1970-01-01'
+EpgPreviousLoadDateTimeString = '1970-01-01'
+EpgCurrentDayJson = []
+EpgCurrentAssetId = ''
+EpgCurrentChannelId = ''
+EpgPreviousChannelId = ''
+EpgCurrentExternalId = ''
+EpgCurrentChannelName = ''
+EpgNavigateChannelId = ''
+EpgNavigateProgramId = ''
+EpgNavigateProgramDay = ''
 EpgDaysOffsetFuture = 7
 EpgRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten']
 EpgCacheArray = []
@@ -203,3 +214,4 @@ thread_alarm_timer = None
 
 #Service - Proxy variables
 ProxyServer = None
+thread_proxy_server = None

@@ -6,9 +6,9 @@ import alarm
 import channellist
 import dialog
 import download
+import epg
 import favorite
 import func
-import metadatainfo
 import path
 import programsummary
 import recordingfunc
@@ -114,6 +114,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add watch program from beginning
         dialogAnswers.append('Programma vanaf begin kijken')
+        dialogAnswers.append('Programma in de TV Gids tonen')
 
         #Check if channel is favorite
         if listItemSelected.getProperty('ChannelFavorite') == 'true':
@@ -142,6 +143,11 @@ class Gui(xbmcgui.WindowXML):
             ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
             ProgramTimeStartOffset = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
             stream.switch_channel_tv_listitem(listItemSelected, False, False, ProgramTimeStartOffset)
+        elif dialogResult == 'Programma in de TV Gids tonen':
+            channelId = listItemSelected.getProperty("ChannelId")
+            programId = listItemSelected.getProperty("ProgramNowId")
+            programDay = listItemSelected.getProperty("ProgramNowDay")
+            self.show_program_in_epg(channelId, programId, programDay)
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
             favoriteRemoved = favorite.favorite_add(listItemSelected)
             if favoriteRemoved == 'Removed' and var.LoadChannelFavoritesOnly == True:
@@ -182,6 +188,14 @@ class Gui(xbmcgui.WindowXML):
                 listItemSelected.setProperty("ProgramNextAlarm", 'true')
             elif alarmAdded == 'Remove':
                 listItemSelected.setProperty("ProgramNextAlarm", 'false')
+
+    def show_program_in_epg(self, channelId, programId, programDay):
+        var.EpgNavigateChannelId = channelId
+        var.EpgNavigateProgramId = programId
+        var.EpgNavigateProgramDay = programDay
+        close_the_page()
+        xbmc.sleep(100)
+        epg.switch_to_page()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)

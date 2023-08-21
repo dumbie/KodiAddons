@@ -3,6 +3,7 @@ import xbmc
 import xbmcgui
 import dialog
 import download
+import epg
 import func
 import metadatainfo
 import path
@@ -67,13 +68,13 @@ class Gui(xbmcgui.WindowXML):
             self.open_context_menu()
 
     def open_context_menu(self):
-        dialogAnswers = ['Programma zoeken']
-        dialogHeader = 'Programma zoeken'
-        dialogSummary = 'Wilt u naar de geselecteerde programma zoeken?'
+        dialogAnswers = ['Programma zoeken in uitzendingen', 'Programma in de TV Gids tonen']
+        dialogHeader = 'Programma Menu'
+        dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
         dialogFooter = ''
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-        if dialogResult == 'Programma zoeken':
+        if dialogResult == 'Programma zoeken in uitzendingen':
             try:
                 listcontainer = self.getControl(1000)
                 listItemSelected = listcontainer.getSelectedItem()
@@ -83,6 +84,13 @@ class Gui(xbmcgui.WindowXML):
             except:
                 pass
             var.SearchFilterTerm = ''
+        elif dialogResult == 'Programma in de TV Gids tonen':
+            listcontainer = self.getControl(1000)
+            listItemSelected = listcontainer.getSelectedItem()
+            channelId = listItemSelected.getProperty("ChannelId")
+            programId = listItemSelected.getProperty("ProgramId")
+            programDay = listItemSelected.getProperty("ProgramDay")
+            self.show_program_in_epg(channelId, programId, programDay)
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)
@@ -102,6 +110,14 @@ class Gui(xbmcgui.WindowXML):
         listitem.setProperty('Action', 'refresh_program')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listcontainer.addItem(listitem)
+
+    def show_program_in_epg(self, channelId, programId, programDay):
+        var.EpgNavigateChannelId = channelId
+        var.EpgNavigateProgramId = programId
+        var.EpgNavigateProgramDay = programDay
+        close_the_page()
+        xbmc.sleep(100)
+        epg.switch_to_page()
 
     def search_program(self):
         try:
@@ -162,6 +178,7 @@ class Gui(xbmcgui.WindowXML):
                 if datetime.now() < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
 
                 #Load program details
+                ChannelId = metadatainfo.channelId_from_json_metadata(program)
                 ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
                 ProgramId = metadatainfo.contentId_from_json_metadata(program)
                 ProgramYear = metadatainfo.programyear_from_json_metadata(program)
@@ -174,6 +191,7 @@ class Gui(xbmcgui.WindowXML):
                 ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
                 ProgramTimeStartStringTime = ProgramTimeStartDateTime.strftime('%H:%M')
                 ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
+                ProgramTimeStartStringDay = ProgramTimeStartDateTime.strftime('%Y-%m-%d')
                 ProgramTime = '[COLOR gray]Begon om ' + ProgramTimeStartStringTime + ' op ' + ProgramTimeStartStringDate + ' en duurde ' + ProgramDuration + '[/COLOR]'
                 ProgramAvailability = metadatainfo.vod_week_available_time(program)
 
@@ -190,7 +208,9 @@ class Gui(xbmcgui.WindowXML):
                 #Add program
                 listitem = xbmcgui.ListItem()
                 listitem.setProperty('Action', 'play_stream')
+                listitem.setProperty('ChannelId', ChannelId)
                 listitem.setProperty('ProgramId', ProgramId)
+                listitem.setProperty("ProgramDay", ProgramTimeStartStringDay)
                 listitem.setProperty("ProgramName", ProgramName)
                 listitem.setProperty("ProgramNameDesc", ProgramNameDesc)
                 listitem.setProperty("ProgramNameRaw", ProgramNameRaw)

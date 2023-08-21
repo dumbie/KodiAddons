@@ -270,8 +270,33 @@ def string_shorten(string, length, ending):
     else:
         return string
 
-#Add day description to string
-def string_day_number(numberDayOffset):
+#Day offset from datetime
+def day_offset_from_datetime(dayDateTime):
+    return (datetime.today() - dayDateTime).days
+
+#Datetime from day offset
+def datetime_from_day_offset(numberDayOffset):
+    return datetime.now() + timedelta(days=numberDayOffset)
+
+#Day description from datetime
+def day_string_from_datetime(dayDateTime):
+    todayDateTime = datetime.today().date()
+    dayString = dayDateTime.strftime('%a, %d %B %Y')
+
+    if dayDateTime == todayDateTime + timedelta(days=2):
+        dayString += ' (Overmorgen)'
+    elif dayDateTime == todayDateTime + timedelta(days=1):
+        dayString += ' (Morgen)'
+    elif dayDateTime == todayDateTime:
+        dayString += ' (Vandaag)'
+    elif dayDateTime == todayDateTime + timedelta(days=-1):
+        dayString += ' (Gisteren)'
+    elif dayDateTime == todayDateTime + timedelta(days=-2):
+        dayString += ' (Eergister)'
+    return dayString
+
+#Day description from day offset
+def day_string_from_day_offset(numberDayOffset):
     todayDateTime = datetime.today().date()
     dayDateTime = todayDateTime + timedelta(days=numberDayOffset)
     dayString = dayDateTime.strftime('%a, %d %B %Y')
