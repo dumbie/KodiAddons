@@ -106,9 +106,9 @@ class Gui(xbmcgui.WindowXMLDialog):
                 elif listItemAction == 'media_seekbegin':
                     self.seek_begin_program()
                 elif listItemAction == 'media_stop':
-                    xbmc.Player().stop()
+                    xbmc.executebuiltin('PlayerControl(Stop)')
                 elif listItemAction == 'media_playpause':
-                    xbmc.Player().pause()
+                    xbmc.executebuiltin('PlayerControl(Play)')
                 elif listItemAction == 'media_previousscreen':
                     close_the_page()
                 elif listItemAction == 'media_fullscreen':
@@ -367,12 +367,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif alarmAdded == 'Remove':
             selectedItem.setProperty("ProgramNextAlarm", 'false')
 
-    def media_pause(self):
-        #Check if stream is paused
-        playerPaused = xbmc.getCondVisibility("Player.Paused")
-        if playerPaused == False:
-            xbmc.Player().pause()
-
     def media_volume_up(self):
         #Check if volume is muted
         volumeMuted = xbmc.getCondVisibility('Player.Muted')
@@ -470,7 +464,6 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def switch_channel_nexttv(self):
         var.ChannelDelayDateTime = datetime.now()
-        self.media_pause()
         listcontainer = self.getControl(1001)
         self.setFocus(listcontainer)
         xbmc.sleep(100)
@@ -484,7 +477,6 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def switch_channel_previoustv(self):
         var.ChannelDelayDateTime = datetime.now()
-        self.media_pause()
         listcontainer = self.getControl(1001)
         self.setFocus(listcontainer)
         xbmc.sleep(100)

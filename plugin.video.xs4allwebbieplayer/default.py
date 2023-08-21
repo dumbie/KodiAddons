@@ -74,9 +74,9 @@ def reset_userdata():
     except:
         pass
 
-def check_player_status():
+def stop_playing_media():
     if xbmc.Player().isPlaying():
-        xbmc.Player().stop()
+        xbmc.executebuiltin('PlayerControl(Stop)')
 
 def check_multi_launch():
     if var.windowHome.getProperty('WebbiePlayerRunning'):
@@ -104,6 +104,9 @@ def check_login_settings():
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stel uw abonnementsgegevens in', notificationIcon, 2500, False)
         var.addon.openSettings()
+        return False
+    else:
+        return True
 
 def stop_addon_threads():
     var.thread_check_requirements = None
@@ -114,7 +117,6 @@ def stop_addon_threads():
     var.thread_update_playergui_info = None
     var.thread_hide_playergui_info = None
     var.thread_sleep_timer = None
-    var.thread_alarm_timer = None
     var.thread_login_auto = None
 
 def reset_home_variables():
@@ -182,7 +184,7 @@ if __name__ == '__main__':
     argumentLaunch = check_launch_argument()
     if allowLaunch and argumentLaunch:
         reset_home_variables()
-        check_player_status()
+        stop_playing_media()
         check_login_settings()
         change_addon_accent()
         main.switch_to_page()

@@ -108,7 +108,7 @@ def enable_widevine_support(forceUpdate=False):
 
     #Stop the current playback of any media
     if xbmc.Player().isPlaying():
-        xbmc.Player().stop()
+        xbmc.executebuiltin('PlayerControl(Stop)')
         xbmc.sleep(1000)
 
     #Create the Widevine decrypter directory

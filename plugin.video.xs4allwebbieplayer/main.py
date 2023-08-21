@@ -35,7 +35,7 @@ def switch_to_page():
 def close_the_page():
     if var.guiMain != None:
         #Stop the playing media
-        xbmc.Player().stop()
+        default.stop_playing_media()
 
         #Stop the addon threads
         default.stop_addon_threads()
@@ -432,7 +432,7 @@ class Gui(xbmcgui.WindowXML):
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
             if listItemAction == 'media_stop':
-                xbmc.Player().stop()
+                xbmc.executebuiltin('PlayerControl(Stop)')
             elif listItemAction == 'media_togglemute':
                 xbmc.executebuiltin('Action(Mute)')
             elif listItemAction == 'media_fullscreen':

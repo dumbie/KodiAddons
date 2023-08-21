@@ -41,6 +41,7 @@ class PlayerCustom(xbmc.Player):
             xbmcgui.Dialog().notification(var.addonname, 'Televisie speelt niet.', notificationIcon, 2500, False)
 
     def onAVStarted(self):
+        xbmc.sleep(100)
         if xbmc.Player().isPlayingVideo():
             #Switch to full screen video player
             self.Fullscreen()
