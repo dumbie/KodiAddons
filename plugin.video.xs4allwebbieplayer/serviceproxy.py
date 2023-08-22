@@ -22,8 +22,7 @@ class ProxyRequestThreading(hybrid.proxyThreading, hybrid.proxyServer):
     pass
 
 def thread_proxy_server():
-    while var.thread_proxy_server != None and var.addonmonitor.abortRequested() == False: #Service thread no need to check addon running
-        var.ProxyServer.handle_request()
+    var.ProxyServer.serve_forever()
 
 def start_proxy_server():
     if var.ProxyServer == None:
@@ -34,5 +33,6 @@ def start_proxy_server():
 def stop_proxy_server():
     if var.ProxyServer != None:
         var.ProxyServer.shutdown()
+        var.ProxyServer.server_close()
         var.ProxyServer = None
         var.thread_proxy_server = None
