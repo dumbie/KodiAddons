@@ -11,6 +11,7 @@ import func
 import metadatainfo
 import path
 import recordingfunc
+import searchdialog
 import stream
 import var
 import zap
@@ -36,7 +37,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_recording_series(False)
         favorite.favorite_json_load()
         channelsLoaded = self.load_channels()
-        if channelsLoaded:
+        if channelsLoaded == True:
             self.set_channel_epg_variables()
             self.load_epg(False)
 
@@ -315,20 +316,19 @@ class Gui(xbmcgui.WindowXML):
             self.update_channel_alarm_icon(ChannelId)
 
     def search_channelprogram(self):
-        try:
-            keyboard = xbmc.Keyboard('default', 'heading')
-            keyboard.setHeading('Zoek naar zender')
-            keyboard.setDefault('')
-            keyboard.setHiddenInput(False)
-            keyboard.doModal()
-            if keyboard.isConfirmed() == True:
-                var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-                channelsLoaded = self.load_channels(True)
-                if channelsLoaded == True:
-                    self.set_channel_epg_variables()
-                    self.load_epg()
-        except:
-            pass
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender')
+
+        #Check the search term
+        if searchDialogTerm.cancelled == True:
+            return
+
+        #Set search filter term
+        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        channelsLoaded = self.load_channels(True)
+        if channelsLoaded == True:
+            self.set_channel_epg_variables()
+            self.load_epg(False)
         var.SearchFilterTerm = ''
 
     def set_channel_epg_variables(self):
@@ -581,7 +581,7 @@ class Gui(xbmcgui.WindowXML):
         ChannelEpg = func.search_channelid_jsonepg(var.EpgCurrentDayJson, var.EpgCurrentChannelId)
         if ChannelEpg == None:
             func.updateLabelText(self, 1, 'Zender gids mist')
-            func.updateLabelText(self, 2, 'Gids is niet beschikbaar voor [COLOR gray]' + var.EpgCurrentChannelName + '[/COLOR].')
+            func.updateLabelText(self, 2, 'Gids is niet beschikbaar voor [COLOR gray]' + var.EpgCurrentChannelName + '[/COLOR]')
             return
 
         #Set current datetime
@@ -706,10 +706,10 @@ class Gui(xbmcgui.WindowXML):
         listcontainer = self.getControl(1002)
         if listcontainer.size() == 0:
             func.updateLabelText(self, 1, "Geen programma's")
-            func.updateLabelText(self, 2, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR].')
+            func.updateLabelText(self, 2, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
         else:
             func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-            func.updateLabelText(self, 2, "Alle programma's voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR].')
+            func.updateLabelText(self, 2, "Alle programma's voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
 
     def thread_update_epg_progress(self):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')

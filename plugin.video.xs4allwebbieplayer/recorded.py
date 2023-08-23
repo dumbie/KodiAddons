@@ -1,13 +1,12 @@
-import json
 from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
-import apilogin
 import dialog
 import download
 import func
 import metadatainfo
 import path
+import searchdialog
 import stream
 import var
 
@@ -108,14 +107,13 @@ class Gui(xbmcgui.WindowXML):
                 #Update the status
                 self.count_program(False)
         elif dialogResult == 'Programma zoeken':
-            try:
-                listcontainer = self.getControl(1000)
-                listItemSelected = listcontainer.getSelectedItem()
-                ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
-                var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
-                self.load_program(True, False)
-            except:
-                pass
+            listcontainer = self.getControl(1000)
+            listItemSelected = listcontainer.getSelectedItem()
+            ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
+
+            #Set search filter term
+            var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
+            self.load_program(True, False)
             var.SearchFilterTerm = ''
 
     def buttons_add_navigation(self):
@@ -138,17 +136,16 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItem(listitem)
 
     def search_program(self):
-        try:
-            keyboard = xbmc.Keyboard('default', 'heading')
-            keyboard.setHeading('Zoek opname')
-            keyboard.setDefault('')
-            keyboard.setHiddenInput(False)
-            keyboard.doModal()
-            if keyboard.isConfirmed() == True:
-                var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-                self.load_program(True, False)
-        except:
-            pass
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek opname')
+
+        #Check the search term
+        if searchDialogTerm.cancelled == True:
+            return
+
+        #Set search filter term
+        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        self.load_program(True, False)
         var.SearchFilterTerm = ''
 
     def load_program(self, forceLoad=False, forceUpdate=False):

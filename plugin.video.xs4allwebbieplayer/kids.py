@@ -7,6 +7,7 @@ import files
 import func
 import metadatainfo
 import path
+import searchdialog
 import stream
 import var
 
@@ -148,17 +149,16 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItem(listitem)
 
     def search_program(self):
-        try:
-            keyboard = xbmc.Keyboard('default', 'heading')
-            keyboard.setHeading('Zoek programma')
-            keyboard.setDefault('')
-            keyboard.setHiddenInput(False)
-            keyboard.doModal()
-            if keyboard.isConfirmed() == True:
-                var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-                self.load_program(True, False)
-        except:
-            pass
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek programma')
+
+        #Check the search term
+        if searchDialogTerm.cancelled == True:
+            return
+
+        #Set search filter term
+        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        self.load_program(True, False)
         var.SearchFilterTerm = ''
 
     def load_episodes_vod(self, listItem, selectList=False):

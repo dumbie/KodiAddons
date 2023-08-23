@@ -3,6 +3,7 @@ import xbmcgui
 import download
 import func
 import path
+import searchdialog
 import stream
 import var
 import zap
@@ -93,17 +94,16 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItem(listitem)
 
     def search_channelprogram(self):
-        try:
-            keyboard = xbmc.Keyboard('default', 'heading')
-            keyboard.setHeading('Zoek naar zender')
-            keyboard.setDefault('')
-            keyboard.setHiddenInput(False)
-            keyboard.doModal()
-            if keyboard.isConfirmed() == True:
-                var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-                self.load_channels(True, False)
-        except:
-            pass
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender')
+
+        #Check the search term
+        if searchDialogTerm.cancelled == True:
+            return
+
+        #Set search filter term
+        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        self.load_channels(True, False)
         var.SearchFilterTerm = ''
 
     def load_channels(self, forceLoad=False, forceUpdate=False):

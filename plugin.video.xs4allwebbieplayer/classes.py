@@ -60,6 +60,12 @@ class Class_EpgCache:
         self.dayDateString = dayDateString
         self.epgJson = epgJson
 
+#Search result
+class Class_SearchResult:
+    def __init__(self, cancelled=None, string=None):
+        self.cancelled = cancelled
+        self.string = string
+
 #Convert class
 def obj_to_dict(objx):
     dictx = {

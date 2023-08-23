@@ -12,6 +12,7 @@ import func
 import path
 import programsummary
 import recordingfunc
+import searchdialog
 import stream
 import var
 import zap
@@ -257,25 +258,23 @@ class Gui(xbmcgui.WindowXML):
             pass
 
     def search_channelprogram(self):
-        try:
-            keyboard = xbmc.Keyboard('default', 'heading')
-            keyboard.setHeading('Zoek naar zender')
-            keyboard.setDefault('')
-            keyboard.setHiddenInput(False)
-            keyboard.doModal()
-            if keyboard.isConfirmed() == True:
-                #Check if television is busy
-                if self.EpgIsUpdating == True:
-                    notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-                    xbmcgui.Dialog().notification(var.addonname, 'TV Gids is bezig.', notificationIcon, 2500, False)
-                    return
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender')
 
-                #Set channel search value
-                var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-                self.load_channels(True, False)
-                self.load_epg(False)
-        except:
-            pass
+        #Check the search term
+        if searchDialogTerm.cancelled == True:
+            return
+
+        #Check if television is busy
+        if self.EpgIsUpdating == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
+            xbmcgui.Dialog().notification(var.addonname, 'TV Gids is bezig.', notificationIcon, 2500, False)
+            return
+
+        #Set search filter term
+        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        self.load_channels(True, False)
+        self.load_epg(False)
         var.SearchFilterTerm = ''
 
     def load_recording_event(self, forceUpdate=False):

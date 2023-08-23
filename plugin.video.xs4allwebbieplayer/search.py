@@ -6,7 +6,7 @@ import epg
 import func
 import metadatainfo
 import path
-import searchhistory
+import searchdialog
 import stream
 import var
 
@@ -23,9 +23,6 @@ def close_the_page():
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
-        #Load search history
-        searchhistory.search_json_load()
-
         #Prepare the search page
         func.updateLabelText(self, 2, "Zoeken")
         self.buttons_add_navigation()
@@ -55,8 +52,6 @@ class Gui(xbmcgui.WindowXML):
                 close_the_page()
             elif listItemAction == 'search_program':
                 self.search_program()
-            elif listItemAction == 'search_history':
-                self.search_history()
             elif listItemAction == 'search_result':
                 self.search_result()
         elif clickId == 9000:
@@ -91,14 +86,13 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma zoeken in resultaat':
-            try:
-                listcontainer = self.getControl(1000)
-                listItemSelected = listcontainer.getSelectedItem()
-                ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
-                var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
-                self.search_list(var.SearchDownloadResultJson)
-            except:
-                pass
+            listcontainer = self.getControl(1000)
+            listItemSelected = listcontainer.getSelectedItem()
+            ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
+
+            #Set search filter term
+            var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
+            self.search_list(var.SearchDownloadResultJson)
             var.SearchFilterTerm = ''
         elif dialogResult == 'Programma in de TV Gids tonen':
             listcontainer = self.getControl(1000)
@@ -124,11 +118,6 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
-        listitem = xbmcgui.ListItem('Zoekgeschiedenis')
-        listitem.setProperty('Action', 'search_history')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/searchhistory.png'), 'icon': path.resources('resources/skins/default/media/common/searchhistory.png')})
-        listcontainer.addItem(listitem)
-
         listitem = xbmcgui.ListItem("Zoek in resultaat")
         listitem.setProperty('Action', 'search_result')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/searchresult.png'), 'icon': path.resources('resources/skins/default/media/common/searchresult.png')})
@@ -141,82 +130,35 @@ class Gui(xbmcgui.WindowXML):
             xbmcgui.Dialog().notification(var.addonname, 'Geen zoekresultaten.', notificationIcon, 2500, False)
             return
 
-        #Keyboard enter filter term
-        keyboard = xbmc.Keyboard('default', 'heading')
-        keyboard.setHeading('Zoek in resultaat')
-        keyboard.setDefault('')
-        keyboard.setHiddenInput(False)
-        keyboard.doModal()
-        if keyboard.isConfirmed() == True:
-            var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-            self.search_list(var.SearchDownloadResultJson)
-            var.SearchFilterTerm = ''
-
-    def search_program(self):
-        #Keyboard enter search term
-        keyboard = xbmc.Keyboard('default', 'heading')
-        keyboard.setHeading('Zoek programma')
-        keyboard.setDefault('')
-        keyboard.setHiddenInput(False)
-        keyboard.doModal()
-        if keyboard.isConfirmed() == True:
-            searchProgramName = keyboard.getText()
-        else:
-            func.updateLabelText(self, 1, 'Geen zoek term')
-            listcontainer = self.getControl(1001)
-            self.setFocus(listcontainer)
-            xbmc.sleep(100)
-            listcontainer.selectItem(1)
-            xbmc.sleep(100)
-            return False
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek in resultaat')
 
         #Check the search term
-        if func.string_isnullorempty(searchProgramName) == True:
-            func.updateLabelText(self, 1, 'Leeg zoek term')
-            listcontainer = self.getControl(1001)
-            self.setFocus(listcontainer)
-            xbmc.sleep(100)
-            listcontainer.selectItem(1)
-            xbmc.sleep(100)
-            return False
-
-        #Add search history to Json
-        searchhistory.search_add(searchProgramName)
-
-        #Download the search programs
-        func.updateLabelText(self, 1, "Zoek resultaat downloaden")
-        downloadResult = download.download_search_program(searchProgramName)
-        if downloadResult == None:
-            func.updateLabelText(self, 1, 'Zoeken mislukt')
-            listcontainer = self.getControl(1001)
-            self.setFocus(listcontainer)
-            xbmc.sleep(100)
-            listcontainer.selectItem(0)
-            xbmc.sleep(100)
-            return False
-
-        #Update the search result
-        var.SearchDownloadSearchTerm = searchProgramName
-        var.SearchDownloadResultJson = downloadResult
-
-        #List the search results
-        func.updateLabelText(self, 1, "Zoek resultaat laden")
-        self.search_list(var.SearchDownloadResultJson)
-
-    def search_history(self):
-        #Get search term
-        searchProgramName = searchhistory.search_dialog()
-
-        #Check search term
-        if func.string_isnullorempty(searchProgramName) == True:
+        if searchDialogTerm.cancelled == True:
             return
 
-        #Add search history to Json
-        searchhistory.search_add(searchProgramName)
+        #Set search filter term
+        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        self.search_list(var.SearchDownloadResultJson)
+        var.SearchFilterTerm = ''
+
+    def search_program(self):
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek programma')
+
+        #Check the search term
+        if searchDialogTerm.cancelled == True:
+            return True
+
+        #Check the search term
+        if func.string_isnullorempty(searchDialogTerm.string) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/search.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Leeg zoek term', notificationIcon, 2500, False)
+            return True
 
         #Download the search programs
         func.updateLabelText(self, 1, "Zoek resultaat downloaden")
-        downloadResult = download.download_search_program(searchProgramName)
+        downloadResult = download.download_search_program(searchDialogTerm.string)
         if downloadResult == None:
             func.updateLabelText(self, 1, 'Zoeken mislukt')
             listcontainer = self.getControl(1001)
@@ -227,7 +169,7 @@ class Gui(xbmcgui.WindowXML):
             return False
 
         #Update the search result
-        var.SearchDownloadSearchTerm = searchProgramName
+        var.SearchDownloadSearchTerm = searchDialogTerm.string
         var.SearchDownloadResultJson = downloadResult
 
         #List the search results
