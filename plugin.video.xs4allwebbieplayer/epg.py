@@ -37,7 +37,7 @@ class Gui(xbmcgui.WindowXML):
         favorite.favorite_json_load()
         channelsLoaded = self.load_channels()
         if channelsLoaded:
-            self.set_channel_epg_variables(False)
+            self.set_channel_epg_variables()
             self.load_epg(False)
 
             #Start the update progress thread
@@ -144,20 +144,18 @@ class Gui(xbmcgui.WindowXML):
         dialogSummary = 'Selecteer de gewenste televisie gids dag.'
         dialogFooter = ''
 
-        #Get current day as select index
-        ProgramTimeStartDateTime = func.datetime_from_string(var.EpgCurrentLoadDateTimeString, '%Y-%m-%d')
-        selectIndex = var.VodDaysOffsetPast + -func.day_offset_from_datetime(ProgramTimeStartDateTime)
+        #Get day selection index
+        selectIndex = var.VodDaysOffsetPast + -func.day_offset_from_datetime(var.EpgCurrentLoadDateTime)
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, selectIndex)
         if dialogResult == 'DialogCancel':
             return
 
-        #Calculate epg day offset
-        EpgCurrentLoadDayIndex = (dialogAnswers.index(dialogResult) - var.VodDaysOffsetPast)
+        #Calculate selected day offset
+        selectedIndex = (dialogAnswers.index(dialogResult) - var.VodDaysOffsetPast)
 
-        #Update epg day load string
-        var.EpgCurrentLoadDateTimeString = func.datetime_from_day_offset(EpgCurrentLoadDayIndex).strftime('%Y-%m-%d')
-        self.reset_epg_navigate_variables()
+        #Update selected day loading time
+        var.EpgCurrentLoadDateTime = func.datetime_from_day_offset(selectedIndex)
 
         #Load the channel epg
         self.load_epg()
@@ -333,7 +331,7 @@ class Gui(xbmcgui.WindowXML):
             pass
         var.SearchFilterTerm = ''
 
-    def set_channel_epg_variables(self, resetEpgNavigate=True):
+    def set_channel_epg_variables(self):
         #Set the currently selected channel
         listcontainer = self.getControl(1001)
         listItemSelected = listcontainer.getSelectedItem()
@@ -342,25 +340,13 @@ class Gui(xbmcgui.WindowXML):
             func.updateLabelText(self, 2, "Selecteer een zender om de programma's voor weer te geven.")
             return
 
-        epgChannelChanged = var.EpgCurrentChannelId != listItemSelected.getProperty('ChannelId')
-        if epgChannelChanged:
-            var.EpgCurrentAssetId = listItemSelected.getProperty('AssetId')
-            var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
-            var.EpgCurrentExternalId = listItemSelected.getProperty('ExternalId')
-            var.EpgCurrentChannelName = listItemSelected.getProperty('ChannelName')
-
-            if resetEpgNavigate:
-                self.reset_epg_navigate_variables()
-
-    def reset_epg_navigate_variables(self):
-        var.EpgNavigateChannelId = ''
-        var.EpgNavigateProgramId = ''
-        var.EpgNavigateProgramDay = ''
+        var.EpgCurrentAssetId = listItemSelected.getProperty('AssetId')
+        var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
+        var.EpgCurrentExternalId = listItemSelected.getProperty('ExternalId')
+        var.EpgCurrentChannelName = listItemSelected.getProperty('ChannelName')
 
     def select_channel_epg(self, forceFocus=False):
-        if var.EpgNavigateChannelId != '':
-            selectChannelId = var.EpgNavigateChannelId
-        elif var.EpgCurrentChannelId == '':
+        if var.EpgCurrentChannelId == '':
             selectChannelId = var.addon.getSetting('CurrentChannelId')
         else:
             selectChannelId = var.EpgCurrentChannelId
@@ -556,23 +542,21 @@ class Gui(xbmcgui.WindowXML):
         #Check if channel has changed
         epgChannelChanged = var.EpgPreviousChannelId != var.EpgCurrentChannelId
 
-        #Check epg download day has changed
-        dateTimeNow = datetime.now()
-        if var.EpgNavigateProgramDay != '':
-            var.EpgCurrentLoadDateTimeString = var.EpgNavigateProgramDay
-        elif var.EpgCurrentLoadDateTimeString == '1970-01-01':
-            var.EpgCurrentLoadDateTimeString = dateTimeNow.strftime('%Y-%m-%d')
-        epgDayTimeChanged = var.EpgPreviousLoadDateTimeString != var.EpgCurrentLoadDateTimeString
+        #Check epg day has changed
+        epgDayTimeChanged = var.EpgPreviousLoadDateTime != var.EpgCurrentLoadDateTime
 
         #Check if update is needed
         if forceUpdate or epgChannelChanged or epgDayTimeChanged or listitemcount == 0:
             #Clear the current epg items
             listcontainer.reset()
 
+            #Set the day string
+            loadDayString = func.day_string_from_datetime(var.EpgCurrentLoadDateTime, False)
+
             #Download the epg day information
             func.updateLabelText(self, 1, 'Gids download')
-            func.updateLabelText(self, 2, 'TV Gids wordt gedownload, nog even geduld...')
-            var.EpgCurrentDayJson = download.download_epg_day(var.EpgCurrentLoadDateTimeString, forceUpdate)
+            func.updateLabelText(self, 2, 'TV Gids voor [COLOR gray]' + loadDayString + '[/COLOR] wordt gedownload, nog even geduld...')
+            var.EpgCurrentDayJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
             if var.EpgCurrentDayJson == None:
                 func.updateLabelText(self, 1, 'Niet beschikbaar')
                 func.updateLabelText(self, 2, 'TV Gids is niet beschikbaar.')
@@ -600,6 +584,9 @@ class Gui(xbmcgui.WindowXML):
             func.updateLabelText(self, 2, 'Gids is niet beschikbaar voor ' + var.EpgCurrentChannelName + '.')
             return
 
+        #Set current datetime
+        dateTimeNow = datetime.now()
+
         programCurrentIndex = 0
         programSelectIndexNavigate = 0
         programSelectIndexAiring = 0
@@ -611,9 +598,7 @@ class Gui(xbmcgui.WindowXML):
                 ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
 
                 #Check if program is starting or ending on target day
-                ProgramTimeStartDayString = ProgramTimeStartDateTime.strftime('%Y-%m-%d')
-                ProgramTimeEndDayString = ProgramTimeEndDateTime.strftime('%Y-%m-%d')
-                if ProgramTimeStartDayString != var.EpgCurrentLoadDateTimeString and ProgramTimeEndDayString != var.EpgCurrentLoadDateTimeString: continue
+                if ProgramTimeStartDateTime.date() != var.EpgCurrentLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.EpgCurrentLoadDateTime.date(): continue
 
                 #Load program details
                 ProgramId = metadatainfo.contentId_from_json_metadata(program)
@@ -648,8 +633,8 @@ class Gui(xbmcgui.WindowXML):
                 ProgramRecordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
                 #Check if current program is a rerun
-                programRerunName = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramName.lower())
-                programRerunDescription = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramDescription.lower())
+                programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramName.lower())
+                programRerunDescription = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramDescription.lower())
                 if programRerunName or programRerunDescription:
                     ProgramRerun = 'true'
                 else:
@@ -699,6 +684,7 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.selectItem(programSelectIndexNavigate)
         else:
             listcontainer.selectItem(programSelectIndexAiring)
+        var.EpgNavigateProgramId = ''
         xbmc.sleep(100)
 
         #Load program progress
@@ -706,25 +692,24 @@ class Gui(xbmcgui.WindowXML):
 
         #Update epg variables
         var.EpgPreviousChannelId = var.EpgCurrentChannelId
-        var.EpgPreviousLoadDateTimeString = var.EpgCurrentLoadDateTimeString
+        var.EpgPreviousLoadDateTime = var.EpgCurrentLoadDateTime
 
         #Update the status
         self.count_epg(var.EpgCurrentChannelName)
 
     #Update the status
     def count_epg(self, ChannelName):
-        #Set the epg day string
-        ProgramTimeStartDateTime = func.datetime_from_string(var.EpgCurrentLoadDateTimeString, '%Y-%m-%d')
-        epgLoadDayString = func.day_string_from_datetime(ProgramTimeStartDateTime)
+        #Set the day string
+        loadDayString = func.day_string_from_datetime(var.EpgCurrentLoadDateTime)
 
         #Update the label texts
         listcontainer = self.getControl(1002)
         if listcontainer.size() == 0:
             func.updateLabelText(self, 1, "Geen programma's")
-            func.updateLabelText(self, 2, "Geen programma's beschikbaar voor " + epgLoadDayString + " op " + ChannelName + '.')
+            func.updateLabelText(self, 2, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR].')
         else:
             func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-            func.updateLabelText(self, 2, "Alle programma's voor " + epgLoadDayString + " op " + ChannelName + '.')
+            func.updateLabelText(self, 2, "Alle programma's voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR].')
 
     def thread_update_epg_progress(self):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')

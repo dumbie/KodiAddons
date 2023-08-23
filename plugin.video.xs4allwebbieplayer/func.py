@@ -279,9 +279,12 @@ def datetime_from_day_offset(numberDayOffset):
     return datetime.now() + timedelta(days=numberDayOffset)
 
 #Day description from datetime
-def day_string_from_datetime(dayDateTime):
+def day_string_from_datetime(dayDateTime, includeYear=True):
     todayDateTime = datetime.today().date()
-    dayString = dayDateTime.strftime('%a, %d %B %Y')
+    if includeYear:
+        dayString = dayDateTime.strftime('%a, %d %B %Y')
+    else:
+        dayString = dayDateTime.strftime('%a, %d %B')
 
     if dayDateTime == todayDateTime + timedelta(days=2):
         dayString += ' (Overmorgen)'
@@ -296,10 +299,13 @@ def day_string_from_datetime(dayDateTime):
     return dayString
 
 #Day description from day offset
-def day_string_from_day_offset(numberDayOffset):
+def day_string_from_day_offset(numberDayOffset, includeYear=True):
     todayDateTime = datetime.today().date()
     dayDateTime = todayDateTime + timedelta(days=numberDayOffset)
-    dayString = dayDateTime.strftime('%a, %d %B %Y')
+    if includeYear:
+        dayString = dayDateTime.strftime('%a, %d %B %Y')
+    else:
+        dayString = dayDateTime.strftime('%a, %d %B')
 
     if dayDateTime == todayDateTime + timedelta(days=2):
         dayString += ' (Overmorgen)'

@@ -56,8 +56,8 @@ class Class_ApiLogin_deviceRegistrationData:
 
 #Epg day cache
 class Class_EpgCache:
-    def __init__(self, dateStringDay=None, epgJson=None):
-        self.dateStringDay = dateStringDay
+    def __init__(self, dayDateString=None, epgJson=None):
+        self.dayDateString = dayDateString
         self.epgJson = epgJson
 
 #Convert class

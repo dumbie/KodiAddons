@@ -199,9 +199,9 @@ def download_recording_series(forceUpdate=False):
         xbmcgui.Dialog().notification(var.addonname, 'Serie opnames download mislukt.', notificationIcon, 2500, False)
         return False
 
-def download_vod_day(forceUpdate=False, dayOffset=0):
+def download_vod_day(dayDateTime, forceUpdate=False):
     #Check if data is already cached
-    if var.VodDataJson != [] and forceUpdate == False:
+    if var.VodCurrentDataJson != [] and forceUpdate == False:
         return None
 
     #Check if user is logged in
@@ -215,7 +215,7 @@ def download_vod_day(forceUpdate=False, dayOffset=0):
             "X-Xsrf-Token": var.ApiLoginToken
         }
 
-        DownloadRequest = hybrid.urllib_request(path.vod_day(dayOffset), headers=DownloadHeaders)
+        DownloadRequest = hybrid.urllib_request(path.vod_day(dayDateTime), headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
@@ -229,7 +229,7 @@ def download_vod_day(forceUpdate=False, dayOffset=0):
                 xbmcgui.Dialog().notification(var.addonname, 'Programma gemist download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.VodDataJson = DownloadDataJson
+        var.VodCurrentDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
@@ -750,12 +750,13 @@ def record_event_remove(RecordId, StartDeltaTime=0):
         xbmcgui.Dialog().notification(var.addonname, 'Opname annulering mislukt.', notificationIcon, 2500, False)
         return False
 
-def download_epg_day(dateStringDay, forceUpdate=False):
+def download_epg_day(dayDateTime, forceUpdate=False):
     #Check if data is already cached
     epgDayCache = None
+    dayDateString = dayDateTime.strftime('%Y-%m-%d')
     for epgCache in var.EpgCacheArray:
         try:
-            if epgCache.dateStringDay == dateStringDay:
+            if epgCache.dayDateString == dayDateString:
                 epgDayCache = epgCache
                 break
         except:
@@ -781,7 +782,7 @@ def download_epg_day(dateStringDay, forceUpdate=False):
         }
 
         #Download epg information
-        DownloadRequest = hybrid.urllib_request(path.epg_day(dateStringDay), headers=DownloadHeaders)
+        DownloadRequest = hybrid.urllib_request(path.epg_day(dayDateTime), headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
@@ -797,7 +798,7 @@ def download_epg_day(dateStringDay, forceUpdate=False):
 
         #Update epg information
         classAdd = classes.Class_EpgCache()
-        classAdd.dateStringDay = dateStringDay
+        classAdd.dayDateString = dayDateString
         classAdd.epgJson = DownloadDataJson
         var.EpgCacheArray.append(classAdd)
 

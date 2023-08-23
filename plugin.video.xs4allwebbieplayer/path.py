@@ -76,14 +76,14 @@ def recording_event():
 def recording_series():
     return api_url_120('TRAY/USER/RECORDING/SERIES?sortOrder=desc&orderBy=StartTime&from=0&to=9999')
 
-def vod_day(dayOffset=0):
+def vod_day(dayDateTime):
     #Set download time range
-    if dayOffset == 0:
+    if dayDateTime.date() == datetime.now().date():
         dateTimeMidnight = func.datetime_to_midnight(datetime.now())
         startTimeEpoch = func.datetime_to_ticks(dateTimeMidnight - timedelta(hours=1), True)
         endTimeEpoch = func.datetime_to_ticks(datetime.now() + timedelta(hours=1), True)
     else:
-        dateTimeMidnight = func.datetime_to_midnight(datetime.now() - timedelta(days=dayOffset))
+        dateTimeMidnight = func.datetime_to_midnight(dayDateTime)
         startTimeEpoch = func.datetime_to_ticks(dateTimeMidnight - timedelta(hours=1), True)
         endTimeEpoch = func.datetime_to_ticks(dateTimeMidnight + timedelta(hours=25), True)
 
@@ -160,7 +160,7 @@ def search_program(programName):
         downloadPath += '&filter_excludedGenre=erotiek'
     return downloadPath
 
-def epg_day(dateStringDay):
+def epg_day(dayDateTime):
     #Get all playable channel ids
     ChannelIdsPlayableString = ''
     for playableId in var.ChannelIdsPlayable:
@@ -168,7 +168,7 @@ def epg_day(dateStringDay):
     ChannelIdsPlayableString = ChannelIdsPlayableString[:-1]
 
     #Set download time range
-    datetimeMidnight = func.datetime_from_string(dateStringDay, '%Y-%m-%d')
+    datetimeMidnight = func.datetime_to_midnight(dayDateTime)
     startTimeEpoch = func.datetime_to_ticks(datetimeMidnight - timedelta(hours=6))
     endTimeEpoch = func.datetime_to_ticks(datetimeMidnight + timedelta(hours=30))
 

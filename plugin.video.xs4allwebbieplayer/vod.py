@@ -25,7 +25,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Programma Gemist")
         self.buttons_add_navigation()
-        self.load_program(False, False, var.VodDaysOffset)
+        self.load_program(False, False)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -44,7 +44,7 @@ class Gui(xbmcgui.WindowXML):
             elif listItemAction == 'set_load_day':
                 self.dialog_set_day()
             elif listItemAction == 'refresh_program':
-                self.load_program(True, True, var.VodDaysOffset, False)
+                self.load_program(True, True, False)
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
                 var.PlayerCustom.Fullscreen(True)
@@ -87,16 +87,21 @@ class Gui(xbmcgui.WindowXML):
         dialogSummary = 'Selecteer de gewenste programma gemist dag.'
         dialogFooter = ''
 
-        selectIndex = var.VodDaysOffsetPast - var.VodDaysOffset
+        #Get day selection index
+        selectIndex = var.VodDaysOffsetPast + -func.day_offset_from_datetime(var.VodCurrentLoadDateTime)
+
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, selectIndex)
         if dialogResult == 'DialogCancel':
             return
 
-        #Calculate day offset
-        var.VodDaysOffset = abs(dialogAnswers.index(dialogResult) - var.VodDaysOffsetPast)
+        #Calculate selected day offset
+        selectedIndex = (dialogAnswers.index(dialogResult) - var.VodDaysOffsetPast)
+
+        #Update selected day loading time
+        var.VodCurrentLoadDateTime = func.datetime_from_day_offset(selectedIndex)
 
         #Load day programs
-        self.load_program(True, True, var.VodDaysOffset)
+        self.load_program(True, True)
 
     def open_context_menu(self):
         dialogAnswers = ['Programma zoeken in uitzendingen', 'Programma in de TV Gids tonen']
@@ -111,17 +116,19 @@ class Gui(xbmcgui.WindowXML):
                 listItemSelected = listcontainer.getSelectedItem()
                 ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
                 var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
-                self.load_program(True, False, var.VodDaysOffset)
+                self.load_program(True, False)
             except:
                 pass
             var.SearchFilterTerm = ''
         elif dialogResult == 'Programma in de TV Gids tonen':
             listcontainer = self.getControl(1000)
             listItemSelected = listcontainer.getSelectedItem()
-            channelId = listItemSelected.getProperty("ChannelId")
-            programId = listItemSelected.getProperty("ProgramId")
-            programDay = listItemSelected.getProperty("ProgramDay")
-            self.show_program_in_epg(channelId, programId, programDay)
+            var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
+            var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
+            var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+            close_the_page()
+            xbmc.sleep(100)
+            epg.switch_to_page()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)
@@ -147,14 +154,6 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listcontainer.addItem(listitem)
 
-    def show_program_in_epg(self, channelId, programId, programDay):
-        var.EpgNavigateChannelId = channelId
-        var.EpgNavigateProgramId = programId
-        var.EpgNavigateProgramDay = programDay
-        close_the_page()
-        xbmc.sleep(100)
-        epg.switch_to_page()
-
     def search_program(self):
         try:
             keyboard = xbmc.Keyboard('default', 'heading')
@@ -164,12 +163,12 @@ class Gui(xbmcgui.WindowXML):
             keyboard.doModal()
             if keyboard.isConfirmed() == True:
                 var.SearchFilterTerm = func.search_filter_string(keyboard.getText())
-                self.load_program(True, False, var.VodDaysOffset)
+                self.load_program(True, False)
         except:
             pass
         var.SearchFilterTerm = ''
 
-    def load_program(self, forceLoad=False, forceUpdate=False, dayOffset=0, silentUpdate=True):
+    def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True):
         if forceUpdate == True and silentUpdate == False:
             notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
             xbmcgui.Dialog().notification(var.addonname, "Programma's worden vernieuwd.", notificationIcon, 2500, False)
@@ -184,7 +183,7 @@ class Gui(xbmcgui.WindowXML):
         #Download the programs
         func.updateLabelText(self, 1, "Programma's downloaden")
         func.updateLabelText(self, 3, "")
-        downloadResult = download.download_vod_day(forceUpdate, dayOffset)
+        downloadResult = download.download_vod_day(var.VodCurrentLoadDateTime, forceUpdate)
         if downloadResult == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listcontainer = self.getControl(1001)
@@ -196,7 +195,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add programs to the list
         func.updateLabelText(self, 1, "Programma's laden")
-        for program in var.VodDataJson['resultObj']['containers']:
+        for program in var.VodCurrentDataJson['resultObj']['containers']:
             try:
                 #Load program basics
                 ProgramName = metadatainfo.programtitle_from_json_metadata(program)
@@ -228,7 +227,6 @@ class Gui(xbmcgui.WindowXML):
                 ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
                 ProgramTimeStartStringTime = ProgramTimeStartDateTime.strftime('%H:%M')
                 ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
-                ProgramTimeStartStringDay = ProgramTimeStartDateTime.strftime('%Y-%m-%d')
                 ProgramTime = '[COLOR gray]Begon om ' + ProgramTimeStartStringTime + ' op ' + ProgramTimeStartStringDate + ' en duurde ' + ProgramDuration + '[/COLOR]'
 
                 #Combine program details
@@ -246,7 +244,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty('Action', 'play_stream')
                 listitem.setProperty('ChannelId', ChannelId)
                 listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramDay", ProgramTimeStartStringDay)
+                listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
                 listitem.setProperty("ProgramName", ProgramName)
                 listitem.setProperty("ProgramNameDesc", ProgramNameDesc)
                 listitem.setProperty("ProgramNameRaw", ProgramNameRaw)
@@ -264,7 +262,7 @@ class Gui(xbmcgui.WindowXML):
     #Update the status
     def count_program(self, resetSelect=False):
         #Set the day string
-        loadDayString = func.day_string_from_day_offset(-var.VodDaysOffset)
+        loadDayString = func.day_string_from_datetime(var.VodCurrentLoadDateTime)
 
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:

@@ -103,10 +103,12 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Programma in de TV Gids tonen':
             listcontainer = self.getControl(1000)
             listItemSelected = listcontainer.getSelectedItem()
-            channelId = listItemSelected.getProperty("ChannelId")
-            programId = listItemSelected.getProperty("ProgramId")
-            programDay = listItemSelected.getProperty("ProgramDay")
-            self.show_program_in_epg(channelId, programId, programDay)
+            var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
+            var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
+            var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+            close_the_page()
+            xbmc.sleep(100)
+            epg.switch_to_page()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)
@@ -131,14 +133,6 @@ class Gui(xbmcgui.WindowXML):
         listitem.setProperty('Action', 'search_result')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/searchresult.png'), 'icon': path.resources('resources/skins/default/media/common/searchresult.png')})
         listcontainer.addItem(listitem)
-
-    def show_program_in_epg(self, channelId, programId, programDay):
-        var.EpgNavigateChannelId = channelId
-        var.EpgNavigateProgramId = programId
-        var.EpgNavigateProgramDay = programDay
-        close_the_page()
-        xbmc.sleep(100)
-        epg.switch_to_page()
 
     def search_result(self):
         #Check if search result is available
@@ -274,7 +268,6 @@ class Gui(xbmcgui.WindowXML):
                 ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
                 ProgramTimeStartStringTime = ProgramTimeStartDateTime.strftime('%H:%M')
                 ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
-                ProgramTimeStartStringDay = ProgramTimeStartDateTime.strftime('%Y-%m-%d')
                 ProgramTime = '[COLOR gray]Begon om ' + ProgramTimeStartStringTime + ' op ' + ProgramTimeStartStringDate + ' en duurde ' + ProgramDuration + '[/COLOR]'
                 ProgramAvailability = metadatainfo.vod_week_available_time(program)
 
@@ -293,7 +286,7 @@ class Gui(xbmcgui.WindowXML):
                 listitem.setProperty('Action', 'play_stream')
                 listitem.setProperty('ChannelId', ChannelId)
                 listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramDay", ProgramTimeStartStringDay)
+                listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
                 listitem.setProperty("ProgramName", ProgramName)
                 listitem.setProperty("ProgramNameDesc", ProgramNameDesc)
                 listitem.setProperty("ProgramNameRaw", ProgramNameRaw)

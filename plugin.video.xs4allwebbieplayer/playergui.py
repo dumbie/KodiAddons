@@ -540,7 +540,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def update_epg_information(self):
         #Download epg information today
-        download.download_epg_day(datetime.now().strftime('%Y-%m-%d'))
+        download.download_epg_day(datetime.now())
 
         #Get and check the list container
         listcontainer = self.getControl(1001)

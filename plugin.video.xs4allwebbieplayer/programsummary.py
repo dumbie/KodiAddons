@@ -32,11 +32,11 @@ def program_summary_playergui(updateItem):
             currentSeekDateTime -= timedelta(seconds=playerSeconds)
 
     try:
-        #Get json epg from today
-        epgTodayJson = download.download_epg_day(currentDateTime.strftime('%Y-%m-%d'), False)
+        #Get json epg from seek time
+        epgSeekJson = download.download_epg_day(currentSeekDateTime, False)
 
         #Get json epg for the channelid
-        channelEpg = func.search_channelid_jsonepg(epgTodayJson, channelId)
+        channelEpg = func.search_channelid_jsonepg(epgSeekJson, channelId)
 
         #Look for current airing program index
         programIndex = func.get_programindex_airingtime_jsonepg(channelEpg, currentSeekDateTime)
@@ -77,8 +77,8 @@ def program_summary_playergui(updateItem):
             ProgramNowDetails = 'Onbekend seizoen en aflevering'
 
         #Check if program is a rerun
-        programRerunName = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramNowName.lower())
-        programRerunDescription = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramNowDescription.lower())
+        programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowName.lower())
+        programRerunDescription = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowDescription.lower())
         if programRerunName or programRerunDescription:
             ProgramNowRerun = 'true'
         else:
@@ -131,7 +131,7 @@ def program_summary_playergui(updateItem):
             ProgramNextAlarm = 'false'
 
         #Check if program is a rerun
-        programRerunName = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramNextName.lower())
+        programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNextName.lower())
         if programRerunName:
             ProgramNextRerun = 'true'
         else:
@@ -252,7 +252,7 @@ def program_summary_television(updateItem):
 
     try:
         #Get json epg from today
-        epgTodayJson = download.download_epg_day(currentDateTime.strftime('%Y-%m-%d'), False)
+        epgTodayJson = download.download_epg_day(currentDateTime, False)
 
         #Get json epg for the channelid
         channelEpg = func.search_channelid_jsonepg(epgTodayJson, channelId)
@@ -271,7 +271,6 @@ def program_summary_television(updateItem):
         ProgramNowTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
         ProgramNowTimeStartDateTime = func.datetime_remove_seconds(ProgramNowTimeStartDateTime)
         ProgramNowTimeStartStringTime = ProgramNowTimeStartDateTime.strftime('%H:%M')
-        ProgramNowTimeStartStringDay = ProgramNowTimeStartDateTime.strftime('%Y-%m-%d')
         ProgramNowTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
         ProgramNowTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData, False, False)
         ProgramNowTimeLeftMinutes = int((ProgramNowTimeEndDateTime - currentDateTime).total_seconds() / 60)
@@ -296,8 +295,8 @@ def program_summary_television(updateItem):
             ProgramNowDetails = 'Onbekend seizoen en aflevering'
 
         #Check if program is a rerun
-        programRerunName = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramNowName.lower())
-        programRerunDescription = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramNowDescription.lower())
+        programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowName.lower())
+        programRerunDescription = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowDescription.lower())
         if programRerunName or programRerunDescription:
             ProgramNowRerun = 'true'
         else:
@@ -325,7 +324,6 @@ def program_summary_television(updateItem):
         ProgramNowDetails = 'Onbekend seizoen en aflevering'
         ProgramNowTimeStartDateTime = datetime(1970, 1, 1)
         ProgramNowTimeStartStringTime = 'Onbekend'
-        ProgramNowTimeStartStringDay = '1970-01-01'
         ProgramNowTimeEndStringTime = 'Onbekend'
         ProgramNowTimeDurationString = '0'
         ProgramNowTimeLeftString = '0'
@@ -350,7 +348,7 @@ def program_summary_television(updateItem):
             ProgramNextAlarm = 'false'
 
         #Check if program is a rerun
-        programRerunName = any(substring for substring in var.EpgRerunSearchTerm if substring in ProgramNextName.lower())
+        programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNextName.lower())
         if programRerunName:
             ProgramNextRerun = 'true'
         else:
@@ -441,7 +439,6 @@ def program_summary_television(updateItem):
     updateItem.setProperty("ProgramNowId", ProgramNowId)
     updateItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
     updateItem.setProperty("ProgramNowName", ProgramNowName)
-    updateItem.setProperty("ProgramNowDay", ProgramNowTimeStartStringDay)
     updateItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
     updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNextId", ProgramNextId)

@@ -152,8 +152,8 @@ ChannelIdsPlayable = []
 ChannelsDataJsonTelevision = []
 
 #Vod variables
-VodDataJson = []
-VodDaysOffset = 0
+VodCurrentDataJson = []
+VodCurrentLoadDateTime = datetime.now()
 VodDaysOffsetPast = 10
 VodDaysOffsetFuture = 1
 
@@ -174,22 +174,20 @@ ChannelsDataJsonRecordingEvent = []
 ChannelsDataJsonRecordingSeries = []
 
 #Epg variables
-EpgCurrentLoadDateTimeString = '1970-01-01'
-EpgPreviousLoadDateTimeString = '1970-01-01'
+EpgCurrentLoadDateTime = datetime.now()
+EpgPreviousLoadDateTime = datetime(1970,1,1)
 EpgCurrentDayJson = []
 EpgCurrentAssetId = ''
 EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
 EpgCurrentExternalId = ''
 EpgCurrentChannelName = ''
-EpgNavigateChannelId = ''
 EpgNavigateProgramId = ''
-EpgNavigateProgramDay = ''
 EpgDaysOffsetFuture = 7
-EpgRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten']
 EpgCacheArray = []
 
 #Program variables
+ProgramRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten', 'round-up', 'replay', 'wiederholung']
 ProgramTitleStripStrings = ['B.O.Z.: ', "Telekids Mini's: ", 'Doc: ', 'Marathon: ', 'Zappbios: ', 'Film: ', 'Premiere: ', u'Premi\xe8re: ', 'Countdown to christmas: ']
 ProgramTitleStripRegEx = ['Detectives op (.*?): ']
 
