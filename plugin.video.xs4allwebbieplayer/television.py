@@ -144,10 +144,13 @@ class Gui(xbmcgui.WindowXML):
             ProgramTimeStartOffset = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
             stream.switch_channel_tv_listitem(listItemSelected, False, False, ProgramTimeStartOffset)
         elif dialogResult == 'Programma in de TV Gids tonen':
-            channelId = listItemSelected.getProperty("ChannelId")
-            programId = listItemSelected.getProperty("ProgramNowId")
-            programDay = listItemSelected.getProperty("ProgramNowDay")
-            self.show_program_in_epg(channelId, programId, programDay)
+            var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramNowId")
+            var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
+            var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+            close_the_page()
+            xbmc.sleep(100)
+            epg.switch_to_page()
+
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
             favoriteRemoved = favorite.favorite_add(listItemSelected)
             if favoriteRemoved == 'Removed' and var.LoadChannelFavoritesOnly == True:
@@ -188,14 +191,6 @@ class Gui(xbmcgui.WindowXML):
                 listItemSelected.setProperty("ProgramNextAlarm", 'true')
             elif alarmAdded == 'Remove':
                 listItemSelected.setProperty("ProgramNextAlarm", 'false')
-
-    def show_program_in_epg(self, channelId, programId, programDay):
-        var.EpgNavigateChannelId = channelId
-        var.EpgNavigateProgramId = programId
-        var.EpgNavigateProgramDay = programDay
-        close_the_page()
-        xbmc.sleep(100)
-        epg.switch_to_page()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)
@@ -392,7 +387,7 @@ class Gui(xbmcgui.WindowXML):
                 xbmcgui.Dialog().notification(var.addonname, 'TV Gids wordt vernieuwd.', notificationIcon, 2500, False)
 
             #Download epg information today
-            download.download_epg_day(datetime.now().strftime('%Y-%m-%d'))
+            download.download_epg_day(datetime.now())
 
             #Get and check the list container
             listcontainer = self.getControl(1000)

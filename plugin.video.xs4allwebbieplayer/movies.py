@@ -1,6 +1,8 @@
 import xbmc
 import xbmcgui
+import dialog
 import download
+import epg
 import func
 import metadatainfo
 import path
@@ -53,6 +55,7 @@ class Gui(xbmcgui.WindowXML):
 
     def onAction(self, action):
         actionId = action.getId()
+        focusItem = xbmc.getCondVisibility('Control.HasFocus(1000)')
         if (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE):
             close_the_page()
         elif actionId == var.ACTION_NEXT_ITEM:
@@ -61,6 +64,27 @@ class Gui(xbmcgui.WindowXML):
             xbmc.executebuiltin('Action(PageUp)')
         elif actionId == var.ACTION_SEARCH_FUNCTION:
             self.search_movie()
+        elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
+            self.open_context_menu()
+
+    def open_context_menu(self):
+        listcontainer = self.getControl(1000)
+        listItemSelected = listcontainer.getSelectedItem()
+        programWeek = listItemSelected.getProperty("ProgramWeek")
+        if programWeek == 'true':
+            dialogAnswers = ['Film in de TV Gids tonen']
+            dialogHeader = 'Film Menu'
+            dialogSummary = 'Wat wilt u doen met de geselecteerde film?'
+            dialogFooter = ''
+
+            dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+            if dialogResult == 'Film in de TV Gids tonen':
+                var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
+                var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
+                var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+                close_the_page()
+                xbmc.sleep(100)
+                epg.switch_to_page()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)
@@ -195,9 +219,12 @@ class Gui(xbmcgui.WindowXML):
                     if searchResultFound == False: continue
 
                 #Load program details
+                ChannelId = metadatainfo.channelId_from_json_metadata(program)
                 ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
                 PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
                 ProgramId = metadatainfo.contentId_from_json_metadata(program)
+                ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
+                ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
                 ProgramYear = metadatainfo.programyear_from_json_metadata(program)
                 ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
                 ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
@@ -217,7 +244,9 @@ class Gui(xbmcgui.WindowXML):
                 #Add week program
                 listitem = xbmcgui.ListItem()
                 listitem.setProperty('Action', 'play_stream_week')
+                listitem.setProperty('ChannelId', ChannelId)
                 listitem.setProperty('ProgramId', ProgramId)
+                listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
                 listitem.setProperty("ProgramName", ProgramName)
                 listitem.setProperty("ProgramWeek", 'true')
                 listitem.setProperty("ProgramDetails", ProgramDetails)

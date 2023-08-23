@@ -1,6 +1,8 @@
 import xbmc
 import xbmcgui
+import dialog
 import download
+import epg
 import files
 import func
 import metadatainfo
@@ -19,11 +21,12 @@ def close_the_page():
         if page_lock_check() == False:
             notificationIcon = path.resources('resources/skins/default/media/common/kidstongue.png')
             xbmcgui.Dialog().notification(var.addonname, "Helaas pindakaas!", notificationIcon, 2500, False)
-            return
+            return False
 
         #Close the shown window
         var.guiKids.close()
         var.guiKids = None
+        return True
 
 def page_lock_check():
     if var.addon.getSetting('KidsPageLock') == 'true':
@@ -84,9 +87,9 @@ class Gui(xbmcgui.WindowXML):
 
     def onAction(self, action):
         actionId = action.getId()
+        focusEpisodesList = xbmc.getCondVisibility('Control.HasFocus(1002)')
+        focusEpisodesScroll = xbmc.getCondVisibility('Control.HasFocus(2002)')
         if (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE):
-            focusEpisodesList = xbmc.getCondVisibility('Control.HasFocus(1002)')
-            focusEpisodesScroll = xbmc.getCondVisibility('Control.HasFocus(2002)')
             if focusEpisodesList == False and focusEpisodesScroll == False:
                 close_the_page()
             else:
@@ -99,6 +102,27 @@ class Gui(xbmcgui.WindowXML):
             xbmc.executebuiltin('Action(PageUp)')
         elif actionId == var.ACTION_SEARCH_FUNCTION:
             self.search_program()
+        elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusEpisodesList:
+            self.open_context_menu()
+
+    def open_context_menu(self):
+        listcontainer = self.getControl(1002)
+        listItemSelected = listcontainer.getSelectedItem()
+        programWeek = listItemSelected.getProperty("ProgramWeek")
+        if programWeek == 'true':
+            dialogAnswers = ['Aflevering in de TV Gids tonen']
+            dialogHeader = 'Aflevering Menu'
+            dialogSummary = 'Wat wilt u doen met de geselecteerde aflevering?'
+            dialogFooter = ''
+
+            dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+            if dialogResult == 'Aflevering in de TV Gids tonen':
+                var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
+                var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
+                var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+                if close_the_page() == True:
+                    xbmc.sleep(100)
+                    epg.switch_to_page()
 
     def update_kids_background(self):
         if files.existFile(path.addonstorage("background.png")) == False:
@@ -235,7 +259,10 @@ class Gui(xbmcgui.WindowXML):
                 if checkSerie1 != checkSerie2: continue
 
                 #Load program details
+                ChannelId = metadatainfo.channelId_from_json_metadata(program)
                 ProgramId = metadatainfo.contentId_from_json_metadata(program)
+                ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
+                ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
                 ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
                 ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
                 EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, False, ProgramName)
@@ -257,10 +284,13 @@ class Gui(xbmcgui.WindowXML):
                 #Add vod program
                 listitem = xbmcgui.ListItem()
                 listitem.setProperty('Action', 'play_episode_week')
+                listitem.setProperty('ChannelId', ChannelId)
                 listitem.setProperty('ProgramId', ProgramId)
+                listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
                 listitem.setProperty("ProgramName", EpisodeTitle)
                 listitem.setProperty("ProgramSeasonInt", ProgramSeasonInt)
                 listitem.setProperty("ProgramEpisodeInt", ProgramEpisodeInt)
+                listitem.setProperty("ProgramWeek", 'true')
                 listitem.setProperty('ProgramDetails', ProgramDetails)
                 listitem.setProperty("ProgramAvailability", ProgramAvailability)
                 listitem.setProperty('ProgramDescription', ProgramDescription)
