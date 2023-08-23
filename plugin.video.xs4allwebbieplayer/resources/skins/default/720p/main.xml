@@ -146,7 +146,7 @@
             <width>1280</width>
             <height>40</height>
             <visible>Player.HasMedia</visible>
-            <ondown>Control.setFocus(1000, $INFO[Container(1001).Position])</ondown>
+            <ondown condition="Control.IsVisible(1000) + Integer.IsGreater(Container(1000).NumItems,0)">Control.setFocus(1000, $INFO[Container(1001).Position])</ondown>
             <orientation>horizontal</orientation>
             <itemlayout width="285" height="40">
                 <control type="image">
@@ -204,7 +204,7 @@
             <top>215</top>
             <width>1280</width>
             <height>460</height>
-            <onup condition="Control.IsVisible(1001)">Control.setFocus(1001, $INFO[Container(1000).Position])</onup>
+            <onup condition="Control.IsVisible(1001) + Integer.IsGreater(Container(1001).NumItems,0)">Control.setFocus(1001, $INFO[Container(1000).Position])</onup>
             <orientation>vertical</orientation>
             <itemlayout width="285" height="150">
                 <control type="image">

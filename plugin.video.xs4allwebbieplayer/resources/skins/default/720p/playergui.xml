@@ -192,7 +192,7 @@
             <control type="panel" id="1002">
                 <pagecontrol>2002</pagecontrol>
                 <orientation>vertical</orientation>
-                <onright>1001</onright>
+                <onright>2002</onright>
                 <itemlayout width="60" height="60">
                     <control type="image">
                         <width>55</width>
@@ -228,6 +228,8 @@
                 <right>5</right>
                 <width>8</width>
                 <height>720</height>
+                <onleft>1002</onleft>
+                <onright>1001</onright>
                 <orientation>vertical</orientation>
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
@@ -246,7 +248,7 @@
             <control type="panel" id="1001">
                 <pagecontrol>2001</pagecontrol>
                 <orientation>vertical</orientation>
-                <onleft>1002</onleft>
+                <onleft>2002</onleft>
                 <onright>2001</onright>
                 <itemlayout width="70" height="70">
                     <control type="image">
@@ -461,14 +463,14 @@
                 <top>82</top>
                 <left>10</left>
                 <width>380</width>
-                <height>5</height>
+                <height>15</height>
                 <texture colordiffuse="FF888888">common/background_light.png</texture>
             </control>
             <control type="progress">
                 <top>82</top>
                 <left>10</left>
                 <width>380</width>
-                <height>5</height>
+                <height>15</height>
                 <texturebg>common/background_transp.png</texturebg>
                 <midtexture colordiffuse="F0FFFFFF">common/background_light.png</midtexture>
                 <info>Container(1001).ListItem.Property(ProgramProgressPercent)</info>
@@ -477,20 +479,20 @@
                 <top>82</top>
                 <left>10</left>
                 <width>380</width>
-                <height>5</height>
+                <height>15</height>
                 <texturebg>common/background_transp.png</texturebg>
                 <midtexture>common/background_accent.png</midtexture>
                 <info>Container(1001).ListItem.Property(ProgramSeekPercent)</info>
             </control>
             <!-- Program Description -->
             <control type="group">
-                <top>88</top>
+                <top>98</top>
                 <left>10</left>
                 <width>390</width>
-                <height>635</height>
+                <height>625</height>
                 <control type="textbox">
                     <width>380</width>
-                    <height>635</height>
+                    <height>625</height>
                     <align>left</align>
                     <aligny>top</aligny>
                     <wrapmultiline>true</wrapmultiline>
@@ -500,7 +502,7 @@
                 </control>
                 <control type="scrollbar" id="2004">
                     <width>390</width>
-                    <height>635</height>
+                    <height>625</height>
                     <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
                     <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                     <texturesliderbackground>-</texturesliderbackground>

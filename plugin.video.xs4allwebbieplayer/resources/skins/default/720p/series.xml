@@ -168,7 +168,7 @@
             <top>200</top>
             <width>1280</width>
             <height>40</height>
-            <onup>Control.setFocus(1000, 99999)</onup>
+            <onup condition="Control.IsVisible(1000) + Integer.IsGreater(Container(1000).NumItems,0)">Control.setFocus(1000, 99999)</onup>
             <ondown>1000</ondown>
             <orientation>horizontal</orientation>
             <itemlayout width="265" height="40">
