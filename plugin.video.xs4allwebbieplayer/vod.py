@@ -271,7 +271,7 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] op " + loadDayString)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-                func.updateLabelText(self, 3, "Beschikbare programma's voor " + loadDayString)
+                func.updateLabelText(self, 3, "Beschikbare programma's voor [COLOR gray]" + loadDayString + "[/COLOR]")
 
             if resetSelect == True:
                 self.setFocus(listcontainer)
@@ -288,6 +288,6 @@ class Gui(xbmcgui.WindowXML):
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen programma's")
-                func.updateLabelText(self, 3, "Geen programma's beschikbaar voor " + loadDayString)
+                func.updateLabelText(self, 3, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR]")
                 listcontainer.selectItem(0)
             xbmc.sleep(100)

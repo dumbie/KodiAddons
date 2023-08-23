@@ -581,7 +581,7 @@ class Gui(xbmcgui.WindowXML):
         ChannelEpg = func.search_channelid_jsonepg(var.EpgCurrentDayJson, var.EpgCurrentChannelId)
         if ChannelEpg == None:
             func.updateLabelText(self, 1, 'Zender gids mist')
-            func.updateLabelText(self, 2, 'Gids is niet beschikbaar voor ' + var.EpgCurrentChannelName + '.')
+            func.updateLabelText(self, 2, 'Gids is niet beschikbaar voor [COLOR gray]' + var.EpgCurrentChannelName + '[/COLOR].')
             return
 
         #Set current datetime
