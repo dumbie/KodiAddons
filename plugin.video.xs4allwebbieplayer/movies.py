@@ -178,6 +178,7 @@ class Gui(xbmcgui.WindowXML):
                 ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
                 ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
                 ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
+                ProgramActors = metadatainfo.programactors_from_json_metadata(program)
                 ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
                 ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
                 ProgramAvailability = metadatainfo.vod_ondemand_available_time(program)
@@ -189,6 +190,10 @@ class Gui(xbmcgui.WindowXML):
                     ProgramDetails = '(?)'
                 ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
                 ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
+
+                #Combine program actors
+                if func.string_isnullorempty(ProgramActors) == False:
+                    ProgramDescription = "[COLOR gray]" + ProgramActors + "[/COLOR]\n\n" + ProgramDescription
 
                 #Add vod program
                 listitem = xbmcgui.ListItem()
@@ -229,6 +234,7 @@ class Gui(xbmcgui.WindowXML):
                 ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
                 ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
                 ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
+                ProgramActors = metadatainfo.programactors_from_json_metadata(program)
                 ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
                 ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
                 ProgramAvailability = metadatainfo.vod_week_available_time(program)
@@ -240,6 +246,10 @@ class Gui(xbmcgui.WindowXML):
                     ProgramDetails = '(?)'
                 ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
                 ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
+
+                #Combine program actors
+                if func.string_isnullorempty(ProgramActors) == False:
+                    ProgramDescription = "[COLOR gray]" + ProgramActors + "[/COLOR]\n\n" + ProgramDescription
 
                 #Add week program
                 listitem = xbmcgui.ListItem()

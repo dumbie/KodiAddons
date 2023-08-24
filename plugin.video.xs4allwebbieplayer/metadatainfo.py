@@ -262,6 +262,31 @@ def programgenres_from_json_metadata(metaData):
     except:
         return ''
 
+#Get program actors from json metadata
+def programactors_from_json_metadata(metaData):
+    try:
+        #Get program directors array
+        directorsArray = metaData["metadata"]["directors"]
+        if directorsArray != None:
+            programDirectors = '(R) ' + ', '.join(filter(None, directorsArray))
+        else:
+            programDirectors = ''
+
+        #Get program actors array
+        actorsArray = metaData["metadata"]["actors"]
+        if actorsArray != None:
+            programActors = '(A) ' + ', '.join(filter(None, actorsArray))
+        else:
+            programActors = ''
+
+        #Check if directors string is empty
+        if func.string_isnullorempty(programDirectors) == True:
+            return programActors
+        else:
+            return programDirectors + ' ' + programActors
+    except:
+        return ''
+
 #Get program description from json metadata
 def programdescription_from_json_metadata(metaData):
     #Check the long program description
