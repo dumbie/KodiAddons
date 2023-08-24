@@ -281,6 +281,7 @@ def datetime_from_day_offset(numberDayOffset):
 #Day description from datetime
 def day_string_from_datetime(dayDateTime, includeYear=True):
     todayDateTime = datetime.today().date()
+    dayDateTime = dayDateTime.date()
     if includeYear:
         dayString = dayDateTime.strftime('%a, %d %B %Y')
     else:

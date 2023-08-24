@@ -32,6 +32,10 @@ def xbmc_translate_path(path):
     else:
         return xbmcvfs.translatePath(path)
 
+#Deep copy list to new list
+def deep_copy_list(copyList):
+    return copyList[:]
+
 #Remove character accents from string
 def string_remove_accents(string):
     if pythonversion < 3:
