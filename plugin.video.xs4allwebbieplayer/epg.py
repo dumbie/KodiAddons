@@ -605,7 +605,7 @@ class Gui(xbmcgui.WindowXML):
                 ProgramName = metadatainfo.programtitle_from_json_metadata(program)
                 ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
                 ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False)
-                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True, ProgramName)
+                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
                 ProgramYear = metadatainfo.programyear_from_json_metadata(program)
                 ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
                 ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)

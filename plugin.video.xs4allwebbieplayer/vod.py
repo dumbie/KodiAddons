@@ -199,7 +199,7 @@ class Gui(xbmcgui.WindowXML):
                 #Load program basics
                 ProgramName = metadatainfo.programtitle_from_json_metadata(program)
                 ProgramNameRaw = ProgramName
-                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True, ProgramNameRaw)
+                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
                 ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
 
                 #Check if there are search results

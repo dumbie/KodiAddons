@@ -265,7 +265,7 @@ class Gui(xbmcgui.WindowXML):
                 ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
                 ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
                 ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
-                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, False, ProgramName)
+                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, False)
                 ProgramYear = metadatainfo.programyear_from_json_metadata(program)
                 ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
                 ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)

@@ -61,7 +61,7 @@ def program_summary_playergui(updateItem):
         ProgramProgressPercent = str(int(((currentDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
 
         #Load program details
-        EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(metaData, True, ProgramNowName)
+        EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(metaData, True)
         ProgramYear = metadatainfo.programyear_from_json_metadata(metaData)
         ProgramSeason = metadatainfo.programseason_from_json_metadata(metaData)
         ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(metaData)
@@ -279,7 +279,7 @@ def program_summary_television(updateItem):
         ProgramProgressPercent = str(int(((currentDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
 
         #Load program details
-        EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(metaData, True, ProgramNowName)
+        EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(metaData, True)
         ProgramYear = metadatainfo.programyear_from_json_metadata(metaData)
         ProgramSeason = metadatainfo.programseason_from_json_metadata(metaData)
         ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(metaData)

@@ -206,7 +206,7 @@ class Gui(xbmcgui.WindowXML):
                 ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
                 ProgramAssetId = metadatainfo.get_stream_assetid(program['assets'])
                 ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
-                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True, ProgramNameRaw)
+                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
                 ProgramYear = metadatainfo.programyear_from_json_metadata(program)
                 ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
                 ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)

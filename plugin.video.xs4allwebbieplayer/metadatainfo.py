@@ -289,20 +289,13 @@ def program_check_paytoplay(technicalPackageIds):
         return False
 
 #Get episode title from json metadata
-def episodetitle_from_json_metadata(metaData, returnEmpty=False, programTitle=''):
+def episodetitle_from_json_metadata(metaData, returnEmpty=False):
     try:
         #Get the episode title
         if 'episodeTitle' in metaData['metadata']:
             EpisodeTitle = metaData['metadata']['episodeTitle']
         elif 'title' in metaData['metadata']:
             EpisodeTitle = metaData['metadata']['title']
-
-        #Check same episode title
-        if EpisodeTitle == programTitle:
-            if returnEmpty:
-                return ''
-            else:
-                return 'Titelloos'
 
         #Check empty episode title
         if func.string_isnullorempty(EpisodeTitle):
