@@ -53,7 +53,7 @@ def thread_sleep_timer():
             var.SleepEndingMinutes -= 1
             sleep_notification()
         else:
-            xbmc.sleep(1000)
+            xbmc.sleep(2000)
 
 def sleep_notification():
     #Check sleep times

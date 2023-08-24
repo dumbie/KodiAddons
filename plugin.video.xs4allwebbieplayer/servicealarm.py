@@ -51,7 +51,7 @@ def thread_alarm_timer():
             alarm_notification()
             alarm.alarm_clean_expired(True)
         else:
-            xbmc.sleep(1000)
+            xbmc.sleep(2000)
 
 def start_alarm_check():
     if var.thread_alarm_timer == None:

@@ -133,7 +133,8 @@ FavoriteTelevisionDataJson = []
 SearchFilterTerm = ''
 SearchDownloadSearchTerm = ''
 SearchDownloadResultJson = []
-SearchHistorySearchJson = []
+SearchHistoryProgramJson = []
+SearchHistoryChannelJson = []
 
 #Kids variables
 KidsSearchDataJson = []

@@ -39,7 +39,7 @@ class Gui(xbmcgui.WindowXML):
         channelsLoaded = self.load_channels()
         if channelsLoaded == True:
             self.set_channel_epg_variables()
-            self.load_epg(False)
+            self.load_epg()
 
             #Start the update progress thread
             if var.thread_update_epg_progress == None:
@@ -324,7 +324,7 @@ class Gui(xbmcgui.WindowXML):
 
     def search_channel(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender')
+        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender', True)
 
         #Check the search term
         if searchDialogTerm.cancelled == True:
@@ -336,7 +336,7 @@ class Gui(xbmcgui.WindowXML):
         var.SearchFilterTerm = ''
         if channelsLoaded == True:
             self.set_channel_epg_variables()
-            self.load_epg(False)
+            self.load_epg()
 
     def search_program(self):
         #Open the search dialog
@@ -411,15 +411,15 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 2, "Geen zender om de programma's voor weer te geven gevonden.")
+                func.updateLabelText(self, 2, "Zender [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] niet gevonden om de programma's voor weer te geven.")
                 listcontainer.selectItem(1)
             elif var.LoadChannelFavoritesOnly == True:
                 func.updateLabelText(self, 1, 'Geen favorieten zenders')
-                func.updateLabelText(self, 2, "Geen zender om de programma's voor weer te geven gevonden.")
+                func.updateLabelText(self, 2, "Geen favorieten zenders om de programma's voor weer te geven.")
                 listcontainer.selectItem(0)
             else:
-                func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 2, "Geen zender om de programma's voor weer te geven gevonden.")
+                func.updateLabelText(self, 1, 'Geen zenders')
+                func.updateLabelText(self, 2, "Geen zenders om de programma's voor weer te geven.")
                 listcontainer.selectItem(0)
             xbmc.sleep(100)
 
@@ -428,21 +428,11 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.reset()
             return False
 
-    def load_recording_event(self, forceUpdate=False, silentUpdate=False):
-        if silentUpdate == False:
-            func.updateLabelText(self, 1, 'Opnames downloaden')
-            func.updateLabelText(self, 2, 'Opnames worden gedownload, nog even geduld...')
-
-        #Download the recording programs
+    def load_recording_event(self, forceUpdate=False):
         downloadResult = download.download_recording_event(forceUpdate)
         if downloadResult == False: return False
 
-    def load_recording_series(self, forceUpdate=False, silentUpdate=False):
-        if silentUpdate == False:
-            func.updateLabelText(self, 1, 'Series downloaden')
-            func.updateLabelText(self, 2, 'Series worden gedownload, nog even geduld...')
-
-        #Download the recording programs
+    def load_recording_series(self, forceUpdate=False):
         downloadResult = download.download_recording_series(forceUpdate)
         if downloadResult == False: return False
 
@@ -587,8 +577,6 @@ class Gui(xbmcgui.WindowXML):
                 xbmc.sleep(100)
                 return
         else:
-            #Load program progress
-            self.load_progress()
             return
 
         #Update epg status
@@ -735,7 +723,7 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 2, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
             else:
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]" + var.SearchFilterTerm + "[/COLOR] niet gevonden voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+                func.updateLabelText(self, 2, "Programma [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] niet gevonden voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
         else:
             if var.SearchFilterTerm == '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
@@ -750,6 +738,7 @@ class Gui(xbmcgui.WindowXML):
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime:
                 threadLastTime = threadCurrentTime
-                self.load_epg()
+                #Load program progress
+                self.load_progress()
             else:
                 xbmc.sleep(2000)

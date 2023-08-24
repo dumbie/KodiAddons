@@ -95,7 +95,7 @@ class Gui(xbmcgui.WindowXML):
 
     def search_channelprogram(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender')
+        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender', True)
 
         #Check the search term
         if searchDialogTerm.cancelled == True:

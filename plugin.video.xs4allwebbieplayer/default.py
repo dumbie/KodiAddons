@@ -69,6 +69,7 @@ def reset_userdata():
             files.removeFileUser('ChannelsTelevision.js')
             files.removeFileUser('FavoriteTelevision.js')
             files.removeFileUser('SearchHistorySearch.js')
+            files.removeFileUser('SearchHistoryChannel.js')
             files.removeDirectoryUser('epg')
             xbmcgui.Dialog().notification(var.addonname, 'User data bestanden zijn verwijderd.', var.addonicon, 2500, False)
     except:

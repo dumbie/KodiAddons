@@ -9,53 +9,84 @@ import var
 
 def search_history_json_load():
     try:
-        if var.SearchHistorySearchJson == [] and files.existFile('SearchHistorySearch.js') == True:
+        if var.SearchHistoryProgramJson == [] and files.existFile('SearchHistorySearch.js') == True:
             SearchHistorySearchString = files.openFile('SearchHistorySearch.js')
-            var.SearchHistorySearchJson = json.loads(SearchHistorySearchString)
+            var.SearchHistoryProgramJson = json.loads(SearchHistorySearchString)
     except:
-        var.SearchHistorySearchJson = []
+        var.SearchHistoryProgramJson = []
 
-def search_history_add(searchTerm):
+    try:
+        if var.SearchHistoryChannelJson == [] and files.existFile('SearchHistoryChannel.js') == True:
+            SearchHistorySearchString = files.openFile('SearchHistoryChannel.js')
+            var.SearchHistoryChannelJson = json.loads(SearchHistorySearchString)
+    except:
+        var.SearchHistoryChannelJson = []
+
+def search_history_add(searchTerm, searchChannel=False):
     #Check search term
     if func.string_isnullorempty(searchTerm) == True:
         return
 
     #Remove search term from Json
-    search_history_remove(searchTerm, False)
+    search_history_remove(searchTerm, False, searchChannel)
+
+    #Set Json target list variable
+    if searchChannel == True:
+        searchHistoryTargetFile = 'SearchHistoryChannel.js'
+        searchHistoryTargetJson = var.SearchHistoryChannelJson
+    else:
+        searchHistoryTargetFile = 'SearchHistorySearch.js'
+        searchHistoryTargetJson = var.SearchHistoryProgramJson
 
     #Add search history to Json
-    var.SearchHistorySearchJson.insert(0, searchTerm)
+    searchHistoryTargetJson.insert(0, searchTerm)
 
     #Trim search history length
-    if len(var.SearchHistorySearchJson) > 40:
-        var.SearchHistorySearchJson = var.SearchHistorySearchJson[:40]
+    if len(searchHistoryTargetJson) > 40:
+        searchHistoryTargetJson = searchHistoryTargetJson[:40]
 
     #Save the raw json data to storage
-    JsonDumpBytes = json.dumps(var.SearchHistorySearchJson).encode('ascii')
-    files.saveFile('SearchHistorySearch.js', JsonDumpBytes)
+    JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
+    files.saveFile(searchHistoryTargetFile, JsonDumpBytes)
 
-def search_history_remove(searchTerm, saveJson=True):
+def search_history_remove(searchTerm, saveJson=True, searchChannel=False):
+    #Set Json target list variable
+    if searchChannel == True:
+        searchHistoryTargetFile = 'SearchHistoryChannel.js'
+        searchHistoryTargetJson = var.SearchHistoryChannelJson
+    else:
+        searchHistoryTargetFile = 'SearchHistorySearch.js'
+        searchHistoryTargetJson = var.SearchHistoryProgramJson
+
     #Remove search term from Json
-    for search in var.SearchHistorySearchJson:
+    for search in searchHistoryTargetJson:
         try:
             if search == searchTerm:
-                var.SearchHistorySearchJson.remove(search)
+                searchHistoryTargetJson.remove(search)
                 break
         except:
             continue
 
     #Save the raw json data to storage
     if saveJson == True:
-        JsonDumpBytes = json.dumps(var.SearchHistorySearchJson).encode('ascii')
-        files.saveFile('SearchHistorySearch.js', JsonDumpBytes)
+        JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
+        files.saveFile(searchHistoryTargetFile, JsonDumpBytes)
 
-def search_dialog(headerText='Zoeken'):
+def search_dialog(headerText='Zoeken', searchChannel=False):
     #Load search history
     search_history_json_load()
 
+    #Set Json target list variable
+    if searchChannel == True:
+        searchHistoryTargetFile = 'SearchHistoryChannel.js'
+        searchHistoryTargetJson = var.SearchHistoryChannelJson
+    else:
+        searchHistoryTargetFile = 'SearchHistorySearch.js'
+        searchHistoryTargetJson = var.SearchHistoryProgramJson
+
     #Set search history
-    dialogAnswers = hybrid.deep_copy_list(var.SearchHistorySearchJson)
-    dialogAnswers.insert(0, '- Nieuw zoek term gebruiken')
+    dialogAnswers = hybrid.deep_copy_list(searchHistoryTargetJson)
+    dialogAnswers.insert(0, '+ Nieuw zoek term gebruiken')
 
     dialogHeader = headerText
     dialogSummary = 'Selecteer een eerder gebruikte zoek term of klik op nieuw zoek term.'
@@ -65,7 +96,7 @@ def search_dialog(headerText='Zoeken'):
     searchString = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
 
     #Check search string
-    if searchString == '- Nieuw zoek term gebruiken':
+    if searchString == '+ Nieuw zoek term gebruiken':
         keyboard = xbmc.Keyboard('default', 'heading')
         keyboard.setHeading(headerText)
         keyboard.setDefault('')
@@ -76,7 +107,7 @@ def search_dialog(headerText='Zoeken'):
             keyboardText = keyboard.getText()
 
             #Add search history to Json
-            search_history_add(keyboardText)
+            search_history_add(keyboardText, searchChannel)
 
             #Return search result
             searchResult = classes.Class_SearchResult()
@@ -97,7 +128,7 @@ def search_dialog(headerText='Zoeken'):
         return searchResult
     else:
         #Add search history to Json
-        search_history_add(searchString)
+        search_history_add(searchString, searchChannel)
 
         #Return search result
         searchResult = classes.Class_SearchResult()

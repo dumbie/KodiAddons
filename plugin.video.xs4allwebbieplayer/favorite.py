@@ -8,7 +8,7 @@ import var
 
 def favorite_json_load():
     try:
-        if files.existFile('FavoriteTelevision.js') == True:
+        if var.FavoriteTelevisionDataJson == [] and files.existFile('FavoriteTelevision.js') == True:
             FavoriteTelevisionString = files.openFile('FavoriteTelevision.js')
             var.FavoriteTelevisionDataJson = json.loads(FavoriteTelevisionString)
     except:
