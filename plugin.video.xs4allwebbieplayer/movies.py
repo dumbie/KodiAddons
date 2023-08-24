@@ -266,7 +266,7 @@ class Gui(xbmcgui.WindowXML):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
-                func.updateLabelText(self, 1, str(listcontainer.size()) + " gevonden films")
+                func.updateLabelText(self, 1, str(listcontainer.size()) + " films gevonden")
                 func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " films")

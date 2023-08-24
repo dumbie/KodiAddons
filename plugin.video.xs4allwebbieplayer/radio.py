@@ -175,7 +175,7 @@ class Gui(xbmcgui.WindowXML):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' gevonden zenders')
+                func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders gevonden')
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders')
 

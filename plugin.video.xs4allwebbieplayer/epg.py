@@ -56,8 +56,10 @@ class Gui(xbmcgui.WindowXML):
                     close_the_page()
                 elif listItemAction == 'set_load_day':
                     self.dialog_set_day()
-                elif listItemAction == "search_channelprogram":
-                    self.search_channelprogram()
+                elif listItemAction == "search_channel":
+                    self.search_channel()
+                elif listItemAction == "search_program":
+                    self.search_program()
                 elif listItemAction == "refresh_epg":
                     self.load_epg(True)
             elif clickId == 1001:
@@ -102,7 +104,7 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_PLAYER_REWIND:
             self.dialog_set_day()
         elif actionId == var.ACTION_SEARCH_FUNCTION:
-            self.search_channelprogram()
+            self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM):
             clickedControl = self.getControl(1002)
             self.dialog_alarm_record(clickedControl)
@@ -119,7 +121,12 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Zoek naar zender')
-        listitem.setProperty('Action', 'search_channelprogram')
+        listitem.setProperty('Action', 'search_channel')
+        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
+        listcontainer.addItem(listitem)
+
+        listitem = xbmcgui.ListItem('Zoek programma')
+        listitem.setProperty('Action', 'search_program')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
@@ -315,7 +322,7 @@ class Gui(xbmcgui.WindowXML):
             listItemSelected.setProperty('ProgramAlarm', 'false')
             self.update_channel_alarm_icon(ChannelId)
 
-    def search_channelprogram(self):
+    def search_channel(self):
         #Open the search dialog
         searchDialogTerm = searchdialog.search_dialog('Zoek naar zender')
 
@@ -326,9 +333,22 @@ class Gui(xbmcgui.WindowXML):
         #Set search filter term
         var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
         channelsLoaded = self.load_channels(True)
+        var.SearchFilterTerm = ''
         if channelsLoaded == True:
             self.set_channel_epg_variables()
             self.load_epg(False)
+
+    def search_program(self):
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('Zoek programma')
+
+        #Check the search term
+        if searchDialogTerm.cancelled == True:
+            return
+
+        #Set search filter term
+        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        self.load_epg(False, True)
         var.SearchFilterTerm = ''
 
     def set_channel_epg_variables(self):
@@ -534,7 +554,7 @@ class Gui(xbmcgui.WindowXML):
         #Update the selected channel recording series icon
         self.update_channel_record_series_icon(ChannelId)
 
-    def load_epg(self, forceUpdate=False):
+    def load_epg(self, forceUpdate=False, forceLoad=False):
         #Get and check the list container
         listcontainer = self.getControl(1002)
         listitemcount = listcontainer.size()
@@ -546,7 +566,7 @@ class Gui(xbmcgui.WindowXML):
         epgDayTimeChanged = var.EpgPreviousLoadDateTime != var.EpgCurrentLoadDateTime
 
         #Check if update is needed
-        if forceUpdate or epgChannelChanged or epgDayTimeChanged or listitemcount == 0:
+        if forceLoad or forceUpdate or epgChannelChanged or epgDayTimeChanged or listitemcount == 0:
             #Clear the current epg items
             listcontainer.reset()
 
@@ -569,9 +589,6 @@ class Gui(xbmcgui.WindowXML):
         else:
             #Load program progress
             self.load_progress()
-
-            #Update the status
-            self.count_epg(var.EpgCurrentChannelName)
             return
 
         #Update epg status
@@ -600,9 +617,17 @@ class Gui(xbmcgui.WindowXML):
                 #Check if program is starting or ending on target day
                 if ProgramTimeStartDateTime.date() != var.EpgCurrentLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.EpgCurrentLoadDateTime.date(): continue
 
+                #Load program basics
+                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
+
+                #Check if there are search results
+                if var.SearchFilterTerm != '':
+                    searchMatch = func.search_filter_string(ProgramName)
+                    searchResultFound = var.SearchFilterTerm in searchMatch
+                    if searchResultFound == False: continue
+
                 #Load program details
                 ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
                 ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
                 ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False)
                 EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
@@ -690,12 +715,12 @@ class Gui(xbmcgui.WindowXML):
         #Load program progress
         self.load_progress()
 
+        #Update the status
+        self.count_epg(var.EpgCurrentChannelName)
+
         #Update epg variables
         var.EpgPreviousChannelId = var.EpgCurrentChannelId
         var.EpgPreviousLoadDateTime = var.EpgCurrentLoadDateTime
-
-        #Update the status
-        self.count_epg(var.EpgCurrentChannelName)
 
     #Update the status
     def count_epg(self, ChannelName):
@@ -705,11 +730,19 @@ class Gui(xbmcgui.WindowXML):
         #Update the label texts
         listcontainer = self.getControl(1002)
         if listcontainer.size() == 0:
-            func.updateLabelText(self, 1, "Geen programma's")
-            func.updateLabelText(self, 2, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+            if var.SearchFilterTerm == '':
+                func.updateLabelText(self, 1, "Geen programma's")
+                func.updateLabelText(self, 2, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+            else:
+                func.updateLabelText(self, 1, "Geen programma's gevonden")
+                func.updateLabelText(self, 2, "[COLOR gray]" + var.SearchFilterTerm + "[/COLOR] niet gevonden voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
         else:
-            func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-            func.updateLabelText(self, 2, "Alle programma's voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+            if var.SearchFilterTerm == '':
+                func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
+                func.updateLabelText(self, 2, "Alle programma's voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+            else:
+                func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
+                func.updateLabelText(self, 2, "[COLOR gray]" + var.SearchFilterTerm + "[/COLOR] gevonden voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
 
     def thread_update_epg_progress(self):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
