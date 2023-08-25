@@ -338,7 +338,7 @@ class Gui(xbmcgui.WindowXML):
         var.SearchFilterTerm = ''
         if channelsLoaded == True:
             self.set_channel_epg_variables()
-            self.load_epg()
+            self.load_epg(False, True)
 
     def search_program(self):
         #Open the search dialog
