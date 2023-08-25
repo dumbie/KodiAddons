@@ -475,7 +475,7 @@
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/vodno.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramAvailable), false)</visible>
+                        <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), false)</visible>
                     </control>
                     <control type="label">
                         <left>60</left>
@@ -580,7 +580,7 @@
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/vodno.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramAvailable), false)</visible>
+                        <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), false)</visible>
                     </control>
                     <control type="label">
                         <left>60</left>

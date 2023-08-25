@@ -3,7 +3,7 @@ from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channellist
+import channellisttv
 import dialog
 import download
 import favorite
@@ -13,6 +13,8 @@ import path
 import recordingfunc
 import searchdialog
 import stream
+import programepgload
+import programepgupdate
 import var
 import zap
 
@@ -230,8 +232,8 @@ class Gui(xbmcgui.WindowXML):
         listitemcount = listcontainer.size()
 
         #Check if program has active recording
-        for channelNum in range(0, listitemcount):
-            updateItem = listcontainer.getListItem(channelNum)
+        for itemNum in range(0, listitemcount):
+            updateItem = listcontainer.getListItem(itemNum)
             ProgramId = updateItem.getProperty('ProgramId')
             ProgramTimeEndString = updateItem.getProperty('ProgramTimeEnd')
             ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndString, '%Y-%m-%d %H:%M:%S')
@@ -259,8 +261,8 @@ class Gui(xbmcgui.WindowXML):
         listitemcount = listcontainer.size()
 
         #Check if program has active recording
-        for channelNum in range(0, listitemcount):
-            updateItem = listcontainer.getListItem(channelNum)
+        for itemNum in range(0, listitemcount):
+            updateItem = listcontainer.getListItem(itemNum)
             ProgramRecordSeriesId = updateItem.getProperty('ProgramRecordSeriesId')
 
             #Check if program is recording series
@@ -399,7 +401,7 @@ class Gui(xbmcgui.WindowXML):
         #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
         func.updateLabelText(self, 2, 'Zenders worden geladen, nog even geduld...')
-        channellist.channel_list_load(listcontainer, True)
+        channellisttv.list_load(listcontainer, True)
 
         #Focus on the list container
         if listcontainer.size() > 0:
@@ -444,105 +446,22 @@ class Gui(xbmcgui.WindowXML):
         #Clear expired alarms from Json
         alarm.alarm_clean_expired()
 
-        #Generate program progress for programs
-        ChannelId = ''
-        dateTimeNow = datetime.now()
-        for programNum in range(0, listitemcount):
-            try:
-                #Get program information list item
-                updateItem = listcontainer.getListItem(programNum)
-                ChannelId = updateItem.getProperty('ChannelId')
-                ProgramId = updateItem.getProperty('ProgramId')
-                ProgramName = updateItem.getProperty('ProgramName')
-                ProgramDescriptionRaw = updateItem.getProperty('ProgramDescriptionRaw')
-                ProgramDetailsProp = updateItem.getProperty('ProgramDetails')
-                ProgramRecordSeriesId = updateItem.getProperty('ProgramRecordSeriesId')
-                ProgramTimeStartProp = updateItem.getProperty('ProgramTimeStart')
-                ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
-                ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
-                ProgramTimeEndProp = updateItem.getProperty('ProgramTimeEnd')
-                ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndProp, '%Y-%m-%d %H:%M:%S')
-                ProgramTimeEndString = ProgramTimeEndDateTime.strftime('%H:%M')
-                ProgramTimeLeftMinutes = int((ProgramTimeEndDateTime - dateTimeNow).total_seconds() / 60)
-                ProgramTimeLeftString = str(ProgramTimeLeftMinutes)
-                ProgramDurationString = updateItem.getProperty('ProgramDuration')
-
-                #Update program progress
-                ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
-
-                #Set program duration text
-                if ProgramDurationString == '0':
-                    ProgramTimingEpgList = ' onbekend programmaduur'
-                    ProgramTimingDescription = ' onbekend programmaduur'
-                if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                    if ProgramTimeLeftString == '0':
-                        ProgramTimingEpgList = ' is bijna afgelopen, duurde ' + ProgramDurationString + ' minuten'
-                        ProgramTimingDescription = ' is bijna afgelopen, duurde ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString
-                    else:
-                        ProgramTimingEpgList = ' duurt nog ' + ProgramTimeLeftString + ' van de ' + ProgramDurationString + ' minuten'
-                        ProgramTimingDescription = ' duurt nog ' + ProgramTimeLeftString + ' van de ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString + ' eindigt rond ' + ProgramTimeEndString
-                elif dateTimeNow > ProgramTimeEndDateTime:
-                    ProgramTimingEpgList = ' duurde ' + ProgramDurationString + ' minuten'
-                    ProgramTimingDescription = ' duurde ' + ProgramDurationString + ' minuten, begon om ' + ProgramTimeStartString + ' eindigde rond ' + ProgramTimeEndString
-                else:
-                    ProgramTimingEpgList = ' duurt ' + ProgramDurationString + ' minuten'
-                    ProgramTimingDescription = ' duurt ' + ProgramDurationString + ' minuten, begint om ' + ProgramTimeStartString + ' eindigt rond ' + ProgramTimeEndString
-
-                #Check if program has active alarm
-                if alarm.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:
-                    ProgramAlarm = 'true'
-                else:
-                    ProgramAlarm = 'false'
-
-                #Check if program is recording event and if the recording is planned or done
-                recordProgramEvent = func.search_programid_jsonrecording_event(ProgramId)
-                if recordProgramEvent:
-                    if dateTimeNow > ProgramTimeEndDateTime:
-                        ProgramRecordEventPlanned = 'false'
-                        ProgramRecordEventDone = 'true'
-                    else:
-                        ProgramRecordEventPlanned = 'true'
-                        ProgramRecordEventDone = 'false'
-                    ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-                    ProgramStartDeltaTime = str(metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent))
-                else:
-                    ProgramRecordEventPlanned = 'false'
-                    ProgramRecordEventDone = 'false'
-                    ProgramRecordEventId = ''
-                    ProgramStartDeltaTime = '0'
-
-                #Check if program is recording series
-                recordProgramSeries = func.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
-                if recordProgramSeries:
-                    ProgramRecordSeries = 'true'
-                else:
-                    ProgramRecordSeries = 'false'
-
-                #Combine the program description
-                ProgramEpgList = ProgramTimeStartString + ProgramTimingEpgList
-                ProgramDescription = '[COLOR white]' + ProgramName + ProgramTimingDescription + '[/COLOR]\n\n[COLOR gray]' + ProgramDetailsProp + '[/COLOR]\n\n[COLOR white]' + ProgramDescriptionRaw + '[/COLOR]'
-
-                #Update program list item
-                updateItem.setProperty('ProgramEpgList', ProgramEpgList)
-                updateItem.setProperty('ProgramDescription', ProgramDescription)
-                updateItem.setProperty('ProgramAlarm', ProgramAlarm)
-                updateItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
-                updateItem.setProperty('ProgramRecordEventPlanned', ProgramRecordEventPlanned)
-                updateItem.setProperty('ProgramRecordEventDone', ProgramRecordEventDone)
-                updateItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
-                updateItem.setProperty('ProgramRecordSeries', ProgramRecordSeries)
-                updateItem.setProperty('ProgramProgressPercent', str(ProgramProgressPercent))
-            except:
-                pass
-
         #Update the selected channel alarm icon
-        self.update_channel_alarm_icon(ChannelId)
+        self.update_channel_alarm_icon(var.EpgCurrentChannelId)
 
         #Update the selected channel recording event icon
-        self.update_channel_record_event_icon(ChannelId)
+        self.update_channel_record_event_icon(var.EpgCurrentChannelId)
 
         #Update the selected channel recording series icon
-        self.update_channel_record_series_icon(ChannelId)
+        self.update_channel_record_series_icon(var.EpgCurrentChannelId)
+
+        #Generate program progress for programs
+        for itemNum in range(0, listitemcount):
+            try:
+                updateItem = listcontainer.getListItem(itemNum)
+                programepgupdate.list_update(updateItem)
+            except:
+                pass
 
     def load_epg(self, forceUpdate=False, forceLoad=False):
         #Get and check the list container
@@ -583,122 +502,18 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 1, 'Gids laden')
         func.updateLabelText(self, 2, 'TV Gids wordt geladen, nog even geduld...')
 
-        ChannelEpg = func.search_channelid_jsonepg(var.EpgCurrentDayJson, var.EpgCurrentChannelId)
-        if ChannelEpg == None:
+        #Get epg json for set day and channel
+        channelEpgJson = func.search_channelid_jsonepg(var.EpgCurrentDayJson, var.EpgCurrentChannelId)
+        if channelEpgJson == None:
             func.updateLabelText(self, 1, 'Zender gids mist')
             func.updateLabelText(self, 2, 'Gids is niet beschikbaar voor [COLOR gray]' + var.EpgCurrentChannelName + '[/COLOR]')
             return
 
-        #Set current datetime
-        dateTimeNow = datetime.now()
+        #Add programs to list
+        programepgload.list_load(listcontainer, channelEpgJson)
 
-        programCurrentIndex = 0
-        programSelectIndexNavigate = 0
-        programSelectIndexAiring = 0
-        for program in ChannelEpg['containers']:
-            try:
-                #Load program basics
-                ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-                ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-                ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
-
-                #Check if program is starting or ending on target day
-                if ProgramTimeStartDateTime.date() != var.EpgCurrentLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.EpgCurrentLoadDateTime.date(): continue
-
-                #Load program basics
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-
-                #Check if there are search results
-                if var.SearchFilterTerm != '':
-                    searchMatch = func.search_filter_string(ProgramName)
-                    searchResultFound = var.SearchFilterTerm in searchMatch
-                    if searchResultFound == False: continue
-
-                #Load program details
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
-                ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False)
-                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-                ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-                ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-                ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-                ProgramGenres = metadatainfo.programgenres_from_json_metadata(program)
-                ProgramDescriptionRaw = metadatainfo.programdescription_from_json_metadata(program)
-                ProgramDescription = 'Programmabeschrijving wordt geladen.'
-                ProgramEpgList = 'Programmaduur wordt geladen'
-
-                #Combine program details
-                stringJoin = [ EpisodeTitle, ProgramYear, ProgramSeason, ProgramEpisode, ProgramStarRating, ProgramAgeRating, ProgramGenres ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = 'Onbekend seizoen en aflevering'
-
-                #Check if program vod is available for playback
-                contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
-                if 'CATCHUP' in contentOptionsArray:
-                    ProgramAvailable = 'true'
-                else:
-                    ProgramAvailable = 'false'
-
-                #Check if the program is part of series
-                ProgramRecordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
-
-                #Check if current program is a rerun
-                programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramName.lower())
-                programRerunDescription = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramDescription.lower())
-                if programRerunName or programRerunDescription:
-                    ProgramRerun = 'true'
-                else:
-                    ProgramRerun = 'false'
-
-                #Add program to the list container
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('AssetId', var.EpgCurrentAssetId)
-                listitem.setProperty('ChannelId', var.EpgCurrentChannelId)
-                listitem.setProperty('ExternalId', var.EpgCurrentExternalId)
-                listitem.setProperty('ChannelName', var.EpgCurrentChannelName)
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty('ProgramName', ProgramName)
-                listitem.setProperty('ProgramRerun', ProgramRerun)
-                listitem.setProperty('ProgramDuration', ProgramDurationString)
-                listitem.setProperty('ProgramRecordSeriesId', ProgramRecordSeriesId)
-                listitem.setProperty('ProgramDescriptionRaw', ProgramDescriptionRaw)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setProperty('ProgramEpgList', ProgramEpgList)
-                listitem.setProperty('ProgramDetails', ProgramDetails)
-                listitem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
-                listitem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
-                listitem.setInfo('video', {'Genre': 'TV Gids', 'Plot': ProgramDescriptionRaw})
-                listitem.setArt({'thumb': path.icon_television(var.EpgCurrentExternalId), 'icon': path.icon_television(var.EpgCurrentExternalId)})
-
-                #Check if program finished airing
-                if ProgramProgressPercent >= 100:
-                    listitem.setProperty('ProgramAvailable', ProgramAvailable)
-
-                #Check if program is still airing
-                if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
-                    programSelectIndexAiring = programCurrentIndex
-
-                #Check if program matches navigate id
-                if var.EpgNavigateProgramId == ProgramId:
-                    programSelectIndexNavigate = programCurrentIndex
-
-                programCurrentIndex += 1
-                listcontainer.addItem(listitem)
-            except:
-                continue
-
-        #Focus and select program list item
-        if programSelectIndexNavigate != 0:
-            self.setFocus(listcontainer)
-            xbmc.sleep(100)
-            listcontainer.selectItem(programSelectIndexNavigate)
-        else:
-            listcontainer.selectItem(programSelectIndexAiring)
-        var.EpgNavigateProgramId = ''
-        xbmc.sleep(100)
+        #Select program index
+        self.epg_selectindex_program()
 
         #Load program progress
         self.load_progress()
@@ -709,6 +524,38 @@ class Gui(xbmcgui.WindowXML):
         #Update epg variables
         var.EpgPreviousChannelId = var.EpgCurrentChannelId
         var.EpgPreviousLoadDateTime = var.EpgCurrentLoadDateTime
+
+    #Epg program select index
+    def epg_selectindex_program(self):
+        #Get and check the list container
+        listcontainer = self.getControl(1002)
+        listitemcount = listcontainer.size()
+
+        programSelectIndexAiring = 0
+        programSelectIndexNavigate = 0
+
+        #Check if program is airing or matches navigate index
+        for itemNum in range(0, listitemcount):
+            listitem = listcontainer.getListItem(itemNum)
+
+            #Check if program is currently airing
+            if listitem.getProperty('ProgramIsAiring') == 'true':
+                programSelectIndexAiring = itemNum
+
+            #Check if program matches navigate id
+            if var.EpgNavigateProgramId == listitem.getProperty('ProgramId'):
+                programSelectIndexNavigate = itemNum
+                break
+
+        #Focus and select program list item
+        if programSelectIndexNavigate != 0:
+            self.setFocus(listcontainer)
+            xbmc.sleep(100)
+            listcontainer.selectItem(programSelectIndexNavigate)
+        else:
+            listcontainer.selectItem(programSelectIndexAiring)
+        var.EpgNavigateProgramId = ''
+        xbmc.sleep(100)
 
     #Update the status
     def count_epg(self, ChannelName):

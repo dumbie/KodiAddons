@@ -5,8 +5,7 @@ import metadatainfo
 import path
 import var
 
-#Add channels to list
-def channel_list_load(listContainer, checkStatus=False):
+def list_load(listContainer, checkStatus=False):
     var.ChannelIdsPlayable = []
     for channel in var.ChannelsDataJsonTelevision['resultObj']['containers']:
         try:

@@ -598,8 +598,8 @@ def record_series_add(ChannelId, liveSeriesId):
 
         #Update the main page count
         if var.guiMain != None:
-            var.guiMain.count_recorded_event()
-            var.guiMain.count_recording_event()
+            var.guiMain.count_recorded_events()
+            var.guiMain.count_recording_events()
             var.guiMain.count_recording_series()
 
         return True
@@ -647,8 +647,8 @@ def record_series_remove(SeriesId, KeepRecordings=True):
 
         #Update the main page count
         if var.guiMain != None:
-            var.guiMain.count_recorded_event()
-            var.guiMain.count_recording_event()
+            var.guiMain.count_recorded_events()
+            var.guiMain.count_recording_events()
             var.guiMain.count_recording_series()
 
         return True
@@ -694,8 +694,8 @@ def record_event_add(ProgramId):
 
         #Update the main page count
         if var.guiMain != None:
-            var.guiMain.count_recorded_event()
-            var.guiMain.count_recording_event()
+            var.guiMain.count_recorded_events()
+            var.guiMain.count_recording_events()
 
         return str(DownloadDataJson['resultObj']['containers'][0]['metadata']['contentId'])
     except:
@@ -741,8 +741,8 @@ def record_event_remove(RecordId, StartDeltaTime=0):
 
         #Update the main page count
         if var.guiMain != None:
-            var.guiMain.count_recorded_event()
-            var.guiMain.count_recording_event()
+            var.guiMain.count_recorded_events()
+            var.guiMain.count_recording_events()
 
         return True
     except:

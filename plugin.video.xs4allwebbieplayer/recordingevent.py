@@ -1,11 +1,8 @@
-import json
-from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
 import download
 import func
-import metadatainfo
-import path
+import programrecordingevent
 import var
 
 def switch_to_page():
@@ -18,23 +15,6 @@ def close_the_page():
         #Close the shown window
         var.guiRecordingEvent.close()
         var.guiRecordingEvent = None
-
-def count_main_recording():
-    #Download the recording programs
-    downloadResult = download.download_recording_event(False)
-    if downloadResult == False: return '?'
-
-    #Count planned recording
-    recordingCount = 0
-    for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
-        try:
-            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
-            #Check if recording is planned or already recorded
-            if ProgramTimeEndDateTime > datetime.now():
-                recordingCount += 1
-        except:
-            continue
-    return recordingCount
 
 class Gui(xbmcgui.WindowXMLDialog):
     def onInit(self):
@@ -89,56 +69,15 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Sort recording by upcoming time
         func.updateLabelText(self, 3001, "Geplande opnames worden geladen.")
-        RecordingEvents = var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]
-        RecordingEvents = sorted(RecordingEvents, key=lambda x: x['metadata']['programStartTime'], reverse=False)
-
-        #Process all the planned recording
-        for program in RecordingEvents:
-            try:
-                #Load program basics
-                ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
-
-                #Check if recording is planned or already recorded
-                if ProgramTimeEndDateTime < datetime.now(): continue
-
-                #Load program details
-                ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-                ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramStartDeltaTime = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-                ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-                ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-                ProgramDescription = 'Van ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' tot ' + ProgramTimeEndDateTime.strftime('%H:%M') + ' op ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisode ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-
-                #Update program name string
-                ProgramName += ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
-
-                #Add recording event to the list
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
-                listitem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
-                listitem.setProperty('ProgramName', ProgramName)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-                listcontainer.addItem(listitem)
-            except:
-                continue
+        programrecordingevent.list_load(listcontainer)
 
         #Update the status
         self.count_recording(True)
 
         #Update the main page count
         if var.guiMain != None:
-            var.guiMain.count_recorded_event()
-            var.guiMain.count_recording_event()
+            var.guiMain.count_recorded_events()
+            var.guiMain.count_recording_events()
 
     #Update the status
     def count_recording(self, resetSelect=False):

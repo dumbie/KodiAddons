@@ -5,8 +5,11 @@ import download
 import epg
 import files
 import func
-import metadatainfo
 import path
+import programkidsepisodeweek
+import programkidsepisodevod
+import programkidsprogramweek
+import programkidsprogramvod
 import searchdialog
 import stream
 import var
@@ -184,45 +187,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Process all the episodes
-        for program in seasonDownloaded["resultObj"]["containers"]:
-            try:
-                #Load program basics
-                TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
-
-                #Check if content is pay to play
-                if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
-
-                #Load program details
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-                ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-                ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
-                ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
-                ProgramAvailability = metadatainfo.vod_ondemand_available_time(program)
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisode, ProgramDuration ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-                ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
-
-                #Add vod program
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('Action', 'play_episode_vod')
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramName", ProgramName)
-                listitem.setProperty('ProgramDetails', ProgramDetails)
-                listitem.setProperty("ProgramAvailability", ProgramAvailability)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
-                listitem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
-                listcontainer.addItem(listitem)
-            except:
-                continue
+        programkidsepisodevod.list_load(listcontainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
 
         #Update the episodes status
         func.updateLabelText(self, 2, selectedSeriesName + ' (' + str(listcontainer.size()) + ' afleveringen)')
@@ -248,57 +213,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Process all the episodes
-        for program in var.KidsSearchDataJson["resultObj"]["containers"]:
-            try:
-                #Load program basics
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
-
-                #Check if program matches serie
-                checkSerie1 = ProgramName.lower()
-                checkSerie2 = selectedSeriesName.lower()
-                if checkSerie1 != checkSerie2: continue
-
-                #Load program details
-                ChannelId = metadatainfo.channelId_from_json_metadata(program)
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-                ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-                ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
-                ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
-                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, False)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-                ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-                ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
-                ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
-                ProgramAvailability = metadatainfo.vod_week_available_time(program)
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisode, ProgramDuration ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-                ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-                ProgramTitle = EpisodeTitle + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
-
-                #Add vod program
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('Action', 'play_episode_week')
-                listitem.setProperty('ChannelId', ChannelId)
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
-                listitem.setProperty("ProgramName", EpisodeTitle)
-                listitem.setProperty("ProgramSeasonInt", ProgramSeasonInt)
-                listitem.setProperty("ProgramEpisodeInt", ProgramEpisodeInt)
-                listitem.setProperty("ProgramWeek", 'true')
-                listitem.setProperty('ProgramDetails', ProgramDetails)
-                listitem.setProperty("ProgramAvailability", ProgramAvailability)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
-                listitem.setArt({'thumb': path.icon_epg(selectedPictureUrl), 'icon': path.icon_epg(selectedPictureUrl)})
-                listcontainersort.append(listitem)
-            except:
-                continue
+        programkidsepisodeweek.list_load(listcontainersort, selectedSeriesName, selectedPictureUrl)
 
         #Sort and add episodes
         listcontainersort.sort(key=lambda x: (int(x.getProperty('ProgramSeasonInt')), int(x.getProperty('ProgramEpisodeInt'))))
@@ -342,8 +257,10 @@ class Gui(xbmcgui.WindowXML):
         #Add programs to the list
         func.updateLabelText(self, 1, "Programma's laden")
         listcontainersort = []
-        self.add_program_week(listcontainersort)
-        self.add_program_vod(listcontainersort)
+        programkidsprogramweek.list_load(listcontainersort)
+        programkidsprogramvod.list_load(listcontainersort)
+
+        #Sort and add programs to the list
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
         listcontainer.addItems(listcontainersort)
 
@@ -357,115 +274,6 @@ class Gui(xbmcgui.WindowXML):
             self.load_episodes_vod(listItemSelected, False)
         elif listItemAction == 'load_episodes_week':
             self.load_episodes_week(listItemSelected, False)
-
-    def add_program_vod(self, listcontainersort):
-        for program in var.ChannelsDataJsonSeriesKids['resultObj']['containers']:
-            try:
-                #Load program basics
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-
-                #Check if there are search results
-                if var.SearchFilterTerm != '':
-                    searchMatch = func.search_filter_string(ProgramName)
-                    searchResultFound = var.SearchFilterTerm in searchMatch
-                    if searchResultFound == False: continue
-
-                #Load program details
-                PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-                ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramStarRating, ProgramAgeRating ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-                ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-
-                #Add vod program
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('Action', 'load_episodes_vod')
-                listitem.setProperty('PictureUrl', PictureUrl)
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramName", ProgramName)
-                listitem.setProperty('ProgramDetails', ProgramDetails)
-                listitem.setInfo('video', {'Genre': 'Series', 'Plot': ProgramDetails})
-                iconProgramType = "common/series.png"
-                iconStreamType = "common/vod.png"
-                iconProgram = path.icon_vod(PictureUrl)
-                listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconProgramType})
-                listcontainersort.append(listitem)
-            except:
-                continue
-
-    def add_program_week(self, listcontainersort):
-        for program in var.KidsSearchDataJson['resultObj']['containers']:
-            try:
-                #Load program basics
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
-
-                #Check if serie is already added
-                if func.search_programname_listarray(listcontainersort, ProgramName) != None: continue
-
-                #Check if there are search results
-                if var.SearchFilterTerm != '':
-                    searchMatch = func.search_filter_string(ProgramName)
-                    searchResultFound = var.SearchFilterTerm in searchMatch
-                    if searchResultFound == False: continue
-
-                #Check if program is serie or movie
-                ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
-                if ContentSubtype == "VOD":
-                    ProgramAction = 'play_episode_week'
-                    iconProgramType = "common/movies.png"
-                    ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program, False)
-                    ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
-                    ProgramAvailability = metadatainfo.vod_week_available_time(program)
-                else:
-                    ProgramAction = 'load_episodes_week'
-                    iconProgramType = "common/series.png"
-                    ProgramDuration = ""
-                    ProgramDescription = ""
-                    ProgramAvailability = ""
-
-                #Load program details
-                ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-                PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
-                SeriesId = metadatainfo.seriesId_from_json_metadata(program)
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-                ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramStarRating, ProgramAgeRating, ProgramDuration ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-                ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
-
-                #Add week program
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('Action', ProgramAction)
-                listitem.setProperty('PictureUrl', PictureUrl)
-                listitem.setProperty('SeriesId', SeriesId)
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramName", ProgramName)
-                listitem.setProperty("ProgramWeek", 'true')
-                listitem.setProperty('ProgramDetails', ProgramDetails)
-                listitem.setProperty("ProgramAvailability", ProgramAvailability)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Kids', 'Plot': ProgramDescription})
-                iconStreamType = "common/calendarweek.png"
-                iconProgram = path.icon_epg(PictureUrl)
-                iconChannel = path.icon_television(ExternalId)
-                listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel})
-                listcontainersort.append(listitem)
-            except:
-                continue
 
     #Update the status
     def count_program(self, resetSelect=False):

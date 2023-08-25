@@ -1,15 +1,14 @@
-import json
 from datetime import datetime, timedelta
 from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channellist
+import channellisttv
 import download
 import favorite
 import func
 import path
-import programsummary
+import programplayergui
 import recordingfunc
 import sleep
 import stream
@@ -506,7 +505,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         if downloadResult == False: return False
 
         #Add channels to list
-        channellist.channel_list_load(listcontainer)
+        channellisttv.list_load(listcontainer)
 
         #Select channel in list container
         currentChannelId = var.addon.getSetting('CurrentChannelId')
@@ -539,15 +538,12 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmc.sleep(100)
 
     def update_epg_information(self):
-        #Download epg information today
-        download.download_epg_day(datetime.now())
-
         #Get and check the list container
         listcontainer = self.getControl(1001)
 
         #Generate program summary for playergui
         try:
             updateItem = listcontainer.getSelectedItem()
-            programsummary.program_summary_playergui(updateItem)
+            programplayergui.list_update(updateItem)
         except:
             pass

@@ -1,11 +1,69 @@
-import xbmc
 import xbmcgui
+from datetime import datetime, timedelta
 import dialog
 import download
 import func
 import metadatainfo
 import path
 import var
+
+def count_recording_events():
+    #Download the recording programs
+    downloadResult = download.download_recording_event(False)
+    if downloadResult == False: return '?'
+
+    #Count planned recording
+    recordingCount = 0
+    for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+        try:
+            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
+            #Check if recording is planned or already recorded
+            if ProgramTimeEndDateTime > datetime.now():
+                recordingCount += 1
+        except:
+            continue
+    return recordingCount
+
+def count_recorded_events():
+    #Download the recording programs
+    downloadResult = download.download_recording_event(False)
+    if downloadResult == False: return '?'
+
+    #Count finished recordings
+    recordingCount = 0
+    for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+        try:
+            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
+            if datetime.now() < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
+            recordingCount += 1
+        except:
+            continue
+    return recordingCount
+
+def count_recording_series():
+    #Download the recording programs
+    downloadResult = download.download_recording_series(False)
+    if downloadResult == False: return '?'
+
+    #Count planned recording
+    return len(var.ChannelsDataJsonRecordingSeries["resultObj"]["containers"])
+
+def count_recorded_series_id(seriesId):
+    try:
+        if var.ChannelsDataJsonRecordingEvent == []: return ''
+
+        #Count finished recordings
+        recordedCount = 0
+        for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+            try:
+                recordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
+                if recordSeriesId == seriesId:
+                    recordedCount += 1
+            except:
+                continue
+        return '(' + str(recordedCount) + 'x)'
+    except:
+        return ''
 
 def record_event_epg(_self, listItemSelected, forceRecord=False):
     ChannelId = listItemSelected.getProperty('ChannelId')

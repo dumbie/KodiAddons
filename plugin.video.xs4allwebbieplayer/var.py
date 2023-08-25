@@ -2,7 +2,6 @@ import os
 from datetime import datetime, timedelta
 import hybrid
 import player
-import var
 import xbmc
 import xbmcaddon
 import xbmcgui

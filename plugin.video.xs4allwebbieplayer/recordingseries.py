@@ -1,12 +1,9 @@
-import json
-from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
 import dialog
 import download
 import func
-import metadatainfo
-import path
+import programrecordingseries
 import var
 
 def switch_to_page():
@@ -19,29 +16,6 @@ def close_the_page():
         #Close the shown window
         var.guiRecordingSeries.close()
         var.guiRecordingSeries = None
-
-def count_main_recording():
-    #Download the recording programs
-    downloadResult = download.download_recording_series(False)
-    if downloadResult == False: return '?'
-
-    #Count planned recording
-    return len(var.ChannelsDataJsonRecordingSeries["resultObj"]["containers"])
-
-def count_recorded_series(seriesId):
-    try:
-        if var.ChannelsDataJsonRecordingEvent == []: return ''
-        recordedCount = 0
-        for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
-            try:
-                recordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
-                if recordSeriesId == seriesId:
-                    recordedCount += 1
-            except:
-                continue
-        return '(' + str(recordedCount) + 'x)'
-    except:
-        return ''
 
 class Gui(xbmcgui.WindowXMLDialog):
     def onInit(self):
@@ -114,50 +88,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Process all the planned recording
         func.updateLabelText(self, 3001, "Geplande series worden geladen.")
-        for program in var.ChannelsDataJsonRecordingSeries["resultObj"]["containers"]:
-            try:
-                #Load program basics
-                ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-
-                #Check recorded episodes count
-                ProgramEpisodeCount = count_recorded_series(ProgramSeriesId)
-
-                #Get first recording event
-                RecordingEvent = func.search_seriesid_jsonrecording_event(ProgramSeriesId)
-
-                #Load program details
-                ProgramYear = metadatainfo.programyear_from_json_metadata(RecordingEvent)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(RecordingEvent)
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisodeCount ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-
-                #Update program name string
-                ProgramName += ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
-
-                #Get channel basics
-                ChannelId = metadatainfo.channelId_from_json_metadata(program)
-                ChannelName = 'Onbekende zender'
-                ChannelIcon = path.resources('resources/skins/default/media/common/unknown.png')
-                ChannelDetails = func.search_channelid_jsontelevision(ChannelId)
-                if ChannelDetails:
-                    ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
-                    ChannelName = metadatainfo.channelName_from_json_metadata(ChannelDetails)
-                    ChannelIcon = path.icon_television(ExternalId)
-
-                #Add recording series to the list
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('SeriesId', ProgramSeriesId)
-                listitem.setProperty('ProgramName', ProgramName)
-                listitem.setProperty('ProgramDescription', ChannelName)
-                listitem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon})
-                listcontainer.addItem(listitem)
-            except:
-                continue
+        programrecordingseries.list_load(listcontainer)
 
         #Update the status
         self.count_recording(True)

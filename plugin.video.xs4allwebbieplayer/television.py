@@ -3,14 +3,14 @@ from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channellist
+import channellisttv
 import dialog
 import download
 import epg
 import favorite
 import func
 import path
-import programsummary
+import programtelevision
 import recordingfunc
 import searchdialog
 import stream
@@ -314,7 +314,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
-        channellist.channel_list_load(listcontainer)
+        channellisttv.list_load(listcontainer)
 
         #Update the status
         self.count_channels(True)
@@ -382,21 +382,22 @@ class Gui(xbmcgui.WindowXML):
     def load_epg(self, forceUpdate=False):
         try:
             if forceUpdate == True:
+                #Show tv guide refresh notification
                 notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
                 xbmcgui.Dialog().notification(var.addonname, 'TV Gids wordt vernieuwd.', notificationIcon, 2500, False)
 
-            #Download epg information today
-            download.download_epg_day(datetime.now())
+                #Download epg information for today
+                download.download_epg_day(datetime.now(), True)
 
             #Get and check the list container
             listcontainer = self.getControl(1000)
             listitemcount = listcontainer.size()
 
             #Generate program summary for television
-            for channelNum in range(0, listitemcount):
+            for itemNum in range(0, listitemcount):
                 try:
-                    updateItem = listcontainer.getListItem(channelNum)
-                    programsummary.program_summary_television(updateItem)
+                    updateItem = listcontainer.getListItem(itemNum)
+                    programtelevision.list_update(updateItem)
                 except:
                     continue
         except:

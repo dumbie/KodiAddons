@@ -4,7 +4,8 @@ import dialog
 import download
 import epg
 import func
-import metadatainfo
+import programmoviesvod
+import programmoviesweek
 import path
 import searchdialog
 import stream
@@ -147,129 +148,15 @@ class Gui(xbmcgui.WindowXML):
         #Add movies to the list
         func.updateLabelText(self, 1, "Films laden")
         listcontainersort = []
-        self.add_movies_week(listcontainersort)
-        self.add_movies_vod(listcontainersort)
+        programmoviesweek.list_load(listcontainersort)
+        programmoviesvod.list_load(listcontainersort)
+
+        #Sort and add movies to the list
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
         listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_movies(True)
-
-    def add_movies_vod(self, listcontainersort):
-        for program in var.ChannelsDataJsonMovies['resultObj']['containers']:
-            try:
-                #Load program basics
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-                TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
-
-                #Check if there are search results
-                if var.SearchFilterTerm != '':
-                    searchMatch = func.search_filter_string(ProgramName)
-                    searchResultFound = var.SearchFilterTerm in searchMatch
-                    if searchResultFound == False: continue
-
-                #Check if content is pay to play
-                if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
-
-                #Load program details
-                PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-                ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-                ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-                ProgramActors = metadatainfo.programactors_from_json_metadata(program)
-                ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
-                ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
-                ProgramAvailability = metadatainfo.vod_ondemand_available_time(program)
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramSeason, ProgramStarRating, ProgramAgeRating, ProgramDuration ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-                ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
-
-                #Combine program actors
-                if func.string_isnullorempty(ProgramActors) == False:
-                    ProgramDescription = "[COLOR gray]" + ProgramActors + "[/COLOR]\n\n" + ProgramDescription
-
-                #Add vod program
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('Action', 'play_stream_vod')
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramName", ProgramName)
-                listitem.setProperty("ProgramDetails", ProgramDetails)
-                listitem.setProperty("ProgramAvailability", ProgramAvailability)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
-                iconStreamType = "common/vod.png"
-                iconProgram = path.icon_vod(PictureUrl)
-                listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})
-                listcontainersort.append(listitem)
-            except:
-                continue
-
-    def add_movies_week(self, listcontainersort):
-        for program in var.MovieSearchDataJson['resultObj']['containers']:
-            try:
-                #Load program basics
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
-
-                #Check if there are search results
-                if var.SearchFilterTerm != '':
-                    searchMatch = func.search_filter_string(ProgramName)
-                    searchResultFound = var.SearchFilterTerm in searchMatch
-                    if searchResultFound == False: continue
-
-                #Load program details
-                ChannelId = metadatainfo.channelId_from_json_metadata(program)
-                ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-                PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-                ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-                ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-                ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-                ProgramActors = metadatainfo.programactors_from_json_metadata(program)
-                ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
-                ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
-                ProgramAvailability = metadatainfo.vod_week_available_time(program)
-
-                #Combine program details
-                stringJoin = [ ProgramYear, ProgramSeason, ProgramStarRating, ProgramAgeRating, ProgramDuration ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-                ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-                ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
-
-                #Combine program actors
-                if func.string_isnullorempty(ProgramActors) == False:
-                    ProgramDescription = "[COLOR gray]" + ProgramActors + "[/COLOR]\n\n" + ProgramDescription
-
-                #Add week program
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('Action', 'play_stream_week')
-                listitem.setProperty('ChannelId', ChannelId)
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
-                listitem.setProperty("ProgramName", ProgramName)
-                listitem.setProperty("ProgramWeek", 'true')
-                listitem.setProperty("ProgramDetails", ProgramDetails)
-                listitem.setProperty("ProgramAvailability", ProgramAvailability)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
-                iconStreamType = "common/calendarweek.png"
-                iconProgram = path.icon_epg(PictureUrl)
-                iconChannel = path.icon_television(ExternalId)
-                listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconChannel})
-                listcontainersort.append(listitem)
-            except:
-                continue
 
     #Update the status
     def count_movies(self, resetSelect=False):

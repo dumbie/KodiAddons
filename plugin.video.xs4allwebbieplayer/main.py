@@ -16,6 +16,7 @@ import radio
 import recorded
 import recordingevent
 import recordingseries
+import recordingfunc
 import search
 import series
 import sleep
@@ -104,11 +105,11 @@ class Gui(xbmcgui.WindowXML):
         #Update the active alarms count
         self.count_alarm(True)
 
-        #Update the recorded event count
-        self.count_recorded_event()
+        #Update the recorded events count
+        self.count_recorded_events()
 
-        #Update the recording event count
-        self.count_recording_event()
+        #Update the recording events count
+        self.count_recording_events()
 
         #Update the recording series count
         self.count_recording_series()
@@ -308,7 +309,7 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/shutdown.png'), 'icon': path.resources('resources/skins/default/media/common/shutdown.png')})
         listcontainer.addItem(listitem)
 
-    def count_recorded_event(self):
+    def count_recorded_events(self):
         try:
             #Get and check the main list container
             listcontainer = self.getControl(1000)
@@ -316,7 +317,7 @@ class Gui(xbmcgui.WindowXML):
                 return False
 
             #Load and count the planned recording
-            recordingCount = recorded.count_main_recording()
+            recordingCount = recordingfunc.count_recorded_events()
 
             #Update the list count
             countItem = func.search_label_listcontainer(listcontainer, 'Bekijk Opnames')
@@ -324,7 +325,7 @@ class Gui(xbmcgui.WindowXML):
         except:
             pass
 
-    def count_recording_event(self):
+    def count_recording_events(self):
         try:
             #Get and check the main list container
             listcontainer = self.getControl(1000)
@@ -332,7 +333,7 @@ class Gui(xbmcgui.WindowXML):
                 return False
 
             #Load and count the planned recording
-            recordingCount = recordingevent.count_main_recording()
+            recordingCount = recordingfunc.count_recording_events()
 
             #Update the list count
             countItem = func.search_label_listcontainer(listcontainer, 'Geplande Opnames')
@@ -348,7 +349,7 @@ class Gui(xbmcgui.WindowXML):
                 return False
 
             #Load and count the planned recording
-            recordingCount = recordingseries.count_main_recording()
+            recordingCount = recordingfunc.count_recording_series()
 
             #Update the list count
             countItem = func.search_label_listcontainer(listcontainer, 'Geplande Series')

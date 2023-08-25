@@ -4,7 +4,7 @@ import dialog
 import download
 import epg
 import func
-import metadatainfo
+import programsearch
 import path
 import searchdialog
 import stream
@@ -36,7 +36,7 @@ class Gui(xbmcgui.WindowXML):
                 listcontainer.selectItem(1)
                 xbmc.sleep(100)
             else:
-                self.search_list(var.SearchDownloadResultJson)
+                self.search_list()
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -92,7 +92,7 @@ class Gui(xbmcgui.WindowXML):
 
             #Set search filter term
             var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
-            self.search_list(var.SearchDownloadResultJson)
+            self.search_list()
             var.SearchFilterTerm = ''
         elif dialogResult == 'Programma in de TV Gids tonen':
             listcontainer = self.getControl(1000)
@@ -139,7 +139,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
-        self.search_list(var.SearchDownloadResultJson)
+        self.search_list()
         var.SearchFilterTerm = ''
 
     def search_program(self):
@@ -174,71 +174,15 @@ class Gui(xbmcgui.WindowXML):
 
         #List the search results
         func.updateLabelText(self, 1, "Zoek resultaat laden")
-        self.search_list(var.SearchDownloadResultJson)
+        self.search_list()
 
-    def search_list(self, downloadResult=None):
+    def search_list(self):
         #Get and check the list container
         listcontainer = self.getControl(1000)
         listcontainer.reset()
 
         #Add programs to the list
-        for program in downloadResult['resultObj']['containers']:
-            try:
-                #Load program basics
-                ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-                ProgramNameRaw = ProgramName
-                EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
-
-                #Check if there are search results
-                if var.SearchFilterTerm != '':
-                    searchMatch1 = func.search_filter_string(ProgramName)
-                    searchMatch2 = func.search_filter_string(EpisodeTitle)
-                    searchResultFound = var.SearchFilterTerm in searchMatch1 or var.SearchFilterTerm in searchMatch2
-                    if searchResultFound == False: continue
-
-                #Load program details
-                ChannelId = metadatainfo.channelId_from_json_metadata(program)
-                ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-                ProgramId = metadatainfo.contentId_from_json_metadata(program)
-                ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-                ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-                ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-                ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-                ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program, False)
-                ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
-                ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-                ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-                ProgramTimeStartStringTime = ProgramTimeStartDateTime.strftime('%H:%M')
-                ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
-                ProgramTime = '[COLOR gray]Begon om ' + ProgramTimeStartStringTime + ' op ' + ProgramTimeStartStringDate + ' en duurde ' + ProgramDuration + '[/COLOR]'
-                ProgramAvailability = metadatainfo.vod_week_available_time(program)
-
-                #Combine program details
-                stringJoin = [ EpisodeTitle, ProgramYear, ProgramSeason, ProgramEpisode, ProgramAgeRating ]
-                ProgramDetails = ' '.join(filter(None, stringJoin))
-                if func.string_isnullorempty(ProgramDetails):
-                    ProgramDetails = '(?)'
-
-                #Update program name string
-                ProgramName = ProgramNameRaw + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
-                ProgramNameDesc = ProgramNameRaw + '\n[COLOR gray]' + ProgramDetails + '[/COLOR]\n' + ProgramAvailability
-
-                #Add program
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('Action', 'play_stream')
-                listitem.setProperty('ChannelId', ChannelId)
-                listitem.setProperty('ProgramId', ProgramId)
-                listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
-                listitem.setProperty("ProgramName", ProgramName)
-                listitem.setProperty("ProgramNameDesc", ProgramNameDesc)
-                listitem.setProperty("ProgramNameRaw", ProgramNameRaw)
-                listitem.setProperty("ProgramDetails", ProgramTime)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setInfo('video', {'Genre': 'Zoeken', 'Plot': ProgramDescription})
-                listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-                listcontainer.addItem(listitem)
-            except:
-                continue
+        programsearch.list_load(listcontainer)
 
         #Update the status
         self.count_program(True)
