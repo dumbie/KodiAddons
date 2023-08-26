@@ -1,6 +1,6 @@
 import xbmc
 import xbmcgui
-import channellistradio
+import channel.radio
 import download
 import func
 import path
@@ -133,7 +133,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add channels to the list
         func.updateLabelText(self, 1, 'Zenders laden')
-        channellistradio.list_load(listcontainer)
+        channel.radio.list_load(listcontainer)
 
         #Update the status
         self.count_radio(True)

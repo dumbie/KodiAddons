@@ -3,7 +3,7 @@ import xbmcgui
 import dialog
 import download
 import func
-import programrecordingseries
+import program.recordingseries
 import var
 
 def switch_to_page():
@@ -88,7 +88,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Process all the planned recording
         func.updateLabelText(self, 3001, "Geplande series worden geladen.")
-        programrecordingseries.list_load(listcontainer)
+        program.recordingseries.list_load(listcontainer)
 
         #Update the status
         self.count_recording(True)

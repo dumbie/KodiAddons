@@ -3,7 +3,7 @@ from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channellisttv
+import channel.television
 import dialog
 import download
 import favorite
@@ -13,8 +13,8 @@ import path
 import recordingfunc
 import searchdialog
 import stream
-import programepgload
-import programepgupdate
+import program.epgload
+import program.epgupdate
 import var
 import zap
 
@@ -214,6 +214,12 @@ class Gui(xbmcgui.WindowXML):
                 dialogSummary = ProgramName + ' alarm zetten?'
                 dialogFooter = ''
 
+        #Add switch favorite/all button
+        if var.LoadChannelFavoritesOnly == True:
+            dialogAnswers.append('Toon alle zenders')
+        else:
+            dialogAnswers.append('Toon favorieten zenders')
+
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Alarm zetten of annuleren':
             self.set_program_alarm(listItemSelected)
@@ -225,6 +231,28 @@ class Gui(xbmcgui.WindowXML):
             stream.switch_channel_tv_listitem(listItemSelected, False, False)
         elif dialogResult == 'Programma terug kijken':
             stream.play_stream_program(listItemSelected, False)
+        elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
+            self.switch_allfavorites()
+
+    def switch_allfavorites(self):
+        try:
+            #Switch favorites mode on or off
+            if var.LoadChannelFavoritesOnly == True:
+                var.LoadChannelFavoritesOnly = False
+            else:
+                #Check if there are favorites set
+                if var.FavoriteTelevisionDataJson == []:
+                    notificationIcon = path.resources('resources/skins/default/media/common/star.png')
+                    xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
+                    return
+                var.LoadChannelFavoritesOnly = True
+
+            channelsLoaded = self.load_channels(True)
+            if channelsLoaded == True:
+                self.set_channel_epg_variables()
+                self.load_epg(False, True)
+        except:
+            pass
 
     def update_program_record_event(self):
         #Get the epg list control
@@ -401,7 +429,7 @@ class Gui(xbmcgui.WindowXML):
         #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
         func.updateLabelText(self, 2, 'Zenders worden geladen, nog even geduld...')
-        channellisttv.list_load(listcontainer, True)
+        channel.television.list_load(listcontainer, True)
 
         #Focus on the list container
         if listcontainer.size() > 0:
@@ -459,7 +487,7 @@ class Gui(xbmcgui.WindowXML):
         for itemNum in range(0, listitemcount):
             try:
                 updateItem = listcontainer.getListItem(itemNum)
-                programepgupdate.list_update(updateItem)
+                program.epgupdate.list_update(updateItem)
             except:
                 pass
 
@@ -510,7 +538,7 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Add programs to list
-        programepgload.list_load(listcontainer, channelEpgJson)
+        program.epgload.list_load(listcontainer, channelEpgJson)
 
         #Select program index
         self.epg_selectindex_program()

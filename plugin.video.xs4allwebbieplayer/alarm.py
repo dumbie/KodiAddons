@@ -1,6 +1,6 @@
 import json
 from datetime import datetime, timedelta
-from threading import Thread
+import program.alarm
 import xbmc
 import xbmcgui
 import dialog
@@ -237,27 +237,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         listcontainer = self.getControl(1000)
         listcontainer.reset()
 
-        #Sort alarms by upcoming time
-        var.AlarmDataJson.sort(key=lambda x: x['starttime'], reverse=False)
-
-        for alarm in var.AlarmDataJson:
-            try:
-                ExternalId = alarm['externalid']
-                #ChannelName = alarm['channelname']
-                ProgramName = alarm['programname']
-                ProgramTimeStart = alarm['starttime']
-
-                ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
-                ProgramDescription = 'Om ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' op ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
-
-                listitem = xbmcgui.ListItem()
-                listitem.setProperty('ProgramTimeStart', ProgramTimeStart)
-                listitem.setProperty('ProgramName', ProgramName)
-                listitem.setProperty('ProgramDescription', ProgramDescription)
-                listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-                listcontainer.addItem(listitem)
-            except:
-                continue
+        #Add alarms to list
+        program.alarm.list_load(listcontainer)
 
         #Update the status
         self.count_alarm(True)

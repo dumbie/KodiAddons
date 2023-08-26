@@ -268,14 +268,14 @@ def programactors_from_json_metadata(metaData):
         #Get program directors array
         directorsArray = metaData["metadata"]["directors"]
         if directorsArray != None:
-            programDirectors = '(R) ' + ', '.join(filter(None, directorsArray))
+            programDirectors = '[COLOR white](R)[/COLOR] [COLOR gray]' + ', '.join(filter(None, directorsArray)) + '[/COLOR]'
         else:
             programDirectors = ''
 
         #Get program actors array
         actorsArray = metaData["metadata"]["actors"]
         if actorsArray != None:
-            programActors = '(A) ' + ', '.join(filter(None, actorsArray))
+            programActors = '[COLOR white](A)[/COLOR] [COLOR gray]' + ', '.join(filter(None, actorsArray)) + '[/COLOR]'
         else:
             programActors = ''
 

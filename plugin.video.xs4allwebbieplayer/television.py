@@ -3,14 +3,14 @@ from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channellisttv
+import channel.television
 import dialog
 import download
 import epg
 import favorite
 import func
 import path
-import programtelevision
+import program.television
 import recordingfunc
 import searchdialog
 import stream
@@ -249,7 +249,6 @@ class Gui(xbmcgui.WindowXML):
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
-
                 var.LoadChannelFavoritesOnly = True
 
             self.load_channels(True, False)
@@ -314,7 +313,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
-        channellisttv.list_load(listcontainer)
+        channel.television.list_load(listcontainer)
 
         #Update the status
         self.count_channels(True)
@@ -397,7 +396,7 @@ class Gui(xbmcgui.WindowXML):
             for itemNum in range(0, listitemcount):
                 try:
                     updateItem = listcontainer.getListItem(itemNum)
-                    programtelevision.list_update(updateItem)
+                    program.television.list_update(updateItem)
                 except:
                     continue
         except:

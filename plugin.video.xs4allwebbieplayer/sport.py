@@ -5,7 +5,7 @@ import dialog
 import download
 import epg
 import func
-import programsport
+import program.sport
 import path
 import searchdialog
 import stream
@@ -152,7 +152,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add programs to the list
         func.updateLabelText(self, 1, "Uitzendingen laden")
-        programsport.list_load(listcontainer)
+        program.sport.list_load(listcontainer)
 
         #Update the status
         self.count_program(True)

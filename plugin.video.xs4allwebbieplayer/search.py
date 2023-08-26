@@ -4,7 +4,7 @@ import dialog
 import download
 import epg
 import func
-import programsearch
+import program.search
 import path
 import searchdialog
 import stream
@@ -182,7 +182,7 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.reset()
 
         #Add programs to the list
-        programsearch.list_load(listcontainer)
+        program.search.list_load(listcontainer)
 
         #Update the status
         self.count_program(True)

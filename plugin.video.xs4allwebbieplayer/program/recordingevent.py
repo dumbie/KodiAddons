@@ -7,7 +7,7 @@ import var
 
 def list_load(listContainer):
     RecordingEvents = var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]
-    RecordingEvents = sorted(RecordingEvents, key=lambda x: x['metadata']['programStartTime'], reverse=False)
+    RecordingEvents.sort(key=lambda x: x['metadata']['programStartTime'], reverse=False)
 
     #Process all the planned recording
     for program in RecordingEvents:

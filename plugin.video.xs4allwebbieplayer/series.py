@@ -5,10 +5,10 @@ import download
 import epg
 import func
 import path
-import programseriesepisodeweek
-import programseriesepisodevod
-import programseriesprogramweek
-import programseriesprogramvod
+import program.seriesepisodeweek
+import program.seriesepisodevod
+import program.seriesprogramweek
+import program.seriesprogramvod
 import searchdialog
 import stream
 import var
@@ -159,7 +159,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Process all the episodes
-        programseriesepisodevod.list_load(listcontainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+        program.seriesepisodevod.list_load(listcontainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
 
         #Update the episodes status
         func.updateLabelText(self, 2, selectedSeriesName + ' (' + str(listcontainer.size()) + ' afleveringen)')
@@ -185,9 +185,9 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Process all the episodes
-        programseriesepisodeweek.list_load(listcontainersort, selectedSeriesName, selectedPictureUrl)
+        program.seriesepisodeweek.list_load(listcontainersort, selectedSeriesName, selectedPictureUrl)
 
-        #Sort and add episodes
+        #Sort and add episodes to the list
         listcontainersort.sort(key=lambda x: (int(x.getProperty('ProgramSeasonInt')), int(x.getProperty('ProgramEpisodeInt'))))
         listcontainer.addItems(listcontainersort)
 
@@ -229,8 +229,8 @@ class Gui(xbmcgui.WindowXML):
         #Add series to the list
         func.updateLabelText(self, 1, "Series laden")
         listcontainersort = []
-        programseriesprogramweek.list_load(listcontainersort)
-        programseriesprogramvod.list_load(listcontainersort)
+        program.seriesprogramweek.list_load(listcontainersort)
+        program.seriesprogramvod.list_load(listcontainersort)
 
         #Sort and add programs to the list
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))

@@ -4,41 +4,25 @@ import download
 import func
 import metadatainfo
 import var
-import xbmc
 
 def list_update(updateItem):
     #Get channel information from item
     channelId = updateItem.getProperty('ChannelId')
-    currentChannelId = var.addon.getSetting('CurrentChannelId')
+    channelName = updateItem.getProperty('ChannelName')
+    channelNumberAccent = updateItem.getProperty('ChannelNumberAccent')
 
     #Set the current player play time
-    streamDelaySeconds = 15
     currentDateTime = datetime.now()
-    currentSeekDateTime = currentDateTime
-    if channelId == currentChannelId:
-        #Calculate current seek time
-        playerSeekStepSizeHours = int(str(xbmc.getInfoLabel('Player.SeekTime(hh)'))) * 3600
-        playerSeekStepSizeMinutes = int(str(xbmc.getInfoLabel('Player.SeekTime(mm)'))) * 60
-        playerSeekStepSizeSeconds = int(str(xbmc.getInfoLabel('Player.SeekTime(ss)')))
-        seekSeconds = playerSeekStepSizeHours + playerSeekStepSizeMinutes + playerSeekStepSizeSeconds + streamDelaySeconds
-
-        #Calculate current player time
-        totalSeconds = int(xbmc.Player().getTotalTime())
-        playerSeconds = totalSeconds - seekSeconds
-
-        #Set the current seek date time
-        if seekSeconds - streamDelaySeconds > 1:
-            currentSeekDateTime -= timedelta(seconds=playerSeconds)
 
     try:
-        #Get json epg from seek time
-        epgSeekJson = download.download_epg_day(currentSeekDateTime, False)
+        #Get json epg from today
+        epgTodayJson = download.download_epg_day(currentDateTime, False)
 
         #Get json epg for the channelid
-        channelEpg = func.search_channelid_jsonepg(epgSeekJson, channelId)
+        channelEpg = func.search_channelid_jsonepg(epgTodayJson, channelId)
 
         #Look for current airing program index
-        programIndex = func.get_programindex_airingtime_jsonepg(channelEpg, currentSeekDateTime)
+        programIndex = func.get_programindex_airingtime_jsonepg(channelEpg, currentDateTime)
     except:
         pass
 
@@ -53,10 +37,9 @@ def list_update(updateItem):
         ProgramNowTimeStartString = ProgramNowTimeStartDateTime.strftime('%H:%M')
         ProgramNowTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
         ProgramNowTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData, False, False)
-        ProgramNowTimeLeftMinutes = int((ProgramNowTimeEndDateTime - currentSeekDateTime).total_seconds() / 60)
+        ProgramNowTimeLeftMinutes = int((ProgramNowTimeEndDateTime - currentDateTime).total_seconds() / 60)
         ProgramNowTimeLeftString = str(ProgramNowTimeLeftMinutes)
-        ProgramNowTimeEndString = (currentDateTime + timedelta(minutes=ProgramNowTimeLeftMinutes)).strftime('%H:%M')
-        ProgramSeekPercent = str(int(((currentSeekDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
+        ProgramNowTimeEndString = ProgramNowTimeEndDateTime.strftime('%H:%M')
         ProgramProgressPercent = str(int(((currentDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
 
         #Load program details
@@ -64,16 +47,25 @@ def list_update(updateItem):
         ProgramYear = metadatainfo.programyear_from_json_metadata(metaData)
         ProgramSeason = metadatainfo.programseason_from_json_metadata(metaData)
         ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(metaData)
+        ProgramActors = metadatainfo.programactors_from_json_metadata(metaData)
         ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(metaData)
         ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(metaData)
         ProgramGenres = metadatainfo.programgenres_from_json_metadata(metaData)
         ProgramNowDescription = metadatainfo.programdescription_from_json_metadata(metaData)
 
+        #Combine program actors
+        if func.string_isnullorempty(ProgramActors) == False:
+            ProgramNowDescription += "\n\n" + ProgramActors
+
         #Combine program details
-        stringJoin = [ EpisodeTitle, ProgramYear, ProgramSeason, ProgramEpisode, ProgramStarRating, ProgramAgeRating, ProgramGenres ]
+        stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisode, ProgramStarRating, ProgramAgeRating, ProgramGenres ]
         ProgramNowDetails = ' '.join(filter(None, stringJoin))
-        if func.string_isnullorempty(ProgramNowDetails):
-            ProgramNowDetails = 'Onbekend seizoen en aflevering'
+
+        if func.string_isnullorempty(EpisodeTitle) == False:
+            ProgramNowDetails = '[COLOR white]' + EpisodeTitle + "[/COLOR] [COLOR gray]" + ProgramNowDetails + "[/COLOR]"
+
+        if func.string_isnullorempty(ProgramNowDetails) == True:
+            ProgramNowDetails = '[COLOR white]Onbekend seizoen en aflevering[/COLOR]'
 
         #Check if program is a rerun
         programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowName.lower())
@@ -108,7 +100,6 @@ def list_update(updateItem):
         ProgramNowTimeEndString = 'Onbekend'
         ProgramNowTimeDurationString = '0'
         ProgramNowTimeLeftString = '0'
-        ProgramSeekPercent = '100'
         ProgramProgressPercent = '100'
         ProgramNowRerun = 'false'
         ProgramNowRecordEvent = 'false'
@@ -170,8 +161,8 @@ def list_update(updateItem):
             ProgramLaterName = metadatainfo.programtitle_from_json_metadata(metaData)
             ProgramLaterTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
             ProgramLaterTimeStartString = ProgramLaterTimeStartDateTime.strftime('%H:%M')
-            ProgramLaterTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData, False)
-            ProgramLater += '\n[COLOR white]' + ProgramLaterTimeStartString + '/' + ProgramLaterTimeDurationString + '[/COLOR] [COLOR gray]' + ProgramLaterName + '[/COLOR]'
+            ProgramLaterTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData)
+            ProgramLater += '\n[COLOR white]' + ProgramLaterTimeStartString + ' ' + ProgramLaterTimeDurationString + '[/COLOR] [COLOR gray]' + ProgramLaterName + '[/COLOR]'
             UpcomingProgramId += 1
         except:
             break
@@ -187,27 +178,33 @@ def list_update(updateItem):
             ProgramLaterName = metadatainfo.programtitle_from_json_metadata(metaData)
             ProgramLaterTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
             ProgramLaterTimeStartString = ProgramLaterTimeStartDateTime.strftime('%H:%M')
-            ProgramLaterTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData, False)
-            ProgramEarlier += '\n[COLOR white]' + ProgramLaterTimeStartString + '/' + ProgramLaterTimeDurationString + '[/COLOR] [COLOR gray]' + ProgramLaterName + '[/COLOR]'
+            ProgramLaterTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData)
+            ProgramEarlier += '\n[COLOR white]' + ProgramLaterTimeStartString + ' ' + ProgramLaterTimeDurationString + '[/COLOR] [COLOR gray]' + ProgramLaterName + '[/COLOR]'
             UpcomingProgramId += 1
         except:
             break
     if ProgramEarlier == '[COLOR gray]Eerder op deze zender:[/COLOR]':
         ProgramEarlier = ''
 
-    #Combine the program timing
+    #Combine channel information
+    try:
+        ChannelDescription = channelNumberAccent + ' [COLOR white]' + channelName + '[/COLOR]'
+    except:
+        ChannelDescription = '[COLOR white]Onbekende zender[/COLOR]'
+
+    #Combine program timing
     try:
         if ProgramNowTimeDurationString == '0':
-            ProgramTiming = ProgramNowName + ' onbekend programmaduur'
+            TimingDescription = '[COLOR white]' + ProgramNowName + '[/COLOR] [COLOR gray]onbekend programmaduur[/COLOR]'
         elif ProgramNowTimeLeftString == '0':
-            ProgramTiming = ProgramNowName + ' is bijna afgelopen, duurde ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString
+            TimingDescription = '[COLOR white]' + ProgramNowName + '[/COLOR] [COLOR gray]is bijna afgelopen, duurde[/COLOR] [COLOR white]' + ProgramNowTimeDurationString + '[/COLOR] [COLOR gray]minuten, begon om[/COLOR] [COLOR white]' + ProgramNowTimeStartString + '[/COLOR]'
         else:
-            ProgramTiming = ProgramNowName + ' duurt nog ' + ProgramNowTimeLeftString + ' van de ' + ProgramNowTimeDurationString + ' minuten, begon om ' + ProgramNowTimeStartString + ' eindigt rond ' + ProgramNowTimeEndString
+            TimingDescription = '[COLOR white]' + ProgramNowName + '[/COLOR] [COLOR gray]duurt nog[/COLOR] [COLOR white]' + ProgramNowTimeLeftString + '[/COLOR] [COLOR gray]van de[/COLOR] [COLOR white]' + ProgramNowTimeDurationString + '[/COLOR] [COLOR gray]minuten, begon om[/COLOR] [COLOR white]' + ProgramNowTimeStartString + '[/COLOR] [COLOR gray]eindigt rond[/COLOR] [COLOR white]' + ProgramNowTimeEndString + '[/COLOR]'
     except:
-        ProgramTiming = 'Onbekende zender en programma'
+        TimingDescription = '[COLOR white]Onbekende programma[/COLOR]'
 
     #Combine the program description
-    ProgramDescription = '[COLOR white]' + ProgramTiming + '[/COLOR]\n\n[COLOR gray]' + ProgramNowDetails + '[/COLOR]\n\n[COLOR white]' + ProgramNowDescription + '[/COLOR]'
+    ProgramDescription = ChannelDescription + '\n\n' + TimingDescription + '\n\n' + ProgramNowDetails + '\n\n' + ProgramNowDescription
 
     #Append later programs to the description
     if func.string_isnullorempty(ProgramLater) == False:
@@ -235,6 +232,5 @@ def list_update(updateItem):
     updateItem.setProperty("ProgramNextRerun", ProgramNextRerun)
     updateItem.setProperty("ProgramNextRecordEvent", ProgramNextRecordEvent)
     updateItem.setProperty("ProgramNextRecordSeries", ProgramNextRecordSeries)
-    updateItem.setProperty("ProgramSeekPercent", ProgramSeekPercent)
     updateItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
     updateItem.setInfo('video', {'Plot': ProgramDescription})
