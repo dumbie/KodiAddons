@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import func
 import metadatainfo
+import metadatacombine
 import xbmcgui
 import path
 import var
@@ -34,22 +35,14 @@ def list_load(listContainer, epgJson):
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
             ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False)
-            EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
-            ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-            ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-            ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-            ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-            ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-            ProgramGenres = metadatainfo.programgenres_from_json_metadata(program)
-            ProgramDescriptionRaw = metadatainfo.programdescription_from_json_metadata(program)
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramEpgList = 'Programmaduur wordt geladen'
 
+            #Combine program description extended
+            ProgramDescriptionRaw = metadatacombine.program_description_extended(program)
+
             #Combine program details
-            stringJoin = [ EpisodeTitle, ProgramYear, ProgramSeason, ProgramEpisode, ProgramStarRating, ProgramAgeRating, ProgramGenres ]
-            ProgramDetails = ' '.join(filter(None, stringJoin))
-            if func.string_isnullorempty(ProgramDetails):
-                ProgramDetails = 'Onbekend seizoen en aflevering'
+            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Check if program vod is available for playback
             contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)

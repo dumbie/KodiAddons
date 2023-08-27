@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import func
+import metadatacombine
 import metadatainfo
 import xbmcgui
 import path
@@ -24,26 +25,14 @@ def list_load(listContainer):
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-            ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-            ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-            ProgramActors = metadatainfo.programactors_from_json_metadata(program)
-            ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-            ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
-            ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
-            ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
             ProgramAvailability = metadatainfo.vod_week_available_time(program)
 
-            #Combine program details
-            stringJoin = [ ProgramYear, ProgramSeason, ProgramStarRating, ProgramAgeRating, ProgramDuration ]
-            ProgramDetails = ' '.join(filter(None, stringJoin))
-            if func.string_isnullorempty(ProgramDetails):
-                ProgramDetails = '(?)'
-            ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-            ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
+            #Combine program description extended
+            ProgramDescription = metadatacombine.program_description_extended(program)
 
-            #Combine program actors
-            if func.string_isnullorempty(ProgramActors) == False:
-                ProgramDescription += "\n\n[COLOR gray]" + ProgramActors + "[/COLOR]"
+            #Combine program details
+            ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)
+            ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add week program
             listitem = xbmcgui.ListItem()

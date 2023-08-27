@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import func
+import metadatacombine
 import metadatainfo
 import xbmcgui
 import path
@@ -36,13 +37,7 @@ def list_load(listContainer):
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramAssetId = metadatainfo.get_stream_assetid(program['assets'])
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
-            EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
-            ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-            ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-            ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-            ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
             ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program, False)
-            ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
             ProgramStartDeltaTime = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
@@ -51,18 +46,18 @@ def list_load(listContainer):
             ProgramTime = '[COLOR gray]Begon om ' + ProgramTimeStartStringTime + ' op ' + ProgramTimeStartStringDate + ' en duurde ' + ProgramDuration + '[/COLOR]'
             ProgramAvailability = metadatainfo.recording_available_time(program)
 
+            #Combine program description extended
+            ProgramDescription = metadatacombine.program_description_extended(program)
+
             #Combine program details
-            stringJoin = [ EpisodeTitle, ProgramYear, ProgramSeason, ProgramEpisode, ProgramAgeRating ]
-            ProgramDetails = ' '.join(filter(None, stringJoin))
-            if func.string_isnullorempty(ProgramDetails):
-                ProgramDetails = '(?)'
+            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, False, True)
 
             #Update program name string
-            ProgramNameList = '[COLOR white]' + ProgramName + '[/COLOR] [COLOR gray]' + ProgramDetails + '[/COLOR]'
-            ProgramNameDesc = '[COLOR white]' + ProgramName + '[/COLOR]\n[COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramNameList = ProgramName + ' ' + ProgramDetails
+            ProgramNameDesc = ProgramName + '\n' + ProgramDetails
 
             #Update program availability
-            ProgramNameDesc = ProgramNameDesc + '\n[COLOR white]' + ProgramAvailability + '[/COLOR]'
+            ProgramNameDesc += '\n' + ProgramAvailability
 
             #Add program
             listitem = xbmcgui.ListItem()

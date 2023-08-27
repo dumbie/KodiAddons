@@ -234,7 +234,7 @@ def programyear_from_json_metadata(metaData):
 def programstarrating_from_json_metadata(metaData):
     try:
         ProgramRating = str(metaData['metadata']['starRating'])
-        if ProgramRating != '0':
+        if ProgramRating != '0' and ProgramRating != 'None':
             starCharacter = u'\u2605'
             return '(' + starCharacter + ProgramRating + ')'
         return ''
@@ -265,25 +265,22 @@ def programgenres_from_json_metadata(metaData):
 #Get program actors from json metadata
 def programactors_from_json_metadata(metaData):
     try:
-        #Get program directors array
-        directorsArray = metaData["metadata"]["directors"]
-        if directorsArray != None:
-            programDirectors = '[COLOR white](R)[/COLOR] [COLOR gray]' + ', '.join(filter(None, directorsArray)) + '[/COLOR]'
-        else:
-            programDirectors = ''
-
-        #Get program actors array
         actorsArray = metaData["metadata"]["actors"]
         if actorsArray != None:
-            programActors = '[COLOR white](A)[/COLOR] [COLOR gray]' + ', '.join(filter(None, actorsArray)) + '[/COLOR]'
+            return ', '.join(filter(None, actorsArray))
         else:
-            programActors = ''
+            return ''
+    except:
+        return ''
 
-        #Check if directors string is empty
-        if func.string_isnullorempty(programDirectors) == True:
-            return programActors
+#Get program directors from json metadata
+def programdirectors_from_json_metadata(metaData):
+    try:
+        directorsArray = metaData["metadata"]["directors"]
+        if directorsArray != None:
+            return ', '.join(filter(None, directorsArray))
         else:
-            return programDirectors + ' ' + programActors
+            return ''
     except:
         return ''
 
@@ -380,7 +377,7 @@ def recording_available_time(metaData):
             TimeRemainingHours = (TimeRemainingSeconds - TimeRemainingDays * 86400) // 3600
             TimeRemainingMinutes = (TimeRemainingSeconds - TimeRemainingDays * 86400 - TimeRemainingHours * 3600) // 60
         else:
-            return ProgramAvailability
+            return 'Programma niet meer beschikbaar'
 
         if TimeRemainingDays > 0:
             if TimeRemainingDays == 1:
@@ -412,7 +409,7 @@ def vod_week_available_time(metaData):
             TimeRemainingHours = (TimeRemainingSeconds - TimeRemainingDays * 86400) // 3600
             TimeRemainingMinutes = (TimeRemainingSeconds - TimeRemainingDays * 86400 - TimeRemainingHours * 3600) // 60
         else:
-            return ProgramAvailability
+            return 'Programma niet meer beschikbaar'
 
         if TimeRemainingDays > 0:
             if TimeRemainingDays == 1:
@@ -443,7 +440,7 @@ def vod_ondemand_available_time(metaData):
             TimeRemainingHours = (TimeRemainingSeconds - TimeRemainingDays * 86400) // 3600
             TimeRemainingMinutes = (TimeRemainingSeconds - TimeRemainingDays * 86400 - TimeRemainingHours * 3600) // 60
         else:
-            return ProgramAvailability
+            return 'Programma niet meer beschikbaar'
 
         if TimeRemainingDays > 0:
             if TimeRemainingDays == 1:

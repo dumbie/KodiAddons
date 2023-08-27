@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import func
+import metadatacombine
 import metadatainfo
 import xbmcgui
 import path
@@ -20,16 +21,9 @@ def list_load(listContainer):
             #Load program details
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-            ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(program)
-            ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
 
             #Combine program details
-            stringJoin = [ ProgramYear, ProgramStarRating, ProgramAgeRating ]
-            ProgramDetails = ' '.join(filter(None, stringJoin))
-            if func.string_isnullorempty(ProgramDetails):
-                ProgramDetails = '(?)'
-            ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
 
             #Add vod program
             listitem = xbmcgui.ListItem()

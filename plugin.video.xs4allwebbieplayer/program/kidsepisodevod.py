@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-import func
 import metadatainfo
+import metadatacombine
 import xbmcgui
 import path
 
@@ -16,20 +16,14 @@ def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictu
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-            ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-            ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-            ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-            ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program)
-            ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
             ProgramAvailability = metadatainfo.vod_ondemand_available_time(program)
 
+            #Combine program description extended
+            ProgramDescription = metadatacombine.program_description_extended(program)
+
             #Combine program details
-            stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisode, ProgramDuration ]
-            ProgramDetails = ' '.join(filter(None, stringJoin))
-            if func.string_isnullorempty(ProgramDetails):
-                ProgramDetails = '(?)'
-            ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
-            ProgramTitle = ProgramName + " [COLOR gray]" + ProgramDetails + "[/COLOR]"
+            ProgramDetails = metadatacombine.program_details(program, True, True, True, True, True, False, False)
+            ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add vod program
             listitem = xbmcgui.ListItem()

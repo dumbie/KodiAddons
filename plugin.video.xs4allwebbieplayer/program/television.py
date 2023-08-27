@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import alarm
 import download
 import func
+import metadatacombine
 import metadatainfo
 import var
 
@@ -42,30 +43,11 @@ def list_update(updateItem):
         ProgramNowTimeEndString = ProgramNowTimeEndDateTime.strftime('%H:%M')
         ProgramProgressPercent = str(int(((currentDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
 
-        #Load program details
-        EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(metaData, True)
-        ProgramYear = metadatainfo.programyear_from_json_metadata(metaData)
-        ProgramSeason = metadatainfo.programseason_from_json_metadata(metaData)
-        ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(metaData)
-        ProgramActors = metadatainfo.programactors_from_json_metadata(metaData)
-        ProgramStarRating = metadatainfo.programstarrating_from_json_metadata(metaData)
-        ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(metaData)
-        ProgramGenres = metadatainfo.programgenres_from_json_metadata(metaData)
-        ProgramNowDescription = metadatainfo.programdescription_from_json_metadata(metaData)
-
-        #Combine program actors
-        if func.string_isnullorempty(ProgramActors) == False:
-            ProgramNowDescription += "\n\n" + ProgramActors
+        #Combine program description extended
+        ProgramNowDescription = metadatacombine.program_description_extended(metaData)
 
         #Combine program details
-        stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisode, ProgramStarRating, ProgramAgeRating, ProgramGenres ]
-        ProgramNowDetails = ' '.join(filter(None, stringJoin))
-
-        if func.string_isnullorempty(EpisodeTitle) == False:
-            ProgramNowDetails = '[COLOR white]' + EpisodeTitle + "[/COLOR] [COLOR gray]" + ProgramNowDetails + "[/COLOR]"
-
-        if func.string_isnullorempty(ProgramNowDetails) == True:
-            ProgramNowDetails = '[COLOR white]Onbekend seizoen en aflevering[/COLOR]'
+        ProgramNowDetails = metadatacombine.program_details(metaData, True, False, True, True, True, True, True)
 
         #Check if program is a rerun
         programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowName.lower())

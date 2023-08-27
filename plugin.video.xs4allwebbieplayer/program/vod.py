@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import func
+import metadatacombine
 import metadatainfo
 import xbmcgui
 import path
@@ -27,12 +28,7 @@ def list_load(listContainer):
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramYear = metadatainfo.programyear_from_json_metadata(program)
-            ProgramSeason = metadatainfo.programseason_from_json_metadata(program)
-            ProgramEpisode = metadatainfo.episodenumber_from_json_metadata(program)
-            ProgramAgeRating = metadatainfo.programagerating_from_json_metadata(program)
             ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program, False)
-            ProgramDescription = metadatainfo.programdescription_from_json_metadata(program)
 
             #Load program time
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
@@ -41,15 +37,15 @@ def list_load(listContainer):
             ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
             ProgramTime = '[COLOR gray]Begon om ' + ProgramTimeStartStringTime + ' op ' + ProgramTimeStartStringDate + ' en duurde ' + ProgramDuration + '[/COLOR]'
 
+            #Combine program description extended
+            ProgramDescription = metadatacombine.program_description_extended(program)
+
             #Combine program details
-            stringJoin = [ EpisodeTitle, ProgramYear, ProgramSeason, ProgramEpisode, ProgramAgeRating ]
-            ProgramDetails = ' '.join(filter(None, stringJoin))
-            if func.string_isnullorempty(ProgramDetails):
-                ProgramDetails = '(?)'
+            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
-            ProgramNameList = '[COLOR white]' + ProgramName + '[/COLOR] [COLOR gray]' + ProgramDetails + '[/COLOR]'
-            ProgramNameDesc = '[COLOR white]' + ProgramName + '[/COLOR]\n[COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramNameList = ProgramName + ' ' + ProgramDetails
+            ProgramNameDesc = ProgramName + '\n' + ProgramDetails
 
             #Add program
             listitem = xbmcgui.ListItem()

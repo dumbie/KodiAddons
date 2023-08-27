@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import func
 import metadatainfo
+import metadatacombine
 import recordingfunc
 import xbmcgui
 import path
@@ -17,20 +18,16 @@ def list_load(listContainer):
             ProgramEpisodeCount = recordingfunc.count_recorded_series_id(ProgramSeriesId)
 
             #Get first recording event
-            RecordingEvent = func.search_seriesid_jsonrecording_event(ProgramSeriesId)
-
-            #Load program details
-            ProgramYear = metadatainfo.programyear_from_json_metadata(RecordingEvent)
-            ProgramSeason = metadatainfo.programseason_from_json_metadata(RecordingEvent)
+            RecordingEventMetaData = func.search_seriesid_jsonrecording_event(ProgramSeriesId)
 
             #Combine program details
-            stringJoin = [ ProgramYear, ProgramSeason, ProgramEpisodeCount ]
-            ProgramDetails = ' '.join(filter(None, stringJoin))
-            if func.string_isnullorempty(ProgramDetails):
-                ProgramDetails = '(?)'
+            ProgramDetails = metadatacombine.program_details(RecordingEventMetaData, True, False, True, True, False, False, False)
+
+            #Combine program episode count
+            ProgramDetails += ' [COLOR gray]' + ProgramEpisodeCount + '[/COLOR]'
 
             #Update program name string
-            ProgramName += ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramName += ' ' + ProgramDetails
 
             #Get channel basics
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
