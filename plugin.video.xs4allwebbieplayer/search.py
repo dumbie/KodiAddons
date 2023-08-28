@@ -193,9 +193,9 @@ class Gui(xbmcgui.WindowXML):
         if listcontainer.size() > 0:
             func.updateLabelText(self, 1, str(listcontainer.size()) + " zoekresultaten")
             if func.string_isnullorempty(var.SearchFilterTerm):
-                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchDownloadSearchTerm)
             else:
-                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] in [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]in[/COLOR] " + var.SearchDownloadSearchTerm)
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
@@ -204,14 +204,16 @@ class Gui(xbmcgui.WindowXML):
         else:
             func.updateLabelText(self, 1, "Geen zoekresultaten")
             if func.string_isnullorempty(var.SearchFilterTerm):
-                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchDownloadSearchTerm)
             else:
-                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] in [COLOR gray]" + var.SearchDownloadSearchTerm + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]in[/COLOR] " + var.SearchDownloadSearchTerm)
+
+            #Focus on menu
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
-                listcontainer.selectItem(3)
+                listcontainer.selectItem(2)
             else:
                 listcontainer.selectItem(1)
             xbmc.sleep(100)

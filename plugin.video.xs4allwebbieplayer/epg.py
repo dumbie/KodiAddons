@@ -441,7 +441,7 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 2, "Zender [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] niet gevonden om de programma's voor weer te geven.")
+                func.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]niet gevonden om de programma's voor weer te geven.[/COLOR]")
                 listcontainer.selectItem(1)
             elif var.LoadChannelFavoritesOnly == True:
                 func.updateLabelText(self, 1, 'Geen favorieten zenders')
@@ -512,7 +512,7 @@ class Gui(xbmcgui.WindowXML):
 
             #Download the epg day information
             func.updateLabelText(self, 1, 'Gids download')
-            func.updateLabelText(self, 2, 'TV Gids voor [COLOR gray]' + loadDayString + '[/COLOR] wordt gedownload, nog even geduld...')
+            func.updateLabelText(self, 2, '[COLOR gray]TV Gids voor[/COLOR] ' + loadDayString + ' [COLOR gray]wordt gedownload, nog even geduld...[/COLOR]')
             var.EpgCurrentDayJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
             if var.EpgCurrentDayJson == None:
                 func.updateLabelText(self, 1, 'Niet beschikbaar')
@@ -534,7 +534,7 @@ class Gui(xbmcgui.WindowXML):
         channelEpgJson = func.search_channelid_jsonepg(var.EpgCurrentDayJson, var.EpgCurrentChannelId)
         if channelEpgJson == None:
             func.updateLabelText(self, 1, 'Zender gids mist')
-            func.updateLabelText(self, 2, 'Gids is niet beschikbaar voor [COLOR gray]' + var.EpgCurrentChannelName + '[/COLOR]')
+            func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar voor[/COLOR] ' + var.EpgCurrentChannelName)
             return
 
         #Add programs to list
@@ -595,17 +595,17 @@ class Gui(xbmcgui.WindowXML):
         if listcontainer.size() == 0:
             if var.SearchFilterTerm == '':
                 func.updateLabelText(self, 1, "Geen programma's")
-                func.updateLabelText(self, 2, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+                func.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
             else:
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 2, "Programma [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] niet gevonden voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]niet gevonden voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
         else:
             if var.SearchFilterTerm == '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-                func.updateLabelText(self, 2, "Alle programma's voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+                func.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]" + var.SearchFilterTerm + "[/COLOR] gevonden voor [COLOR gray]" + loadDayString + "[/COLOR] op [COLOR gray]" + ChannelName + '[/COLOR]')
+                func.updateLabelText(self, 2, var.SearchFilterTerm + " [COLOR gray]gevonden voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
 
     def thread_update_epg_progress(self):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')

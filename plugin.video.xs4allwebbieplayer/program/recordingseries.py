@@ -23,7 +23,7 @@ def list_load(listContainer):
             #Combine program details
             ProgramDetails = metadatacombine.program_details(RecordingEventMetaData, True, False, True, True, False, False, False)
 
-            #Combine program episode count
+            #Combine recorded episodes count
             ProgramDetails += ' [COLOR gray]' + ProgramEpisodeCount + '[/COLOR]'
 
             #Update program name string

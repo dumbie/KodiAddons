@@ -106,7 +106,7 @@ def list_update(updateItem):
     try:
         metaData = channelEpg['containers'][programIndex + 1]
         ProgramNextId = metadatainfo.contentId_from_json_metadata(metaData)
-        ProgramNextName = metadatainfo.programtitle_from_json_metadata(metaData)
+        ProgramNextNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
         ProgramNextTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
         ProgramNextTimeStartDateTime = func.datetime_remove_seconds(ProgramNextTimeStartDateTime)
         ProgramNextTimeStartString = ProgramNextTimeStartDateTime.strftime('%H:%M')
@@ -118,7 +118,7 @@ def list_update(updateItem):
             ProgramNextAlarm = 'false'
 
         #Check if program is a rerun
-        programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNextName.lower())
+        programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNextNameRaw.lower())
         if programRerunName:
             ProgramNextRerun = 'true'
         else:
@@ -141,13 +141,16 @@ def list_update(updateItem):
     except:
         ProgramNextId = ''
         ProgramNextRecordSeriesId = ''
-        ProgramNextName = 'Onbekend programma'
+        ProgramNextNameRaw = 'Onbekend programma'
         ProgramNextTimeStartDateTime = datetime(1970, 1, 1)
         ProgramNextTimeStartString = 'Onbekend'
         ProgramNextAlarm = 'false'
         ProgramNextRerun = 'false'
         ProgramNextRecordEvent = 'false'
         ProgramNextRecordSeries = 'false'
+
+    #Combine program next name
+    ProgramNextName = '[COLOR gray]' + ProgramNextTimeStartString + ': ' + ProgramNextNameRaw + '[/COLOR]'
 
     #Get upcoming programs information
     ProgramLater = '[COLOR gray]Later op deze zender:[/COLOR]'
@@ -183,7 +186,7 @@ def list_update(updateItem):
     if ProgramEarlier == '[COLOR gray]Eerder op deze zender:[/COLOR]':
         ProgramEarlier = ''
 
-    #Combine the program description
+    #Combine program description
     ProgramDescription = ProgramNowName + ' ' + ProgramNowTiming + '\n\n' + ProgramNowDetails + '\n\n' + ProgramNowDescription
 
     #Append later programs to the description
@@ -202,8 +205,8 @@ def list_update(updateItem):
     updateItem.setProperty("ProgramDescription", ProgramDescription)
     updateItem.setProperty("ProgramNextId", ProgramNextId)
     updateItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)
-    updateItem.setProperty("ProgramNextName", ProgramNextTimeStartString + ': ' + ProgramNextName)
-    updateItem.setProperty("ProgramNextNameRaw", ProgramNextName)
+    updateItem.setProperty("ProgramNextName", ProgramNextName)
+    updateItem.setProperty("ProgramNextNameRaw", ProgramNextNameRaw)
     updateItem.setProperty("ProgramNextTimeStartDateTime", str(ProgramNextTimeStartDateTime))
     updateItem.setProperty("ProgramNextAlarm", ProgramNextAlarm)
     updateItem.setProperty("ProgramNowRerun", ProgramNowRerun)

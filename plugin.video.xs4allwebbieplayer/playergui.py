@@ -345,7 +345,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Get and check the list container
         listcontainer = self.getControl(1001)
         selectedItem = listcontainer.getSelectedItem()
-        ProgramNextName = selectedItem.getProperty('ProgramNextName')
+        ProgramNextName = selectedItem.getProperty('ProgramNextNameRaw')
         ProgramNextTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNextTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
         ChannelId = selectedItem.getProperty('ChannelId')
         ExternalId = selectedItem.getProperty('ExternalId')

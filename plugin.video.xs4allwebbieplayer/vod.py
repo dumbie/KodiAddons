@@ -208,10 +208,10 @@ class Gui(xbmcgui.WindowXML):
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] op [COLOR gray]" + loadDayString + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-                func.updateLabelText(self, 3, "Beschikbare programma's voor [COLOR gray]" + loadDayString + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Beschikbare programma's voor[/COLOR] " + loadDayString)
 
             if resetSelect == True:
                 self.setFocus(listcontainer)
@@ -224,10 +224,10 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR] op [COLOR gray]" + loadDayString + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen programma's")
-                func.updateLabelText(self, 3, "Geen programma's beschikbaar voor [COLOR gray]" + loadDayString + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + loadDayString)
                 listcontainer.selectItem(0)
             xbmc.sleep(100)

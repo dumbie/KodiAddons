@@ -163,7 +163,7 @@ class Gui(xbmcgui.WindowXML):
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " uitzendingen gevonden")
-                func.updateLabelText(self, 3, "Zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchFilterTerm)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " uitzendingen")
                 func.updateLabelText(self, 3, "")
@@ -179,7 +179,7 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, "Geen uitzendingen gevonden")
-                func.updateLabelText(self, 3, "Geen zoekresultaten voor [COLOR gray]" + var.SearchFilterTerm + "[/COLOR]")
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchFilterTerm)
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen uitzendingen")
