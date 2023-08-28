@@ -30,9 +30,11 @@ def list_load(listContainer, checkStatus=False):
                 searchResultFound = var.SearchFilterTerm in searchMatch
                 if searchResultFound == False: continue
 
-            #Check if channel is marked as favorite
+            #Check if channel is marked as favorite or epg navigate
             if ChannelId in var.FavoriteTelevisionDataJson:
                 ChannelFavorite = 'true'
+            elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
+                ChannelFavorite = 'false'
             else:
                 if var.LoadChannelFavoritesOnly == True and var.SearchFilterTerm == '': continue
                 ChannelFavorite = 'false'

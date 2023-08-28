@@ -25,7 +25,7 @@ def channelName_from_json_metadata(metaData):
         if func.string_isnullorempty(channelNameString):
             channelNameString = "Onbekende zender"
 
-        return channelNameString
+        return str(channelNameString)
     except:
         return "Onbekende zender"
 
@@ -136,7 +136,7 @@ def programtitle_from_json_metadata(metaData, stripTitle=False):
             for stripRegEx in var.ProgramTitleStripRegEx:
                 programNameString = func.string_replace_regex(stripRegEx, '', programNameString)
 
-        return programNameString
+        return str(programNameString)
     except:
         return 'Onbekend programma'
 
@@ -298,7 +298,7 @@ def programdescription_from_json_metadata(metaData):
 
         #Check program description
         if func.string_isnullorempty(longDescription) == False:
-            return longDescription
+            return str(longDescription)
     except:
         pass
 
@@ -308,7 +308,7 @@ def programdescription_from_json_metadata(metaData):
 
         #Check program description
         if func.string_isnullorempty(shortDescription) == False:
-            return shortDescription
+            return str(shortDescription)
     except:
         pass
 
@@ -340,7 +340,7 @@ def episodetitle_from_json_metadata(metaData, returnEmpty=False):
             else:
                 return 'Titel onbekend'
 
-        return EpisodeTitle
+        return str(EpisodeTitle)
     except:
         if returnEmpty:
             return ''

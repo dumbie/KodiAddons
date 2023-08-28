@@ -111,6 +111,9 @@ def list_update(updateItem):
         ProgramNextTimeStartDateTime = func.datetime_remove_seconds(ProgramNextTimeStartDateTime)
         ProgramNextTimeStartString = ProgramNextTimeStartDateTime.strftime('%H:%M')
 
+        #Combine program next name
+        ProgramNextName = '[COLOR gray]' + ProgramNextTimeStartString + ': ' + ProgramNextNameRaw + '[/COLOR]'
+
         #Check if program has active alarm
         if alarm.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
             ProgramNextAlarm = 'true'
@@ -141,6 +144,7 @@ def list_update(updateItem):
     except:
         ProgramNextId = ''
         ProgramNextRecordSeriesId = ''
+        ProgramNextName = '[COLOR gray]Onbekend programma[/COLOR]'
         ProgramNextNameRaw = 'Onbekend programma'
         ProgramNextTimeStartDateTime = datetime(1970, 1, 1)
         ProgramNextTimeStartString = 'Onbekend'
@@ -148,9 +152,6 @@ def list_update(updateItem):
         ProgramNextRerun = 'false'
         ProgramNextRecordEvent = 'false'
         ProgramNextRecordSeries = 'false'
-
-    #Combine program next name
-    ProgramNextName = '[COLOR gray]' + ProgramNextTimeStartString + ': ' + ProgramNextNameRaw + '[/COLOR]'
 
     #Get upcoming programs information
     ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
