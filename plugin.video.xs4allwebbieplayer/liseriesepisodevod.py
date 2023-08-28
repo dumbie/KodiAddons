@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-import metadatainfo
 import metadatacombine
+import metadatainfo
 import xbmcgui
 import path
 
@@ -26,15 +26,15 @@ def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictu
             ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add vod program
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'play_episode_vod')
-            listitem.setProperty('ProgramId', ProgramId)
-            listitem.setProperty("ProgramName", ProgramName)
-            listitem.setProperty('ProgramDetails', ProgramDetails)
-            listitem.setProperty("ProgramAvailability", ProgramAvailability)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
-            listitem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
-            listContainer.addItem(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'play_episode_vod')
+            listItem.setProperty('ProgramId', ProgramId)
+            listItem.setProperty("ProgramName", ProgramName)
+            listItem.setProperty('ProgramDetails', ProgramDetails)
+            listItem.setProperty("ProgramAvailability", ProgramAvailability)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
+            listItem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
+            listContainer.addItem(listItem)
         except:
             continue

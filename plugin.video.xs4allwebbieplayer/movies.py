@@ -4,8 +4,8 @@ import dialog
 import download
 import epg
 import func
-import program.moviesvod
-import program.moviesweek
+import limoviesvod
+import limoviesweek
 import path
 import searchdialog
 import stream
@@ -148,8 +148,8 @@ class Gui(xbmcgui.WindowXML):
         #Add movies to the list
         func.updateLabelText(self, 1, "Films laden")
         listcontainersort = []
-        program.moviesweek.list_load(listcontainersort)
-        program.moviesvod.list_load(listcontainersort)
+        limoviesweek.list_load(listcontainersort)
+        limoviesvod.list_load(listcontainersort)
 
         #Sort and add movies to the list
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))

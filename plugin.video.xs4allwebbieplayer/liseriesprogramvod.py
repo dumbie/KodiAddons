@@ -26,16 +26,16 @@ def list_load(listContainer):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
 
             #Add vod program
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'load_episodes_vod')
-            listitem.setProperty('PictureUrl', PictureUrl)
-            listitem.setProperty('ProgramId', ProgramId)
-            listitem.setProperty("ProgramName", ProgramName)
-            listitem.setProperty('ProgramDetails', ProgramDetails)
-            listitem.setInfo('video', {'Genre': 'Series', 'Plot': ProgramDetails})
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'load_episodes_vod')
+            listItem.setProperty('PictureUrl', PictureUrl)
+            listItem.setProperty('ProgramId', ProgramId)
+            listItem.setProperty("ProgramName", ProgramName)
+            listItem.setProperty('ProgramDetails', ProgramDetails)
+            listItem.setInfo('video', {'Genre': 'Series', 'Plot': ProgramDetails})
             iconStreamType = "common/vod.png"
             iconProgram = path.icon_vod(PictureUrl)
-            listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})
-            listContainer.append(listitem)
+            listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})
+            listContainer.append(listItem)
         except:
             continue

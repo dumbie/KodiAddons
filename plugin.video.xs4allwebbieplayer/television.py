@@ -3,14 +3,14 @@ from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channel.television
+import lichanneltelevision
 import dialog
 import download
 import epg
 import favorite
 import func
 import path
-import program.television
+import litelevision
 import recordingfunc
 import searchdialog
 import stream
@@ -313,7 +313,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
-        channel.television.list_load(listcontainer)
+        lichanneltelevision.list_load(listcontainer)
 
         #Update the status
         self.count_channels(True)
@@ -396,7 +396,7 @@ class Gui(xbmcgui.WindowXML):
             for itemNum in range(0, listitemcount):
                 try:
                     updateItem = listcontainer.getListItem(itemNum)
-                    program.television.list_update(updateItem)
+                    litelevision.list_update(updateItem)
                 except:
                     continue
         except:

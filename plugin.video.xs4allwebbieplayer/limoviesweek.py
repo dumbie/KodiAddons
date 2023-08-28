@@ -35,21 +35,21 @@ def list_load(listContainer):
             ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add week program
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'play_stream_week')
-            listitem.setProperty('ChannelId', ChannelId)
-            listitem.setProperty('ProgramId', ProgramId)
-            listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
-            listitem.setProperty("ProgramName", ProgramName)
-            listitem.setProperty("ProgramWeek", 'true')
-            listitem.setProperty("ProgramDetails", ProgramDetails)
-            listitem.setProperty("ProgramAvailability", ProgramAvailability)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'play_stream_week')
+            listItem.setProperty('ChannelId', ChannelId)
+            listItem.setProperty('ProgramId', ProgramId)
+            listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
+            listItem.setProperty("ProgramName", ProgramName)
+            listItem.setProperty("ProgramWeek", 'true')
+            listItem.setProperty("ProgramDetails", ProgramDetails)
+            listItem.setProperty("ProgramAvailability", ProgramAvailability)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
             iconStreamType = "common/calendarweek.png"
             iconProgram = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)
-            listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconChannel})
-            listContainer.append(listitem)
+            listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconChannel})
+            listContainer.append(listItem)
         except:
             continue

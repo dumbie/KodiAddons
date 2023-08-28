@@ -34,12 +34,12 @@ def list_load(listContainer):
             ProgramName += ' ' + ProgramDetails
 
             #Add recording event to the list
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
-            listitem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
-            listitem.setProperty('ProgramName', ProgramName)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
+            listItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
+            listItem.setProperty('ProgramName', ProgramName)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+            listContainer.addItem(listItem)
         except:
             continue

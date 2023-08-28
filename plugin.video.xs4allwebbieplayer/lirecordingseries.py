@@ -40,11 +40,11 @@ def list_load(listContainer):
                 ChannelIcon = path.icon_television(ExternalId)
 
             #Add recording series to the list
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('SeriesId', ProgramSeriesId)
-            listitem.setProperty('ProgramName', ProgramName)
-            listitem.setProperty('ProgramDescription', ChannelName)
-            listitem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon})
-            listContainer.addItem(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('SeriesId', ProgramSeriesId)
+            listItem.setProperty('ProgramName', ProgramName)
+            listItem.setProperty('ProgramDescription', ChannelName)
+            listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon})
+            listContainer.addItem(listItem)
         except:
             continue

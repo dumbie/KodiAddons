@@ -2,7 +2,7 @@ import xbmc
 import xbmcgui
 import download
 import func
-import program.recordingevent
+import lirecordingevent
 import var
 
 def switch_to_page():
@@ -69,7 +69,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Sort recording by upcoming time
         func.updateLabelText(self, 3001, "Geplande opnames worden geladen.")
-        program.recordingevent.list_load(listcontainer)
+        lirecordingevent.list_load(listcontainer)
 
         #Update the status
         self.count_recording(True)

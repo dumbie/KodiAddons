@@ -35,17 +35,17 @@ def list_load(listContainer):
             ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add vod program
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'play_stream_vod')
-            listitem.setProperty('ProgramId', ProgramId)
-            listitem.setProperty("ProgramName", ProgramName)
-            listitem.setProperty("ProgramDetails", ProgramDetails)
-            listitem.setProperty("ProgramAvailability", ProgramAvailability)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'play_stream_vod')
+            listItem.setProperty('ProgramId', ProgramId)
+            listItem.setProperty("ProgramName", ProgramName)
+            listItem.setProperty("ProgramDetails", ProgramDetails)
+            listItem.setProperty("ProgramAvailability", ProgramAvailability)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
             iconStreamType = "common/vod.png"
             iconProgram = path.icon_vod(PictureUrl)
-            listitem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})
-            listContainer.append(listitem)
+            listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})
+            listContainer.append(listItem)
         except:
             continue

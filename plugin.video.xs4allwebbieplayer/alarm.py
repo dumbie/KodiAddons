@@ -1,6 +1,6 @@
 import json
 from datetime import datetime, timedelta
-import program.alarm
+import lialarm
 import xbmc
 import xbmcgui
 import dialog
@@ -238,7 +238,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         listcontainer.reset()
 
         #Add alarms to list
-        program.alarm.list_load(listcontainer)
+        lialarm.list_load(listcontainer)
 
         #Update the status
         self.count_alarm(True)

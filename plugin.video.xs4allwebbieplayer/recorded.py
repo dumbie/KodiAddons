@@ -4,7 +4,7 @@ import dialog
 import download
 import func
 import path
-import program.recorded
+import lirecorded
 import searchdialog
 import stream
 import var
@@ -158,7 +158,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add programs to the list
         func.updateLabelText(self, 1, "Opnames laden")
-        program.recorded.list_load(listcontainer)
+        lirecorded.list_load(listcontainer)
 
         #Update the status
         self.count_program(True)

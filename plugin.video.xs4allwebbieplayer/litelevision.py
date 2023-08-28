@@ -6,11 +6,11 @@ import metadatacombine
 import metadatainfo
 import var
 
-def list_update(updateItem):
+def list_update(listItem):
     #Get channel information from item
-    channelId = updateItem.getProperty('ChannelId')
-    channelName = updateItem.getProperty('ChannelName')
-    channelNumberAccent = updateItem.getProperty('ChannelNumberAccent')
+    channelId = listItem.getProperty('ChannelId')
+    channelName = listItem.getProperty('ChannelName')
+    channelNumberAccent = listItem.getProperty('ChannelNumberAccent')
 
     #Set the current player play time
     dateTimeNow = datetime.now()
@@ -156,22 +156,22 @@ def list_update(updateItem):
         ProgramDescription += '\n\n' + ProgramEarlier
 
     #Update the information in list item
-    updateItem.setProperty("ProgramNowId", ProgramNowId)
-    updateItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
-    updateItem.setProperty("ProgramNowName", ProgramNowName)
-    updateItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
-    updateItem.setProperty("ProgramDescription", ProgramDescription)
-    updateItem.setProperty("ProgramNextId", ProgramNextId)
-    updateItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)
-    updateItem.setProperty("ProgramNextName", ProgramNextName)
-    updateItem.setProperty("ProgramNextNameRaw", ProgramNextNameRaw)
-    updateItem.setProperty("ProgramNextTimeStartDateTime", str(ProgramNextTimeStartDateTime))
-    updateItem.setProperty("ProgramNextAlarm", ProgramNextAlarm)
-    updateItem.setProperty("ProgramNowRerun", ProgramNowRerun)
-    updateItem.setProperty("ProgramNowRecordEvent", ProgramNowRecordEvent)
-    updateItem.setProperty("ProgramNowRecordSeries", ProgramNowRecordSeries)
-    updateItem.setProperty("ProgramNextRerun", ProgramNextRerun)
-    updateItem.setProperty("ProgramNextRecordEvent", ProgramNextRecordEvent)
-    updateItem.setProperty("ProgramNextRecordSeries", ProgramNextRecordSeries)
-    updateItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
-    updateItem.setInfo('video', {'Plot': ProgramDescription})
+    listItem.setProperty("ProgramNowId", ProgramNowId)
+    listItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
+    listItem.setProperty("ProgramNowName", ProgramNowName)
+    listItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
+    listItem.setProperty("ProgramDescription", ProgramDescription)
+    listItem.setProperty("ProgramNextId", ProgramNextId)
+    listItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)
+    listItem.setProperty("ProgramNextName", ProgramNextName)
+    listItem.setProperty("ProgramNextNameRaw", ProgramNextNameRaw)
+    listItem.setProperty("ProgramNextTimeStartDateTime", str(ProgramNextTimeStartDateTime))
+    listItem.setProperty("ProgramNextAlarm", ProgramNextAlarm)
+    listItem.setProperty("ProgramNowRerun", ProgramNowRerun)
+    listItem.setProperty("ProgramNowRecordEvent", ProgramNowRecordEvent)
+    listItem.setProperty("ProgramNowRecordSeries", ProgramNowRecordSeries)
+    listItem.setProperty("ProgramNextRerun", ProgramNextRerun)
+    listItem.setProperty("ProgramNextRecordEvent", ProgramNextRecordEvent)
+    listItem.setProperty("ProgramNextRecordSeries", ProgramNextRecordSeries)
+    listItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
+    listItem.setInfo('video', {'Plot': ProgramDescription})

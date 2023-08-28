@@ -26,15 +26,15 @@ def list_load(listContainer):
             ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
 
             #Add radio channel
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'play_stream')
-            listitem.setProperty('ChannelId', ChannelId)
-            listitem.setProperty('ChannelName', ChannelName)
-            listitem.setProperty('ChannelNumber', ChannelNumberString)
-            listitem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
-            listitem.setProperty('StreamUrl', ChannelStream)
-            listitem.setInfo('music', {'Genre': 'Radio'})
-            listitem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
-            listContainer.addItem(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'play_stream')
+            listItem.setProperty('ChannelId', ChannelId)
+            listItem.setProperty('ChannelName', ChannelName)
+            listItem.setProperty('ChannelNumber', ChannelNumberString)
+            listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
+            listItem.setProperty('StreamUrl', ChannelStream)
+            listItem.setInfo('music', {'Genre': 'Radio'})
+            listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
+            listContainer.addItem(listItem)
         except:
             continue

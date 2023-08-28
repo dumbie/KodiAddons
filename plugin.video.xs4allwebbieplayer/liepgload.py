@@ -63,34 +63,34 @@ def list_load(listContainer, epgJson):
                 ProgramRerun = 'false'
 
             #Add program to the list container
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('AssetId', var.EpgCurrentAssetId)
-            listitem.setProperty('ChannelId', var.EpgCurrentChannelId)
-            listitem.setProperty('ExternalId', var.EpgCurrentExternalId)
-            listitem.setProperty('ChannelName', var.EpgCurrentChannelName)
-            listitem.setProperty('ProgramId', ProgramId)
-            listitem.setProperty('ProgramName', ProgramName)
-            listitem.setProperty('ProgramRerun', ProgramRerun)
-            listitem.setProperty('ProgramDuration', ProgramDurationString)
-            listitem.setProperty('ProgramRecordSeriesId', ProgramRecordSeriesId)
-            listitem.setProperty('ProgramDescriptionRaw', ProgramDescriptionRaw)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setProperty('ProgramEpgList', ProgramEpgList)
-            listitem.setProperty('ProgramDetails', ProgramDetails)
-            listitem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
-            listitem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
-            listitem.setInfo('video', {'Genre': 'TV Gids', 'Plot': ProgramDescriptionRaw})
-            listitem.setArt({'thumb': path.icon_television(var.EpgCurrentExternalId), 'icon': path.icon_television(var.EpgCurrentExternalId)})
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('AssetId', var.EpgCurrentAssetId)
+            listItem.setProperty('ChannelId', var.EpgCurrentChannelId)
+            listItem.setProperty('ExternalId', var.EpgCurrentExternalId)
+            listItem.setProperty('ChannelName', var.EpgCurrentChannelName)
+            listItem.setProperty('ProgramId', ProgramId)
+            listItem.setProperty('ProgramName', ProgramName)
+            listItem.setProperty('ProgramRerun', ProgramRerun)
+            listItem.setProperty('ProgramDuration', ProgramDurationString)
+            listItem.setProperty('ProgramRecordSeriesId', ProgramRecordSeriesId)
+            listItem.setProperty('ProgramDescriptionRaw', ProgramDescriptionRaw)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setProperty('ProgramEpgList', ProgramEpgList)
+            listItem.setProperty('ProgramDetails', ProgramDetails)
+            listItem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
+            listItem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
+            listItem.setInfo('video', {'Genre': 'TV Gids', 'Plot': ProgramDescriptionRaw})
+            listItem.setArt({'thumb': path.icon_television(var.EpgCurrentExternalId), 'icon': path.icon_television(var.EpgCurrentExternalId)})
 
             #Check if program finished airing
             if ProgramProgressPercent >= 100:
-                listitem.setProperty('ProgramIsAvailable', ProgramIsAvailable)
+                listItem.setProperty('ProgramIsAvailable', ProgramIsAvailable)
 
             #Check if program is still airing
             if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
-                listitem.setProperty('ProgramIsAiring', 'true')
+                listItem.setProperty('ProgramIsAiring', 'true')
 
             #Add generated listitem
-            listContainer.addItem(listitem)
+            listContainer.addItem(listItem)
         except:
             continue

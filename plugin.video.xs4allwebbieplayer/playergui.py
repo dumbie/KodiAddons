@@ -3,12 +3,12 @@ from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channel.television
+import lichanneltelevision
 import download
 import favorite
 import func
 import path
-import program.playergui
+import liplayergui
 import recordingfunc
 import sleep
 import stream
@@ -505,7 +505,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         if downloadResult == False: return False
 
         #Add channels to list
-        channel.television.list_load(listcontainer)
+        lichanneltelevision.list_load(listcontainer)
 
         #Select channel in list container
         currentChannelId = var.addon.getSetting('CurrentChannelId')
@@ -544,6 +544,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Generate program summary for playergui
         try:
             updateItem = listcontainer.getSelectedItem()
-            program.playergui.list_update(updateItem)
+            liplayergui.list_update(updateItem)
         except:
             pass

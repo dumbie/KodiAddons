@@ -7,7 +7,7 @@ import path
 import var
 
 def list_load(listContainer, selectedSeriesName, selectedPictureUrl):
-    for program in var.SeriesSearchDataJson["resultObj"]["containers"]:
+    for program in var.KidsSearchDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
@@ -35,20 +35,20 @@ def list_load(listContainer, selectedSeriesName, selectedPictureUrl):
             ProgramTitle = EpisodeTitle + " " + ProgramDetails
 
             #Add vod program
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'play_episode_week')
-            listitem.setProperty('ChannelId', ChannelId)
-            listitem.setProperty('ProgramId', ProgramId)
-            listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
-            listitem.setProperty("ProgramName", EpisodeTitle)
-            listitem.setProperty("ProgramSeasonInt", ProgramSeasonInt)
-            listitem.setProperty("ProgramEpisodeInt", ProgramEpisodeInt)
-            listitem.setProperty("ProgramWeek", 'true')
-            listitem.setProperty('ProgramDetails', ProgramDetails)
-            listitem.setProperty("ProgramAvailability", ProgramAvailability)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
-            listitem.setArt({'thumb': path.icon_epg(selectedPictureUrl), 'icon': path.icon_epg(selectedPictureUrl)})
-            listContainer.append(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'play_episode_week')
+            listItem.setProperty('ChannelId', ChannelId)
+            listItem.setProperty('ProgramId', ProgramId)
+            listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
+            listItem.setProperty("ProgramName", EpisodeTitle)
+            listItem.setProperty("ProgramSeasonInt", ProgramSeasonInt)
+            listItem.setProperty("ProgramEpisodeInt", ProgramEpisodeInt)
+            listItem.setProperty("ProgramWeek", 'true')
+            listItem.setProperty('ProgramDetails', ProgramDetails)
+            listItem.setProperty("ProgramAvailability", ProgramAvailability)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
+            listItem.setArt({'thumb': path.icon_epg(selectedPictureUrl), 'icon': path.icon_epg(selectedPictureUrl)})
+            listContainer.append(listItem)
         except:
             continue

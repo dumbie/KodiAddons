@@ -4,30 +4,30 @@ import func
 import metadatacombine
 import metadatainfo
 
-def list_update(updateItem):
+def list_update(listItem):
     #Get channel information from item
-    ChannelId = updateItem.getProperty('ChannelId')
+    ChannelId = listItem.getProperty('ChannelId')
 
     #Set the current player play time
     dateTimeNow = datetime.now()
 
-    ProgramId = updateItem.getProperty('ProgramId')
-    ProgramNameProp = updateItem.getProperty('ProgramName')
-    ProgramDescriptionRaw = updateItem.getProperty('ProgramDescriptionRaw')
-    ProgramDetailsProp = updateItem.getProperty('ProgramDetails')
-    ProgramRecordSeriesId = updateItem.getProperty('ProgramRecordSeriesId')
-    ProgramTimeStartProp = updateItem.getProperty('ProgramTimeStart')
+    ProgramId = listItem.getProperty('ProgramId')
+    ProgramNameProp = listItem.getProperty('ProgramName')
+    ProgramDescriptionRaw = listItem.getProperty('ProgramDescriptionRaw')
+    ProgramDetailsProp = listItem.getProperty('ProgramDetails')
+    ProgramRecordSeriesId = listItem.getProperty('ProgramRecordSeriesId')
+    ProgramTimeStartProp = listItem.getProperty('ProgramTimeStart')
     ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
     ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
-    ProgramTimeEndProp = updateItem.getProperty('ProgramTimeEnd')
+    ProgramTimeEndProp = listItem.getProperty('ProgramTimeEnd')
     ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndProp, '%Y-%m-%d %H:%M:%S')
 
     #Update program progress
     ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
 
     #Combine program timing
-    ProgramTimingList = metadatacombine.program_timing_program_property(updateItem, dateTimeNow, True)
-    ProgramTimingDescription = metadatacombine.program_timing_program_property(updateItem, dateTimeNow, False)
+    ProgramTimingList = metadatacombine.program_timing_program_property(listItem, dateTimeNow, True)
+    ProgramTimingDescription = metadatacombine.program_timing_program_property(listItem, dateTimeNow, False)
 
     #Check if program has active alarm
     if alarm.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:
@@ -64,12 +64,12 @@ def list_update(updateItem):
     ProgramDescription = ProgramNameProp + ' ' + ProgramTimingDescription + '\n\n' + ProgramDetailsProp + '\n\n' + ProgramDescriptionRaw
 
     #Update program list item
-    updateItem.setProperty('ProgramEpgList', ProgramEpgList)
-    updateItem.setProperty('ProgramDescription', ProgramDescription)
-    updateItem.setProperty('ProgramAlarm', ProgramAlarm)
-    updateItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
-    updateItem.setProperty('ProgramRecordEventPlanned', ProgramRecordEventPlanned)
-    updateItem.setProperty('ProgramRecordEventDone', ProgramRecordEventDone)
-    updateItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
-    updateItem.setProperty('ProgramRecordSeries', ProgramRecordSeries)
-    updateItem.setProperty('ProgramProgressPercent', str(ProgramProgressPercent))
+    listItem.setProperty('ProgramEpgList', ProgramEpgList)
+    listItem.setProperty('ProgramDescription', ProgramDescription)
+    listItem.setProperty('ProgramAlarm', ProgramAlarm)
+    listItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
+    listItem.setProperty('ProgramRecordEventPlanned', ProgramRecordEventPlanned)
+    listItem.setProperty('ProgramRecordEventDone', ProgramRecordEventDone)
+    listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
+    listItem.setProperty('ProgramRecordSeries', ProgramRecordSeries)
+    listItem.setProperty('ProgramProgressPercent', str(ProgramProgressPercent))

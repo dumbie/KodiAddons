@@ -7,7 +7,7 @@ import path
 import var
 
 def list_load(listContainer):
-    for program in var.SportSearchDataJson['resultObj']['containers']:
+    for program in var.VodCurrentDataJson['resultObj']['containers']:
         try:
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
@@ -28,7 +28,6 @@ def list_load(listContainer):
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramAvailability = metadatainfo.vod_week_available_time(program)
 
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
@@ -47,22 +46,19 @@ def list_load(listContainer):
             ProgramNameList = ProgramName + ' ' + ProgramDetails
             ProgramNameDesc = ProgramName + '\n' + ProgramDetails
 
-            #Update program availability
-            ProgramNameDesc += '\n' + ProgramAvailability
-
             #Add program
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'play_stream')
-            listitem.setProperty('ChannelId', ChannelId)
-            listitem.setProperty('ProgramId', ProgramId)
-            listitem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
-            listitem.setProperty("ProgramName", ProgramNameList)
-            listitem.setProperty("ProgramNameDesc", ProgramNameDesc)
-            listitem.setProperty("ProgramNameRaw", ProgramName)
-            listitem.setProperty("ProgramDetails", ProgramTiming)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setInfo('video', {'Genre': 'Sport Gemist', 'Plot': ProgramDescription})
-            listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'play_stream')
+            listItem.setProperty('ChannelId', ChannelId)
+            listItem.setProperty('ProgramId', ProgramId)
+            listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
+            listItem.setProperty("ProgramName", ProgramNameList)
+            listItem.setProperty("ProgramNameDesc", ProgramNameDesc)
+            listItem.setProperty("ProgramNameRaw", ProgramName)
+            listItem.setProperty("ProgramDetails", ProgramTiming)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setInfo('video', {'Genre': 'Programma Gemist', 'Plot': ProgramDescription})
+            listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+            listContainer.addItem(listItem)
         except:
             continue

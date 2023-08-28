@@ -6,10 +6,10 @@ import epg
 import files
 import func
 import path
-import program.kidsepisodeweek
-import program.kidsepisodevod
-import program.kidsprogramweek
-import program.kidsprogramvod
+import likidsepisodeweek
+import likidsepisodevod
+import likidsprogramweek
+import likidsprogramvod
 import searchdialog
 import stream
 import var
@@ -187,7 +187,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Process all the episodes
-        program.kidsepisodevod.list_load(listcontainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+        likidsepisodevod.list_load(listcontainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
 
         #Update the episodes status
         func.updateLabelText(self, 2, selectedSeriesName + ' (' + str(listcontainer.size()) + ' afleveringen)')
@@ -213,7 +213,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Process all the episodes
-        program.kidsepisodeweek.list_load(listcontainersort, selectedSeriesName, selectedPictureUrl)
+        likidsepisodeweek.list_load(listcontainersort, selectedSeriesName, selectedPictureUrl)
 
         #Sort and add episodes
         listcontainersort.sort(key=lambda x: (int(x.getProperty('ProgramSeasonInt')), int(x.getProperty('ProgramEpisodeInt'))))
@@ -257,8 +257,8 @@ class Gui(xbmcgui.WindowXML):
         #Add programs to the list
         func.updateLabelText(self, 1, "Programma's laden")
         listcontainersort = []
-        program.kidsprogramweek.list_load(listcontainersort)
-        program.kidsprogramvod.list_load(listcontainersort)
+        likidsprogramweek.list_load(listcontainersort)
+        likidsprogramvod.list_load(listcontainersort)
 
         #Sort and add programs to the list
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))

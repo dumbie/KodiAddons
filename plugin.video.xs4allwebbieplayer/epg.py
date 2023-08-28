@@ -3,7 +3,7 @@ from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
-import channel.television
+import lichanneltelevision
 import dialog
 import download
 import favorite
@@ -13,8 +13,8 @@ import path
 import recordingfunc
 import searchdialog
 import stream
-import program.epgload
-import program.epgupdate
+import liepgload
+import liepgupdate
 import var
 import zap
 
@@ -429,7 +429,7 @@ class Gui(xbmcgui.WindowXML):
         #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
         func.updateLabelText(self, 2, 'Zenders worden geladen, nog even geduld...')
-        channel.television.list_load(listcontainer, True)
+        lichanneltelevision.list_load(listcontainer, True)
 
         #Focus on the list container
         if listcontainer.size() > 0:
@@ -487,7 +487,7 @@ class Gui(xbmcgui.WindowXML):
         for itemNum in range(0, listitemcount):
             try:
                 updateItem = listcontainer.getListItem(itemNum)
-                program.epgupdate.list_update(updateItem)
+                liepgupdate.list_update(updateItem)
             except:
                 pass
 
@@ -538,7 +538,7 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Add programs to list
-        program.epgload.list_load(listcontainer, channelEpgJson)
+        liepgload.list_load(listcontainer, channelEpgJson)
 
         #Select program index
         self.epg_selectindex_program()

@@ -59,18 +59,18 @@ def list_load(listContainer):
             ProgramNameDesc += '\n' + ProgramAvailability
 
             #Add program
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('Action', 'play_stream')
-            listitem.setProperty('ProgramAssetId', ProgramAssetId)
-            listitem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
-            listitem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
-            listitem.setProperty("ProgramName", ProgramNameList)
-            listitem.setProperty("ProgramNameDesc", ProgramNameDesc)
-            listitem.setProperty("ProgramNameRaw", ProgramName)
-            listitem.setProperty("ProgramDetails", ProgramTiming)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setInfo('video', {'Genre': 'Opname', 'Plot': ProgramDescription})
-            listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('Action', 'play_stream')
+            listItem.setProperty('ProgramAssetId', ProgramAssetId)
+            listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
+            listItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
+            listItem.setProperty("ProgramName", ProgramNameList)
+            listItem.setProperty("ProgramNameDesc", ProgramNameDesc)
+            listItem.setProperty("ProgramNameRaw", ProgramName)
+            listItem.setProperty("ProgramDetails", ProgramTiming)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setInfo('video', {'Genre': 'Opname', 'Plot': ProgramDescription})
+            listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+            listContainer.addItem(listItem)
         except:
             continue

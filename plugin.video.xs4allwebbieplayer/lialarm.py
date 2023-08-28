@@ -18,11 +18,11 @@ def list_load(listContainer):
             ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
             ProgramDescription = 'Om ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' op ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
 
-            listitem = xbmcgui.ListItem()
-            listitem.setProperty('ProgramTimeStart', ProgramTimeStart)
-            listitem.setProperty('ProgramName', ProgramName)
-            listitem.setProperty('ProgramDescription', ProgramDescription)
-            listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listitem)
+            listItem = xbmcgui.ListItem()
+            listItem.setProperty('ProgramTimeStart', ProgramTimeStart)
+            listItem.setProperty('ProgramName', ProgramName)
+            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+            listContainer.addItem(listItem)
         except:
             continue

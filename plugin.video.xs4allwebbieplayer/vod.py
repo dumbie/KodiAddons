@@ -5,7 +5,7 @@ import dialog
 import download
 import epg
 import func
-import program.vod
+import livod
 import path
 import searchdialog
 import stream
@@ -194,7 +194,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add programs to the list
         func.updateLabelText(self, 1, "Programma's laden")
-        program.vod.list_load(listcontainer)
+        livod.list_load(listcontainer)
 
         #Update the status
         self.count_program(True)
