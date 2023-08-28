@@ -24,19 +24,20 @@ def list_load(listContainer):
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(program, False)
+            ProgramAvailability = metadatainfo.vod_week_available_time(program)
+
+            #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-            ProgramTimeStartStringTime = ProgramTimeStartDateTime.strftime('%H:%M')
-            ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
-            ProgramTime = '[COLOR gray]Begon om ' + ProgramTimeStartStringTime + ' op ' + ProgramTimeStartStringDate + ' en duurde ' + ProgramDuration + '[/COLOR]'
-            ProgramAvailability = metadatainfo.vod_week_available_time(program)
+
+            #Combine program timing
+            ProgramTiming = metadatacombine.program_timing_vod(program)
 
             #Combine program description extended
             ProgramDescription = metadatacombine.program_description_extended(program)
 
             #Combine program details
-            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, False, True)
+            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
             ProgramNameList = ProgramName + ' ' + ProgramDetails
@@ -54,7 +55,7 @@ def list_load(listContainer):
             listitem.setProperty("ProgramName", ProgramNameList)
             listitem.setProperty("ProgramNameDesc", ProgramNameDesc)
             listitem.setProperty("ProgramNameRaw", ProgramName)
-            listitem.setProperty("ProgramDetails", ProgramTime)
+            listitem.setProperty("ProgramDetails", ProgramTiming)
             listitem.setProperty('ProgramDescription', ProgramDescription)
             listitem.setInfo('video', {'Genre': 'Zoeken', 'Plot': ProgramDescription})
             listitem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})

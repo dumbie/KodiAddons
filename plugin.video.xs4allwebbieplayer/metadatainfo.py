@@ -198,15 +198,21 @@ def programdurationint_from_json_metadata(metaData):
         return 0
 
 #Get program duration from json metadata
-def programdurationstring_from_json_metadata(metaData, incBrackets=True, incMin=True):
+def programdurationstring_from_json_metadata(metaData, incBracketMin=True, incShortMin=False, incFullMin=False):
     try:
         durationInt = programdurationint_from_json_metadata(metaData)
-        if incBrackets:
-            return '(' + func.number_to_single_string(durationInt) + 'min)'
-        elif incMin:
-            return func.number_to_single_string(durationInt) + 'min'
+        durationString = func.number_to_single_string(durationInt)
+        if incBracketMin:
+            return '(' + durationString + 'min)'
+        elif incShortMin:
+            return durationString + 'min'
+        elif incFullMin:
+            if durationString == '1':
+                return durationString + ' minuut'
+            else:
+                return durationString + ' minuten'
         else:
-            return func.number_to_single_string(durationInt)
+            return durationString
     except:
         return ''
 
@@ -286,15 +292,23 @@ def programdirectors_from_json_metadata(metaData):
 
 #Get program description from json metadata
 def programdescription_from_json_metadata(metaData):
-    #Check the long program description
     try:
-        return hybrid.htmlparser_unescape(metaData["metadata"]["longDescription"])
+        #Load long program description
+        longDescription = hybrid.htmlparser_unescape(metaData["metadata"]["longDescription"])
+
+        #Check program description
+        if func.string_isnullorempty(longDescription) == False:
+            return longDescription
     except:
         pass
 
-    #Check the short program description
     try:
-        return hybrid.htmlparser_unescape(metaData["metadata"]["shortDescription"])
+        #Load short program description
+        shortDescription = hybrid.htmlparser_unescape(metaData["metadata"]["shortDescription"])
+
+        #Check program description
+        if func.string_isnullorempty(shortDescription) == False:
+            return shortDescription
     except:
         pass
 

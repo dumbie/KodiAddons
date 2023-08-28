@@ -55,7 +55,7 @@ def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
             channelNameProp = listcontainer.getListItem(itemNum).getProperty('ChannelName')
             channelNumberProp = listcontainer.getListItem(itemNum).getProperty('ChannelNumber')
             if channelNumberProp.startswith(var.ZapNumberString):
-                var.ZapHintString += func.get_provider_color_string() + channelNumberProp + '[/COLOR] [COLOR white]' + channelNameProp + '[/COLOR] '
+                var.ZapHintString += func.get_provider_color_string() + channelNumberProp + '[/COLOR] ' + channelNameProp
         except:
             continue
 

@@ -32,7 +32,7 @@ def list_load(listContainer, selectedSeriesName, selectedPictureUrl):
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, True, False, False)
-            ProgramTitle = ProgramName + " " + ProgramDetails
+            ProgramTitle = EpisodeTitle + " " + ProgramDetails
 
             #Add vod program
             listitem = xbmcgui.ListItem()

@@ -216,7 +216,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
             #Countdown string
             delayCountInt = interactSecond - lastInteractSeconds
-            delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR] ' + func.get_provider_color_string() + channelNumberProp + '[/COLOR] [COLOR white]' + channelNameProp + '[/COLOR]'
+            delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR] ' + func.get_provider_color_string() + channelNumberProp + '[/COLOR] ' + channelNameProp
 
             #Show remaining time
             func.updateLabelText(self, 7001, delayCountString)

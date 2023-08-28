@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import alarm
 import func
+import metadatacombine
 import metadatainfo
 
 def list_update(updateItem):
@@ -11,7 +12,7 @@ def list_update(updateItem):
     dateTimeNow = datetime.now()
 
     ProgramId = updateItem.getProperty('ProgramId')
-    ProgramName = updateItem.getProperty('ProgramName')
+    ProgramNameProp = updateItem.getProperty('ProgramName')
     ProgramDescriptionRaw = updateItem.getProperty('ProgramDescriptionRaw')
     ProgramDetailsProp = updateItem.getProperty('ProgramDetails')
     ProgramRecordSeriesId = updateItem.getProperty('ProgramRecordSeriesId')
@@ -20,31 +21,13 @@ def list_update(updateItem):
     ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
     ProgramTimeEndProp = updateItem.getProperty('ProgramTimeEnd')
     ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndProp, '%Y-%m-%d %H:%M:%S')
-    ProgramTimeEndString = ProgramTimeEndDateTime.strftime('%H:%M')
-    ProgramTimeLeftMinutes = int((ProgramTimeEndDateTime - dateTimeNow).total_seconds() / 60)
-    ProgramTimeLeftString = str(ProgramTimeLeftMinutes)
-    ProgramDurationString = updateItem.getProperty('ProgramDuration')
 
     #Update program progress
     ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
 
-    #Set program duration text
-    if ProgramDurationString == '0':
-        ProgramTimingEpgList = ' onbekend programmaduur'
-        ProgramTimingDescription = ' [COLOR gray]onbekend programmaduur[/COLOR]'
-    if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-        if ProgramTimeLeftString == '0':
-            ProgramTimingEpgList = ' is bijna afgelopen, duurde ' + ProgramDurationString + ' minuten'
-            ProgramTimingDescription = ' [COLOR gray]is bijna afgelopen, duurde[/COLOR] ' + ProgramDurationString + ' [COLOR gray]minuten, begon om[/COLOR] ' + ProgramTimeStartString
-        else:
-            ProgramTimingEpgList = ' duurt nog ' + ProgramTimeLeftString + ' van de ' + ProgramDurationString + ' minuten'
-            ProgramTimingDescription = ' [COLOR gray]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR gray]van de[/COLOR] ' + ProgramDurationString + ' [COLOR gray]minuten, begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigt rond[/COLOR] ' + ProgramTimeEndString
-    elif dateTimeNow > ProgramTimeEndDateTime:
-        ProgramTimingEpgList = ' duurde ' + ProgramDurationString + ' minuten'
-        ProgramTimingDescription = ' [COLOR gray]duurde[/COLOR] ' + ProgramDurationString + ' [COLOR gray]minuten, begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigde rond[/COLOR] ' + ProgramTimeEndString
-    else:
-        ProgramTimingEpgList = ' duurt ' + ProgramDurationString + ' minuten'
-        ProgramTimingDescription = ' [COLOR gray]duurt[/COLOR] ' + ProgramDurationString + ' [COLOR gray]minuten, begint om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigt rond[/COLOR] ' + ProgramTimeEndString
+    #Combine program timing
+    ProgramTimingList = metadatacombine.program_timing_program_property(updateItem, dateTimeNow, True)
+    ProgramTimingDescription = metadatacombine.program_timing_program_property(updateItem, dateTimeNow, False)
 
     #Check if program has active alarm
     if alarm.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:
@@ -77,8 +60,8 @@ def list_update(updateItem):
         ProgramRecordSeries = 'false'
 
     #Combine the program description
-    ProgramEpgList = ProgramTimeStartString + ProgramTimingEpgList
-    ProgramDescription = '[COLOR white]' + ProgramName + ProgramTimingDescription + '[/COLOR]\n\n[COLOR gray]' + ProgramDetailsProp + '[/COLOR]\n\n[COLOR white]' + ProgramDescriptionRaw + '[/COLOR]'
+    ProgramEpgList = ProgramTimeStartString + ' ' + ProgramTimingList
+    ProgramDescription = ProgramNameProp + ' ' + ProgramTimingDescription + '\n\n' + ProgramDetailsProp + '\n\n' + ProgramDescriptionRaw
 
     #Update program list item
     updateItem.setProperty('ProgramEpgList', ProgramEpgList)

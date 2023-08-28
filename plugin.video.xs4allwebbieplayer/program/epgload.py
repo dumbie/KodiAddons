@@ -34,7 +34,7 @@ def list_load(listContainer, epgJson):
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
-            ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False)
+            ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False, True)
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramEpgList = 'Programmaduur wordt geladen'
 
