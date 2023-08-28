@@ -52,7 +52,7 @@ def list_load(listContainer):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
-            ProgramNameList = ProgramName + ' ' + ProgramDetails
+            ProgramNameList = ProgramName + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
             ProgramNameDesc = ProgramName + '\n' + ProgramDetails
 
             #Update program availability
