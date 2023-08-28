@@ -39,14 +39,21 @@ def deep_copy_list(copyList):
 #Remove character accents from string
 def string_remove_accents(string):
     if pythonversion < 3:
-        string = string_to_unicode(string)
-    return ''.join(c for c in unicodedata.normalize('NFKD', string) if unicodedata.category(c) != 'Mn')
+        if type(string) != unicode:
+            string = string_to_unicode(string)
+        uniString = ''.join(c for c in unicodedata.normalize('NFKD', string) if unicodedata.category(c) != 'Mn')
+        uniString = string_encode_ascii(uniString)
+        return string_decode_utf8(uniString)
+    else:
+        return ''.join(c for c in unicodedata.normalize('NFKD', string) if unicodedata.category(c) != 'Mn')
 
 #Unicode to string
 def unicode_to_string(string):
     if pythonversion < 3:
         if type(string) == unicode:
-            return ''.join(c for c in unicodedata.normalize('NFKD', string) if unicodedata.category(c) != 'Mn')
+            uniString = ''.join(c for c in unicodedata.normalize('NFKD', string) if unicodedata.category(c) != 'Mn')
+            uniString = string_encode_ascii(uniString)
+            return string_decode_utf8(uniString)
     return string
 
 #String to unicode
@@ -73,6 +80,26 @@ def string_decode_utf8(string):
     else:
         if type(string) == bytes:
             return string.decode('UTF-8')
+        else:
+            return string
+
+#String encode ascii
+def string_encode_ascii(string):
+    if pythonversion < 3:
+        return string.encode('ASCII', 'ignore')
+    else:
+        if type(string) == bytes:
+            return string.encode('ASCII', 'ignore')
+        else:
+            return string
+
+#String decode ascii
+def string_decode_ascii(string):
+    if pythonversion < 3:
+        return string.decode('ASCII', 'ignore')
+    else:
+        if type(string) == bytes:
+            return string.decode('ASCII', 'ignore')
         else:
             return string
 

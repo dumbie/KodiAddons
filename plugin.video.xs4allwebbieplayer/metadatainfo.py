@@ -295,6 +295,8 @@ def programdescription_from_json_metadata(metaData):
     try:
         #Load long program description
         longDescription = hybrid.htmlparser_unescape(metaData["metadata"]["longDescription"])
+        longDescription = hybrid.unicode_to_string(longDescription)
+        longDescription = hybrid.htmlparser_unescape(longDescription)
 
         #Check program description
         if func.string_isnullorempty(longDescription) == False:
@@ -305,6 +307,8 @@ def programdescription_from_json_metadata(metaData):
     try:
         #Load short program description
         shortDescription = hybrid.htmlparser_unescape(metaData["metadata"]["shortDescription"])
+        shortDescription = hybrid.unicode_to_string(shortDescription)
+        shortDescription = hybrid.htmlparser_unescape(shortDescription)
 
         #Check program description
         if func.string_isnullorempty(shortDescription) == False:
