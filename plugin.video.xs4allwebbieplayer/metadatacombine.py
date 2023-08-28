@@ -2,6 +2,46 @@ from datetime import datetime, timedelta
 import func
 import metadatainfo
 
+def program_upcoming_list(metaData, programIndex):
+    ProgramListId = 1
+    ProgramListString = ''
+    while ProgramListId < 5:
+        try:
+            ProgramListMetaData = metaData[programIndex + ProgramListId]
+            ProgramListName = metadatainfo.programtitle_from_json_metadata(ProgramListMetaData)
+            ProgramListTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(ProgramListMetaData)
+            ProgramListTimeStartString = ProgramListTimeStartDateTime.strftime('%H:%M')
+            ProgramListTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(ProgramListMetaData)
+            ProgramListString += '\n' + ProgramListTimeStartString + ' ' + ProgramListTimeDurationString + ' [COLOR gray]' + ProgramListName + '[/COLOR]'
+            ProgramListId += 1
+        except:
+            break
+
+    if func.string_isnullorempty(ProgramListString) == True:
+        return ''
+    else:
+        return '[COLOR gray]Later op deze zender[/COLOR]' + ProgramListString
+
+def program_earlier_list(metaData, programIndex):
+    ProgramListId = 1
+    ProgramListString = ''
+    while ProgramListId < 5:
+        try:
+            ProgramListMetaData = metaData[programIndex - ProgramListId]
+            ProgramListName = metadatainfo.programtitle_from_json_metadata(ProgramListMetaData)
+            ProgramListTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(ProgramListMetaData)
+            ProgramListTimeStartString = ProgramListTimeStartDateTime.strftime('%H:%M')
+            ProgramListTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(ProgramListMetaData)
+            ProgramListString += '\n' + ProgramListTimeStartString + ' ' + ProgramListTimeDurationString + ' [COLOR gray]' + ProgramListName + '[/COLOR]'
+            ProgramListId += 1
+        except:
+            break
+
+    if func.string_isnullorempty(ProgramListString) == True:
+        return ''
+    else:
+        return '[COLOR gray]Eerder op deze zender[/COLOR]' + ProgramListString
+
 def program_timing_vod(metaData):
     ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(metaData, False, False, True)
     ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)

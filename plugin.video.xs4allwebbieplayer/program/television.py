@@ -135,37 +135,12 @@ def list_update(updateItem):
     ProgramNextName = '[COLOR gray]' + ProgramNextTimeStartString + ': ' + ProgramNextNameRaw + '[/COLOR]'
 
     #Get upcoming programs information
-    ProgramLater = '[COLOR gray]Later op deze zender:[/COLOR]'
-    UpcomingProgramId = 1
-    while UpcomingProgramId < 5:
-        try:
-            metaData = channelEpg['containers'][programIndex + UpcomingProgramId]
-            ProgramLaterName = metadatainfo.programtitle_from_json_metadata(metaData)
-            ProgramLaterTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
-            ProgramLaterTimeStartString = ProgramLaterTimeStartDateTime.strftime('%H:%M')
-            ProgramLaterTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData)
-            ProgramLater += '\n' + ProgramLaterTimeStartString + ' ' + ProgramLaterTimeDurationString + ' [COLOR gray]' + ProgramLaterName + '[/COLOR]'
-            UpcomingProgramId += 1
-        except:
-            break
-    if ProgramLater == '[COLOR gray]Later op deze zender:[/COLOR]':
-        ProgramLater = ''
+    ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
 
     #Get earlier programs information
-    ProgramEarlier = '[COLOR gray]Eerder op deze zender:[/COLOR]'
-    UpcomingProgramId = 1
-    while UpcomingProgramId < 5:
-        try:
-            metaData = channelEpg['containers'][programIndex - UpcomingProgramId]
-            ProgramLaterName = metadatainfo.programtitle_from_json_metadata(metaData)
-            ProgramLaterTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
-            ProgramLaterTimeStartString = ProgramLaterTimeStartDateTime.strftime('%H:%M')
-            ProgramLaterTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData)
-            ProgramEarlier += '\n' + ProgramLaterTimeStartString + ' ' + ProgramLaterTimeDurationString + ' [COLOR gray]' + ProgramLaterName + '[/COLOR]'
-            UpcomingProgramId += 1
-        except:
-            break
-    if ProgramEarlier == '[COLOR gray]Eerder op deze zender:[/COLOR]':
+    if var.addon.getSetting('TelevisionHideEarlierAired') == 'false':
+        ProgramEarlier = metadatacombine.program_earlier_list(channelEpg['containers'], programIndex)
+    else:
         ProgramEarlier = ''
 
     #Combine channel information
@@ -177,12 +152,12 @@ def list_update(updateItem):
     #Combine program description
     ProgramDescription = ChannelDescription + '\n\n' + ProgramNowName + ' ' + ProgramNowTiming + '\n\n' + ProgramNowDetails + '\n\n' + ProgramNowDescription
 
-    #Append later programs to the description
-    if func.string_isnullorempty(ProgramLater) == False:
-        ProgramDescription += '\n\n' + ProgramLater
+    #Append upcoming programs to the description
+    if func.string_isnullorempty(ProgramUpcoming) == False:
+        ProgramDescription += '\n\n' + ProgramUpcoming
 
-    #Append earlier programs to the description and check if earlier program info is enabled
-    if func.string_isnullorempty(ProgramEarlier) == False and var.addon.getSetting('TelevisionHideEarlierAired') == 'false':
+    #Append earlier programs to the description
+    if func.string_isnullorempty(ProgramEarlier) == False:
         ProgramDescription += '\n\n' + ProgramEarlier
 
     #Update the information in list item
