@@ -18,6 +18,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiVod != None:
+        #Save select index
+        var.guiVod.save_select_index()
+
         #Close the shown window
         var.guiVod.close()
         var.guiVod = None
@@ -26,7 +29,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Programma Gemist")
         self.buttons_add_navigation()
-        self.load_program(False, False)
+        self.load_program(False, False, True, var.VodSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -75,6 +78,10 @@ class Gui(xbmcgui.WindowXML):
             self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
             self.open_context_menu()
+
+    def save_select_index(self):
+        listContainer = self.getControl(1000)
+        var.VodSelectIndex = listContainer.getSelectedPosition()
 
     def dialog_set_day(self):
         #Set dates to array
@@ -167,7 +174,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, False)
         var.SearchFilterTerm = ''
 
-    def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True):
+    def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True, selectIndex=0):
         if forceUpdate == True and silentUpdate == False:
             notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
             xbmcgui.Dialog().notification(var.addonname, "Programma's worden vernieuwd.", notificationIcon, 2500, False)
@@ -197,10 +204,10 @@ class Gui(xbmcgui.WindowXML):
         livod.list_load(listcontainer)
 
         #Update the status
-        self.count_program(True)
+        self.count_program(True, selectIndex)
 
     #Update the status
-    def count_program(self, resetSelect=False):
+    def count_program(self, resetSelect=False, selectIndex=0):
         #Set the day string
         loadDayString = func.day_string_from_datetime(var.VodCurrentLoadDateTime)
 
@@ -216,7 +223,7 @@ class Gui(xbmcgui.WindowXML):
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listcontainer.selectItem(selectIndex)
                 xbmc.sleep(100)
         else:
             listcontainer = self.getControl(1001)

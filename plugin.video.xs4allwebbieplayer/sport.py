@@ -18,6 +18,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiSport != None:
+        #Save select index
+        var.guiSport.save_select_index()
+
         #Close the shown window
         var.guiSport.close()
         var.guiSport = None
@@ -26,7 +29,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Sport Gemist")
         self.buttons_add_navigation()
-        self.load_program(False, False)
+        self.load_program(False, False, var.SportSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -67,6 +70,10 @@ class Gui(xbmcgui.WindowXML):
             self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
             self.open_context_menu()
+
+    def save_select_index(self):
+        listContainer = self.getControl(1000)
+        var.SportSelectIndex = listContainer.getSelectedPosition()
 
     def open_context_menu(self):
         dialogAnswers = ['Programma zoeken in uitzendingen', 'Programma in de TV Gids tonen']
@@ -126,7 +133,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, False)
         var.SearchFilterTerm = ''
 
-    def load_program(self, forceLoad=False, forceUpdate=False):
+    def load_program(self, forceLoad=False, forceUpdate=False, selectIndex=0):
         if forceUpdate == True:
             notificationIcon = path.resources('resources/skins/default/media/common/sport.png')
             xbmcgui.Dialog().notification(var.addonname, "Uitzendingen worden vernieuwd.", notificationIcon, 2500, False)
@@ -155,10 +162,10 @@ class Gui(xbmcgui.WindowXML):
         lisport.list_load(listcontainer)
 
         #Update the status
-        self.count_program(True)
+        self.count_program(True, selectIndex)
 
     #Update the status
-    def count_program(self, resetSelect=False):
+    def count_program(self, resetSelect=False, selectIndex=0):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
@@ -171,7 +178,7 @@ class Gui(xbmcgui.WindowXML):
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listcontainer.selectItem(selectIndex)
                 xbmc.sleep(100)
         else:
             listcontainer = self.getControl(1001)

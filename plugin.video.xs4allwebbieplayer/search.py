@@ -17,6 +17,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiSearch != None:
+        #Save select index
+        var.guiSearch.save_select_index()
+
         #Close the shown window
         var.guiSearch.close()
         var.guiSearch = None
@@ -36,7 +39,7 @@ class Gui(xbmcgui.WindowXML):
                 listcontainer.selectItem(1)
                 xbmc.sleep(100)
             else:
-                self.search_list()
+                self.search_list(var.SearchSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -77,6 +80,10 @@ class Gui(xbmcgui.WindowXML):
             self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
             self.open_context_menu()
+
+    def save_select_index(self):
+        listContainer = self.getControl(1000)
+        var.SearchSelectIndex = listContainer.getSelectedPosition()
 
     def open_context_menu(self):
         dialogAnswers = ['Programma zoeken in resultaat', 'Programma in de TV Gids tonen']
@@ -176,7 +183,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 1, "Zoek resultaat laden")
         self.search_list()
 
-    def search_list(self):
+    def search_list(self, selectIndex=0):
         #Get and check the list container
         listcontainer = self.getControl(1000)
         listcontainer.reset()
@@ -185,10 +192,10 @@ class Gui(xbmcgui.WindowXML):
         lisearch.list_load(listcontainer)
 
         #Update the status
-        self.count_program(True)
+        self.count_program(True, selectIndex)
 
     #Update the status
-    def count_program(self, resetSelect=False):
+    def count_program(self, resetSelect=False, selectIndex=0):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             func.updateLabelText(self, 1, str(listcontainer.size()) + " zoekresultaten")
@@ -199,7 +206,7 @@ class Gui(xbmcgui.WindowXML):
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listcontainer.selectItem(selectIndex)
                 xbmc.sleep(100)
         else:
             func.updateLabelText(self, 1, "Geen zoekresultaten")

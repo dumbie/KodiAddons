@@ -20,6 +20,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiSeries != None:
+        #Save select index
+        var.guiSeries.save_select_index()
+
         #Close the shown window
         var.guiSeries.close()
         var.guiSeries = None
@@ -28,7 +31,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 3, "Series")
         self.buttons_add_navigation()
-        self.load_series(False, False)
+        self.load_program(False, False, var.SeriesProgramSelectIndex, var.SeriesEpisodeSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -44,10 +47,10 @@ class Gui(xbmcgui.WindowXML):
             listItemAction = listItemSelected.getProperty('Action')
             if listItemAction == 'go_back':
                 close_the_page()
-            elif listItemAction == 'search_serie':
-                self.search_serie()
+            elif listItemAction == 'search_program':
+                self.search_program()
             elif listItemAction == 'refresh_program':
-                self.load_series(True, True)
+                self.load_program(True, True)
         elif clickId == 1002:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
@@ -81,9 +84,16 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_PREV_ITEM:
             xbmc.executebuiltin('Action(PageUp)')
         elif actionId == var.ACTION_SEARCH_FUNCTION:
-            self.search_serie()
+            self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusEpisodesList:
             self.open_context_menu()
+
+    def save_select_index(self):
+        listContainer = self.getControl(1000)
+        var.SeriesProgramSelectIndex = listContainer.getSelectedPosition()
+
+        listContainer = self.getControl(1002)
+        var.SeriesEpisodeSelectIndex = listContainer.getSelectedPosition()
 
     def open_context_menu(self):
         listcontainer = self.getControl(1002)
@@ -114,7 +124,7 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem("Zoek naar serie")
-        listitem.setProperty('Action', 'search_serie')
+        listitem.setProperty('Action', 'search_program')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
@@ -123,7 +133,7 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listcontainer.addItem(listitem)
 
-    def search_serie(self):
+    def search_program(self):
         #Open the search dialog
         searchDialogTerm = searchdialog.search_dialog('Zoek naar serie')
 
@@ -133,10 +143,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
-        self.load_series(True, False)
+        self.load_program(True, False)
         var.SearchFilterTerm = ''
 
-    def load_episodes_vod(self, listItem, selectList=False):
+    def load_episodes_vod(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
         selectedParentId = listItem.getProperty('ProgramId')
         selectedSeriesName = listItem.getProperty('ProgramName')
@@ -164,14 +174,17 @@ class Gui(xbmcgui.WindowXML):
         #Update the episodes status
         func.updateLabelText(self, 2, selectedSeriesName + ' (' + str(listcontainer.size()) + ' afleveringen)')
 
-        #Select the list container
-        if selectList == True and listcontainer.size() > 0:
-            self.setFocus(listcontainer)
-            xbmc.sleep(100)
-            listcontainer.selectItem(0)
+        if listcontainer.size() > 0:
+            #Focus list container
+            if selectList == True:
+                self.setFocus(listcontainer)
+                xbmc.sleep(100)
+
+            #Select list item
+            listcontainer.selectItem(selectIndex)
             xbmc.sleep(100)
 
-    def load_episodes_week(self, listItem, selectList=False):
+    def load_episodes_week(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
         selectedSeriesName = listItem.getProperty('ProgramName')
         selectedPictureUrl = listItem.getProperty('PictureUrl')
@@ -194,14 +207,17 @@ class Gui(xbmcgui.WindowXML):
         #Update the episodes status
         func.updateLabelText(self, 2, selectedSeriesName + ' (' + str(listcontainer.size()) + ' afleveringen)')
 
-        #Select the list container
-        if selectList == True and listcontainer.size() > 0:
-            self.setFocus(listcontainer)
-            xbmc.sleep(100)
-            listcontainer.selectItem(0)
+        if listcontainer.size() > 0:
+            #Focus list container
+            if selectList == True:
+                self.setFocus(listcontainer)
+                xbmc.sleep(100)
+
+            #Select list item
+            listcontainer.selectItem(selectIndex)
             xbmc.sleep(100)
 
-    def load_series(self, forceLoad=False, forceUpdate=False):
+    def load_program(self, forceLoad=False, forceUpdate=False, programSelectIndex=0, episodeSelectIndex=0):
         if forceUpdate == True:
             notificationIcon = path.resources('resources/skins/default/media/common/series.png')
             xbmcgui.Dialog().notification(var.addonname, "Series worden vernieuwd.", notificationIcon, 2500, False)
@@ -213,7 +229,7 @@ class Gui(xbmcgui.WindowXML):
         else:
             listcontainer.reset()
 
-        #Download the series
+        #Download the programs
         func.updateLabelText(self, 1, "Series downloaden")
         downloadResult = download.download_vod_series(forceUpdate)
         downloadResultWeek = download.download_search_series(forceUpdate)
@@ -226,7 +242,7 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add series to the list
+        #Add programs to the list
         func.updateLabelText(self, 1, "Series laden")
         listcontainersort = []
         liseriesprogramweek.list_load(listcontainersort)
@@ -237,18 +253,18 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItems(listcontainersort)
 
         #Update the status
-        self.count_series(True)
+        self.count_program(True, programSelectIndex)
 
         #Load selected episodes
         listItemSelected = listcontainer.getSelectedItem()
         listItemAction = listItemSelected.getProperty('Action')
         if listItemAction == 'load_episodes_vod':
-            self.load_episodes_vod(listItemSelected, False)
+            self.load_episodes_vod(listItemSelected, False, episodeSelectIndex)
         elif listItemAction == 'load_episodes_week':
-            self.load_episodes_week(listItemSelected, False)
+            self.load_episodes_week(listItemSelected, False, episodeSelectIndex)
 
     #Update the status
-    def count_series(self, resetSelect=False):
+    def count_program(self, resetSelect=False, selectIndex=0):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             func.updateVisibility(self, 2, True)
@@ -263,7 +279,7 @@ class Gui(xbmcgui.WindowXML):
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listcontainer.selectItem(selectIndex)
                 xbmc.sleep(100)
         else:
             func.updateVisibility(self, 2, False)

@@ -116,7 +116,7 @@ PlayerSeekOffset = 0
 ApiEndpointUrl = 'api.tv.kpn.com'
 ApiLoggedIn = False
 ApiHomeAccess = True
-ApiLastLogin = datetime(1970, 1, 1)
+ApiLastLogin = datetime(1970,1,1)
 ApiLoginCookie = ''
 ApiLoginToken = ''
 ApiLoginCount = 0
@@ -129,6 +129,7 @@ StreamTargetMaxBitrate = '100000000'
 FavoriteTelevisionDataJson = []
 
 #Search variables
+SearchSelectIndex = 0
 SearchFilterTerm = ''
 SearchDownloadSearchTerm = ''
 SearchDownloadResultJson = []
@@ -136,10 +137,13 @@ SearchHistoryProgramJson = []
 SearchHistoryChannelJson = []
 
 #Kids variables
+KidsProgramSelectIndex = 0
+KidsEpisodeSelectIndex = 0
 KidsSearchDataJson = []
 ChannelsDataJsonSeriesKids = []
 
 #Sport variables
+SportSelectIndex = 0
 SportSearchDataJson = []
 
 #Radio variables
@@ -152,23 +156,28 @@ ChannelIdsPlayable = []
 ChannelsDataJsonTelevision = []
 
 #Vod variables
+VodSelectIndex = 0
 VodCurrentDataJson = []
 VodCurrentLoadDateTime = datetime.now()
 VodDaysOffsetPast = 10
 VodDaysOffsetFuture = 1
 
 #Movies variables
+MovieSelectIndex = 0
 MovieSearchDataJson = []
 ChannelsDataJsonMovies = []
 
 #Series variables
+SeriesProgramSelectIndex = 0
+SeriesEpisodeSelectIndex = 0
 SeriesSearchDataJson = []
 ChannelsDataJsonSeries = []
 
 #Recording variables
+RecordedSelectIndex = 0
 RecordingAccess = False
 RecordingSpaceString = "Onbekende ruimte beschikbaar"
-RecordingProcessMinutes = 15
+RecordingProcessMinutes = 10
 RecordingProfileDataJson = []
 ChannelsDataJsonRecordingEvent = []
 ChannelsDataJsonRecordingSeries = []

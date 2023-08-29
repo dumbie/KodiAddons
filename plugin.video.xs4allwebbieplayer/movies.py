@@ -18,6 +18,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiMovies != None:
+        #Save select index
+        var.guiMovies.save_select_index()
+
         #Close the shown window
         var.guiMovies.close()
         var.guiMovies = None
@@ -25,7 +28,7 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         self.buttons_add_navigation()
-        self.load_movies(False, False)
+        self.load_movies(False, False, var.MovieSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -68,6 +71,10 @@ class Gui(xbmcgui.WindowXML):
             self.search_movie()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
             self.open_context_menu()
+
+    def save_select_index(self):
+        listContainer = self.getControl(1000)
+        var.MovieSelectIndex = listContainer.getSelectedPosition()
 
     def open_context_menu(self):
         listcontainer = self.getControl(1000)
@@ -120,7 +127,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_movies(True, False)
         var.SearchFilterTerm = ''
 
-    def load_movies(self, forceLoad=False, forceUpdate=False):
+    def load_movies(self, forceLoad=False, forceUpdate=False, selectIndex=0):
         if forceUpdate == True:
             notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
             xbmcgui.Dialog().notification(var.addonname, "Films worden vernieuwd.", notificationIcon, 2500, False)
@@ -156,10 +163,10 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItems(listcontainersort)
 
         #Update the status
-        self.count_movies(True)
+        self.count_movies(True, selectIndex)
 
     #Update the status
-    def count_movies(self, resetSelect=False):
+    def count_movies(self, resetSelect=False, selectIndex=0):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
@@ -172,7 +179,7 @@ class Gui(xbmcgui.WindowXML):
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listcontainer.selectItem(selectIndex)
                 xbmc.sleep(100)
         else:
             listcontainer = self.getControl(1001)

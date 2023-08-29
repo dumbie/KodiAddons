@@ -16,6 +16,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiRecorded != None:
+        #Save select index
+        var.guiRecorded.save_select_index()
+
         #Close the shown window
         var.guiRecorded.close()
         var.guiRecorded = None
@@ -24,7 +27,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Opnames")
         self.buttons_add_navigation()
-        self.load_program(False, False)
+        self.load_program(False, False, var.RecordedSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -65,6 +68,10 @@ class Gui(xbmcgui.WindowXML):
             self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
             self.open_context_menu()
+
+    def save_select_index(self):
+        listContainer = self.getControl(1000)
+        var.RecordedSelectIndex = listContainer.getSelectedPosition()
 
     def open_context_menu(self):
         dialogAnswers = ['Opname verwijderen', 'Programma zoeken']
@@ -131,7 +138,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, False)
         var.SearchFilterTerm = ''
 
-    def load_program(self, forceLoad=False, forceUpdate=False):
+    def load_program(self, forceLoad=False, forceUpdate=False, selectIndex=0):
         if forceUpdate == True:
             notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
             xbmcgui.Dialog().notification(var.addonname, 'Opnames worden vernieuwd.', notificationIcon, 2500, False)
@@ -161,7 +168,7 @@ class Gui(xbmcgui.WindowXML):
         lirecorded.list_load(listcontainer)
 
         #Update the status
-        self.count_program(True)
+        self.count_program(True, selectIndex)
 
         #Update the main page count
         if var.guiMain != None:
@@ -169,7 +176,8 @@ class Gui(xbmcgui.WindowXML):
             var.guiMain.count_recording_events()
 
     #Update the status
-    def count_program(self, resetSelect=False):
+    def count_program(self, resetSelect=False, selectIndex=0):
+        func.updateLabelText(self, 4, var.RecordingSpaceString)
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
@@ -177,12 +185,12 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchFilterTerm)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " opnames")
-                func.updateLabelText(self, 3, var.RecordingSpaceString)
+                func.updateLabelText(self, 3, '')
 
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listcontainer.selectItem(selectIndex)
                 xbmc.sleep(100)
         else:
             listcontainer = self.getControl(1001)
@@ -194,6 +202,6 @@ class Gui(xbmcgui.WindowXML):
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, 'Geen opnames')
-                func.updateLabelText(self, 3, var.RecordingSpaceString)
+                func.updateLabelText(self, 3, 'Geen opnames beschikbaar.')
                 listcontainer.selectItem(0)
             xbmc.sleep(100)
