@@ -1,11 +1,13 @@
 import xbmcgui
 import alarm
+import favorite
 import func
 import metadatainfo
 import path
 import var
 
 def list_load(listContainer, checkStatus=False):
+    favorite.favorite_json_load()
     var.ChannelIdsPlayable = []
     for channel in var.ChannelsDataJsonTelevision['resultObj']['containers']:
         try:
@@ -64,7 +66,7 @@ def list_load(listContainer, checkStatus=False):
                 if alarm.alarm_duplicate_channel_check(ChannelId) == True:
                     ChannelAlarm = 'true'
 
-            #Add normal channel
+            #Add television channel
             listItem = xbmcgui.ListItem()
             listItem.setProperty('Action', 'play_stream')
             listItem.setProperty('AssetId', AssetId)

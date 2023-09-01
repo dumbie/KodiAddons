@@ -37,7 +37,6 @@ class Gui(xbmcgui.WindowXML):
         self.buttons_add_navigation()
         self.load_recording_event(False)
         self.load_recording_series(False)
-        favorite.favorite_json_load()
         channelsLoaded = self.load_channels()
         if channelsLoaded == True:
             self.set_channel_epg_variables()
@@ -354,7 +353,7 @@ class Gui(xbmcgui.WindowXML):
 
     def search_channel(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender', True)
+        searchDialogTerm = searchdialog.search_dialog('SearchHistoryChannel.js', 'Zoek naar zender')
 
         #Check the search term
         if searchDialogTerm.cancelled == True:
@@ -370,7 +369,7 @@ class Gui(xbmcgui.WindowXML):
 
     def search_program(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('Zoek programma')
+        searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek programma')
 
         #Check the search term
         if searchDialogTerm.cancelled == True:

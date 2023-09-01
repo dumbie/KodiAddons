@@ -135,7 +135,7 @@ class Gui(xbmcgui.WindowXML):
 
     def search_program(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('Zoek naar serie')
+        searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek naar serie')
 
         #Check the search term
         if searchDialogTerm.cancelled == True:

@@ -10,32 +10,39 @@ import var
 def search_history_json_load():
     try:
         if var.SearchHistoryProgramJson == [] and files.existFile('SearchHistorySearch.js') == True:
-            SearchHistorySearchString = files.openFile('SearchHistorySearch.js')
-            var.SearchHistoryProgramJson = json.loads(SearchHistorySearchString)
+            SearchHistoryJsonString = files.openFile('SearchHistorySearch.js')
+            var.SearchHistoryProgramJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistoryProgramJson = []
 
     try:
         if var.SearchHistoryChannelJson == [] and files.existFile('SearchHistoryChannel.js') == True:
-            SearchHistorySearchString = files.openFile('SearchHistoryChannel.js')
-            var.SearchHistoryChannelJson = json.loads(SearchHistorySearchString)
+            SearchHistoryJsonString = files.openFile('SearchHistoryChannel.js')
+            var.SearchHistoryChannelJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistoryChannelJson = []
 
-def search_history_add(searchTerm, searchChannel=False):
+    try:
+        if var.SearchHistoryRadioJson == [] and files.existFile('SearchHistoryRadio.js') == True:
+            SearchHistoryJsonString = files.openFile('SearchHistoryRadio.js')
+            var.SearchHistoryRadioJson = json.loads(SearchHistoryJsonString)
+    except:
+        var.SearchHistoryRadioJson = []
+
+def search_history_add(searchTerm, searchJsonFile):
     #Check search term
     if func.string_isnullorempty(searchTerm) == True:
         return
 
     #Remove search term from Json
-    search_history_remove(searchTerm, False, searchChannel)
+    search_history_remove(searchTerm, searchJsonFile, False)
 
     #Set Json target list variable
-    if searchChannel == True:
-        searchHistoryTargetFile = 'SearchHistoryChannel.js'
+    if searchJsonFile == 'SearchHistoryChannel.js':
         searchHistoryTargetJson = var.SearchHistoryChannelJson
-    else:
-        searchHistoryTargetFile = 'SearchHistorySearch.js'
+    elif searchJsonFile == 'SearchHistoryRadio.js':
+        searchHistoryTargetJson = var.SearchHistoryRadioJson
+    elif searchJsonFile == 'SearchHistorySearch.js':
         searchHistoryTargetJson = var.SearchHistoryProgramJson
 
     #Add search history to Json
@@ -47,15 +54,15 @@ def search_history_add(searchTerm, searchChannel=False):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
-    files.saveFile(searchHistoryTargetFile, JsonDumpBytes)
+    files.saveFile(searchJsonFile, JsonDumpBytes)
 
-def search_history_remove(searchTerm, saveJson=True, searchChannel=False):
+def search_history_remove(searchTerm, searchJsonFile, saveJson=True):
     #Set Json target list variable
-    if searchChannel == True:
-        searchHistoryTargetFile = 'SearchHistoryChannel.js'
+    if searchJsonFile == 'SearchHistoryChannel.js':
         searchHistoryTargetJson = var.SearchHistoryChannelJson
-    else:
-        searchHistoryTargetFile = 'SearchHistorySearch.js'
+    elif searchJsonFile == 'SearchHistoryRadio.js':
+        searchHistoryTargetJson = var.SearchHistoryRadioJson
+    elif searchJsonFile == 'SearchHistorySearch.js':
         searchHistoryTargetJson = var.SearchHistoryProgramJson
 
     #Remove search term from Json
@@ -70,18 +77,18 @@ def search_history_remove(searchTerm, saveJson=True, searchChannel=False):
     #Save the raw json data to storage
     if saveJson == True:
         JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
-        files.saveFile(searchHistoryTargetFile, JsonDumpBytes)
+        files.saveFile(searchJsonFile, JsonDumpBytes)
 
-def search_dialog(headerText='Zoeken', searchChannel=False):
+def search_dialog(searchJsonFile, headerText='Zoeken'):
     #Load search history
     search_history_json_load()
 
     #Set Json target list variable
-    if searchChannel == True:
-        searchHistoryTargetFile = 'SearchHistoryChannel.js'
+    if searchJsonFile == 'SearchHistoryChannel.js':
         searchHistoryTargetJson = var.SearchHistoryChannelJson
-    else:
-        searchHistoryTargetFile = 'SearchHistorySearch.js'
+    elif searchJsonFile == 'SearchHistoryRadio.js':
+        searchHistoryTargetJson = var.SearchHistoryRadioJson
+    elif searchJsonFile == 'SearchHistorySearch.js':
         searchHistoryTargetJson = var.SearchHistoryProgramJson
 
     #Set search history
@@ -107,7 +114,7 @@ def search_dialog(headerText='Zoeken', searchChannel=False):
             keyboardText = keyboard.getText()
 
             #Add search history to Json
-            search_history_add(keyboardText, searchChannel)
+            search_history_add(keyboardText, searchJsonFile)
 
             #Return search result
             searchResult = classes.Class_SearchResult()
@@ -128,7 +135,7 @@ def search_dialog(headerText='Zoeken', searchChannel=False):
         return searchResult
     else:
         #Add search history to Json
-        search_history_add(searchString, searchChannel)
+        search_history_add(searchString, searchJsonFile)
 
         #Return search result
         searchResult = classes.Class_SearchResult()

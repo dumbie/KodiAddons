@@ -127,6 +127,7 @@ StreamTargetMaxBitrate = '100000000'
 
 #Favorite variables
 FavoriteTelevisionDataJson = []
+FavoriteRadioDataJson = []
 
 #Search variables
 SearchSelectIndex = 0
@@ -135,6 +136,7 @@ SearchDownloadSearchTerm = ''
 SearchDownloadResultJson = []
 SearchHistoryProgramJson = []
 SearchHistoryChannelJson = []
+SearchHistoryRadioJson = []
 
 #Kids variables
 KidsProgramSelectIndex = 0

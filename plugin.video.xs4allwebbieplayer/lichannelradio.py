@@ -1,9 +1,11 @@
 import xbmcgui
+import favorite
 import func
 import path
 import var
 
 def list_load(listContainer):
+    favorite.favorite_json_load()
     ChannelNumberInt = 0
     for channel in var.ChannelsDataJsonRadio['radios']:
         try:
@@ -20,6 +22,13 @@ def list_load(listContainer):
             ChannelId = channel['id']
             ChannelStream = channel['stream']
 
+            #Check if channel is marked as favorite
+            if ChannelId in var.FavoriteRadioDataJson:
+                ChannelFavorite = 'true'
+            else:
+                if var.LoadChannelFavoritesOnly == True and var.SearchFilterTerm == '': continue
+                ChannelFavorite = 'false'
+
             #Update channel number
             ChannelNumberInt += 1
             ChannelNumberString = str(ChannelNumberInt)
@@ -32,8 +41,9 @@ def list_load(listContainer):
             listItem.setProperty('ChannelName', ChannelName)
             listItem.setProperty('ChannelNumber', ChannelNumberString)
             listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
+            listItem.setProperty('ChannelFavorite', ChannelFavorite)
             listItem.setProperty('StreamUrl', ChannelStream)
-            listItem.setInfo('music', {'Genre': 'Radio'})
+            listItem.setInfo('video', {'Genre': 'Radio'})
             listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
             listContainer.addItem(listItem)
         except:

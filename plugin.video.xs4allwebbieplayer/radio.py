@@ -2,6 +2,8 @@ import xbmc
 import xbmcgui
 import lichannelradio
 import download
+import dialog
+import favorite
 import func
 import path
 import searchdialog
@@ -50,6 +52,8 @@ class Gui(xbmcgui.WindowXML):
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
                     self.load_channels(True, True)
+                elif listItemAction == "switch_allfavorites":
+                    self.switch_allfavorites()
                 elif listItemAction == "search_channelprogram":
                     self.search_channelprogram()
                 elif listItemAction == "show_visualisation":
@@ -59,16 +63,59 @@ class Gui(xbmcgui.WindowXML):
 
     def onAction(self, action):
         actionId = action.getId()
+        focusChannel = xbmc.getCondVisibility('Control.HasFocus(1000)')
         if (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE):
             close_the_page()
         elif actionId == var.ACTION_NEXT_ITEM:
             xbmc.executebuiltin('Action(PageDown)')
         elif actionId == var.ACTION_PREV_ITEM:
             xbmc.executebuiltin('Action(PageUp)')
+        elif actionId == var.ACTION_PLAYER_PLAY:
+            self.switch_allfavorites()
         elif actionId == var.ACTION_SEARCH_FUNCTION:
             self.search_channelprogram()
+        elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusChannel:
+            self.open_context_menu()
         else:
             zap.check_remote_number(self, 1000, actionId, True, False)
+
+    def open_context_menu(self):
+        dialogAnswers = []
+        dialogHeader = 'Radio Menu'
+        dialogSummary = 'Wat wilt u doen met de geselecteerde zender?'
+        dialogFooter = ''
+
+        #Get the selected channel
+        listcontainer = self.getControl(1000)
+        listItemSelected = listcontainer.getSelectedItem()
+
+        #Check if channel is favorite
+        if listItemSelected.getProperty('ChannelFavorite') == 'true':
+            dialogAnswers.append('Zender onmarkeren als favoriet')
+        else:
+            dialogAnswers.append('Zender markeren als favoriet')
+
+        #Add switch favorite/all button
+        if var.LoadChannelFavoritesOnly == True:
+            dialogAnswers.append('Toon alle zenders')
+        else:
+            dialogAnswers.append('Toon favorieten zenders')
+
+        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+        if dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
+            favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteRadio.js')
+            if favoriteResult == 'Removed' and var.LoadChannelFavoritesOnly == True:
+                #Remove item from the list
+                removeListItemId = listcontainer.getSelectedPosition()
+                listcontainer.removeItem(removeListItemId)
+                xbmc.sleep(100)
+                listcontainer.selectItem(removeListItemId)
+                xbmc.sleep(100)
+
+                #Update the status
+                self.count_channels(False)
+        elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
+            self.switch_allfavorites()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)
@@ -77,6 +124,11 @@ class Gui(xbmcgui.WindowXML):
         listitem = xbmcgui.ListItem('Ga een stap terug')
         listitem.setProperty('Action', 'go_back')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
+        listcontainer.addItem(listitem)
+
+        listitem = xbmcgui.ListItem('Alle of favorieten')
+        listitem.setProperty('Action', 'switch_allfavorites')
+        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Zoek naar zender')
@@ -89,14 +141,31 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'), 'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
         listcontainer.addItem(listitem)
 
-        listitem = xbmcgui.ListItem("Vernieuwen")
+        listitem = xbmcgui.ListItem('Vernieuwen')
         listitem.setProperty('Action', 'refresh_programs')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listcontainer.addItem(listitem)
 
+    def switch_allfavorites(self):
+        try:
+            #Switch favorites mode on or off
+            if var.LoadChannelFavoritesOnly == True:
+                var.LoadChannelFavoritesOnly = False
+            else:
+                #Check if there are favorites set
+                if var.FavoriteRadioDataJson == []:
+                    notificationIcon = path.resources('resources/skins/default/media/common/star.png')
+                    xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
+                    return
+                var.LoadChannelFavoritesOnly = True
+
+            self.load_channels(True, False)
+        except:
+            pass
+
     def search_channelprogram(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender', True)
+        searchDialogTerm = searchdialog.search_dialog('SearchHistoryRadio.js', 'Zoek naar zender')
 
         #Check the search term
         if searchDialogTerm.cancelled == True:
@@ -131,19 +200,21 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add channels to the list
+        #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
         lichannelradio.list_load(listcontainer)
 
         #Update the status
-        self.count_radio(True)
+        self.count_channels(True)
 
     #Update the status
-    def count_radio(self, resetSelect=False):
+    def count_channels(self, resetSelect=False):
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders gevonden')
+            elif var.LoadChannelFavoritesOnly == True:
+                func.updateLabelText(self, 1, str(listcontainer.size()) + ' favorieten zenders')
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders')
 
@@ -156,6 +227,9 @@ class Gui(xbmcgui.WindowXML):
             if var.SearchFilterTerm != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
                 listcontainer.selectItem(1)
+            elif var.LoadChannelFavoritesOnly == True:
+                func.updateLabelText(self, 1, 'Geen favorieten zenders')
+                listcontainer.selectItem(0)
             else:
                 func.updateLabelText(self, 1, 'Geen zenders')
                 listcontainer.selectItem(0)

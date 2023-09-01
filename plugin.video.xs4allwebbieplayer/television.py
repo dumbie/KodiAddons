@@ -43,7 +43,6 @@ class Gui(xbmcgui.WindowXML):
 
     def onInit(self):
         self.buttons_add_navigation()
-        favorite.favorite_json_load()
         self.load_channels(False, False)
         self.load_recording_event(False)
         self.load_recording_series(False)
@@ -117,12 +116,6 @@ class Gui(xbmcgui.WindowXML):
         dialogAnswers.append('Programma vanaf begin kijken')
         dialogAnswers.append('Programma in de TV Gids tonen')
 
-        #Check if channel is favorite
-        if listItemSelected.getProperty('ChannelFavorite') == 'true':
-            dialogAnswers.append('Zender onmarkeren als favoriet')
-        else:
-            dialogAnswers.append('Zender markeren als favoriet')
-
         #Add record program
         if var.RecordingAccess == True:
             dialogAnswers.append('Huidig programma opnemen of annuleren')
@@ -131,6 +124,12 @@ class Gui(xbmcgui.WindowXML):
 
         #Add set alarm for next program
         dialogAnswers.append('Alarm volgend programma zetten of annuleren')
+
+        #Check if channel is favorite
+        if listItemSelected.getProperty('ChannelFavorite') == 'true':
+            dialogAnswers.append('Zender onmarkeren als favoriet')
+        else:
+            dialogAnswers.append('Zender markeren als favoriet')
 
         #Add switch favorite/all button
         if var.LoadChannelFavoritesOnly == True:
@@ -153,8 +152,8 @@ class Gui(xbmcgui.WindowXML):
             epg.switch_to_page()
 
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
-            favoriteRemoved = favorite.favorite_add(listItemSelected)
-            if favoriteRemoved == 'Removed' and var.LoadChannelFavoritesOnly == True:
+            favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteTelevision.js')
+            if favoriteResult == 'Removed' and var.LoadChannelFavoritesOnly == True:
                 #Remove item from the list
                 removeListItemId = listcontainer.getSelectedPosition()
                 listcontainer.removeItem(removeListItemId)
@@ -258,7 +257,7 @@ class Gui(xbmcgui.WindowXML):
 
     def search_channelprogram(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('Zoek naar zender', True)
+        searchDialogTerm = searchdialog.search_dialog('SearchHistoryChannel.js', 'Zoek naar zender')
 
         #Check the search term
         if searchDialogTerm.cancelled == True:

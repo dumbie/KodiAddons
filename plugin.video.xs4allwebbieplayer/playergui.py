@@ -41,7 +41,6 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         self.buttons_add_sidebar()
-        favorite.favorite_json_load()
         self.load_channels()
         self.load_recording_event(False)
         self.load_recording_series(False)
