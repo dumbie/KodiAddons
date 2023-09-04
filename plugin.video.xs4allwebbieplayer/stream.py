@@ -107,9 +107,9 @@ def play_stream_recorded(listItem, Windowed):
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
         if "&max_bitrate=" in StreamUrl:
-            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
-            StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetbitrate()
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -220,9 +220,9 @@ def play_stream_program(listItem, Windowed):
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
         if "&max_bitrate=" in StreamUrl:
-            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
-            StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetbitrate()
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -332,9 +332,9 @@ def play_stream_vod(listItem, Windowed):
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
         if "&max_bitrate=" in StreamUrl:
-            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
-            StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetbitrate()
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -429,9 +429,9 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
         if "&max_bitrate=" in StreamUrl:
-            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + var.StreamTargetMaxBitrate, StreamUrl)
+            StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
-            StreamUrl += "&max_bitrate=" + var.StreamTargetMaxBitrate
+            StreamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetbitrate()
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)

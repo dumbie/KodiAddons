@@ -121,10 +121,6 @@ ApiLoginCookie = ''
 ApiLoginToken = ''
 ApiLoginCount = 0
 
-#Stream variables
-StreamTargetProfile = 'G03'
-StreamTargetMaxBitrate = '100000000'
-
 #Favorite variables
 FavoriteTelevisionDataJson = []
 FavoriteRadioDataJson = []
