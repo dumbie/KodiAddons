@@ -66,7 +66,6 @@ def count_recorded_series_id(seriesId):
         return ''
 
 def record_event_epg(_self, listItemSelected, forceRecord=False):
-    ChannelId = listItemSelected.getProperty('ChannelId')
     ProgramId = listItemSelected.getProperty('ProgramId')
     ProgramRecordEventId = listItemSelected.getProperty('ProgramRecordEventId')
     ProgramStartDeltaTime = listItemSelected.getProperty('ProgramStartDeltaTime')
@@ -75,17 +74,13 @@ def record_event_epg(_self, listItemSelected, forceRecord=False):
     if ProgramRecordEventId == '' or forceRecord == True:
         recordAdd = download.record_event_add(ProgramId)
         if recordAdd != '':
-            _self.update_channel_record_event_icon(ChannelId)
-            _self.update_program_record_event()
-            _self.update_channel_record_series_icon(ChannelId)
-            _self.update_program_record_series()
+            _self.update_channel_status()
+            _self.update_program_status()
     else:
         recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramStartDeltaTime)
         if recordRemove == True:
-            _self.update_channel_record_event_icon(ChannelId)
-            _self.update_program_record_event()
-            _self.update_channel_record_series_icon(ChannelId)
-            _self.update_program_record_series()
+            _self.update_channel_status()
+            _self.update_program_status()
 
 def record_event_now_television_playergui(listItemSelected):
     ProgramNowId = listItemSelected.getProperty('ProgramNowId')
@@ -183,10 +178,8 @@ def record_series_epg(_self, listItemSelected, forceRecord=False):
     if ProgramRecordSeries == 'false' or forceRecord == True:
         seriesAdd = download.record_series_add(ChannelId, ProgramRecordSeriesId)
         if seriesAdd == True:
-            _self.update_channel_record_event_icon(ChannelId)
-            _self.update_program_record_event()
-            _self.update_channel_record_series_icon(ChannelId)
-            _self.update_program_record_series()
+            _self.update_channel_status()
+            _self.update_program_status()
     else:
         #Get the removal series id
         recordProgramSeries = func.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
@@ -213,7 +206,5 @@ def record_series_epg(_self, listItemSelected, forceRecord=False):
         #Remove record series
         seriesRemove = download.record_series_remove(ProgramRecordSeriesIdLive, KeepRecording)
         if seriesRemove == True:
-            _self.update_channel_record_event_icon(ChannelId)
-            _self.update_program_record_event()
-            _self.update_channel_record_series_icon(ChannelId)
-            _self.update_program_record_series()
+            _self.update_channel_status()
+            _self.update_program_status()

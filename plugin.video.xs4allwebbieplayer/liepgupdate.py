@@ -4,7 +4,33 @@ import func
 import metadatacombine
 import metadatainfo
 
-def list_update(listItem):
+def list_update_channel(listItem):
+    ChannelId = listItem.getProperty('ChannelId')
+
+    #Check if channel has active alarm
+    if alarm.alarm_duplicate_channel_check(ChannelId) == True:
+        ChannelAlarm = 'true'
+    else:
+        ChannelAlarm = 'false'
+
+    #Check if channel has active recording
+    if func.search_channelid_jsonrecording_event(ChannelId, True):
+        ChannelRecordEvent = 'true'
+    else:
+        ChannelRecordEvent = 'false'
+
+    #Check if channel has active recording series
+    if func.search_channelid_jsonrecording_series(ChannelId):
+        ChannelRecordSeries = 'true'
+    else:
+        ChannelRecordSeries = 'false'
+
+    #Update channel list item
+    listItem.setProperty('ChannelAlarm', ChannelAlarm)
+    listItem.setProperty('ChannelRecordEvent', ChannelRecordEvent)
+    listItem.setProperty('ChannelRecordSeries', ChannelRecordSeries)
+
+def list_update_program(listItem):
     #Get channel information from item
     ChannelId = listItem.getProperty('ChannelId')
 

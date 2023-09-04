@@ -6,7 +6,6 @@ import alarm
 import lichanneltelevision
 import dialog
 import download
-import favorite
 import func
 import metadatainfo
 import path
@@ -40,7 +39,7 @@ class Gui(xbmcgui.WindowXML):
         channelsLoaded = self.load_channels()
         if channelsLoaded == True:
             self.set_channel_epg_variables()
-            self.load_epg()
+            self.load_programs()
 
             #Start the update progress thread
             if var.thread_update_epg_progress == None:
@@ -62,10 +61,10 @@ class Gui(xbmcgui.WindowXML):
                 elif listItemAction == "search_program":
                     self.search_program()
                 elif listItemAction == "refresh_epg":
-                    self.load_epg(True)
+                    self.load_programs(True)
             elif clickId == 1001:
                 self.set_channel_epg_variables()
-                self.load_epg()
+                self.load_programs()
             elif clickId == 1002:
                 self.dialog_alarm_record(clickedControl)
             elif clickId == 9000:
@@ -89,7 +88,7 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.selectItem(listcontainer.getSelectedPosition() + 1)
             xbmc.sleep(100)
             self.set_channel_epg_variables()
-            self.load_epg()
+            self.load_programs()
         elif actionId == var.ACTION_PREV_ITEM:
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
@@ -97,7 +96,7 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.selectItem(listcontainer.getSelectedPosition() - 1)
             xbmc.sleep(100)
             self.set_channel_epg_variables()
-            self.load_epg()
+            self.load_programs()
         elif actionId == var.ACTION_PLAYER_PLAY:
             self.dialog_set_day()
         elif actionId == var.ACTION_PLAYER_FORWARD:
@@ -167,7 +166,7 @@ class Gui(xbmcgui.WindowXML):
         var.EpgCurrentLoadDateTime = func.datetime_from_day_offset(selectedIndex)
 
         #Load the channel epg
-        self.load_epg()
+        self.load_programs()
 
     def dialog_alarm_record(self, clickedControl):
         listItemSelected = clickedControl.getSelectedItem()
@@ -249,88 +248,38 @@ class Gui(xbmcgui.WindowXML):
             channelsLoaded = self.load_channels(True)
             if channelsLoaded == True:
                 self.set_channel_epg_variables()
-                self.load_epg(False, True)
+                self.load_programs(False, True)
         except:
             pass
 
-    def update_program_record_event(self):
-        #Get the epg list control
+    def update_channel_status(self):
+        #Clear expired alarms from Json
+        alarm.alarm_clean_expired()
+
+        #Get and check the list container
+        listcontainer = self.getControl(1001)
+        listitemcount = listcontainer.size()
+
+        #Update all channel status icons
+        for itemNum in range(0, listitemcount):
+            try:
+                updateItem = listcontainer.getListItem(itemNum)
+                liepgupdate.list_update_channel(updateItem)
+            except:
+                pass
+
+    def update_program_status(self):
+        #Get and check the list container
         listcontainer = self.getControl(1002)
         listitemcount = listcontainer.size()
 
-        #Check if program has active recording
+        #Update all program progress and status
         for itemNum in range(0, listitemcount):
-            updateItem = listcontainer.getListItem(itemNum)
-            ProgramId = updateItem.getProperty('ProgramId')
-            ProgramTimeEndString = updateItem.getProperty('ProgramTimeEnd')
-            ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndString, '%Y-%m-%d %H:%M:%S')
-
-            #Check if program is recording event and if the recording is planned or done
-            recordProgramEvent = func.search_programid_jsonrecording_event(ProgramId)
-            if recordProgramEvent:
-                if datetime.now() > ProgramTimeEndDateTime:
-                    updateItem.setProperty('ProgramRecordEventPlanned', 'false')
-                    updateItem.setProperty('ProgramRecordEventDone', 'true')
-                else:
-                    updateItem.setProperty('ProgramRecordEventPlanned', 'true')
-                    updateItem.setProperty('ProgramRecordEventDone', 'false')
-                updateItem.setProperty('ProgramRecordEventId', metadatainfo.contentId_from_json_metadata(recordProgramEvent))
-                updateItem.setProperty('ProgramStartDeltaTime', str(metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)))
-            else:
-                updateItem.setProperty('ProgramRecordEventPlanned', 'false')
-                updateItem.setProperty('ProgramRecordEventDone', 'false')
-                updateItem.setProperty('ProgramRecordEventId', '')
-                updateItem.setProperty('ProgramStartDeltaTime', '0')
-
-    def update_program_record_series(self):
-        #Get the epg list control
-        listcontainer = self.getControl(1002)
-        listitemcount = listcontainer.size()
-
-        #Check if program has active recording
-        for itemNum in range(0, listitemcount):
-            updateItem = listcontainer.getListItem(itemNum)
-            ProgramRecordSeriesId = updateItem.getProperty('ProgramRecordSeriesId')
-
-            #Check if program is recording series
-            recordProgramSeries = func.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
-            if recordProgramSeries:
-                updateItem.setProperty('ProgramRecordSeries', 'true')
-            else:
-                updateItem.setProperty('ProgramRecordSeries', 'false')
-
-    def update_channel_record_event_icon(self, ChannelId):
-        #Get the channel list control
-        listcontainer = self.getControl(1001)
-        listItemSelected = listcontainer.getSelectedItem()
-
-        #Check if channel has active recording
-        if func.search_channelid_jsonrecording_event(ChannelId, True):
-            listItemSelected.setProperty('ChannelRecordEvent', 'true')
-        else:
-            listItemSelected.setProperty('ChannelRecordEvent', 'false')
-
-    def update_channel_record_series_icon(self, ChannelId):
-        #Get the channel list control
-        listcontainer = self.getControl(1001)
-        listItemSelected = listcontainer.getSelectedItem()
-
-        #Check if channel has active recording series
-        if func.search_channelid_jsonrecording_series(ChannelId):
-            listItemSelected.setProperty('ChannelRecordSeries', 'true')
-        else:
-            listItemSelected.setProperty('ChannelRecordSeries', 'false')
-
-    def update_channel_alarm_icon(self, ChannelId):
-        #Get the channel list control
-        listcontainer = self.getControl(1001)
-        listItemSelected = listcontainer.getSelectedItem()
-
-        #Check if channel has active alarm
-        if alarm.alarm_duplicate_channel_check(ChannelId) == True:
-            listItemSelected.setProperty('ChannelAlarm', 'true')
-        else:
-            listItemSelected.setProperty('ChannelAlarm', 'false')
+            try:
+                updateItem = listcontainer.getListItem(itemNum)
+                liepgupdate.list_update_program(updateItem)
+            except:
+                pass
 
     def set_program_alarm(self, listItemSelected):
         ProgramTimeStartString = listItemSelected.getProperty('ProgramTimeStart')
@@ -345,11 +294,11 @@ class Gui(xbmcgui.WindowXML):
         alarmAdded = alarm.alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramName, True)
         #Update alarm icon in the channel and epg list
         if alarmAdded == True:
-            listItemSelected.setProperty('ProgramAlarm', 'true')
-            self.update_channel_alarm_icon(ChannelId)
+            self.update_channel_status()
+            self.update_program_status()
         elif alarmAdded == 'Remove':
-            listItemSelected.setProperty('ProgramAlarm', 'false')
-            self.update_channel_alarm_icon(ChannelId)
+            self.update_channel_status()
+            self.update_program_status()
 
     def search_channel(self):
         #Open the search dialog
@@ -365,7 +314,7 @@ class Gui(xbmcgui.WindowXML):
         var.SearchFilterTerm = ''
         if channelsLoaded == True:
             self.set_channel_epg_variables()
-            self.load_epg(False, True)
+            self.load_programs(False, True)
 
     def search_program(self):
         #Open the search dialog
@@ -377,7 +326,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
-        self.load_epg(False, True)
+        self.load_programs(False, True)
         var.SearchFilterTerm = ''
 
     def set_channel_epg_variables(self):
@@ -430,7 +379,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to sort list
         listcontainersort = []
-        lichanneltelevision.list_load(listcontainersort, True)
+        lichanneltelevision.list_load(listcontainersort)
 
         #Sort and add items to container
         listcontainer.addItems(listcontainersort)
@@ -438,7 +387,6 @@ class Gui(xbmcgui.WindowXML):
         #Focus on the list container
         if listcontainer.size() > 0:
             self.select_channel_epg(True)
-            return True
         else:
             listcontainer = self.getControl(1000)
             self.setFocus(listcontainer)
@@ -462,6 +410,11 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.reset()
             return False
 
+        #Load channel status
+        self.update_channel_status()
+
+        return True
+
     def load_recording_event(self, forceUpdate=False):
         downloadResult = download.download_recording_event(forceUpdate)
         if downloadResult == False: return False
@@ -470,32 +423,7 @@ class Gui(xbmcgui.WindowXML):
         downloadResult = download.download_recording_series(forceUpdate)
         if downloadResult == False: return False
 
-    def load_progress(self):
-        #Get and check the list container
-        listcontainer = self.getControl(1002)
-        listitemcount = listcontainer.size()
-
-        #Clear expired alarms from Json
-        alarm.alarm_clean_expired()
-
-        #Update the selected channel alarm icon
-        self.update_channel_alarm_icon(var.EpgCurrentChannelId)
-
-        #Update the selected channel recording event icon
-        self.update_channel_record_event_icon(var.EpgCurrentChannelId)
-
-        #Update the selected channel recording series icon
-        self.update_channel_record_series_icon(var.EpgCurrentChannelId)
-
-        #Generate program progress for programs
-        for itemNum in range(0, listitemcount):
-            try:
-                updateItem = listcontainer.getListItem(itemNum)
-                liepgupdate.list_update(updateItem)
-            except:
-                pass
-
-    def load_epg(self, forceUpdate=False, forceLoad=False):
+    def load_programs(self, forceUpdate=False, forceLoad=False):
         #Get and check the list container
         listcontainer = self.getControl(1002)
         listitemcount = listcontainer.size()
@@ -552,7 +480,7 @@ class Gui(xbmcgui.WindowXML):
         self.epg_selectindex_program()
 
         #Load program progress
-        self.load_progress()
+        self.update_program_status()
 
         #Update the status
         self.count_epg(var.EpgCurrentChannelName)
@@ -621,7 +549,10 @@ class Gui(xbmcgui.WindowXML):
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime:
                 threadLastTime = threadCurrentTime
-                #Load program progress
-                self.load_progress()
+                #Load channel status
+                self.update_channel_status()
+
+                #Load program status
+                self.update_program_status()
             else:
                 xbmc.sleep(2000)

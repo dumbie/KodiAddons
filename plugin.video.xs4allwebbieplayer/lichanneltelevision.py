@@ -6,7 +6,7 @@ import metadatainfo
 import path
 import var
 
-def list_load(listContainer, checkStatus=False):
+def list_load(listContainer):
     favorite.favorite_json_load()
     var.ChannelIdsPlayable = []
     for channel in var.ChannelsDataJsonTelevision['resultObj']['containers']:
@@ -52,19 +52,6 @@ def list_load(listContainer, checkStatus=False):
             ProgramNextName = 'Informatie wordt geladen'
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramProgressPercent = '100'
-
-            if checkStatus == True:
-                #Check if channel has active recording
-                if func.search_channelid_jsonrecording_event(ChannelId, True):
-                    ChannelRecordEvent = 'true'
-
-                #Check if channel has active recording series
-                if func.search_channelid_jsonrecording_series(ChannelId):
-                    ChannelRecordSeries = 'true'
-
-                #Check if channel has active alarm
-                if alarm.alarm_duplicate_channel_check(ChannelId) == True:
-                    ChannelAlarm = 'true'
 
             #Add television channel
             listItem = xbmcgui.ListItem()
