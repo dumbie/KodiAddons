@@ -67,9 +67,15 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmc.sleep(100)
             return False
 
-        #Sort recording by upcoming time
         func.updateLabelText(self, 3001, "Geplande opnames worden geladen.")
-        lirecordingevent.list_load(listcontainer)
+
+        #Add items to sort list
+        listcontainersort = []
+        lirecordingevent.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainersort.sort(key=lambda x: int(x.getProperty('ProgramStartTime')))
+        listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_recording(True)

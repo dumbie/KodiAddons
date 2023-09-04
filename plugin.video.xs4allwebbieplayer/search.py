@@ -188,8 +188,12 @@ class Gui(xbmcgui.WindowXML):
         listcontainer = self.getControl(1000)
         listcontainer.reset()
 
-        #Add programs to the list
-        lisearch.list_load(listcontainer)
+        #Add items to sort list
+        listcontainersort = []
+        lisearch.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_program(True, selectIndex)

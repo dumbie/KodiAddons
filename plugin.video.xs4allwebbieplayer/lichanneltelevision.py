@@ -85,6 +85,6 @@ def list_load(listContainer, checkStatus=False):
             listItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
             listItem.setInfo('video', {'Genre': 'Televisie'})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

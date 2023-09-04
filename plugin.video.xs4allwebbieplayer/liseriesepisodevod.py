@@ -35,6 +35,6 @@ def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictu
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

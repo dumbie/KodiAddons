@@ -5,9 +5,6 @@ import path
 import var
 
 def list_load(listContainer):
-    #Sort alarms by upcoming time
-    var.AlarmDataJson.sort(key=lambda x: x['starttime'], reverse=False)
-
     for alarm in var.AlarmDataJson:
         try:
             ExternalId = alarm['externalid']
@@ -23,6 +20,6 @@ def list_load(listContainer):
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

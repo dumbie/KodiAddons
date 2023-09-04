@@ -40,6 +40,7 @@ def list_load(listContainer):
             ProgramAvailability = metadatainfo.recording_available_time(program)
 
             #Load program timing
+            ProgramStartTime = str(metadatainfo.programstarttime_from_json_metadata(program))
             ProgramStartDeltaTime = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
 
             #Combine program timing
@@ -63,6 +64,7 @@ def list_load(listContainer):
             listItem.setProperty('Action', 'play_stream')
             listItem.setProperty('ProgramAssetId', ProgramAssetId)
             listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
+            listItem.setProperty('ProgramStartTime', ProgramStartTime)
             listItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
             listItem.setProperty("ProgramName", ProgramNameList)
             listItem.setProperty("ProgramNameDesc", ProgramNameDesc)
@@ -71,6 +73,6 @@ def list_load(listContainer):
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'Genre': 'Opname', 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

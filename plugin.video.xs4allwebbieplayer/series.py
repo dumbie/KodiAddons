@@ -168,8 +168,12 @@ class Gui(xbmcgui.WindowXML):
         #Update the episodes status
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
-        #Process all the episodes
-        liseriesepisodevod.list_load(listcontainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+        #Add items to sort list
+        listcontainersort = []
+        liseriesepisodevod.list_load(listcontainersort, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Update the episodes status
         func.updateLabelText(self, 2, selectedSeriesName + ' (' + str(listcontainer.size()) + ' afleveringen)')
@@ -192,12 +196,12 @@ class Gui(xbmcgui.WindowXML):
         #Get and check the list container
         listcontainer = self.getControl(1002)
         listcontainer.reset()
-        listcontainersort = []
 
         #Update the episodes status
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
-        #Process all the episodes
+        #Add items to sort list
+        listcontainersort = []
         liseriesepisodeweek.list_load(listcontainersort, selectedSeriesName, selectedPictureUrl)
 
         #Sort and add episodes to the list
@@ -242,13 +246,14 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add programs to the list
         func.updateLabelText(self, 1, "Series laden")
+
+        #Add items to sort list
         listcontainersort = []
         liseriesprogramweek.list_load(listcontainersort)
         liseriesprogramvod.list_load(listcontainersort)
 
-        #Sort and add programs to the list
+        #Sort and add items to container
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
         listcontainer.addItems(listcontainersort)
 

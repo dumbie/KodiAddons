@@ -503,8 +503,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         downloadResult = download.download_channels_tv(False)
         if downloadResult == False: return False
 
-        #Add channels to list
-        lichanneltelevision.list_load(listcontainer)
+        #Add items to sort list
+        listcontainersort = []
+        lichanneltelevision.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Select channel in list container
         currentChannelId = var.addon.getSetting('CurrentChannelId')

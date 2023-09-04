@@ -148,6 +148,17 @@ def programstartdeltatime_from_json_metadata(metaData):
         return 0
 
 #Get program starttime from json metadata
+def programstarttime_from_json_metadata(metaData):
+    try:
+        if 'airingStartTime' in metaData['metadata']:
+            return int(metaData['metadata']['airingStartTime'])
+        if 'programStartTime' in metaData['metadata']:
+            return int(metaData['metadata']['programStartTime'])
+        return 0
+    except:
+        return 0
+
+#Get program starttime from json metadata
 def programstartdatetime_from_json_metadata(metaData):
     try:
         if 'airingStartTime' in metaData['metadata']:

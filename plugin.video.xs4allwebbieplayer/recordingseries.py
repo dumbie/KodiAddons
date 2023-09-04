@@ -86,9 +86,15 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmc.sleep(100)
             return False
 
-        #Process all the planned recording
         func.updateLabelText(self, 3001, "Geplande series worden geladen.")
-        lirecordingseries.list_load(listcontainer)
+
+        #Add items to sort list
+        listcontainersort = []
+        lirecordingseries.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
+        listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_recording(True)

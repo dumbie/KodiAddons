@@ -45,6 +45,6 @@ def list_load(listContainer):
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramDescription', ChannelName)
             listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon})
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

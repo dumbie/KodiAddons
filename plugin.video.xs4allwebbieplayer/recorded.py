@@ -163,9 +163,15 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add programs to the list
         func.updateLabelText(self, 1, "Opnames laden")
-        lirecorded.list_load(listcontainer)
+
+        #Add items to sort list
+        listcontainersort = []
+        lirecorded.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainersort.sort(key=lambda x: int(x.getProperty('ProgramStartTime')), reverse=True)
+        listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_program(True, selectIndex)

@@ -63,6 +63,6 @@ def list_load(listContainer):
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'Genre': 'Sport Gemist', 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

@@ -157,9 +157,14 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add programs to the list
         func.updateLabelText(self, 1, "Uitzendingen laden")
-        lisport.list_load(listcontainer)
+
+        #Add items to sort list
+        listcontainersort = []
+        lisport.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_program(True, selectIndex)

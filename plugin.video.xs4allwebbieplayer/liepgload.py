@@ -91,6 +91,6 @@ def list_load(listContainer, epgJson):
                 listItem.setProperty('ProgramIsAiring', 'true')
 
             #Add generated listitem
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

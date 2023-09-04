@@ -45,6 +45,6 @@ def list_load(listContainer):
             listItem.setProperty('StreamUrl', ChannelStream)
             listItem.setInfo('video', {'Genre': 'Radio'})
             listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
-            listContainer.addItem(listItem)
+            listContainer.append(listItem)
         except:
             continue

@@ -193,11 +193,14 @@ class Gui(xbmcgui.WindowXML):
             func.updateLabelText(self, 2, 'Afleveringen niet beschikbaar')
             return False
 
-        #Update the episodes status
         func.updateLabelText(self, 2, 'Afleveringen laden')
 
-        #Process all the episodes
-        likidsepisodevod.list_load(listcontainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+        #Add items to sort list
+        listcontainersort = []
+        likidsepisodevod.list_load(listcontainersort, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Update the episodes status
         func.updateLabelText(self, 2, selectedSeriesName + ' (' + str(listcontainer.size()) + ' afleveringen)')
@@ -270,13 +273,14 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add programs to the list
         func.updateLabelText(self, 1, "Programma's laden")
+
+        #Add items to sort list
         listcontainersort = []
         likidsprogramweek.list_load(listcontainersort)
         likidsprogramvod.list_load(listcontainersort)
 
-        #Sort and add programs to the list
+        #Sort and add items to container
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
         listcontainer.addItems(listcontainersort)
 

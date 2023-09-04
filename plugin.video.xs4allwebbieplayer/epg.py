@@ -425,10 +425,15 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
         func.updateLabelText(self, 2, 'Zenders worden geladen, nog even geduld...')
-        lichanneltelevision.list_load(listcontainer, True)
+
+        #Add items to sort list
+        listcontainersort = []
+        lichanneltelevision.list_load(listcontainersort, True)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Focus on the list container
         if listcontainer.size() > 0:
@@ -536,8 +541,12 @@ class Gui(xbmcgui.WindowXML):
             func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar voor[/COLOR] ' + var.EpgCurrentChannelName)
             return
 
-        #Add programs to list
-        liepgload.list_load(listcontainer, channelEpgJson)
+        #Add items to sort list
+        listcontainersort = []
+        liepgload.list_load(listcontainersort, channelEpgJson)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Select program index
         self.epg_selectindex_program()

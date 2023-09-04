@@ -152,13 +152,14 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add movies to the list
         func.updateLabelText(self, 1, "Films laden")
+
+        #Add items to sort list
         listcontainersort = []
         limoviesweek.list_load(listcontainersort)
         limoviesvod.list_load(listcontainersort)
 
-        #Sort and add movies to the list
+        #Sort and add items to container
         listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
         listcontainer.addItems(listcontainersort)
 

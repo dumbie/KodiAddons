@@ -237,8 +237,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         listcontainer = self.getControl(1000)
         listcontainer.reset()
 
-        #Add alarms to list
-        lialarm.list_load(listcontainer)
+        #Add items to sort list
+        listcontainersort = []
+        lialarm.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainersort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
+        listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_alarm(True)

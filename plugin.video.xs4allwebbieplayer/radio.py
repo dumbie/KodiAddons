@@ -200,9 +200,14 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Add channels to list
         func.updateLabelText(self, 1, 'Zenders laden')
-        lichannelradio.list_load(listcontainer)
+
+        #Add items to sort list
+        listcontainersort = []
+        lichannelradio.list_load(listcontainersort)
+
+        #Sort and add items to container
+        listcontainer.addItems(listcontainersort)
 
         #Update the status
         self.count_channels(True)
