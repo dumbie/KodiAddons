@@ -42,6 +42,7 @@
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Stream">
+    <setting id="StreamResolution" type="select" label="Maximale resolutie van de videostream" default="1080pNormal" values="1080pBest|1080pHigh|1080pNormal|720p|576p|432p|360p|180p"/>
     <setting id="CustomUserAgent" type="text" label="User-agent verbindingsidentificatie" default="Webbie Player"/>
     <setting id="UseLocalhostProxy" label="Gebruik lokale proxy server voor stream verbinding" type="bool" default="false"/>
     <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream-adaptive add-on instellingen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,InputAdaptiveSettings)"/>
