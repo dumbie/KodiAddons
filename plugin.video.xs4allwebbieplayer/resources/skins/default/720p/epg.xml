@@ -302,6 +302,15 @@
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
+                        <texture>common/star.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>8</right>
+                        <top>44</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
                         <texture>common/alarm.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ChannelAlarm), true)</visible>
                     </control>
@@ -350,6 +359,15 @@
                     <control type="image">
                         <right>8</right>
                         <top>2</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/star.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>8</right>
+                        <top>44</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
