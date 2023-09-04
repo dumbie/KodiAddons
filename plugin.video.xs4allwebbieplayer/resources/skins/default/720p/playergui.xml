@@ -282,6 +282,15 @@
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
+                    <control type="image">
+                        <top>2</top>
+                        <left>45</left>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/star.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
+                    </control>
                 </itemlayout>
                 <focusedlayout width="70" height="70">
                     <control type="image">
@@ -314,6 +323,15 @@
                         <textcolor>FF888888</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
+                    </control>
+                    <control type="image">
+                        <top>2</top>
+                        <left>45</left>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/star.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
                     </control>
                 </focusedlayout>
             </control>

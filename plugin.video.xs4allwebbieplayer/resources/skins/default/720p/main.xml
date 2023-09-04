@@ -143,7 +143,7 @@
             <left>50</left>
             <right>50</right>
             <top>165</top>
-            <width>1280</width>
+            <width>1180</width>
             <height>40</height>
             <visible>Player.HasMedia</visible>
             <ondown condition="Control.IsVisible(1000) + Integer.IsGreater(Container(1000).NumItems,0)">Control.setFocus(1000, $INFO[Container(1001).Position])</ondown>

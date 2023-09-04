@@ -184,7 +184,7 @@
             <left>50</left>
             <right>50</right>
             <top>200</top>
-            <width>1280</width>
+            <width>1180</width>
             <height>40</height>
             <onup condition="Control.IsVisible(1000) + Integer.IsGreater(Container(1000).NumItems,0)">Control.setFocus(1000, 99999)</onup>
             <ondown>1000</ondown>
