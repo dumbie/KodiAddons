@@ -75,6 +75,8 @@ class Gui(xbmcgui.WindowXMLDialog):
                 listItemAction = listItemSelectedClicked.getProperty('Action')
                 if listItemAction == 'media_lastchannel':
                     self.switch_channel_lasttv()
+                elif listItemAction == 'switch_allfavorites':
+                    self.switch_allfavorites()
                 elif listItemAction == 'media_sleep':
                     sleep.dialog_sleep()
                 elif listItemAction == 'media_alarmnext':
@@ -179,6 +181,23 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif actionId == var.ACTION_MOUSE_RIGHT_CLICK: return True
         return False
 
+    def switch_allfavorites(self):
+        try:
+            #Switch favorites mode on or off
+            if var.LoadChannelFavoritesOnly == True:
+                var.LoadChannelFavoritesOnly = False
+            else:
+                #Check if there are favorites set
+                if var.FavoriteTelevisionDataJson == []:
+                    notificationIcon = path.resources('resources/skins/default/media/common/star.png')
+                    xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
+                    return
+                var.LoadChannelFavoritesOnly = True
+
+            self.load_channels(True)
+        except:
+            pass
+
     def switch_subtitles(self):
         if xbmc.getCondVisibility("VideoPlayer.HasSubtitles"):
             xbmc.executebuiltin('Action(ShowSubtitles)')
@@ -259,6 +278,11 @@ class Gui(xbmcgui.WindowXMLDialog):
         listitem = xbmcgui.ListItem('Zap naar vorige zender')
         listitem.setProperty('Action', 'media_lastchannel')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/last.png'),'icon': path.resources('resources/skins/default/media/common/last.png')})
+        listcontainer.addItem(listitem)
+
+        listitem = xbmcgui.ListItem('Alle of favorieten zenders')
+        listitem.setProperty('Action', 'switch_allfavorites')
+        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Volgend programma alarm')
@@ -494,10 +518,14 @@ class Gui(xbmcgui.WindowXMLDialog):
         downloadResult = download.download_recording_series(forceUpdate)
         if downloadResult == False: return False
 
-    def load_channels(self):
+    def load_channels(self, forceLoad=False):
         #Get and check the list container
         listcontainer = self.getControl(1001)
-        if listcontainer.size() > 0: return True
+        if forceLoad == False:
+            if listcontainer.size() > 0:
+                return True
+        else:
+            listcontainer.reset()
 
         #Download the channels
         downloadResult = download.download_channels_tv(False)
