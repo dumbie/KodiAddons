@@ -93,6 +93,7 @@ def search_dialog(searchJsonFile, headerText='Zoeken'):
 
     #Set search history
     dialogAnswers = hybrid.deep_copy_list(searchHistoryTargetJson)
+    dialogAnswers.insert(0, '- Leeg zoek term gebruiken')
     dialogAnswers.insert(0, '+ Nieuw zoek term gebruiken')
 
     dialogHeader = headerText
@@ -127,6 +128,12 @@ def search_dialog(searchJsonFile, headerText='Zoeken'):
             searchResult.cancelled = True
             searchResult.string = ''
             return searchResult
+    elif searchString == '- Leeg zoek term gebruiken':
+        #Return search result
+        searchResult = classes.Class_SearchResult()
+        searchResult.cancelled = False
+        searchResult.string = ''
+        return searchResult
     elif searchString == 'DialogCancel':
         #Return search result
         searchResult = classes.Class_SearchResult()
