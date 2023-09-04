@@ -1,5 +1,5 @@
+import xbmc
 import xbmcgui
-import alarm
 import favorite
 import func
 import metadatainfo
@@ -35,6 +35,8 @@ def list_load(listContainer):
             #Check if channel is marked as favorite or epg navigate
             if ChannelId in var.FavoriteTelevisionDataJson:
                 ChannelFavorite = 'true'
+            elif ChannelId == var.addon.getSetting('CurrentChannelId') and xbmc.Player().isPlayingVideo():
+                ChannelFavorite = 'false'
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
             else:
