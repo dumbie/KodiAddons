@@ -172,9 +172,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
         self.load_channels(True, False)
-        var.SearchFilterTerm = ''
+        var.SearchChannelTerm = ''
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
         if forceUpdate == True:
@@ -214,14 +214,18 @@ class Gui(xbmcgui.WindowXML):
 
     #Update the status
     def count_channels(self, resetSelect=False):
+        #Set channel type string
+        channelTypeString = 'zenders'
+        if var.LoadChannelFavoritesOnly == True:
+            channelTypeString = 'favorieten zenders'
+
+        #Update status label text
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
-            if var.SearchFilterTerm != '':
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders gevonden')
-            elif var.LoadChannelFavoritesOnly == True:
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' favorieten zenders')
+            if var.SearchChannelTerm != '':
+                func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString + ' gevonden')
             else:
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders')
+                func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString)
 
             if resetSelect == True:
                 func.focus_on_channel_list(self, 1000, 0, True, var.addon.getSetting('CurrentRadioId'))
@@ -229,13 +233,10 @@ class Gui(xbmcgui.WindowXML):
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
             xbmc.sleep(100)
-            if var.SearchFilterTerm != '':
-                func.updateLabelText(self, 1, 'Geen zenders gevonden')
+            if var.SearchChannelTerm != '':
+                func.updateLabelText(self, 1, 'Geen ' + channelTypeString + ' gevonden')
                 listcontainer.selectItem(1)
-            elif var.LoadChannelFavoritesOnly == True:
-                func.updateLabelText(self, 1, 'Geen favorieten zenders')
-                listcontainer.selectItem(0)
             else:
-                func.updateLabelText(self, 1, 'Geen zenders')
+                func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
                 listcontainer.selectItem(0)
             xbmc.sleep(100)

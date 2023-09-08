@@ -142,9 +142,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
         self.load_program(True, False)
-        var.SearchFilterTerm = ''
+        var.SearchChannelTerm = ''
 
     def load_episodes_vod(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
@@ -274,9 +274,9 @@ class Gui(xbmcgui.WindowXML):
         if listcontainer.size() > 0:
             func.updateVisibility(self, 2, True)
             func.updateVisibility(self, 3002, True)
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " series gevonden")
-                func.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchFilterTerm)
+                func.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " series")
                 func.updateLabelText(self, 4, "")
@@ -292,9 +292,9 @@ class Gui(xbmcgui.WindowXML):
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
             xbmc.sleep(100)
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, "Geen series gevonden")
-                func.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchFilterTerm)
+                func.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen series")

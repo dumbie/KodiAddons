@@ -13,9 +13,9 @@ def list_load(listContainer):
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchFilterTerm in searchMatch
+                searchResultFound = var.SearchChannelTerm in searchMatch
                 if searchResultFound == False: continue
 
             #Load program details

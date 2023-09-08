@@ -124,9 +124,9 @@ class Gui(xbmcgui.WindowXML):
             ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
 
             #Set search filter term
-            var.SearchFilterTerm = func.search_filter_string(ProgramNameRaw)
+            var.SearchChannelTerm = func.search_filter_string(ProgramNameRaw)
             self.load_program(True, False)
-            var.SearchFilterTerm = ''
+            var.SearchChannelTerm = ''
         elif dialogResult == 'Programma in de TV Gids tonen':
             listcontainer = self.getControl(1000)
             listItemSelected = listcontainer.getSelectedItem()
@@ -170,9 +170,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
         self.load_program(True, False)
-        var.SearchFilterTerm = ''
+        var.SearchChannelTerm = ''
 
     def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True, selectIndex=0):
         if forceUpdate == True and silentUpdate == False:
@@ -218,9 +218,9 @@ class Gui(xbmcgui.WindowXML):
 
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
                 func.updateLabelText(self, 3, "[COLOR gray]Beschikbare programma's voor[/COLOR] " + loadDayString)
@@ -234,9 +234,9 @@ class Gui(xbmcgui.WindowXML):
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
             xbmc.sleep(100)
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchFilterTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen programma's")

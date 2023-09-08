@@ -27,9 +27,9 @@ def list_load(listContainer):
             if var.addon.getSetting('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Check if there are search results
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 searchMatch = func.search_filter_string(ChannelName)
-                searchResultFound = var.SearchFilterTerm in searchMatch
+                searchResultFound = var.SearchChannelTerm in searchMatch
                 if searchResultFound == False: continue
 
             #Check if channel is marked as favorite or epg navigate
@@ -40,7 +40,7 @@ def list_load(listContainer):
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
             else:
-                if var.LoadChannelFavoritesOnly == True and var.SearchFilterTerm == '': continue
+                if var.LoadChannelFavoritesOnly and func.string_isnullorempty(var.SearchChannelTerm) and func.string_isnullorempty(var.SearchProgramTerm): continue
                 ChannelFavorite = 'false'
 
             #Load channel details

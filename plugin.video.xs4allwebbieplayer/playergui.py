@@ -210,7 +210,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
             if playerSeek:
                 self.update_epg_information()
-            xbmc.sleep(200)
+            xbmc.sleep(333)
 
     def thread_hide_playergui_info(self):
         while var.thread_hide_playergui_info != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
@@ -569,11 +569,11 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmc.sleep(100)
 
     def update_epg_information(self):
-        #Get and check the list container
-        listcontainer = self.getControl(1001)
-
-        #Generate program summary for playergui
         try:
+            #Get and check the list container
+            listcontainer = self.getControl(1001)
+
+            #Generate program summary for playergui
             updateItem = listcontainer.getSelectedItem()
             liplayergui.list_update(updateItem)
         except:

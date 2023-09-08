@@ -38,7 +38,6 @@ def close_the_page():
         var.guiTelevision = None
 
 class Gui(xbmcgui.WindowXML):
-    EpgIsUpdating = False
     EpgForceUpdate = False
 
     def onInit(self):
@@ -72,8 +71,10 @@ class Gui(xbmcgui.WindowXML):
                     self.refresh_programs()
                 elif listItemAction == "switch_allfavorites":
                     self.switch_allfavorites()
-                elif listItemAction == "search_channelprogram":
-                    self.search_channelprogram()
+                elif listItemAction == "search_channel":
+                    self.search_channel()
+                elif listItemAction == "search_program":
+                    self.search_program()
             elif clickId == 9000:
                 if xbmc.Player().isPlayingVideo():
                     var.PlayerCustom.Fullscreen(True)
@@ -96,7 +97,7 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_PLAYER_PLAY:
             self.switch_allfavorites()
         elif actionId == var.ACTION_SEARCH_FUNCTION:
-            self.search_channelprogram()
+            self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusChannel:
             self.open_context_menu()
         else:
@@ -206,8 +207,13 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
         listcontainer.addItem(listitem)
 
+        listitem = xbmcgui.ListItem('Zoek naar programma')
+        listitem.setProperty('Action', 'search_program')
+        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
+        listcontainer.addItem(listitem)
+
         listitem = xbmcgui.ListItem('Zoek naar zender')
-        listitem.setProperty('Action', 'search_channelprogram')
+        listitem.setProperty('Action', 'search_channel')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
@@ -218,12 +224,6 @@ class Gui(xbmcgui.WindowXML):
 
     def refresh_programs(self):
         try:
-            #Check if television is busy
-            if self.EpgIsUpdating == True:
-                notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-                xbmcgui.Dialog().notification(var.addonname, 'TV Gids is bezig.', notificationIcon, 2500, False)
-                return
-
             self.load_channels(True, True)
             self.load_recording_event(True)
             self.load_recording_series(True)
@@ -233,12 +233,6 @@ class Gui(xbmcgui.WindowXML):
 
     def switch_allfavorites(self):
         try:
-            #Check if television is busy
-            if self.EpgIsUpdating == True:
-                notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-                xbmcgui.Dialog().notification(var.addonname, 'TV Gids is bezig.', notificationIcon, 2500, False)
-                return
-
             #Switch favorites mode on or off
             if var.LoadChannelFavoritesOnly == True:
                 var.LoadChannelFavoritesOnly = False
@@ -255,7 +249,50 @@ class Gui(xbmcgui.WindowXML):
         except:
             pass
 
-    def search_channelprogram(self):
+    def search_program(self):
+        #Open the search dialog
+        searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek naar programma')
+
+        #Check if search cancelled
+        if searchDialogTerm.cancelled == True:
+            return
+
+        #Remove channels without matching program
+        var.SearchProgramTerm = func.search_filter_string(searchDialogTerm.string)
+
+        #Load channels and program information
+        self.load_channels(True, False)
+        self.load_epg(False)
+
+        #Get and check the list container
+        listcontainer = self.getControl(1000)
+        listitemcount = listcontainer.size()
+
+        #Generate program summary for television
+        removeNum = 0
+        for _ in range(0, listitemcount):
+            try:
+                updateItem = listcontainer.getListItem(removeNum)
+                programNameNow = updateItem.getProperty('ProgramNowName')
+                programNameNext = updateItem.getProperty('ProgramNextName')
+                searchMatch1 = func.search_filter_string(programNameNow)
+                searchMatch2 = func.search_filter_string(programNameNext)
+                searchResultFound = var.SearchProgramTerm in searchMatch1 or var.SearchProgramTerm in searchMatch2
+
+                if searchResultFound == False:
+                    listcontainer.removeItem(removeNum)
+                else:
+                    removeNum += 1
+            except:
+                continue
+
+        #Update the status
+        self.count_channels(False)
+
+        #Reset search variable
+        var.SearchProgramTerm = ''
+
+    def search_channel(self):
         #Open the search dialog
         searchDialogTerm = searchdialog.search_dialog('SearchHistoryChannel.js', 'Zoek naar zender')
 
@@ -263,17 +300,11 @@ class Gui(xbmcgui.WindowXML):
         if searchDialogTerm.cancelled == True:
             return
 
-        #Check if television is busy
-        if self.EpgIsUpdating == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-            xbmcgui.Dialog().notification(var.addonname, 'TV Gids is bezig.', notificationIcon, 2500, False)
-            return
-
         #Set search filter term
-        var.SearchFilterTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
         self.load_channels(True, False)
         self.load_epg(False)
-        var.SearchFilterTerm = ''
+        var.SearchChannelTerm = ''
 
     def load_recording_event(self, forceUpdate=False):
         downloadResult = download.download_recording_event(forceUpdate)
@@ -324,19 +355,22 @@ class Gui(xbmcgui.WindowXML):
 
     #Update the status
     def count_channels(self, resetSelect=False):
+        #Set channel type string
+        channelTypeString = 'zenders'
+        if var.LoadChannelFavoritesOnly == True:
+            channelTypeString = 'favorieten zenders'
+
+        #Update status label text
         listcontainer = self.getControl(1000)
         if listcontainer.size() > 0:
-            if var.SearchFilterTerm != '':
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders gevonden')
-                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchFilterTerm)
-            elif var.LoadChannelFavoritesOnly == True:
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' favorieten zenders')
-                if var.ApiHomeAccess == True:
-                    func.updateLabelText(self, 3, "")
-                else:
-                    func.updateLabelText(self, 3, "Buitenshuis zijn er minder zenders beschikbaar.")
+            if var.SearchChannelTerm != '':
+                func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString + ' gevonden')
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+            elif var.SearchProgramTerm != '':
+                func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchProgramTerm)
             else:
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders')
+                func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString)
                 if var.ApiHomeAccess == True:
                     func.updateLabelText(self, 3, "")
                 else:
@@ -349,19 +383,16 @@ class Gui(xbmcgui.WindowXML):
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)
             xbmc.sleep(100)
-            if var.SearchFilterTerm != '':
-                func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchFilterTerm)
+            if var.SearchChannelTerm != '':
+                func.updateLabelText(self, 1, 'Geen ' + channelTypeString + ' gevonden')
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+                listcontainer.selectItem(3)
+            elif var.SearchProgramTerm != '':
+                func.updateLabelText(self, 1, "Geen programma's gevonden")
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchProgramTerm)
                 listcontainer.selectItem(2)
-            elif var.LoadChannelFavoritesOnly == True:
-                func.updateLabelText(self, 1, 'Geen favorieten zenders')
-                if var.ApiHomeAccess == True:
-                    func.updateLabelText(self, 3, "")
-                else:
-                    func.updateLabelText(self, 3, "Buitenshuis zijn er minder zenders beschikbaar.")
-                listcontainer.selectItem(1)
             else:
-                func.updateLabelText(self, 1, 'Geen zenders')
+                func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
                 if var.ApiHomeAccess == True:
                     func.updateLabelText(self, 3, "")
                 else:
@@ -376,9 +407,7 @@ class Gui(xbmcgui.WindowXML):
             if threadLastTime != threadCurrentTime or self.EpgForceUpdate:
                 threadLastTime = threadCurrentTime
                 self.EpgForceUpdate = False
-                self.EpgIsUpdating = True
                 self.load_epg(False)
-                self.EpgIsUpdating = False
             else:
                 xbmc.sleep(2000)
 

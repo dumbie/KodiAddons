@@ -16,9 +16,9 @@ def list_load(listContainer):
             if func.search_programname_listarray(listContainer, ProgramName) != None: continue
 
             #Check if there are search results
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchFilterTerm in searchMatch
+                searchResultFound = var.SearchChannelTerm in searchMatch
                 if searchResultFound == False: continue
 
             #Check if program is serie or movie

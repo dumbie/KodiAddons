@@ -13,9 +13,9 @@ def list_load(listContainer):
             ChannelName = channel['name']
 
             #Check if there are search results
-            if var.SearchFilterTerm != '':
+            if var.SearchChannelTerm != '':
                 searchMatch = func.search_filter_string(ChannelName)
-                searchResultFound = var.SearchFilterTerm in searchMatch
+                searchResultFound = var.SearchChannelTerm in searchMatch
                 if searchResultFound == False: continue
 
             #Load channel details
@@ -26,7 +26,7 @@ def list_load(listContainer):
             if ChannelId in var.FavoriteRadioDataJson:
                 ChannelFavorite = 'true'
             else:
-                if var.LoadChannelFavoritesOnly == True and var.SearchFilterTerm == '': continue
+                if var.LoadChannelFavoritesOnly == True and var.SearchChannelTerm == '': continue
                 ChannelFavorite = 'false'
 
             #Update channel number
