@@ -159,6 +159,14 @@
             <label>TV Gids wordt geladen, nog even geduld...</label>
             <textcolor>FFFFFFFF</textcolor>
         </control>
+        <control type="label" id="3">
+            <top>170</top>
+            <right>50</right>
+            <width>1230</width>
+            <height>30</height>
+            <align>right</align>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
         <!-- Channel and Program Description -->
         <control type="group">
             <top>270</top>

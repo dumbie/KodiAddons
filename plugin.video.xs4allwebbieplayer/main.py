@@ -239,7 +239,7 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.addItem(listitem)
 
         if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Zoeken')
+            listitem = xbmcgui.ListItem('Terugzoeken')
             listitem.setProperty('Action', 'page_search')
             listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
             listcontainer.addItem(listitem)

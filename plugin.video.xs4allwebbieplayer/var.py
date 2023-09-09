@@ -128,7 +128,6 @@ FavoriteRadioDataJson = []
 #Search variables
 SearchSelectIndex = 0
 SearchChannelTerm = ''
-SearchProgramTerm = ''
 SearchDownloadSearchTerm = ''
 SearchDownloadResultJson = []
 SearchHistoryProgramJson = []

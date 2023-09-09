@@ -38,7 +38,9 @@ def close_the_page():
         var.guiTelevision = None
 
 class Gui(xbmcgui.WindowXML):
+    EpgPauseUpdate = False
     EpgForceUpdate = False
+    EpgManualUpdate = False
 
     def onInit(self):
         self.buttons_add_navigation()
@@ -46,8 +48,8 @@ class Gui(xbmcgui.WindowXML):
         self.load_recording_event(False)
         self.load_recording_series(False)
 
-        #Force an epg update
-        self.EpgForceUpdate = True
+        #Force manual epg update
+        self.EpgManualUpdate = True
 
         #Start the epg update thread
         if var.thread_update_television_epg == None:
@@ -69,12 +71,10 @@ class Gui(xbmcgui.WindowXML):
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
                     self.refresh_programs()
-                elif listItemAction == "switch_allfavorites":
-                    self.switch_allfavorites()
+                elif listItemAction == "switch_all_favorites":
+                    self.switch_all_favorites()
                 elif listItemAction == "search_channel":
                     self.search_channel()
-                elif listItemAction == "search_program":
-                    self.search_program()
             elif clickId == 9000:
                 if xbmc.Player().isPlayingVideo():
                     var.PlayerCustom.Fullscreen(True)
@@ -95,9 +95,9 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_PREV_ITEM:
             xbmc.executebuiltin('Action(PageUp)')
         elif actionId == var.ACTION_PLAYER_PLAY:
-            self.switch_allfavorites()
+            self.switch_all_favorites()
         elif actionId == var.ACTION_SEARCH_FUNCTION:
-            self.search_program()
+            self.search_channel()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusChannel:
             self.open_context_menu()
         else:
@@ -151,19 +151,8 @@ class Gui(xbmcgui.WindowXML):
             close_the_page()
             xbmc.sleep(100)
             epg.switch_to_page()
-
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
-            favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteTelevision.js')
-            if favoriteResult == 'Removed' and var.LoadChannelFavoritesOnly == True:
-                #Remove item from the list
-                removeListItemId = listcontainer.getSelectedPosition()
-                listcontainer.removeItem(removeListItemId)
-                xbmc.sleep(100)
-                listcontainer.selectItem(removeListItemId)
-                xbmc.sleep(100)
-
-                #Update the status
-                self.count_channels(False)
+            self.switch_favorite_channel(listcontainer, listItemSelected)
         elif dialogResult == 'Huidig programma opnemen of annuleren':
             recordingfunc.record_event_now_television_playergui(listItemSelected)
         elif dialogResult == 'Volgend programma opnemen of annuleren':
@@ -173,7 +162,7 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Alarm volgend programma zetten of annuleren':
             self.set_program_alarm_next(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
-            self.switch_allfavorites()
+            self.switch_all_favorites()
 
     def set_program_alarm_next(self, listItemSelected):
         ExternalId = listItemSelected.getProperty("ExternalId")
@@ -203,13 +192,8 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Alle of favorieten')
-        listitem.setProperty('Action', 'switch_allfavorites')
+        listitem.setProperty('Action', 'switch_all_favorites')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
-        listcontainer.addItem(listitem)
-
-        listitem = xbmcgui.ListItem('Zoek naar programma')
-        listitem.setProperty('Action', 'search_program')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Zoek naar zender')
@@ -227,11 +211,33 @@ class Gui(xbmcgui.WindowXML):
             self.load_channels(True, True)
             self.load_recording_event(True)
             self.load_recording_series(True)
-            self.load_epg(True)
+
+            #Force manual epg update
+            self.EpgForceUpdate = True
+            self.EpgManualUpdate = True
         except:
             pass
 
-    def switch_allfavorites(self):
+    def switch_favorite_channel(self, listContainer, listItemSelected):
+        self.EpgPauseUpdate = True
+        xbmc.sleep(200) #Wait for epg update to pause
+        self.switch_favorite_channel_code(listContainer, listItemSelected)
+        self.EpgPauseUpdate = False
+
+    def switch_favorite_channel_code(self, listContainer, listItemSelected):
+        favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteTelevision.js')
+        if favoriteResult == 'Removed' and var.LoadChannelFavoritesOnly == True:
+            #Remove item from the list
+            removeListItemId = listContainer.getSelectedPosition()
+            listContainer.removeItem(removeListItemId)
+            xbmc.sleep(100)
+            listContainer.selectItem(removeListItemId)
+            xbmc.sleep(100)
+
+            #Update the status
+            self.count_channels(False)
+
+    def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
             if var.LoadChannelFavoritesOnly == True:
@@ -245,66 +251,31 @@ class Gui(xbmcgui.WindowXML):
                 var.LoadChannelFavoritesOnly = True
 
             self.load_channels(True, False)
-            self.load_epg(False)
+
+            #Force manual epg update
+            self.EpgManualUpdate = True
         except:
             pass
-
-    def search_program(self):
-        #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek naar programma')
-
-        #Check if search cancelled
-        if searchDialogTerm.cancelled == True:
-            return
-
-        #Remove channels without matching program
-        var.SearchProgramTerm = func.search_filter_string(searchDialogTerm.string)
-
-        #Load channels and program information
-        self.load_channels(True, False)
-        self.load_epg(False)
-
-        #Get and check the list container
-        listcontainer = self.getControl(1000)
-        listitemcount = listcontainer.size()
-
-        #Generate program summary for television
-        removeNum = 0
-        for _ in range(0, listitemcount):
-            try:
-                updateItem = listcontainer.getListItem(removeNum)
-                programNameNow = updateItem.getProperty('ProgramNowName')
-                programNameNext = updateItem.getProperty('ProgramNextName')
-                searchMatch1 = func.search_filter_string(programNameNow)
-                searchMatch2 = func.search_filter_string(programNameNext)
-                searchResultFound = var.SearchProgramTerm in searchMatch1 or var.SearchProgramTerm in searchMatch2
-
-                if searchResultFound == False:
-                    listcontainer.removeItem(removeNum)
-                else:
-                    removeNum += 1
-            except:
-                continue
-
-        #Update the status
-        self.count_channels(False)
-
-        #Reset search variable
-        var.SearchProgramTerm = ''
 
     def search_channel(self):
         #Open the search dialog
         searchDialogTerm = searchdialog.search_dialog('SearchHistoryChannel.js', 'Zoek naar zender')
 
-        #Check the search term
+        #Check if search cancelled
         if searchDialogTerm.cancelled == True:
             return
 
         #Set search filter term
         var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
+
+        #Load television channels
         self.load_channels(True, False)
-        self.load_epg(False)
+
+        #Reset search variable
         var.SearchChannelTerm = ''
+
+        #Force manual epg update
+        self.EpgManualUpdate = True
 
     def load_recording_event(self, forceUpdate=False):
         downloadResult = download.download_recording_event(forceUpdate)
@@ -315,6 +286,12 @@ class Gui(xbmcgui.WindowXML):
         if downloadResult == False: return False
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
+        self.EpgPauseUpdate = True
+        xbmc.sleep(200) #Wait for epg update to pause
+        self.load_channels_code(forceLoad, forceUpdate)
+        self.EpgPauseUpdate = False
+
+    def load_channels_code(self, forceLoad=False, forceUpdate=False):
         if forceUpdate == True:
             notificationIcon = path.resources('resources/skins/default/media/common/television.png')
             xbmcgui.Dialog().notification(var.addonname, 'Zenders worden vernieuwd.', notificationIcon, 2500, False)
@@ -366,9 +343,6 @@ class Gui(xbmcgui.WindowXML):
             if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString + ' gevonden')
                 func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
-            elif var.SearchProgramTerm != '':
-                func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchProgramTerm)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString)
                 if var.ApiHomeAccess == True:
@@ -386,10 +360,6 @@ class Gui(xbmcgui.WindowXML):
             if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, 'Geen ' + channelTypeString + ' gevonden')
                 func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
-                listcontainer.selectItem(3)
-            elif var.SearchProgramTerm != '':
-                func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchProgramTerm)
                 listcontainer.selectItem(2)
             else:
                 func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
@@ -404,14 +374,16 @@ class Gui(xbmcgui.WindowXML):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
         while var.thread_update_television_epg != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
             threadCurrentTime = datetime.now().strftime('%H:%M')
-            if threadLastTime != threadCurrentTime or self.EpgForceUpdate:
+            if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
                 threadLastTime = threadCurrentTime
+                forceUpdate = self.EpgForceUpdate
+                self.EpgManualUpdate = False
                 self.EpgForceUpdate = False
-                self.load_epg(False)
+                self.update_epg_information(forceUpdate)
             else:
-                xbmc.sleep(2000)
+                xbmc.sleep(1000)
 
-    def load_epg(self, forceUpdate=False):
+    def update_epg_information(self, forceUpdate=False):
         try:
             if forceUpdate == True:
                 #Show tv guide refresh notification
@@ -428,6 +400,10 @@ class Gui(xbmcgui.WindowXML):
             #Generate program summary for television
             for itemNum in range(0, listitemcount):
                 try:
+                    #Check if epg is allowed to update
+                    if self.EpgPauseUpdate: return
+
+                    #Generate and update program summary
                     updateItem = listcontainer.getListItem(itemNum)
                     litelevision.list_update(updateItem)
                 except:

@@ -52,8 +52,8 @@ class Gui(xbmcgui.WindowXML):
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
                     self.load_channels(True, True)
-                elif listItemAction == "switch_allfavorites":
-                    self.switch_allfavorites()
+                elif listItemAction == "switch_all_favorites":
+                    self.switch_all_favorites()
                 elif listItemAction == "search_channelprogram":
                     self.search_channelprogram()
                 elif listItemAction == "show_visualisation":
@@ -71,7 +71,7 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_PREV_ITEM:
             xbmc.executebuiltin('Action(PageUp)')
         elif actionId == var.ACTION_PLAYER_PLAY:
-            self.switch_allfavorites()
+            self.switch_all_favorites()
         elif actionId == var.ACTION_SEARCH_FUNCTION:
             self.search_channelprogram()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusChannel:
@@ -103,19 +103,9 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
-            favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteRadio.js')
-            if favoriteResult == 'Removed' and var.LoadChannelFavoritesOnly == True:
-                #Remove item from the list
-                removeListItemId = listcontainer.getSelectedPosition()
-                listcontainer.removeItem(removeListItemId)
-                xbmc.sleep(100)
-                listcontainer.selectItem(removeListItemId)
-                xbmc.sleep(100)
-
-                #Update the status
-                self.count_channels(False)
+            self.switch_favorite_channel(listcontainer, listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
-            self.switch_allfavorites()
+            self.switch_all_favorites()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1001)
@@ -127,7 +117,7 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.addItem(listitem)
 
         listitem = xbmcgui.ListItem('Alle of favorieten')
-        listitem.setProperty('Action', 'switch_allfavorites')
+        listitem.setProperty('Action', 'switch_all_favorites')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
         listcontainer.addItem(listitem)
 
@@ -146,7 +136,20 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listcontainer.addItem(listitem)
 
-    def switch_allfavorites(self):
+    def switch_favorite_channel(self, listContainer, listItemSelected):
+        favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteRadio.js')
+        if favoriteResult == 'Removed' and var.LoadChannelFavoritesOnly == True:
+            #Remove item from the list
+            removeListItemId = listContainer.getSelectedPosition()
+            listContainer.removeItem(removeListItemId)
+            xbmc.sleep(100)
+            listContainer.selectItem(removeListItemId)
+            xbmc.sleep(100)
+
+            #Update the status
+            self.count_channels(False)
+
+    def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
             if var.LoadChannelFavoritesOnly == True:

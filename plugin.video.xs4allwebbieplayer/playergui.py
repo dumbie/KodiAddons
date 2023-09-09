@@ -36,6 +36,7 @@ def close_the_page():
         func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
 
 class Gui(xbmcgui.WindowXMLDialog):
+    EpgPauseUpdate = False
     PlayerInfoLastInteraction = datetime(1970, 1, 1)
     PlayerInfoLastHide = datetime(1970, 1, 1)
 
@@ -519,6 +520,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         if downloadResult == False: return False
 
     def load_channels(self, forceLoad=False):
+        self.EpgPauseUpdate = True
+        xbmc.sleep(200) #Wait for epg update to pause
+        self.load_channels_code(forceLoad)
+        self.EpgPauseUpdate = False
+
+    def load_channels_code(self, forceLoad=False):
         #Get and check the list container
         listcontainer = self.getControl(1001)
         if forceLoad == False:
@@ -570,10 +577,13 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def update_epg_information(self):
         try:
+            #Check if epg is allowed to update
+            if self.EpgPauseUpdate: return
+
             #Get and check the list container
             listcontainer = self.getControl(1001)
 
-            #Generate program summary for playergui
+            #Generate and update program summary
             updateItem = listcontainer.getSelectedItem()
             liplayergui.list_update(updateItem)
         except:

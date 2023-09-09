@@ -27,7 +27,7 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         #Prepare the search page
-        func.updateLabelText(self, 2, "Zoeken")
+        func.updateLabelText(self, 2, "Terugzoeken")
         self.buttons_add_navigation()
         listcontainer = self.getControl(1000)
         if listcontainer.size() == 0:

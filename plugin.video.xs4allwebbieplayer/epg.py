@@ -34,6 +34,7 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         self.buttons_add_navigation()
+        self.update_day_string()
         self.load_recording_event(False)
         self.load_recording_series(False)
         channelsLoaded = self.load_channels()
@@ -60,6 +61,8 @@ class Gui(xbmcgui.WindowXML):
                     self.search_channel()
                 elif listItemAction == "search_program":
                     self.search_program()
+                elif listItemAction == "switch_all_favorites":
+                    self.switch_all_favorites()
                 elif listItemAction == "refresh_epg":
                     self.load_programs(True)
             elif clickId == 1001:
@@ -135,6 +138,11 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/calendar.png'),'icon': path.resources('resources/skins/default/media/common/calendar.png')})
         listcontainer.addItem(listitem)
 
+        listitem = xbmcgui.ListItem('Alle of favorieten')
+        listitem.setProperty('Action', 'switch_all_favorites')
+        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
+        listcontainer.addItem(listitem)
+
         listitem = xbmcgui.ListItem('Vernieuwen')
         listitem.setProperty('Action', 'refresh_epg')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
@@ -164,6 +172,9 @@ class Gui(xbmcgui.WindowXML):
 
         #Update selected day loading time
         var.EpgCurrentLoadDateTime = func.datetime_from_day_offset(selectedIndex)
+
+        #Set the day string
+        self.update_day_string()
 
         #Load the channel epg
         self.load_programs()
@@ -230,9 +241,9 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Programma terug kijken':
             stream.play_stream_program(listItemSelected, False)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
-            self.switch_allfavorites()
+            self.switch_all_favorites()
 
-    def switch_allfavorites(self):
+    def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
             if var.LoadChannelFavoritesOnly == True:
@@ -523,27 +534,29 @@ class Gui(xbmcgui.WindowXML):
         var.EpgNavigateProgramId = ''
         xbmc.sleep(100)
 
+    #Set the day string
+    def update_day_string(self):
+        loadDayString = func.day_string_from_datetime(var.EpgCurrentLoadDateTime)
+        func.updateLabelText(self, 3, loadDayString)
+
     #Update the status
     def count_epg(self, ChannelName):
-        #Set the day string
-        loadDayString = func.day_string_from_datetime(var.EpgCurrentLoadDateTime)
-
         #Update the label texts
         listcontainer = self.getControl(1002)
         if listcontainer.size() == 0:
             if var.SearchChannelTerm == '':
                 func.updateLabelText(self, 1, "Geen programma's")
-                func.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
+                func.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + ChannelName)
             else:
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]niet gevonden voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
+                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]niet gevonden voor[/COLOR] " + ChannelName)
         else:
             if var.SearchChannelTerm == '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
-                func.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
+                func.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + ChannelName)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 2, var.SearchChannelTerm + " [COLOR gray]gevonden voor[/COLOR] " + loadDayString + " [COLOR gray]op[/COLOR] " + ChannelName)
+                func.updateLabelText(self, 2, var.SearchChannelTerm + " [COLOR gray]gevonden voor[/COLOR] " + ChannelName)
 
     def thread_update_epg_progress(self):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
