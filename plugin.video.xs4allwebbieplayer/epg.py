@@ -224,7 +224,7 @@ class Gui(xbmcgui.WindowXML):
                 dialogFooter = ''
 
         #Add switch favorite/all button
-        if var.LoadChannelFavoritesOnly == True:
+        if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
             dialogAnswers.append('Toon alle zenders')
         else:
             dialogAnswers.append('Toon favorieten zenders')
@@ -246,15 +246,15 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if var.LoadChannelFavoritesOnly == True:
-                var.LoadChannelFavoritesOnly = False
+            if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
+                var.addon.setSetting('LoadChannelFavoritesOnly', 'false')
             else:
                 #Check if there are favorites set
                 if var.FavoriteTelevisionDataJson == []:
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
-                var.LoadChannelFavoritesOnly = True
+                var.addon.setSetting('LoadChannelFavoritesOnly', 'true')
 
             channelsLoaded = self.load_channels(True)
             if channelsLoaded == True:
@@ -401,7 +401,7 @@ class Gui(xbmcgui.WindowXML):
         else:
             #Set channel type string
             channelTypeString = 'zenders'
-            if var.LoadChannelFavoritesOnly == True:
+            if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
                 channelTypeString = 'favorieten zenders'
 
             #Update status label text
@@ -409,7 +409,7 @@ class Gui(xbmcgui.WindowXML):
             self.setFocus(listcontainer)
             xbmc.sleep(100)
             if var.SearchChannelTerm != '':
-                func.updateLabelText(self, 1, 'Geen ' + channelTypeString + ' gevonden')
+                func.updateLabelText(self, 1, 'Geen zenders gevonden')
                 func.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]niet gevonden om de programma's voor weer te geven.[/COLOR]")
                 listcontainer.selectItem(1)
             else:
@@ -452,12 +452,9 @@ class Gui(xbmcgui.WindowXML):
             #Clear the current epg items
             listcontainer.reset()
 
-            #Set the day string
-            loadDayString = func.day_string_from_datetime(var.EpgCurrentLoadDateTime, False)
-
             #Download the epg day information
             func.updateLabelText(self, 1, 'Gids download')
-            func.updateLabelText(self, 2, '[COLOR gray]TV Gids voor[/COLOR] ' + loadDayString + ' [COLOR gray]wordt gedownload, nog even geduld...[/COLOR]')
+            func.updateLabelText(self, 2, 'TV Gids wordt gedownload, nog even geduld...')
             var.EpgCurrentDayJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
             if var.EpgCurrentDayJson == None:
                 func.updateLabelText(self, 1, 'Niet beschikbaar')

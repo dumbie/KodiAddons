@@ -185,15 +185,15 @@ class Gui(xbmcgui.WindowXMLDialog):
     def switch_allfavorites(self):
         try:
             #Switch favorites mode on or off
-            if var.LoadChannelFavoritesOnly == True:
-                var.LoadChannelFavoritesOnly = False
+            if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
+                var.addon.setSetting('LoadChannelFavoritesOnly', 'false')
             else:
                 #Check if there are favorites set
                 if var.FavoriteTelevisionDataJson == []:
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
-                var.LoadChannelFavoritesOnly = True
+                var.addon.setSetting('LoadChannelFavoritesOnly', 'true')
 
             self.load_channels(True)
         except:

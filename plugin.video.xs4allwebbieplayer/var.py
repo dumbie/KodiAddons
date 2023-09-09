@@ -149,7 +149,6 @@ ChannelsDataJsonRadio = []
 
 #Television variables
 ChannelDelayDateTime = datetime(1970,1,1)
-LoadChannelFavoritesOnly = False
 ChannelIdsPlayable = []
 ChannelsDataJsonTelevision = []
 

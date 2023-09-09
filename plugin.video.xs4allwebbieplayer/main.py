@@ -123,12 +123,6 @@ class Gui(xbmcgui.WindowXML):
             var.thread_check_requirements = Thread(target=widevine.thread_check_requirements)
             var.thread_check_requirements.start()
 
-        #Check television favorite setting
-        if var.addon.getSetting('TelevisionChannelFavorite') == 'true':
-            var.LoadChannelFavoritesOnly = True
-        else:
-            var.LoadChannelFavoritesOnly = False
-
         #Check if user is logged in
         if var.ApiLoggedIn == True:
             #Open the last known television channel

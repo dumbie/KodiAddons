@@ -13,7 +13,6 @@
   <category label="Algemeen">
     <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
-    <setting id="TelevisionChannelFavorite" label="Televisiezenders openen met favorietenlijst" type="bool" default="false"/>
     <setting id="TelevisionHideEarlierAired" label="Eerder uitgezonden programma's niet tonen" type="bool" default="false"/>
     <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="ResetUserdata" type="action" label="Verwijder userdatabestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,ResetUserdata)"/>
@@ -60,5 +59,6 @@
     <setting id="LastChannelId" type="text" visible="false" default=""/>
     <setting id="LastExternalId" type="text" visible="false" default=""/>
     <setting id="LastChannelName" type="text" visible="false" default="Onbekende zender"/>
+    <setting id="LoadChannelFavoritesOnly" type="text" visible="false" default="false"/>
   </category>
 </settings>

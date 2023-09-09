@@ -40,7 +40,7 @@ def list_load(listContainer):
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
             else:
-                if var.LoadChannelFavoritesOnly and func.string_isnullorempty(var.SearchChannelTerm): continue
+                if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm): continue
                 ChannelFavorite = 'false'
 
             #Load channel details
