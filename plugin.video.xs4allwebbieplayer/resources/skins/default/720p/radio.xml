@@ -289,6 +289,15 @@
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelName)</info>
                     </control>
+                    <control type="image">
+                        <top>4</top>
+                        <left>40</left>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/star.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
+                    </control>
                 </itemlayout>
                 <focusedlayout width="1280" height="60">
                     <control type="image">
@@ -321,6 +330,15 @@
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelName)</info>
+                    </control>
+                    <control type="image">
+                        <top>4</top>
+                        <left>40</left>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/star.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
                     </control>
                 </focusedlayout>
             </control>
