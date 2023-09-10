@@ -1,12 +1,8 @@
+import gzip
 import json
-from datetime import datetime, timedelta
-from threading import Thread
-import xbmc
 import xbmcgui
 import apilogin
 import classes
-import files
-import func
 import hybrid
 import path
 import var
@@ -778,13 +774,23 @@ def download_epg_day(dayDateTime, forceUpdate=False):
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
             "X-Xsrf-Token": var.ApiLoginToken,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept-Encoding': 'gzip'
         }
 
         #Download epg information
         DownloadRequest = hybrid.urllib_request(path.epg_day(dayDateTime), headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        DownloadDataInfo = DownloadDataHttp.info()
+        DownloadDataEncoding = str(DownloadDataInfo.get('Content-Encoding'))
+
+        #Decode epg information
+        if 'gzip' in DownloadDataEncoding:
+            gzipObject = hybrid.stringio_from_bytes(DownloadDataHttp.read())
+            gzipRead = gzip.GzipFile(fileobj=gzipObject)
+            DownloadDataJson = json.load(gzipRead)
+        else:
+            DownloadDataJson = json.load(DownloadDataHttp)
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -805,5 +811,5 @@ def download_epg_day(dayDateTime, forceUpdate=False):
         return DownloadDataJson
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-        xbmcgui.Dialog().notification(var.addonname, 'TV Gids laden mislukt.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'TV Gids downloaden mislukt.', notificationIcon, 2500, False)
         return None

@@ -13,6 +13,7 @@ if pythonversion < 3:
     proxyServer = SocketServer.TCPServer
     proxyThreading = SocketServer.ThreadingMixIn
     proxyRequestHandler = SimpleHTTPServer.SimpleHTTPRequestHandler
+    from StringIO import StringIO
 else:
     import xbmcvfs
     import urllib.request, urllib.parse
@@ -24,6 +25,7 @@ else:
     proxyServer = socketserver.TCPServer
     proxyThreading = socketserver.ThreadingMixIn
     proxyRequestHandler = SimpleHTTPServer.BaseHTTPRequestHandler
+    from io import BytesIO
 
 #Xbmc translate path
 def xbmc_translate_path(path):
@@ -102,6 +104,13 @@ def string_decode_ascii(string):
             return string.decode('ASCII', 'ignore')
         else:
             return string
+
+#String io from bytes
+def stringio_from_bytes(stringBytes):
+    if pythonversion < 3:
+        return StringIO(stringBytes)
+    else:
+        return BytesIO(stringBytes)
 
 #Urllib request
 def urllib_request(*args, **kwargs):
