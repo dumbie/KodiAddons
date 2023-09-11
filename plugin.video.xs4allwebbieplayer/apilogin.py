@@ -201,11 +201,14 @@ def ApiLogin(LoginNotification=False):
     HeaderCookie = hybrid.urllib_getheader(DownloadDataHttp, 'Set-Cookie')
     
     var.ApiLoginCookie = ''
-    cookie_split = re.findall(r"([^\s]*?=.*?(?=;|,|$))", HeaderCookie)
-    for cookie in cookie_split:
-        if cookie.startswith('Path') == False and cookie.startswith('Expires') == False and cookie.startswith('Max-Age') == False:
-            var.ApiLoginCookie += cookie + ';'
-    var.ApiLoginCookie = var.ApiLoginCookie[:-1]
+    try:
+        cookie_split = re.findall(r"([^\s]*?=.*?(?=;|,|$))", HeaderCookie)
+        for cookie in cookie_split:
+            if cookie.startswith('Path') == False and cookie.startswith('Expires') == False and cookie.startswith('Max-Age') == False:
+                var.ApiLoginCookie += cookie + ';'
+        var.ApiLoginCookie = var.ApiLoginCookie[:-1]
+    except:
+        pass
 
     #Show the login notification
     if LoginNotification == True:

@@ -17,7 +17,13 @@ def channelId_from_json_metadata(metaData):
 #Get channel name from json metadata
 def channelName_from_json_metadata(metaData):
     try:
-        channelNameString = metaData['metadata']['channelName']
+        #Get the channel name
+        if 'channelName' in metaData['metadata']:
+            channelNameString = metaData['metadata']['channelName']
+        elif 'channelName' in metaData['channel']:
+            channelNameString = metaData['channel']['channelName']
+
+        #Convert channel name string
         channelNameString = hybrid.unicode_to_string(channelNameString)
         channelNameString = hybrid.htmlparser_unescape(channelNameString)
 
