@@ -351,7 +351,7 @@ class Gui(xbmcgui.WindowXML):
         listItemSelected = listcontainer.getSelectedItem()
         if listItemSelected == None:
             func.updateLabelText(self, 1, 'Selecteer zender')
-            func.updateLabelText(self, 2, "Selecteer een zender om de programma's voor weer te geven.")
+            func.updateLabelText(self, 2, "[COLOR gray]Selecteer een zender om de programma's voor weer te geven.[/COLOR]")
             return
 
         var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
@@ -377,11 +377,11 @@ class Gui(xbmcgui.WindowXML):
 
         #Download the channels
         func.updateLabelText(self, 1, 'Zenders downloaden')
-        func.updateLabelText(self, 2, 'Zenders worden gedownload, nog even geduld...')
+        func.updateLabelText(self, 2, '[COLOR gray]Zenders worden gedownload, nog even geduld...[/COLOR]')
         downloadResult = download.download_channels_tv(False)
         if downloadResult == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
-            func.updateLabelText(self, 2, 'TV Gids is niet beschikbaar.')
+            func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
             listcontainer = self.getControl(1000)
             self.setFocus(listcontainer)
             xbmc.sleep(100)
@@ -390,7 +390,7 @@ class Gui(xbmcgui.WindowXML):
             return False
 
         func.updateLabelText(self, 1, 'Zenders laden')
-        func.updateLabelText(self, 2, 'Zenders worden geladen, nog even geduld...')
+        func.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
 
         #Add items to sort list
         listcontainersort = []
@@ -418,7 +418,7 @@ class Gui(xbmcgui.WindowXML):
                 listcontainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
-                func.updateLabelText(self, 2, "Geen " + channelTypeString + " om de programma's voor weer te geven.")
+                func.updateLabelText(self, 2, "[COLOR gray]Geen " + channelTypeString + " om de programma's voor weer te geven.[/COLOR]")
                 listcontainer.selectItem(0)
             xbmc.sleep(100)
 
@@ -458,11 +458,11 @@ class Gui(xbmcgui.WindowXML):
 
             #Download the epg day information
             func.updateLabelText(self, 1, 'Gids download')
-            func.updateLabelText(self, 2, 'TV Gids wordt gedownload, nog even geduld...')
+            func.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt gedownload, nog even geduld...[/COLOR]')
             var.EpgCurrentDayJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
             if var.EpgCurrentDayJson == None:
                 func.updateLabelText(self, 1, 'Niet beschikbaar')
-                func.updateLabelText(self, 2, 'TV Gids is niet beschikbaar.')
+                func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
                 listcontainer = self.getControl(1000)
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)
@@ -474,7 +474,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Update epg status
         func.updateLabelText(self, 1, 'Gids laden')
-        func.updateLabelText(self, 2, 'TV Gids wordt geladen, nog even geduld...')
+        func.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt geladen, nog even geduld...[/COLOR]')
 
         listcontainersort = []
         if func.string_isnullorempty(var.SearchChannelTerm):
@@ -517,28 +517,37 @@ class Gui(xbmcgui.WindowXML):
         listitemcount = listcontainer.size()
 
         programSelectIndexAiring = 0
+        programSelectIndexUpcoming = 0
         programSelectIndexNavigate = 0
 
         #Check if program is airing or matches navigate index
         for itemNum in range(0, listitemcount):
             listitem = listcontainer.getListItem(itemNum)
 
-            #Check if program is currently airing
-            if listitem.getProperty('ProgramIsAiring') == 'true':
-                programSelectIndexAiring = itemNum
-
             #Check if program matches navigate id
             if var.EpgNavigateProgramId == listitem.getProperty('ProgramId'):
                 programSelectIndexNavigate = itemNum
                 break
+
+            #Check if program is still to come
+            if programSelectIndexUpcoming == 0 and listitem.getProperty('ProgramIsUpcoming') == 'true':
+                programSelectIndexUpcoming = itemNum
+
+            #Check if program is currently airing
+            if listitem.getProperty('ProgramIsAiring') == 'true':
+                programSelectIndexAiring = itemNum
 
         #Focus and select program list item
         if programSelectIndexNavigate != 0:
             self.setFocus(listcontainer)
             xbmc.sleep(100)
             listcontainer.selectItem(programSelectIndexNavigate)
-        else:
+        elif programSelectIndexAiring != 0:
             listcontainer.selectItem(programSelectIndexAiring)
+        elif programSelectIndexUpcoming != 0:
+            listcontainer.selectItem(programSelectIndexUpcoming)
+        else:
+            listcontainer.selectItem(0)
         var.EpgNavigateProgramId = ''
         xbmc.sleep(100)
 

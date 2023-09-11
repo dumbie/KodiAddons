@@ -95,7 +95,11 @@ def list_load(listContainer, epgJson):
             if ProgramProgressPercent >= 100:
                 listItem.setProperty('ProgramIsAvailable', ProgramIsAvailable)
 
-            #Check if program is still airing
+            #Check if program is still to come
+            if ProgramProgressPercent <= 0:
+                listItem.setProperty('ProgramIsUpcoming', 'true')
+
+            #Check if program is currently airing
             if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
                 listItem.setProperty('ProgramIsAiring', 'true')
 
