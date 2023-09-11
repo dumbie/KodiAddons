@@ -162,24 +162,35 @@ def program_genres(metaData):
 
 def program_actors_directors(metaData):
     try:
-        #Load program actors
-        programActors = metadatainfo.programactors_from_json_metadata(metaData)
-
         #Load program directors
         programDirectors = metadatainfo.programdirectors_from_json_metadata(metaData)
 
-        #Check if directors string is empty
-        actorsNull = func.string_isnullorempty(programActors)
-        directorsNull = func.string_isnullorempty(programDirectors)
+        #Load program actors
+        programActors = metadatainfo.programactors_from_json_metadata(metaData)
 
-        if actorsNull == True and directorsNull == True:
+        #Load program presenters
+        programPresenters = metadatainfo.programpresenters_from_json_metadata(metaData)
+
+        #Check if string is empty
+        directorsNull = func.string_isnullorempty(programDirectors)
+        actorsNull = func.string_isnullorempty(programActors)
+        presentersNull = func.string_isnullorempty(programPresenters)
+
+        if actorsNull == True and directorsNull == True and presentersNull == True:
                 return ''
-        elif actorsNull == True and directorsNull == False:
-            return 'Regie [COLOR gray]' + programDirectors + '[/COLOR]'
-        elif actorsNull == False and directorsNull == True:
-            return 'Acteurs [COLOR gray]' + programActors + '[/COLOR]'
-        else:
-            return 'Regie [COLOR gray]' + programDirectors + '[/COLOR] Acteurs [COLOR gray]' + programActors + '[/COLOR]'
+
+        if directorsNull == False:
+            programDirectors = 'Regie [COLOR gray]' + programDirectors + '[/COLOR]'
+
+        if actorsNull == False:
+            programActors = 'Acteurs [COLOR gray]' + programActors + '[/COLOR]'
+
+        if presentersNull == False:
+            programPresenters = 'Presentatoren [COLOR gray]' + programPresenters + '[/COLOR]'
+
+        #Combine cast details
+        stringJoin = [ programDirectors, programActors, programPresenters ]
+        return ' '.join(filter(None, stringJoin))
     except:
         return ''
 
