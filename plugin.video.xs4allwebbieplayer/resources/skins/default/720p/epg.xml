@@ -502,6 +502,15 @@
                         <texture>common/vodno.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), false)</visible>
                     </control>
+                    <control type="image">
+                        <right>115</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/vod.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), true)</visible>
+                    </control>
                     <control type="label">
                         <left>60</left>
                         <width>650</width>
@@ -606,6 +615,15 @@
                         <aspectratio>keep</aspectratio>
                         <texture>common/vodno.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), false)</visible>
+                    </control>
+                    <control type="image">
+                        <right>115</right>
+                        <bottom>13</bottom>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/vod.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), true)</visible>
                     </control>
                     <control type="label">
                         <left>60</left>
