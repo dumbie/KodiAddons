@@ -7,6 +7,7 @@ import re
 import func
 import hybrid
 import metadatainfo
+import metadatafunc
 import path
 import var
 
@@ -18,11 +19,13 @@ def switch_channel_tv_listitem(listitem, Windowed=False, showInformation=False, 
         var.guiPlayer.show_epg(True)
 
 #Switch to a new channel by id
-def switch_channel_tv_channelid(AssetId, ChannelId, ExternalId, ChannelName='Onbekende zender', Genre='Onbekend', Windowed=False, showInformation=False):
-    if func.string_isnullorempty(AssetId) or func.string_isnullorempty(ChannelId) or func.string_isnullorempty(ExternalId):
+def switch_channel_tv_channelid(ChannelId, ExternalId='', ChannelName='Onbekende zender', Genre='Onbekend', Windowed=False, showInformation=False):
+    if func.string_isnullorempty(ChannelId):
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
         return
+
+    listItem = xbmcgui.ListItem()
 
     if func.string_isnullorempty(ChannelName):
         ChannelName = 'Onbekende zender'
@@ -30,13 +33,14 @@ def switch_channel_tv_channelid(AssetId, ChannelId, ExternalId, ChannelName='Onb
     if func.string_isnullorempty(Genre):
         Genre = 'Onbekend'
 
-    listitem = xbmcgui.ListItem()
-    listitem.setProperty('AssetId', AssetId)
-    listitem.setProperty('ChannelId', ChannelId)
-    listitem.setProperty('ExternalId', ExternalId)
-    listitem.setProperty('ChannelName', ChannelName)
-    listitem.setInfo('video', {'Genre': Genre})
-    play_stream_television(listitem, Windowed)
+    if func.string_isnullorempty(ExternalId) == False:
+        listItem.setProperty('ExternalId', ExternalId)
+        listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+
+    listItem.setProperty('ChannelId', ChannelId)
+    listItem.setProperty('ChannelName', ChannelName)
+    listItem.setInfo('video', {'Genre': Genre})
+    play_stream_television(listItem, Windowed)
 
     if showInformation and var.guiPlayer != None:
         var.guiPlayer.show_epg(True)
@@ -369,15 +373,21 @@ def play_stream_vod(listItem, Windowed):
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
 
 def play_stream_television(listItem, Windowed, SeekOffset=0):
-    #Get channel settings and variables
+    #Get channel properties
     NewAssetId = listItem.getProperty('AssetId')
     NewChannelId = listItem.getProperty('ChannelId')
     NewExternalId = listItem.getProperty('ExternalId')
     NewChannelName = listItem.getProperty('ChannelName')
-    CurrentAssetId = var.addon.getSetting('CurrentAssetId')
-    CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-    CurrentExternalId = var.addon.getSetting('CurrentExternalId')
-    CurrentChannelName = var.addon.getSetting('CurrentChannelName')
+
+    #Check channel asset identifier
+    if func.string_isnullorempty(NewAssetId):
+        NewAssetId = metadatafunc.search_stream_assetid_by_channelid(NewChannelId)
+
+    #Check channel asset identifier
+    if func.string_isnullorempty(NewAssetId):
+        notificationIcon = path.resources('resources/skins/default/media/common/television.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Zender asset id niet gevonden.', notificationIcon, 2500, False)
+        return
 
     #Allow longer back seeking
     DateTimeUtc = datetime.utcnow() - timedelta(minutes=400)
@@ -442,13 +452,13 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
         StreamUrl = 'http://127.0.0.1:4444/redir/' + StreamUrl
 
     #Update channel settings and variables
+    CurrentChannelId = var.addon.getSetting('CurrentChannelId')
+    CurrentExternalId = var.addon.getSetting('CurrentExternalId')
+    CurrentChannelName = var.addon.getSetting('CurrentChannelName')
     if CurrentChannelId != NewChannelId:
-        var.addon.setSetting('LastAssetId', CurrentAssetId)
         var.addon.setSetting('LastChannelId', CurrentChannelId)
         var.addon.setSetting('LastExternalId', CurrentExternalId)
         var.addon.setSetting('LastChannelName', CurrentChannelName)
-
-    var.addon.setSetting('CurrentAssetId', NewAssetId)
     var.addon.setSetting('CurrentChannelId', NewChannelId)
     var.addon.setSetting('CurrentExternalId', NewExternalId)
     var.addon.setSetting('CurrentChannelName', NewChannelName)

@@ -93,7 +93,7 @@ def search_seriesid_jsonrecording_series(searchSeriesId):
     return None
 
 #Search for stream asset id by ChannelId
-def search_stream_assetid(searchChannelId):
+def search_stream_assetid_by_channelid(searchChannelId):
     channelDetails = search_channelid_jsontelevision(searchChannelId)
     if channelDetails != None:
         return metadatainfo.stream_assetid_from_json_metadata(channelDetails['assets'])

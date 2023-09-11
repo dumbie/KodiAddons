@@ -37,11 +37,6 @@ def list_load(listContainer, epgJson):
             ChannelExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ChannelName = metadatainfo.channelName_from_json_metadata(program)
             ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(program)
-            ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
-            if ChannelDetails:
-                AssetId = metadatainfo.stream_assetid_from_json_metadata(ChannelDetails['assets'])
-            else:
-                AssetId = ''
 
             #Check if channel is filtered
             if var.addon.getSetting('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
@@ -79,7 +74,6 @@ def list_load(listContainer, epgJson):
 
             #Add program to the list container
             listItem = xbmcgui.ListItem()
-            listItem.setProperty('AssetId', AssetId)
             listItem.setProperty('ExternalId', ChannelExternalId)
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ChannelName', ChannelName)

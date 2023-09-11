@@ -183,7 +183,6 @@ ChannelsDataJsonRecordingSeries = []
 EpgCurrentLoadDateTime = datetime.now()
 EpgPreviousLoadDateTime = datetime(1970,1,1)
 EpgCurrentDayJson = []
-EpgCurrentAssetId = ''
 EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
 EpgCurrentExternalId = ''

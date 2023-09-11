@@ -42,9 +42,9 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         self.buttons_add_sidebar()
-        self.load_channels()
         self.load_recording_event(False)
         self.load_recording_series(False)
+        self.load_channels()
 
         #Wait for previous threads to complete
         if var.thread_update_playergui_info != None:
@@ -448,7 +448,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         lifunc.focus_on_channel_list(self, 1001, 0, False, CurrentChannelId)
 
     def switch_channel_lasttv(self):
-        LastAssetId = var.addon.getSetting('LastAssetId')
         LastChannelId = var.addon.getSetting('LastChannelId')
         LastExternalId = var.addon.getSetting('LastExternalId')
         LastChannelName = var.addon.getSetting('LastChannelName')
@@ -456,7 +455,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         if LastChannelId != CurrentChannelId:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Gezapt naar vorige zender.', notificationIcon, 2500, False)
-            stream.switch_channel_tv_channelid(LastAssetId, LastChannelId, LastExternalId, LastChannelName, 'Televisie', False, True)
+            stream.switch_channel_tv_channelid(LastChannelId, LastExternalId, LastChannelName, 'Televisie', False, True)
         else:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)

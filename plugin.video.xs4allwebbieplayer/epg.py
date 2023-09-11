@@ -33,6 +33,8 @@ def close_the_page():
         var.guiEpg = None
 
 class Gui(xbmcgui.WindowXML):
+    EpgManualUpdate = False
+
     def onInit(self):
         self.buttons_add_navigation()
         self.update_day_string()
@@ -43,7 +45,7 @@ class Gui(xbmcgui.WindowXML):
             self.set_channel_epg_variables()
             self.load_programs()
 
-            #Start the update progress thread
+            #Start the epg update thread
             if var.thread_update_epg_progress == None:
                 var.thread_update_epg_progress = Thread(target=self.thread_update_epg_progress)
                 var.thread_update_epg_progress.start()
@@ -308,11 +310,11 @@ class Gui(xbmcgui.WindowXML):
         alarmAdded = alarm.alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramName, True)
         #Update alarm icon in the channel and epg list
         if alarmAdded == True:
-            self.update_channel_status()
-            self.update_program_status()
+            #Force manual epg update
+            self.EpgManualUpdate = True
         elif alarmAdded == 'Remove':
-            self.update_channel_status()
-            self.update_program_status()
+            #Force manual epg update
+            self.EpgManualUpdate = True
 
     def search_channel(self):
         #Open the search dialog
@@ -352,7 +354,6 @@ class Gui(xbmcgui.WindowXML):
             func.updateLabelText(self, 2, "Selecteer een zender om de programma's voor weer te geven.")
             return
 
-        var.EpgCurrentAssetId = listItemSelected.getProperty('AssetId')
         var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
         var.EpgCurrentExternalId = listItemSelected.getProperty('ExternalId')
         var.EpgCurrentChannelName = listItemSelected.getProperty('ChannelName')
@@ -426,8 +427,8 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.reset()
             return False
 
-        #Load channel status
-        self.update_channel_status()
+        #Force manual epg update
+        self.EpgManualUpdate = True
 
         return True
 
@@ -499,11 +500,11 @@ class Gui(xbmcgui.WindowXML):
         #Select program index
         self.epg_selectindex_program()
 
-        #Load program progress
-        self.update_program_status()
-
         #Update the status
         self.count_epg(var.EpgCurrentChannelName)
+
+        #Force manual epg update
+        self.EpgManualUpdate = True
 
         #Update epg variables
         var.EpgPreviousChannelId = var.EpgCurrentChannelId
@@ -569,12 +570,14 @@ class Gui(xbmcgui.WindowXML):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
         while var.thread_update_epg_progress != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
             threadCurrentTime = datetime.now().strftime('%H:%M')
-            if threadLastTime != threadCurrentTime:
+            if threadLastTime != threadCurrentTime or self.EpgManualUpdate:
                 threadLastTime = threadCurrentTime
-                #Load channel status
+                self.EpgManualUpdate = False
+
+                #Update channel status
                 self.update_channel_status()
 
-                #Load program status
+                #Update program status
                 self.update_program_status()
             else:
-                xbmc.sleep(2000)
+                xbmc.sleep(1000)

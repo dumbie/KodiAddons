@@ -45,12 +45,9 @@ class Gui(xbmcgui.WindowXML):
 
     def onInit(self):
         self.buttons_add_navigation()
-        self.load_channels(False, False)
         self.load_recording_event(False)
         self.load_recording_series(False)
-
-        #Force manual epg update
-        self.EpgManualUpdate = True
+        self.load_channels(False, False)
 
         #Start the epg update thread
         if var.thread_update_television_epg == None:
@@ -209,13 +206,9 @@ class Gui(xbmcgui.WindowXML):
 
     def refresh_programs(self):
         try:
-            self.load_channels(True, True)
             self.load_recording_event(True)
             self.load_recording_series(True)
-
-            #Force manual epg update
-            self.EpgForceUpdate = True
-            self.EpgManualUpdate = True
+            self.load_channels(True, True)
         except:
             pass
 
@@ -251,10 +244,8 @@ class Gui(xbmcgui.WindowXML):
                     return
                 var.addon.setSetting('LoadChannelFavoritesOnly', 'true')
 
+            #Load television channels
             self.load_channels(True, False)
-
-            #Force manual epg update
-            self.EpgManualUpdate = True
         except:
             pass
 
@@ -274,9 +265,6 @@ class Gui(xbmcgui.WindowXML):
 
         #Reset search variable
         var.SearchChannelTerm = ''
-
-        #Force manual epg update
-        self.EpgManualUpdate = True
 
     def load_recording_event(self, forceUpdate=False):
         downloadResult = download.download_recording_event(forceUpdate)
@@ -331,6 +319,10 @@ class Gui(xbmcgui.WindowXML):
         #Update the status
         self.count_channels(True)
 
+        #Force manual epg update
+        self.EpgManualUpdate = True
+        self.EpgForceUpdate = forceUpdate
+
     #Update the status
     def count_channels(self, resetSelect=False):
         #Set channel type string
@@ -380,6 +372,8 @@ class Gui(xbmcgui.WindowXML):
                 forceUpdate = self.EpgForceUpdate
                 self.EpgManualUpdate = False
                 self.EpgForceUpdate = False
+
+                #Update epg information
                 self.update_epg_information(forceUpdate)
             else:
                 xbmc.sleep(1000)
