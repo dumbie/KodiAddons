@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
 import func
+import lifunc
 import metadatacombine
 import metadatainfo
 import xbmcgui
@@ -13,7 +13,7 @@ def list_load(listContainer):
             ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
 
             #Check if serie is already added
-            if func.search_programname_listarray(listContainer, ProgramName) != None: continue
+            if lifunc.search_programname_listarray(listContainer, ProgramName) != None: continue
 
             #Check if there are search results
             if var.SearchChannelTerm != '':

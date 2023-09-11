@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import func
 import metadatainfo
+import metadatafunc
 import metadatacombine
 import xbmcgui
 import path
@@ -30,6 +31,20 @@ def list_load(listContainer, epgJson):
                 searchResultFound = var.SearchChannelTerm in searchMatch
                 if searchResultFound == False:
                     continue
+
+            #Load channel basics
+            ChannelId = metadatainfo.channelId_from_json_metadata(program)
+            ChannelExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
+            ChannelName = metadatainfo.channelName_from_json_metadata(program)
+            ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(program)
+            ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
+            if ChannelDetails:
+                AssetId = metadatainfo.stream_assetid_from_json_metadata(ChannelDetails['assets'])
+            else:
+                AssetId = ''
+
+            #Check if channel is filtered
+            if var.addon.getSetting('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
@@ -64,10 +79,10 @@ def list_load(listContainer, epgJson):
 
             #Add program to the list container
             listItem = xbmcgui.ListItem()
-            listItem.setProperty('AssetId', var.EpgCurrentAssetId)
-            listItem.setProperty('ChannelId', var.EpgCurrentChannelId)
-            listItem.setProperty('ExternalId', var.EpgCurrentExternalId)
-            listItem.setProperty('ChannelName', var.EpgCurrentChannelName)
+            listItem.setProperty('AssetId', AssetId)
+            listItem.setProperty('ExternalId', ChannelExternalId)
+            listItem.setProperty('ChannelId', ChannelId)
+            listItem.setProperty('ChannelName', ChannelName)
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramRerun', ProgramRerun)
@@ -80,7 +95,7 @@ def list_load(listContainer, epgJson):
             listItem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
             listItem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
             listItem.setInfo('video', {'Genre': 'TV Gids', 'Plot': ProgramDescriptionRaw})
-            listItem.setArt({'thumb': path.icon_television(var.EpgCurrentExternalId), 'icon': path.icon_television(var.EpgCurrentExternalId)})
+            listItem.setArt({'thumb': path.icon_television(ChannelExternalId), 'icon': path.icon_television(ChannelExternalId)})
 
             #Check if program finished airing
             if ProgramProgressPercent >= 100:

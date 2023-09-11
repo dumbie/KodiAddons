@@ -9,6 +9,7 @@ import download
 import epg
 import favorite
 import func
+import lifunc
 import path
 import litelevision
 import recordingfunc
@@ -301,7 +302,7 @@ class Gui(xbmcgui.WindowXML):
         if forceLoad == False and forceUpdate == False:
             if listcontainer.size() > 0:
                 currentChannelId = var.addon.getSetting('CurrentChannelId')
-                func.focus_on_channel_list(self, 1000, 0, True, currentChannelId)
+                lifunc.focus_on_channel_list(self, 1000, 0, True, currentChannelId)
                 return True
         else:
             listcontainer.reset()
@@ -352,7 +353,7 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 currentChannelId = var.addon.getSetting('CurrentChannelId')
-                func.focus_on_channel_list(self, 1000, 0, True, currentChannelId)
+                lifunc.focus_on_channel_list(self, 1000, 0, True, currentChannelId)
         else:
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)

@@ -1,7 +1,6 @@
-from datetime import datetime, timedelta
-import func
 import metadatainfo
 import metadatacombine
+import metadatafunc
 import recordingfunc
 import xbmcgui
 import path
@@ -18,7 +17,7 @@ def list_load(listContainer):
             ProgramEpisodeCount = recordingfunc.count_recorded_series_id(ProgramSeriesId)
 
             #Get first recording event
-            RecordingEventMetaData = func.search_seriesid_jsonrecording_event(ProgramSeriesId)
+            RecordingEventMetaData = metadatafunc.search_seriesid_jsonrecording_event(ProgramSeriesId)
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(RecordingEventMetaData, True, False, True, True, False, False, False)
@@ -33,7 +32,7 @@ def list_load(listContainer):
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ChannelName = 'Onbekende zender'
             ChannelIcon = path.resources('resources/skins/default/media/common/unknown.png')
-            ChannelDetails = func.search_channelid_jsontelevision(ChannelId)
+            ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
             if ChannelDetails:
                 ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
                 ChannelName = metadatainfo.channelName_from_json_metadata(ChannelDetails)

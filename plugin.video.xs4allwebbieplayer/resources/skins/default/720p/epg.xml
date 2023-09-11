@@ -152,7 +152,7 @@
         </control>
         <!-- Header -->
         <control type="label" id="2">
-            <top>170</top>
+            <top>155</top>
             <left>50</left>
             <width>1230</width>
             <height>30</height>
@@ -160,11 +160,10 @@
             <textcolor>FFFFFFFF</textcolor>
         </control>
         <control type="label" id="3">
-            <top>170</top>
-            <right>50</right>
+            <top>185</top>
+            <left>50</left>
             <width>1230</width>
             <height>30</height>
-            <align>right</align>
             <textcolor>FFFFFFFF</textcolor>
         </control>
         <!-- Channel and Program Description -->

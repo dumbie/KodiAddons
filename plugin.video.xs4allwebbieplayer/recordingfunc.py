@@ -2,8 +2,8 @@ import xbmcgui
 from datetime import datetime, timedelta
 import dialog
 import download
-import func
 import metadatainfo
+import metadatafunc
 import path
 import var
 
@@ -86,7 +86,7 @@ def record_event_now_television_playergui(listItemSelected):
     ProgramNowId = listItemSelected.getProperty('ProgramNowId')
 
     #Check the program recording state
-    recordProgramEvent = func.search_programid_jsonrecording_event(ProgramNowId)
+    recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramNowId)
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
         ProgramStartDeltaTime = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
@@ -102,7 +102,7 @@ def record_event_next_television_playergui(listItemSelected):
     ProgramNextId = listItemSelected.getProperty('ProgramNextId')
 
     #Check the program recording state
-    recordProgramEvent = func.search_programid_jsonrecording_event(ProgramNextId)
+    recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramNextId)
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
         ProgramStartDeltaTime = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
@@ -135,7 +135,7 @@ def record_series_television_playergui(listItemSelected, forceRecord=False):
                 listItemSelected.setProperty('ProgramNextRecordSeries', 'true')
     else:
         #Get the removal series id
-        recordProgramSeries = func.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId)
+        recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId)
         if recordProgramSeries:
             ProgramRecordSeriesIdLive = metadatainfo.seriesId_from_json_metadata(recordProgramSeries)
         else:
@@ -182,7 +182,7 @@ def record_series_epg(_self, listItemSelected, forceRecord=False):
             _self.update_program_status()
     else:
         #Get the removal series id
-        recordProgramSeries = func.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
+        recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
         if recordProgramSeries:
             ProgramRecordSeriesIdLive = metadatainfo.seriesId_from_json_metadata(recordProgramSeries)
         else:

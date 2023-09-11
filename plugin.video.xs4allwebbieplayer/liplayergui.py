@@ -4,6 +4,7 @@ import download
 import func
 import metadatacombine
 import metadatainfo
+import metadatafunc
 import var
 import xbmc
 
@@ -36,10 +37,10 @@ def list_update(listItem):
         epgSeekJson = download.download_epg_day(dateTimeSeek, False)
 
         #Get json epg for the channelid
-        channelEpg = func.search_channelid_jsonepg(epgSeekJson, channelId)
+        channelEpg = metadatafunc.search_channelid_jsonepg(epgSeekJson, channelId)
 
         #Look for current airing program index
-        programIndex = func.get_programindex_airingtime_jsonepg(channelEpg, dateTimeSeek)
+        programIndex = metadatafunc.search_programindex_airingtime_jsonepg(channelEpg, dateTimeSeek)
     except:
         pass
 
@@ -75,7 +76,7 @@ def list_update(listItem):
             ProgramNowRerun = 'false'
 
         #Check if program is recording event
-        if func.search_programid_jsonrecording_event(ProgramNowId):
+        if metadatafunc.search_programid_jsonrecording_event(ProgramNowId):
             ProgramNowRecordEvent = 'true'
         else:
             ProgramNowRecordEvent = 'false'
@@ -84,7 +85,7 @@ def list_update(listItem):
         ProgramNowRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
         #Check if program is recording series
-        if func.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId):
+        if metadatafunc.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId):
             ProgramNowRecordSeries = 'true'
         else:
             ProgramNowRecordSeries = 'false'
@@ -128,7 +129,7 @@ def list_update(listItem):
             ProgramNextRerun = 'false'
 
         #Check if program is recording event
-        if func.search_programid_jsonrecording_event(ProgramNextId):
+        if metadatafunc.search_programid_jsonrecording_event(ProgramNextId):
             ProgramNextRecordEvent = 'true'
         else:
             ProgramNextRecordEvent = 'false'
@@ -137,7 +138,7 @@ def list_update(listItem):
         ProgramNextRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
         #Check if program is recording series
-        if func.search_seriesid_jsonrecording_series(ProgramNextRecordSeriesId):
+        if metadatafunc.search_seriesid_jsonrecording_series(ProgramNextRecordSeriesId):
             ProgramNextRecordSeries = 'true'
         else:
             ProgramNextRecordSeries = 'false'

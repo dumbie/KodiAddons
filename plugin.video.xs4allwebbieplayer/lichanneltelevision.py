@@ -12,7 +12,7 @@ def list_load(listContainer):
     for channel in var.ChannelsDataJsonTelevision['resultObj']['containers']:
         try:
             #Load channel basics
-            AssetId = metadatainfo.get_stream_assetid(channel['assets'])
+            AssetId = metadatainfo.stream_assetid_from_json_metadata(channel['assets'])
             ChannelId = metadatainfo.channelId_from_json_metadata(channel)
             ChannelName = metadatainfo.channelName_from_json_metadata(channel)
             ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(channel)
@@ -39,8 +39,9 @@ def list_load(listContainer):
                 ChannelFavorite = 'false'
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
+            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm):
+                continue
             else:
-                if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm): continue
                 ChannelFavorite = 'false'
 
             #Load channel details

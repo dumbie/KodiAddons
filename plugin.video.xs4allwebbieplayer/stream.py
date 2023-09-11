@@ -167,7 +167,7 @@ def play_stream_program(listItem, Windowed):
         DownloadDataJson = json.load(DownloadDataHttp)
 
         #Get and set the stream asset id
-        StreamAssetId = metadatainfo.get_stream_assetid(DownloadDataJson['resultObj']['containers'][0]['entitlement']['assets'])
+        StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson['resultObj']['containers'][0]['entitlement']['assets'])
 
         #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):
@@ -279,7 +279,7 @@ def play_stream_vod(listItem, Windowed):
         DownloadDataJson = json.load(DownloadDataHttp)
 
         #Get and set the stream asset id
-        StreamAssetId = metadatainfo.get_stream_assetid(DownloadDataJson['resultObj']['containers'][0]['entitlement']['assets'])
+        StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson['resultObj']['containers'][0]['entitlement']['assets'])
 
         #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):

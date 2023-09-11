@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import alarm
 import func
 import metadatacombine
+import metadatafunc
 import metadatainfo
 
 def list_update_channel(listItem):
@@ -14,13 +15,13 @@ def list_update_channel(listItem):
         ChannelAlarm = 'false'
 
     #Check if channel has active recording
-    if func.search_channelid_jsonrecording_event(ChannelId, True):
+    if metadatafunc.search_channelid_jsonrecording_event(ChannelId, True):
         ChannelRecordEvent = 'true'
     else:
         ChannelRecordEvent = 'false'
 
     #Check if channel has active recording series
-    if func.search_channelid_jsonrecording_series(ChannelId):
+    if metadatafunc.search_channelid_jsonrecording_series(ChannelId):
         ChannelRecordSeries = 'true'
     else:
         ChannelRecordSeries = 'false'
@@ -62,7 +63,7 @@ def list_update_program(listItem):
         ProgramAlarm = 'false'
 
     #Check if program is recording event and if the recording is planned or done
-    recordProgramEvent = func.search_programid_jsonrecording_event(ProgramId)
+    recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramId)
     if recordProgramEvent:
         if dateTimeNow > ProgramTimeEndDateTime:
             ProgramRecordEventPlanned = 'false'
@@ -79,7 +80,7 @@ def list_update_program(listItem):
         ProgramStartDeltaTime = '0'
 
     #Check if program is recording series
-    recordProgramSeries = func.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
+    recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
     if recordProgramSeries:
         ProgramRecordSeries = 'true'
     else:

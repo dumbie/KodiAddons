@@ -35,7 +35,7 @@ def list_load(listContainer):
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-            ProgramAssetId = metadatainfo.get_stream_assetid(program['assets'])
+            ProgramAssetId = metadatainfo.stream_assetid_from_json_metadata(program['assets'])
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
             ProgramAvailability = metadatainfo.recording_available_time(program)
 

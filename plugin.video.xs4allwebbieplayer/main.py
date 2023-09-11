@@ -9,6 +9,7 @@ import dialog
 import download
 import epg
 import func
+import lifunc
 import helpx
 import movies
 import path
@@ -314,7 +315,7 @@ class Gui(xbmcgui.WindowXML):
             recordingCount = recordingfunc.count_recorded_events()
 
             #Update the list count
-            countItem = func.search_label_listcontainer(listcontainer, 'Bekijk Opnames')
+            countItem = lifunc.search_label_listcontainer(listcontainer, 'Bekijk Opnames')
             countItem.setLabel('Bekijk Opnames (' + str(recordingCount) + ')')
         except:
             pass
@@ -330,7 +331,7 @@ class Gui(xbmcgui.WindowXML):
             recordingCount = recordingfunc.count_recording_events()
 
             #Update the list count
-            countItem = func.search_label_listcontainer(listcontainer, 'Geplande Opnames')
+            countItem = lifunc.search_label_listcontainer(listcontainer, 'Geplande Opnames')
             countItem.setLabel('Geplande Opnames (' + str(recordingCount) + ')')
         except:
             pass
@@ -346,7 +347,7 @@ class Gui(xbmcgui.WindowXML):
             recordingCount = recordingfunc.count_recording_series()
 
             #Update the list count
-            countItem = func.search_label_listcontainer(listcontainer, 'Geplande Series')
+            countItem = lifunc.search_label_listcontainer(listcontainer, 'Geplande Series')
             countItem.setLabel('Geplande Series (' + str(recordingCount) + ')')
         except:
             pass
@@ -362,7 +363,7 @@ class Gui(xbmcgui.WindowXML):
             alarm.alarm_json_load(forceLoad)
 
             #Update the list count
-            countItem = func.search_label_listcontainer(listcontainer, 'Alarmen')
+            countItem = lifunc.search_label_listcontainer(listcontainer, 'Alarmen')
             countItem.setLabel('Alarmen (' + str(len(var.AlarmDataJson)) + ')')
         except:
             pass

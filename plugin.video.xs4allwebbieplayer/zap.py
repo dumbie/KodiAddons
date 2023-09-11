@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from threading import Thread
 import xbmc
 import func
+import lifunc
 import stream
 import var
 
@@ -71,7 +72,7 @@ def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
 
 def select_remote_number(_self, clickOnSelection):
     listcontainer = _self.getControl(var.ZapControlId)
-    itemnum = func.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
+    itemnum = lifunc.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
     if itemnum == None:
         return
 
@@ -84,7 +85,7 @@ def select_remote_number(_self, clickOnSelection):
 
 def zap_remote_number(_self):
     listcontainer = _self.getControl(var.ZapControlId)
-    itemnum = func.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
+    itemnum = lifunc.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
     if itemnum == None:
         return
 

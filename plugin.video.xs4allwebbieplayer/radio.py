@@ -5,6 +5,7 @@ import download
 import dialog
 import favorite
 import func
+import lifunc
 import path
 import searchdialog
 import stream
@@ -231,7 +232,7 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString)
 
             if resetSelect == True:
-                func.focus_on_channel_list(self, 1000, 0, True, var.addon.getSetting('CurrentRadioId'))
+                lifunc.focus_on_channel_list(self, 1000, 0, True, var.addon.getSetting('CurrentRadioId'))
         else:
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)

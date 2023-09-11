@@ -25,8 +25,9 @@ def list_load(listContainer):
             #Check if channel is marked as favorite
             if ChannelId in var.FavoriteRadioDataJson:
                 ChannelFavorite = 'true'
+            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm):
+                continue
             else:
-                if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm): continue
                 ChannelFavorite = 'false'
 
             #Update channel number

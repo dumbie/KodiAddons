@@ -82,10 +82,10 @@ def externalId_from_json_metadata(metaData):
 #Get external channel id from json metadata
 def externalChannelId_from_json_metadata(metaData):
     try:
-        if 'externalChannelId' in metaData['channel']:
-            return str(metaData['channel']['externalChannelId'])
         if 'externalChannelId' in metaData['metadata']:
             return str(metaData['metadata']['externalChannelId'])
+        if 'externalChannelId' in metaData['channel']:
+            return str(metaData['channel']['externalChannelId'])
         return 'unknown'
     except:
         return 'unknown'
@@ -290,6 +290,17 @@ def programactors_from_json_metadata(metaData):
     except:
         return ''
 
+#Get program presenters from json metadata
+def programpresenters_from_json_metadata(metaData):
+    try:
+        presentersArray = metaData["metadata"]["presenters"]
+        if presentersArray != None:
+            return ', '.join(filter(None, presentersArray))
+        else:
+            return ''
+    except:
+        return ''
+
 #Get program directors from json metadata
 def programdirectors_from_json_metadata(metaData):
     try:
@@ -375,12 +386,16 @@ def episodenumber_from_json_metadata(metaData, incBrackets=True):
 #Check if content is for adults
 def isAdult_from_json_metadata(metaData):
     try:
-        return bool(metaData["metadata"]["isAdult"])
+        if 'isAdult' in metaData['metadata']:
+            return bool(metaData['metadata']['isAdult'])
+        if 'isAdult' in metaData['channel']:
+            return bool(metaData['channel']['isAdult'])
+        return False
     except:
         return False
 
-#Get dash widevine stream asset id
-def get_stream_assetid(assetsArray):
+#Get stream asset id from json metadata
+def stream_assetid_from_json_metadata(assetsArray):
     try:
         for asset in assetsArray:
             try:

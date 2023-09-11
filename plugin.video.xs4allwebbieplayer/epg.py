@@ -7,7 +7,8 @@ import lichanneltelevision
 import dialog
 import download
 import func
-import metadatainfo
+import lifunc
+import metadatafunc
 import path
 import recordingfunc
 import searchdialog
@@ -67,7 +68,7 @@ class Gui(xbmcgui.WindowXML):
                     self.load_programs(True)
             elif clickId == 1001:
                 self.set_channel_epg_variables()
-                self.load_programs()
+                self.load_programs(False, True)
             elif clickId == 1002:
                 self.dialog_alarm_record(clickedControl)
             elif clickId == 9000:
@@ -109,8 +110,10 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_SEARCH_FUNCTION:
             self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM):
-            clickedControl = self.getControl(1002)
-            self.dialog_alarm_record(clickedControl)
+            focusedProgram = xbmc.getCondVisibility('Control.HasFocus(1002)')
+            if focusedProgram:
+                clickedControl = self.getControl(1002)
+                self.dialog_alarm_record(clickedControl)
         else:
             zap.check_remote_number(self, 1001, actionId, True, True)
 
@@ -359,7 +362,7 @@ class Gui(xbmcgui.WindowXML):
             selectChannelId = var.addon.getSetting('CurrentChannelId')
         else:
             selectChannelId = var.EpgCurrentChannelId
-        func.focus_on_channel_list(self, 1001, 0, forceFocus, selectChannelId)
+        lifunc.focus_on_channel_list(self, 1001, 0, forceFocus, selectChannelId)
 
     def load_channels(self, forceLoad=False):
         #Get and check the list container
@@ -472,18 +475,25 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 1, 'Gids laden')
         func.updateLabelText(self, 2, 'TV Gids wordt geladen, nog even geduld...')
 
-        #Get epg json for set day and channel
-        channelEpgJson = func.search_channelid_jsonepg(var.EpgCurrentDayJson, var.EpgCurrentChannelId)
-        if channelEpgJson == None:
-            func.updateLabelText(self, 1, 'Zender gids mist')
-            func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar voor[/COLOR] ' + var.EpgCurrentChannelName)
-            return
-
-        #Add items to sort list
         listcontainersort = []
-        liepgload.list_load(listcontainersort, channelEpgJson)
+        if func.string_isnullorempty(var.SearchChannelTerm):
+            #Load programs for set day and channel
+            channelEpgJson = metadatafunc.search_channelid_jsonepg(var.EpgCurrentDayJson, var.EpgCurrentChannelId)
+            if channelEpgJson == None:
+                func.updateLabelText(self, 1, 'Zender gids mist')
+                func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar voor[/COLOR] ' + var.EpgCurrentChannelName)
+                return
+
+            #Add items to sort list
+            liepgload.list_load(listcontainersort, channelEpgJson)
+        else:
+            #Load programs for search term from all channels
+            for channelEpgJson in var.EpgCurrentDayJson["resultObj"]["containers"]:
+                #Add items to sort list
+                liepgload.list_load(listcontainersort, channelEpgJson)
 
         #Sort and add items to container
+        listcontainersort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
         listcontainer.addItems(listcontainersort)
 
         #Select program index
@@ -546,14 +556,14 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + ChannelName)
             else:
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]niet gevonden voor[/COLOR] " + ChannelName)
+                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]niet gevonden[/COLOR]")
         else:
             if var.SearchChannelTerm == '':
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's")
                 func.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + ChannelName)
             else:
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 2, var.SearchChannelTerm + " [COLOR gray]gevonden voor[/COLOR] " + ChannelName)
+                func.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchChannelTerm)
 
     def thread_update_epg_progress(self):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
