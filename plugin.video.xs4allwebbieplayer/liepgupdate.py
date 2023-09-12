@@ -32,12 +32,13 @@ def list_update_channel(listItem):
     listItem.setProperty('ChannelRecordSeries', ChannelRecordSeries)
 
 def list_update_program(listItem):
-    #Get channel information from item
-    ChannelId = listItem.getProperty('ChannelId')
-
     #Set the current player play time
     dateTimeNow = datetime.now()
 
+    #Get channel information from item
+    ChannelId = listItem.getProperty('ChannelId')
+
+    #Get program information from item
     ProgramId = listItem.getProperty('ProgramId')
     ProgramNameProp = listItem.getProperty('ProgramName')
     ProgramDescriptionRaw = listItem.getProperty('ProgramDescriptionRaw')

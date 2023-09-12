@@ -61,8 +61,8 @@ def search_label_listcontainer(listcontainer, searchLabel):
             continue
     return None
 
-#Focus on the list
-def focus_on_channel_list(_self, controlId, defaultNum, forceFocus, channelId):
+#Focus on channel in list
+def focus_on_channelid_in_list(_self, controlId, defaultNum, forceFocus, channelId):
     listcontainer = _self.getControl(controlId)
     if forceFocus:
         _self.setFocus(listcontainer)

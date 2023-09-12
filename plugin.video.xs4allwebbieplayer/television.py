@@ -293,7 +293,7 @@ class Gui(xbmcgui.WindowXML):
         if forceLoad == False and forceUpdate == False:
             if listcontainer.size() > 0:
                 currentChannelId = var.addon.getSetting('CurrentChannelId')
-                lifunc.focus_on_channel_list(self, 1000, 0, True, currentChannelId)
+                lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
                 return True
         else:
             listcontainer.reset()
@@ -348,7 +348,7 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 currentChannelId = var.addon.getSetting('CurrentChannelId')
-                lifunc.focus_on_channel_list(self, 1000, 0, True, currentChannelId)
+                lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
         else:
             listcontainer = self.getControl(1001)
             self.setFocus(listcontainer)

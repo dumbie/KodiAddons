@@ -7,6 +7,9 @@ import path
 import var
 
 def list_load(listContainer):
+    #Set the current player play time
+    dateTimeNow = datetime.now()
+
     for program in var.VodCurrentDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -22,7 +25,7 @@ def list_load(listContainer):
                 if searchResultFound == False: continue
 
             #Check if program has finished airing and processing
-            if datetime.now() < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
+            if dateTimeNow < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
 
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)

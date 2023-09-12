@@ -180,7 +180,9 @@
             </control>
             <control type="scrollbar" id="2000">
                 <width>378</width>
+                <onup>1001</onup>
                 <onleft>2001</onleft>
+                <onright>1001</onright>
                 <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>

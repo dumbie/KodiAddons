@@ -182,6 +182,7 @@
             <control type="scrollbar" id="2000">
                 <width>375</width>
                 <onleft>2001</onleft>
+                <onright>1000</onright>
                 <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
@@ -209,6 +210,10 @@
                 <texture>common/fullscreen.png</texture>
             </control>
         </control>
+        <!-- Hidden Button -->
+        <control type="button" id="9001">
+            <visible>False</visible>
+        </control>
         <!-- Navigation Buttons -->
         <control type="panel" id="1000">
             <left>50</left>
@@ -217,7 +222,7 @@
             <width>1180</width>
             <height>40</height>
             <onup condition="Control.IsVisible(1001) + Integer.IsGreater(Container(1001).NumItems,0)">Control.setFocus(1001, 99999)</onup>
-            <ondown>1001</ondown>
+            <ondown>SendClick(9001)</ondown>
             <orientation>horizontal</orientation>
             <itemlayout width="265" height="40">
                 <control type="image">

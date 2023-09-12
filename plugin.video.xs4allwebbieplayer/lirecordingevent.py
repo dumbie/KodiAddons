@@ -6,13 +6,16 @@ import path
 import var
 
 def list_load(listContainer):
+    #Set the current player play time
+    dateTimeNow = datetime.now()
+
     for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
         try:
             #Load program basics
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
 
             #Check if recording is planned or already recorded
-            if ProgramTimeEndDateTime < datetime.now(): continue
+            if ProgramTimeEndDateTime < dateTimeNow: continue
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)

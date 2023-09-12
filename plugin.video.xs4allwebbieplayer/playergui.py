@@ -394,7 +394,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select channel in list container
         CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-        lifunc.focus_on_channel_list(self, 1001, 0, False, CurrentChannelId)
+        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
     def seek_back(self, showEpg=False):
         xbmc.executebuiltin('Action(StepBack)')
@@ -406,7 +406,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select channel in list container
         CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-        lifunc.focus_on_channel_list(self, 1001, 0, False, CurrentChannelId)
+        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
     def seek_begin_program(self):
         #Get and check the list container
@@ -428,7 +428,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
                 #Select channel in list container
                 CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-                lifunc.focus_on_channel_list(self, 1001, 0, False, CurrentChannelId)
+                lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
             else:
                 notificationIcon = path.resources('resources/skins/default/media/common/rerun.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Programma begin niet beschikbaar.', notificationIcon, 2500, False)
@@ -445,7 +445,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select channel in list container
         CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-        lifunc.focus_on_channel_list(self, 1001, 0, False, CurrentChannelId)
+        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
     def switch_channel_lasttv(self):
         LastChannelId = var.addon.getSetting('LastChannelId')
@@ -522,7 +522,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select channel in list container
         currentChannelId = var.addon.getSetting('CurrentChannelId')
-        lifunc.focus_on_channel_list(self, 1001, 0, False, currentChannelId)
+        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, currentChannelId)
 
     def hide_epg(self):
         #Update the last hide time
@@ -542,7 +542,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Select the current channel
         if selectChannel:
             currentChannelId = var.addon.getSetting('CurrentChannelId')
-            lifunc.focus_on_channel_list(self, 1001, 0, True, currentChannelId)
+            lifunc.focus_on_channelid_in_list(self, 1001, 0, True, currentChannelId)
 
         #Remove focus from the interface
         if removeFocus:

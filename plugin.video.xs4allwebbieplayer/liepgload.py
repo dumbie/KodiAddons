@@ -8,11 +8,11 @@ import path
 import var
 
 def list_load(listContainer, epgJson):
+    #Set the current player play time
+    dateTimeNow = datetime.now()
+
     for program in epgJson['containers']:
         try:
-            #Set the current player play time
-            dateTimeNow = datetime.now()
-
             #Load program basics
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)

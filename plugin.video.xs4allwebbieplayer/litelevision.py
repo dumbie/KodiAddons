@@ -8,13 +8,13 @@ import metadatainfo
 import var
 
 def list_update(listItem):
+    #Set the current player play time
+    dateTimeNow = datetime.now()
+
     #Get channel information from item
     channelId = listItem.getProperty('ChannelId')
     channelName = listItem.getProperty('ChannelName')
     channelNumberAccent = listItem.getProperty('ChannelNumberAccent')
-
-    #Set the current player play time
-    dateTimeNow = datetime.now()
 
     try:
         #Get json epg from today
