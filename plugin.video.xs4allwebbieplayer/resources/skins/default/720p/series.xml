@@ -144,11 +144,11 @@
             <left>10</left>
             <top>245</top>
             <width>35</width>
-            <height>480</height>
+            <height>475</height>
             <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
             <control type="button" id="9000">
                 <width>35</width>
-                <height>480</height>
+                <height>475</height>
                 <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
                 <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
             </control>
@@ -225,6 +225,7 @@
             <left>50</left>
             <top>245</top>
             <width>485</width>
+            <height>475</height>
             <control type="panel" id="1000">
                 <onup>1001</onup>
                 <onleft>SendClick(9000)</onleft>
@@ -351,7 +352,6 @@
             <control type="scrollbar" id="2000">
                 <right>0</right>
                 <width>8</width>
-                <height>470</height>
                 <onup>1001</onup>
                 <onleft>1000</onleft>
                 <onright>1002</onright>
@@ -377,6 +377,7 @@
             <top>270</top>
             <right>50</right>
             <width>688</width>
+            <height>450</height>
             <control type="panel" id="1002">
                 <onup>1001</onup>
                 <onleft>2000</onleft>
@@ -479,7 +480,6 @@
             <control type="scrollbar" id="2002">
                 <right>0</right>
                 <width>8</width>
-                <height>448</height>
                 <onup>1001</onup>
                 <onleft>1002</onleft>
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>

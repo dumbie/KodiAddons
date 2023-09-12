@@ -71,11 +71,10 @@
                 </control>
                 <control type="scrollbar" id="2000">
                     <width>700</width>
-                    <height>525</height>
+                    <onup>4000</onup>
                     <texturesliderbarfocus>common/scrollbar_accent_800.png</texturesliderbarfocus>
                     <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_800.png</texturesliderbar>
                     <texturesliderbackground>-</texturesliderbackground>
-                    <onup>4000</onup>
                 </control>
             </control>
         </control>

@@ -180,11 +180,10 @@
             </control>
             <control type="scrollbar" id="2000">
                 <width>375</width>
-                <height>475</height>
+                <onleft>2001</onleft>
                 <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
-                <onleft>2001</onleft>
             </control>
         </control>
         <!-- Fullscreen Button -->
@@ -192,11 +191,11 @@
             <left>10</left>
             <top>245</top>
             <width>35</width>
-            <height>480</height>
+            <height>475</height>
             <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
             <control type="button" id="9000">
                 <width>35</width>
-                <height>480</height>
+                <height>475</height>
                 <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
                 <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
             </control>
@@ -273,6 +272,7 @@
             <left>50</left>
             <top>245</top>
             <width>800</width>
+            <height>475</height>
             <control type="panel" id="1000">
                 <onup>1001</onup>
                 <onleft>SendClick(9000)</onleft>
@@ -553,7 +553,6 @@
             <control type="scrollbar" id="2001">
                 <right>0</right>
                 <width>8</width>
-                <height>418</height>
                 <onup>1001</onup>
                 <onleft>1000</onleft>
                 <onright>2000</onright>

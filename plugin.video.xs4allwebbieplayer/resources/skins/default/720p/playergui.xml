@@ -227,7 +227,6 @@
             <control type="scrollbar" id="2002">
                 <right>5</right>
                 <width>8</width>
-                <height>720</height>
                 <onleft>1002</onleft>
                 <onright>1001</onright>
                 <orientation>vertical</orientation>
@@ -338,13 +337,12 @@
             <control type="scrollbar" id="2001">
                 <right>5</right>
                 <width>8</width>
-                <height>720</height>
+                <onleft>1001</onleft>
+                <onright>2004</onright>
                 <orientation>vertical</orientation>
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
-                <onleft>1001</onleft>
-                <onright>2004</onright>
             </control>
         </control>
         <!-- Sidebar and Information -->
@@ -520,11 +518,10 @@
                 </control>
                 <control type="scrollbar" id="2004">
                     <width>390</width>
-                    <height>625</height>
+                    <onleft>2001</onleft>
                     <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
                     <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                     <texturesliderbackground>-</texturesliderbackground>
-                    <onleft>2001</onleft>
                 </control>
             </control>
         </control>

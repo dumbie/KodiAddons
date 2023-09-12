@@ -49,6 +49,9 @@ class Gui(xbmcgui.WindowXML):
         self.load_recording_series(False)
         self.load_channels(False, False)
 
+        #Force manual epg update
+        self.EpgManualUpdate = True
+
         #Start the epg update thread
         if var.thread_update_television_epg == None:
             var.thread_update_television_epg = Thread(target=self.thread_update_television_epg)

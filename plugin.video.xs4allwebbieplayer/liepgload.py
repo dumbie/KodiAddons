@@ -54,13 +54,6 @@ def list_load(listContainer, epgJson):
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
-            #Check if program vod is available for playback
-            contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
-            if 'CATCHUP' in contentOptionsArray:
-                ProgramIsAvailable = 'true'
-            else:
-                ProgramIsAvailable = 'false'
-
             #Check if the program is part of series
             ProgramRecordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
@@ -93,6 +86,12 @@ def list_load(listContainer, epgJson):
 
             #Check if program finished airing
             if ProgramProgressPercent >= 100:
+                #Check if program vod is available for playback
+                contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
+                if 'CATCHUP' in contentOptionsArray:
+                    ProgramIsAvailable = 'true'
+                else:
+                    ProgramIsAvailable = 'false'
                 listItem.setProperty('ProgramIsAvailable', ProgramIsAvailable)
 
             #Check if program is still to come
