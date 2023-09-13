@@ -52,10 +52,7 @@ class Gui(xbmcgui.WindowXML):
         #Force manual epg update
         self.EpgManualUpdate = True
 
-        #Start the epg update thread
-        if var.thread_update_television_epg == None:
-            var.thread_update_television_epg = Thread(target=self.thread_update_television_epg)
-            var.thread_update_television_epg.start()
+        self.start_threads()
 
     def onClick(self, clickId):
         if var.thread_zap_wait_timer == None:
@@ -103,6 +100,15 @@ class Gui(xbmcgui.WindowXML):
             self.open_context_menu()
         else:
             zap.check_remote_number(self, 1000, actionId, True, False)
+
+    def start_threads(self):
+        #Start the epg update thread
+        if var.thread_update_television_epg != None:
+            var.thread_update_television_epg = None
+            xbmc.sleep(500)
+        if var.thread_update_television_epg == None:
+            var.thread_update_television_epg = Thread(target=self.thread_update_television_epg)
+            var.thread_update_television_epg.start()
 
     def open_context_menu(self):
         dialogAnswers = []
@@ -217,7 +223,7 @@ class Gui(xbmcgui.WindowXML):
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
         self.EpgPauseUpdate = True
-        xbmc.sleep(200) #Wait for epg update to pause
+        xbmc.sleep(250) #Wait for epg update to pause
         self.switch_favorite_channel_code(listContainer, listItemSelected)
         self.EpgPauseUpdate = False
 
@@ -279,7 +285,7 @@ class Gui(xbmcgui.WindowXML):
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
         self.EpgPauseUpdate = True
-        xbmc.sleep(200) #Wait for epg update to pause
+        xbmc.sleep(250) #Wait for epg update to pause
         self.load_channels_code(forceLoad, forceUpdate)
         self.EpgPauseUpdate = False
 

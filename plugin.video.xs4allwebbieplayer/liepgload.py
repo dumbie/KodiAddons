@@ -65,6 +65,13 @@ def list_load(listContainer, epgJson):
             else:
                 ProgramRerun = 'false'
 
+            #Check if program vod playback is allowed
+            contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
+            if 'CATCHUP' in contentOptionsArray:
+                ProgramIsCatchup = 'true'
+            else:
+                ProgramIsCatchup = 'false'
+
             #Add program to the list container
             listItem = xbmcgui.ListItem()
             listItem.setProperty('ExternalId', ChannelExternalId)
@@ -73,6 +80,7 @@ def list_load(listContainer, epgJson):
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramRerun', ProgramRerun)
+            listItem.setProperty('ProgramIsCatchup', ProgramIsCatchup)
             listItem.setProperty('ProgramDuration', ProgramDurationString)
             listItem.setProperty('ProgramRecordSeriesId', ProgramRecordSeriesId)
             listItem.setProperty('ProgramDescriptionRaw', ProgramDescriptionRaw)
@@ -86,13 +94,7 @@ def list_load(listContainer, epgJson):
 
             #Check if program finished airing
             if ProgramProgressPercent >= 100:
-                #Check if program vod is available for playback
-                contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
-                if 'CATCHUP' in contentOptionsArray:
-                    ProgramIsAvailable = 'true'
-                else:
-                    ProgramIsAvailable = 'false'
-                listItem.setProperty('ProgramIsAvailable', ProgramIsAvailable)
+                listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
 
             #Check if program is still to come
             if ProgramProgressPercent <= 0:

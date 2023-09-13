@@ -42,6 +42,7 @@ def list_update_program(listItem):
     ProgramId = listItem.getProperty('ProgramId')
     ProgramNameProp = listItem.getProperty('ProgramName')
     ProgramDescriptionRaw = listItem.getProperty('ProgramDescriptionRaw')
+    ProgramIsCatchup = listItem.getProperty('ProgramIsCatchup')
     ProgramDetailsProp = listItem.getProperty('ProgramDetails')
     ProgramRecordSeriesId = listItem.getProperty('ProgramRecordSeriesId')
     ProgramTimeStartProp = listItem.getProperty('ProgramTimeStart')
@@ -90,6 +91,18 @@ def list_update_program(listItem):
     #Combine the program description
     ProgramEpgList = ProgramTimeStartString + ' ' + ProgramTimingList
     ProgramDescription = ProgramNameProp + ' ' + ProgramTimingDescription + '\n\n' + ProgramDetailsProp + '\n\n' + ProgramDescriptionRaw
+
+    #Check if program finished airing
+    if ProgramProgressPercent >= 100:
+        listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
+
+    #Check if program is still to come
+    if ProgramProgressPercent <= 0:
+        listItem.setProperty('ProgramIsUpcoming', 'true')
+
+    #Check if program is currently airing
+    if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
+        listItem.setProperty('ProgramIsAiring', 'true')
 
     #Update program list item
     listItem.setProperty('ProgramEpgList', ProgramEpgList)

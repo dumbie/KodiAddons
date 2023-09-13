@@ -45,24 +45,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         self.load_recording_event(False)
         self.load_recording_series(False)
         self.load_channels()
-
-        #Wait for previous threads to complete
-        if var.thread_update_playergui_info != None:
-            var.thread_update_playergui_info = None
-            xbmc.sleep(500)
-        if var.thread_hide_playergui_info != None:
-            var.thread_hide_playergui_info = None
-            xbmc.sleep(500)
-
-        #Start the update information thread
-        if var.thread_update_playergui_info == None:
-            var.thread_update_playergui_info = Thread(target=self.thread_update_playergui_info)
-            var.thread_update_playergui_info.start()
-
-        #Start the hide information thread
-        if var.thread_hide_playergui_info == None:
-            var.thread_hide_playergui_info = Thread(target=self.thread_hide_playergui_info)
-            var.thread_hide_playergui_info.start()
+        self.start_threads()
 
     def onClick(self, clickId):
         if var.thread_zap_wait_timer == None:
@@ -179,6 +162,23 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif actionId == var.ACTION_PLAYER_PLAYPAUSE: return True
         elif actionId == var.ACTION_MOUSE_RIGHT_CLICK: return True
         return False
+
+    def start_threads(self):
+        #Start the update information thread
+        if var.thread_update_playergui_info != None:
+            var.thread_update_playergui_info = None
+            xbmc.sleep(500)
+        if var.thread_update_playergui_info == None:
+            var.thread_update_playergui_info = Thread(target=self.thread_update_playergui_info)
+            var.thread_update_playergui_info.start()
+
+        #Start the hide information thread
+        if var.thread_hide_playergui_info != None:
+            var.thread_hide_playergui_info = None
+            xbmc.sleep(500)
+        if var.thread_hide_playergui_info == None:
+            var.thread_hide_playergui_info = Thread(target=self.thread_hide_playergui_info)
+            var.thread_hide_playergui_info.start()
 
     def switch_subtitles(self):
         if xbmc.getCondVisibility("VideoPlayer.HasSubtitles"):
@@ -496,7 +496,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def load_channels(self, forceLoad=False):
         self.EpgPauseUpdate = True
-        xbmc.sleep(200) #Wait for epg update to pause
+        xbmc.sleep(250) #Wait for epg update to pause
         self.load_channels_code(forceLoad)
         self.EpgPauseUpdate = False
 
