@@ -26,14 +26,18 @@ def switch_to_page():
 def close_the_page():
     if var.guiEpg != None:
         #Stop the update progress thread
-        var.thread_update_epg_progress = None
+        var.thread_update_program_progress = None
+        var.thread_update_channel_progress = None
 
         #Close the shown window
         var.guiEpg.close()
         var.guiEpg = None
 
 class Gui(xbmcgui.WindowXML):
-    EpgManualUpdate = False
+    ProgramPauseUpdate = False
+    ProgramManualUpdate = False
+    ChannelPauseUpdate = False
+    ChannelManualUpdate = False
 
     def onInit(self):
         self.buttons_add_navigation()
@@ -45,12 +49,10 @@ class Gui(xbmcgui.WindowXML):
             self.load_programs()
 
             #Force manual epg update
-            self.EpgManualUpdate = True
+            self.ProgramManualUpdate = True
+            self.ChannelManualUpdate = True
 
-            #Start the epg update thread
-            if var.thread_update_epg_progress == None:
-                var.thread_update_epg_progress = Thread(target=self.thread_update_epg_progress)
-                var.thread_update_epg_progress.start()
+            self.start_threads()
 
     def onClick(self, clickId):
         if var.thread_zap_wait_timer == None:
@@ -122,6 +124,23 @@ class Gui(xbmcgui.WindowXML):
                 self.open_context_menu(clickedControl)
         else:
             zap.check_remote_number(self, 1001, actionId, True, True)
+
+    def start_threads(self):
+        #Start the program update thread
+        if var.thread_update_program_progress != None:
+            var.thread_update_program_progress = None
+            xbmc.sleep(500)
+        if var.thread_update_program_progress == None:
+            var.thread_update_program_progress = Thread(target=self.thread_update_program_progress)
+            var.thread_update_program_progress.start()
+
+        #Start the channel update thread
+        if var.thread_update_channel_progress != None:
+            var.thread_update_channel_progress = None
+            xbmc.sleep(500)
+        if var.thread_update_channel_progress == None:
+            var.thread_update_channel_progress = Thread(target=self.thread_update_channel_progress)
+            var.thread_update_channel_progress.start()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1000)
@@ -303,6 +322,9 @@ class Gui(xbmcgui.WindowXML):
         #Update all channel status icons
         for itemNum in range(0, listitemcount):
             try:
+                #Check if epg is allowed to update
+                if self.ChannelPauseUpdate: return
+
                 updateItem = listcontainer.getListItem(itemNum)
                 liepgupdate.list_update_channel(updateItem)
             except:
@@ -316,6 +338,9 @@ class Gui(xbmcgui.WindowXML):
         #Update all program progress and status
         for itemNum in range(0, listitemcount):
             try:
+                #Check if epg is allowed to update
+                if self.ProgramPauseUpdate: return
+
                 updateItem = listcontainer.getListItem(itemNum)
                 liepgupdate.list_update_program(updateItem)
             except:
@@ -335,10 +360,12 @@ class Gui(xbmcgui.WindowXML):
         #Update alarm icon in the channel and epg list
         if alarmAdded == True:
             #Force manual epg update
-            self.EpgManualUpdate = True
+            self.ProgramManualUpdate = True
+            self.ChannelManualUpdate = True
         elif alarmAdded == 'Remove':
             #Force manual epg update
-            self.EpgManualUpdate = True
+            self.ProgramManualUpdate = True
+            self.ChannelManualUpdate = True
 
     def search_channel(self):
         #Open the search dialog
@@ -383,6 +410,13 @@ class Gui(xbmcgui.WindowXML):
         var.EpgCurrentChannelName = listItemSelected.getProperty('ChannelName')
 
     def load_channels(self, forceLoad=False):
+        self.ChannelPauseUpdate = True
+        xbmc.sleep(250) #Wait for epg update to pause
+        loadResult = self.load_channels_code(forceLoad)
+        self.ChannelPauseUpdate = False
+        return loadResult
+
+    def load_channels_code(self, forceLoad=False):
         #Get and check the list container
         listcontainer = self.getControl(1001)
         if forceLoad == False:
@@ -447,7 +481,7 @@ class Gui(xbmcgui.WindowXML):
             return False
 
         #Force manual epg update
-        self.EpgManualUpdate = True
+        self.ChannelManualUpdate = True
 
         return True
 
@@ -460,6 +494,12 @@ class Gui(xbmcgui.WindowXML):
         if downloadResult == False: return False
 
     def load_programs(self, forceUpdate=False, forceLoad=False, forceFocus=False):
+        self.ProgramPauseUpdate = True
+        xbmc.sleep(250) #Wait for epg update to pause
+        self.load_programs_code(forceUpdate, forceLoad, forceFocus)
+        self.ProgramPauseUpdate = False
+
+    def load_programs_code(self, forceUpdate=False, forceLoad=False, forceFocus=False):
         #Get and check the list container
         listcontainer = self.getControl(1002)
         listitemcount = listcontainer.size()
@@ -523,7 +563,7 @@ class Gui(xbmcgui.WindowXML):
         self.count_epg(var.EpgCurrentChannelName)
 
         #Force manual epg update
-        self.EpgManualUpdate = True
+        self.ProgramManualUpdate = True
 
         #Update epg variables
         var.EpgPreviousChannelId = var.EpgCurrentChannelId
@@ -601,18 +641,28 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 1, str(listcontainer.size()) + " programma's gevonden")
                 func.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
 
-    def thread_update_epg_progress(self):
+    def thread_update_program_progress(self):
         threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
-        while var.thread_update_epg_progress != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+        while var.thread_update_program_progress != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
             threadCurrentTime = datetime.now().strftime('%H:%M')
-            if threadLastTime != threadCurrentTime or self.EpgManualUpdate:
+            if threadLastTime != threadCurrentTime or self.ProgramManualUpdate:
                 threadLastTime = threadCurrentTime
-                self.EpgManualUpdate = False
-
-                #Update channel status
-                self.update_channel_status()
+                self.ProgramManualUpdate = False
 
                 #Update program status
                 self.update_program_status()
+            else:
+                xbmc.sleep(1000)
+
+    def thread_update_channel_progress(self):
+        threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
+        while var.thread_update_channel_progress != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+            threadCurrentTime = datetime.now().strftime('%H:%M')
+            if threadLastTime != threadCurrentTime or self.ChannelManualUpdate:
+                threadLastTime = threadCurrentTime
+                self.ChannelManualUpdate = False
+
+                #Update channel status
+                self.update_channel_status()
             else:
                 xbmc.sleep(1000)

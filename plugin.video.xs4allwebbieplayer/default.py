@@ -68,8 +68,10 @@ def reset_userdata():
             files.removeFileUser('ChannelsRadio.js')
             files.removeFileUser('ChannelsTelevision.js')
             files.removeFileUser('FavoriteTelevision.js')
+            files.removeFileUser('FavoriteRadio.js')
             files.removeFileUser('SearchHistorySearch.js')
             files.removeFileUser('SearchHistoryChannel.js')
+            files.removeFileUser('SearchHistoryRadio.js')
             files.removeDirectoryUser('epg')
             xbmcgui.Dialog().notification(var.addonname, 'User data bestanden zijn verwijderd.', var.addonicon, 2500, False)
     except:
@@ -114,7 +116,8 @@ def stop_addon_threads():
     var.thread_zap_wait_timer = None
     var.thread_channel_delay_timer = None
     var.thread_update_television_epg = None
-    var.thread_update_epg_progress = None
+    var.thread_update_program_progress = None
+    var.thread_update_channel_progress = None
     var.thread_update_playergui_info = None
     var.thread_hide_playergui_info = None
     var.thread_sleep_timer = None
