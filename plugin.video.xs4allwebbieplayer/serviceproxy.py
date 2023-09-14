@@ -1,6 +1,8 @@
 from threading import Thread
 import hybrid
 import var
+import path
+import xbmcgui
 
 class ProxyRequestHandler(hybrid.proxyRequestHandler):
     def do_GET(self):
@@ -22,17 +24,30 @@ class ProxyRequestThreading(hybrid.proxyThreading, hybrid.proxyServer):
     pass
 
 def thread_proxy_server():
-    var.ProxyServer.serve_forever()
+    try:
+        if var.ProxyServer != None:
+            var.ProxyServer.serve_forever()
+    except:
+        pass
 
 def start_proxy_server():
-    if var.ProxyServer == None:
-        var.ProxyServer = ProxyRequestThreading(('127.0.0.1', 4444), ProxyRequestHandler)
-        var.thread_proxy_server = Thread(target=thread_proxy_server)
-        var.thread_proxy_server.start()
+    try:
+        if var.ProxyServer == None:
+            var.ProxyServer = ProxyRequestThreading(('127.0.0.1', 4444), ProxyRequestHandler)
+            if var.thread_proxy_server == None:
+                var.thread_proxy_server = Thread(target=thread_proxy_server)
+                var.thread_proxy_server.start()
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, "Proxy server starten mislukt", notificationIcon, 2500, False)
 
 def stop_proxy_server():
-    if var.ProxyServer != None:
-        var.ProxyServer.shutdown()
-        var.ProxyServer.server_close()
-        var.ProxyServer = None
-        var.thread_proxy_server = None
+    try:
+        if var.ProxyServer != None:
+            var.ProxyServer.shutdown()
+            var.ProxyServer.server_close()
+            var.ProxyServer = None
+            var.thread_proxy_server = None
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, "Proxy server stoppen mislukt", notificationIcon, 2500, False)
