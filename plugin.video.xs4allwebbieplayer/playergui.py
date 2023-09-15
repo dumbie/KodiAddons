@@ -12,6 +12,7 @@ import liplayergui
 import recordingfunc
 import sleep
 import stream
+import threadfunc
 import var
 import zap
 
@@ -188,14 +189,14 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmcgui.Dialog().notification(var.addonname, 'Ondertiteling niet beschikbaar.', notificationIcon, 2500, False)
 
     def thread_update_playergui_info(self):
-        while var.thread_update_playergui_info != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+        while threadfunc.loop_allowed_addon(var.thread_update_playergui_info):
             playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
             if playerSeek:
                 self.update_epg_information()
             xbmc.sleep(333)
 
     def thread_hide_playergui_info(self):
-        while var.thread_hide_playergui_info != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+        while threadfunc.loop_allowed_addon(var.thread_hide_playergui_info):
             lastInteractSeconds = int((datetime.now() - self.PlayerInfoLastInteraction).total_seconds())
             if lastInteractSeconds >= int(var.addon.getSetting('PlayerInformationCloseTime')):
                 self.hide_epg()
@@ -203,7 +204,7 @@ class Gui(xbmcgui.WindowXMLDialog):
                 xbmc.sleep(1000)
 
     def thread_channel_delay_timer(self):
-        while var.thread_channel_delay_timer != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+        while threadfunc.loop_allowed_addon(var.thread_channel_delay_timer):
             xbmc.sleep(100)
             interactSecond = 3
             lastInteractSeconds = int((datetime.now() - var.ChannelDelayDateTime).total_seconds())

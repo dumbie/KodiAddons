@@ -24,6 +24,7 @@ import sleep
 import sport
 import stream
 import television
+import threadfunc
 import var
 import widevine
 import vod
@@ -39,8 +40,8 @@ def close_the_page():
         #Stop the playing media
         default.stop_playing_media()
 
-        #Stop the addon threads
-        default.stop_addon_threads()
+        #Stop and reset all threads
+        threadfunc.stop_reset_threads()
 
         #Clear used global variables
         default.clear_home_variables()

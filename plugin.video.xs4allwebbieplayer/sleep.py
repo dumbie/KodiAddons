@@ -5,6 +5,7 @@ import xbmcgui
 import dialog
 import func
 import path
+import threadfunc
 import var
 
 def dialog_sleep():
@@ -45,8 +46,8 @@ def dialog_sleep():
         sleep_timeroff(True)
 
 def thread_sleep_timer():
-    threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
-    while var.thread_sleep_timer != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+    threadLastTime = ''
+    while threadfunc.loop_allowed_addon(var.thread_sleep_timer):
         threadCurrentTime = datetime.now().strftime('%H:%M')
         if threadLastTime != threadCurrentTime:
             threadLastTime = threadCurrentTime

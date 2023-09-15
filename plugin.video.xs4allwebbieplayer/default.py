@@ -111,18 +111,6 @@ def check_login_settings():
     else:
         return True
 
-def stop_addon_threads():
-    var.thread_check_requirements = None
-    var.thread_zap_wait_timer = None
-    var.thread_channel_delay_timer = None
-    var.thread_update_television_epg = None
-    var.thread_update_program_progress = None
-    var.thread_update_channel_progress = None
-    var.thread_update_playergui_info = None
-    var.thread_hide_playergui_info = None
-    var.thread_sleep_timer = None
-    var.thread_login_auto = None
-
 def reset_home_variables():
     var.windowHome.clearProperty('WebbiePlayerSleepTimer')
 

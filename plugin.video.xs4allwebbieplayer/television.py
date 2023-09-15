@@ -15,6 +15,7 @@ import litelevision
 import recordingfunc
 import searchdialog
 import stream
+import threadfunc
 import var
 import zap
 
@@ -32,7 +33,7 @@ def switch_to_page():
 def close_the_page():
     if var.guiTelevision != None:
         #Stop the epg refresh thread
-        var.thread_update_television_epg = None
+        var.thread_update_television_program = None
 
         #Close the shown window
         var.guiTelevision.close()
@@ -48,10 +49,6 @@ class Gui(xbmcgui.WindowXML):
         self.load_recording_event(False)
         self.load_recording_series(False)
         self.load_channels(False, False)
-
-        #Force manual epg update
-        self.EpgManualUpdate = True
-
         self.start_threads()
 
     def onClick(self, clickId):
@@ -102,13 +99,17 @@ class Gui(xbmcgui.WindowXML):
             zap.check_remote_number(self, 1000, actionId, True, False)
 
     def start_threads(self):
+        #Force manual epg update
+        self.EpgManualUpdate = True
+        self.EpgForceUpdate = False
+
         #Start the epg update thread
-        if var.thread_update_television_epg != None:
-            var.thread_update_television_epg = None
+        if var.thread_update_television_program != None:
+            var.thread_update_television_program = None
             xbmc.sleep(500)
-        if var.thread_update_television_epg == None:
-            var.thread_update_television_epg = Thread(target=self.thread_update_television_epg)
-            var.thread_update_television_epg.start()
+        if var.thread_update_television_program == None:
+            var.thread_update_television_program = Thread(target=self.thread_update_television_epg)
+            var.thread_update_television_program.start()
 
     def open_context_menu(self):
         dialogAnswers = []
@@ -373,8 +374,8 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
 
     def thread_update_television_epg(self):
-        threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
-        while var.thread_update_television_epg != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+        threadLastTime = ''
+        while threadfunc.loop_allowed_addon(var.thread_update_television_program):
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
                 threadLastTime = threadCurrentTime

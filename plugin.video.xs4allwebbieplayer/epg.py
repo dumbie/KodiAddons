@@ -13,6 +13,7 @@ import path
 import recordingfunc
 import searchdialog
 import stream
+import threadfunc
 import liepgload
 import liepgupdate
 import var
@@ -26,8 +27,8 @@ def switch_to_page():
 def close_the_page():
     if var.guiEpg != None:
         #Stop the update progress thread
-        var.thread_update_program_progress = None
-        var.thread_update_channel_progress = None
+        var.thread_update_epg_program = None
+        var.thread_update_epg_channel = None
 
         #Close the shown window
         var.guiEpg.close()
@@ -47,11 +48,6 @@ class Gui(xbmcgui.WindowXML):
         if channelsLoaded == True:
             self.set_channel_epg_variables()
             self.load_programs()
-
-            #Force manual epg update
-            self.ProgramManualUpdate = True
-            self.ChannelManualUpdate = True
-
             self.start_threads()
 
     def onClick(self, clickId):
@@ -126,21 +122,25 @@ class Gui(xbmcgui.WindowXML):
             zap.check_remote_number(self, 1001, actionId, True, True)
 
     def start_threads(self):
+        #Force manual epg update
+        self.ProgramManualUpdate = True
+        self.ChannelManualUpdate = True
+
         #Start the program update thread
-        if var.thread_update_program_progress != None:
-            var.thread_update_program_progress = None
+        if var.thread_update_epg_program != None:
+            var.thread_update_epg_program = None
             xbmc.sleep(500)
-        if var.thread_update_program_progress == None:
-            var.thread_update_program_progress = Thread(target=self.thread_update_program_progress)
-            var.thread_update_program_progress.start()
+        if var.thread_update_epg_program == None:
+            var.thread_update_epg_program = Thread(target=self.thread_update_program_progress)
+            var.thread_update_epg_program.start()
 
         #Start the channel update thread
-        if var.thread_update_channel_progress != None:
-            var.thread_update_channel_progress = None
+        if var.thread_update_epg_channel != None:
+            var.thread_update_epg_channel = None
             xbmc.sleep(500)
-        if var.thread_update_channel_progress == None:
-            var.thread_update_channel_progress = Thread(target=self.thread_update_channel_progress)
-            var.thread_update_channel_progress.start()
+        if var.thread_update_epg_channel == None:
+            var.thread_update_epg_channel = Thread(target=self.thread_update_channel_progress)
+            var.thread_update_epg_channel.start()
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1000)
@@ -642,8 +642,8 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchChannelTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
 
     def thread_update_program_progress(self):
-        threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
-        while var.thread_update_program_progress != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+        threadLastTime = ''
+        while threadfunc.loop_allowed_addon(var.thread_update_epg_program):
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime or self.ProgramManualUpdate:
                 threadLastTime = threadCurrentTime
@@ -655,8 +655,8 @@ class Gui(xbmcgui.WindowXML):
                 xbmc.sleep(1000)
 
     def thread_update_channel_progress(self):
-        threadLastTime = (datetime.now() - timedelta(minutes=1)).strftime('%H:%M')
-        while var.thread_update_channel_progress != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+        threadLastTime = ''
+        while threadfunc.loop_allowed_addon(var.thread_update_epg_channel):
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime or self.ChannelManualUpdate:
                 threadLastTime = threadCurrentTime

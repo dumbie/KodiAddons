@@ -4,6 +4,7 @@ import xbmc
 import func
 import lifunc
 import stream
+import threadfunc
 import var
 
 def check_remote_number(_self, controlId, actionId, selectMode, clickOnSelection):
@@ -94,7 +95,7 @@ def zap_remote_number(_self):
     stream.switch_channel_tv_listitem(listItemSelected, False, True)
 
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
-    while var.thread_zap_wait_timer != None and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True:
+    while threadfunc.loop_allowed_addon(var.thread_zap_wait_timer):
         xbmc.sleep(100)
         interactSecond = 3
         lastInteractSeconds = int((datetime.now() - var.ZapDelayDateTime).total_seconds())

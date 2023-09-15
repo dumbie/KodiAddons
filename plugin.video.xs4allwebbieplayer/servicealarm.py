@@ -4,6 +4,7 @@ import alarm
 import xbmc
 import xbmcgui
 import func
+import threadfunc
 import path
 import var
 
@@ -43,7 +44,7 @@ def alarm_notification():
 
 def thread_alarm_timer():
     threadLastTime = ''
-    while var.thread_alarm_timer != None and var.addonmonitor.abortRequested() == False: #Service thread no need to check addon running
+    while threadfunc.loop_allowed_service(var.thread_alarm_timer):
         threadCurrentTime = datetime.now().strftime('%H:%M')
         if threadLastTime != threadCurrentTime:
             threadLastTime = threadCurrentTime
@@ -54,6 +55,9 @@ def thread_alarm_timer():
             xbmc.sleep(2000)
 
 def start_alarm_check():
+    if var.thread_alarm_timer == None:
+        var.thread_alarm_timer = None
+        xbmc.sleep(500)
     if var.thread_alarm_timer == None:
         var.thread_alarm_timer = Thread(target=thread_alarm_timer)
         var.thread_alarm_timer.start()
