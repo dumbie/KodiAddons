@@ -74,7 +74,6 @@
             <left>50</left>
             <width>1230</width>
             <height>30</height>
-            <label>TV Gids wordt geladen, nog even geduld...</label>
             <textcolor>FFFFFFFF</textcolor>
         </control>
         <!-- Volume Muted -->

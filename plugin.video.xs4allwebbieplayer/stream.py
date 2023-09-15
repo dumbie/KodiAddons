@@ -127,6 +127,8 @@ def play_stream_recorded(listItem, Windowed):
     listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
     listItem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     listItem.setProperty('inputstream.adaptive.stream_headers', StreamHeaders)
+    listItem.setMimeType('application/xml+dash')
+    listItem.setContentLookup(False)
 
     #Get and set stream license key
     try:
@@ -240,6 +242,8 @@ def play_stream_program(listItem, Windowed):
     listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
     listItem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     listItem.setProperty('inputstream.adaptive.stream_headers', StreamHeaders)
+    listItem.setMimeType('application/xml+dash')
+    listItem.setContentLookup(False)
 
     #Get and set stream license key
     try:
@@ -352,6 +356,8 @@ def play_stream_vod(listItem, Windowed):
     listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
     listItem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     listItem.setProperty('inputstream.adaptive.stream_headers', StreamHeaders)
+    listItem.setMimeType('application/xml+dash')
+    listItem.setContentLookup(False)
 
     #Get and set stream license key
     try:
@@ -468,6 +474,8 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
     listItem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
     listItem.setProperty('inputstream.adaptive.stream_headers', StreamHeaders)
     listItem.setProperty('inputstream.adaptive.manifest_update_parameter', 'full')
+    listItem.setMimeType('application/xml+dash')
+    listItem.setContentLookup(False)
 
     #Get and set stream license key
     try:

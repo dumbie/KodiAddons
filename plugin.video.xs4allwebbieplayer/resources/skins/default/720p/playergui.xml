@@ -28,28 +28,6 @@
             <texturefocus>-</texturefocus>
             <texturenofocus>-</texturenofocus>
         </control>
-        <!-- Zap Number -->
-        <control type="group" id="7000">
-            <height>110</height>
-            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
-            <!-- Background -->
-            <control type="image">
-                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
-            </control>
-            <!-- Underbar -->
-            <control type="image">
-                <top>105</top>
-                <height>5</height>
-                <texture>common/background_accent.png</texture>
-            </control>
-            <!-- Text -->
-            <control type="label" id="7001">
-                <top>50</top>
-                <left>5</left>
-                <height>60</height>
-                <aligny>center</aligny>
-            </control>
-        </control>
         <!-- Player Progress -->
         <control type="group">
             <width>880</width>
@@ -350,7 +328,7 @@
             <right>0</right>
             <width>400</width>
             <height>720</height>
-            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Forwarding | Player.Rewinding | Player.Paused</visible>
+            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
             <!-- Background -->
@@ -523,6 +501,28 @@
                     <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                     <texturesliderbackground>-</texturesliderbackground>
                 </control>
+            </control>
+        </control>
+        <!-- Zap Number -->
+        <control type="group" id="7000">
+            <height>110</height>
+            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Underbar -->
+            <control type="image">
+                <top>105</top>
+                <height>5</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Text -->
+            <control type="label" id="7001">
+                <top>50</top>
+                <left>5</left>
+                <height>60</height>
+                <aligny>center</aligny>
             </control>
         </control>
     </controls>
