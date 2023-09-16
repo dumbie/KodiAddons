@@ -56,9 +56,6 @@ def thread_alarm_timer():
 
 def start_alarm_check():
     if var.thread_alarm_timer == None:
-        var.thread_alarm_timer = None
-        xbmc.sleep(500)
-    if var.thread_alarm_timer == None:
         var.thread_alarm_timer = Thread(target=thread_alarm_timer)
         var.thread_alarm_timer.start()
 

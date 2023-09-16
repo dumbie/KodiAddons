@@ -219,9 +219,6 @@ def ApiLogin(LoginNotification=False):
     var.ApiLastLogin = datetime.now()
 
     #Start the auto login thread
-    if var.thread_login_auto != None:
-        var.thread_login_auto = None
-        xbmc.sleep(500)
     if var.thread_login_auto == None:
         var.thread_login_auto = Thread(target=thread_login_auto)
         var.thread_login_auto.start()
