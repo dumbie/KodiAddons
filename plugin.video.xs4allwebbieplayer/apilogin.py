@@ -16,8 +16,8 @@ import var
 def ApiGenerateDeviceId():
     if var.addon.getSetting('LoginDeviceId120') == '':
         DeviceId = ''
-        CurrentTime = str(datetime.utcnow())
-        random.seed(CurrentTime)
+        CurrentTimeUtc = str(datetime.utcnow())
+        random.seed(CurrentTimeUtc)
         for _ in range(64):
             DeviceId += str(random.randint(0,9))
 
@@ -195,8 +195,6 @@ def ApiLogin(LoginNotification=False):
 
     #Filter and clone the cookie contents
     HeaderCookie = hybrid.urllib_getheader(DownloadDataHttp, 'Set-Cookie')
-    
-    var.ApiLoginCookie = ''
     try:
         cookie_split = re.findall(r"([^\s]*?=.*?(?=;|,|$))", HeaderCookie)
         for cookie in cookie_split:
@@ -204,7 +202,8 @@ def ApiLogin(LoginNotification=False):
                 var.ApiLoginCookie += cookie + ';'
         var.ApiLoginCookie = var.ApiLoginCookie[:-1]
     except:
-        pass
+        var.ApiLoginCookie = 'NoCookie'
+        var.ApiLoginToken = 'NoToken'
 
     #Show the login notification
     if LoginNotification == True:

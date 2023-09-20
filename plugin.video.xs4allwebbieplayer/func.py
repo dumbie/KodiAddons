@@ -91,7 +91,7 @@ def string_shorten(string, length, ending):
 
 #Day offset from datetime
 def day_offset_from_datetime(dayDateTime):
-    return (datetime.today() - dayDateTime).days
+    return (datetime.now().date() - dayDateTime.date()).days
 
 #Datetime from day offset
 def datetime_from_day_offset(numberDayOffset):
@@ -99,7 +99,7 @@ def datetime_from_day_offset(numberDayOffset):
 
 #Day description from datetime
 def day_string_from_datetime(dayDateTime, includeYear=True):
-    todayDateTime = datetime.today().date()
+    todayDateTime = datetime.now().date()
     dayDateTime = dayDateTime.date()
     if includeYear:
         dayString = dayDateTime.strftime('%a, %d %B %Y')
@@ -120,7 +120,7 @@ def day_string_from_datetime(dayDateTime, includeYear=True):
 
 #Day description from day offset
 def day_string_from_day_offset(numberDayOffset, includeYear=True):
-    todayDateTime = datetime.today().date()
+    todayDateTime = datetime.now().date()
     dayDateTime = todayDateTime + timedelta(days=numberDayOffset)
     if includeYear:
         dayString = dayDateTime.strftime('%a, %d %B %Y')
@@ -175,7 +175,7 @@ def datetime_to_midnight(datetimeFull):
 
 #Get days in current year
 def days_in_year():
-    TodayYear = datetime.today().year
+    TodayYear = datetime.now().year
     LastYear = date(TodayYear - 1, 1, 1)
     CurrentYear = date(TodayYear, 1, 1)
     return (CurrentYear - LastYear).days

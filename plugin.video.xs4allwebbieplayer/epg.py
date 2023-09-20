@@ -406,7 +406,6 @@ class Gui(xbmcgui.WindowXML):
             return
 
         var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
-        var.EpgCurrentExternalId = listItemSelected.getProperty('ExternalId')
         var.EpgCurrentChannelName = listItemSelected.getProperty('ChannelName')
 
     def load_channels(self, forceLoad=False):

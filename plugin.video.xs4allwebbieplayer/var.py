@@ -186,7 +186,6 @@ EpgPreviousLoadDateTime = datetime(1970,1,1)
 EpgCurrentDayJson = []
 EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
-EpgCurrentExternalId = ''
 EpgCurrentChannelName = ''
 EpgNavigateProgramId = ''
 EpgDaysOffsetFuture = 7
