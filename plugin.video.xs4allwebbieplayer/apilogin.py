@@ -192,8 +192,17 @@ def ApiLogin(LoginNotification=False):
 
     #Read and set the returned token
     var.ApiLoginToken = hybrid.urllib_getheader(DownloadDataHttp, 'X-Xsrf-Token')
+    if func.string_isnullorempty(var.ApiLoginToken) == True:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Login token lezen mislukt.', notificationIcon, 2500, False)
+        var.ApiLoggedIn = False
+        var.ApiLastLogin = datetime(1970, 1, 1)
+        var.ApiLoginCookie = ''
+        var.ApiLoginToken = ''
+        return False
 
     #Filter and clone the cookie contents
+    var.ApiLoginCookie = ''
     HeaderCookie = hybrid.urllib_getheader(DownloadDataHttp, 'Set-Cookie')
     try:
         cookie_split = re.findall(r"([^\s]*?=.*?(?=;|,|$))", HeaderCookie)
@@ -202,8 +211,15 @@ def ApiLogin(LoginNotification=False):
                 var.ApiLoginCookie += cookie + ';'
         var.ApiLoginCookie = var.ApiLoginCookie[:-1]
     except:
-        var.ApiLoginCookie = 'NoCookie'
-        var.ApiLoginToken = 'NoToken'
+        pass
+    if func.string_isnullorempty(var.ApiLoginCookie) == True:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Login cookie lezen mislukt.', notificationIcon, 2500, False)
+        var.ApiLoggedIn = False
+        var.ApiLastLogin = datetime(1970, 1, 1)
+        var.ApiLoginCookie = ''
+        var.ApiLoginToken = ''
+        return False
 
     #Show the login notification
     if LoginNotification == True:
