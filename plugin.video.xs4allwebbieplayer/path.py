@@ -153,7 +153,7 @@ def search_series():
     return downloadPath
 
 def search_program(programName):
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isTvPremiere=true&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999&orderBy=airingStartTime&sortOrder=desc')
+    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&filter_fuzzy=true&from=0&to=9999&orderBy=airingStartTime&sortOrder=desc')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
