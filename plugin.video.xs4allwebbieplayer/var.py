@@ -96,6 +96,7 @@ LaunchArgument = ''
 DialogResult = None
 
 #Thread variables
+thread_notification = None
 thread_check_requirements = None
 thread_zap_wait_timer = None
 thread_channel_delay_timer = None

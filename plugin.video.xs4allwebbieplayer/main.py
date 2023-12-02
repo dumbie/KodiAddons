@@ -11,6 +11,7 @@ import epg
 import func
 import lifunc
 import helpx
+import hybrid
 import movies
 import path
 import radio
@@ -124,6 +125,11 @@ class Gui(xbmcgui.WindowXML):
         if var.thread_check_requirements == None:
             var.thread_check_requirements = Thread(target=widevine.thread_check_requirements)
             var.thread_check_requirements.start()
+
+        #Load Webbie Player notification
+        if var.thread_notification == None:
+            var.thread_notification = Thread(target=self.load_notification)
+            var.thread_notification.start()
 
         #Check if user is logged in
         if var.ApiLoggedIn == True:
@@ -369,6 +375,24 @@ class Gui(xbmcgui.WindowXML):
             #Update the list count
             countItem = lifunc.search_label_listcontainer(listcontainer, 'Alarmen')
             countItem.setLabel('Alarmen (' + str(len(var.AlarmDataJson)) + ')')
+        except:
+            pass
+
+    def load_notification(self):
+        try:
+            #Set the download headers
+            DownloadHeaders = {
+                "User-Agent": var.addon.getSetting('CustomUserAgent')
+            }
+
+            #Download notification message
+            RequestUrl = str(path.requirements()) + 'notification.txt'
+            DownloadRequest = hybrid.urllib_request(RequestUrl, headers=DownloadHeaders)
+            DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
+            DownloadDataString = DownloadDataHttp.read().decode()
+
+            #Set notification message
+            func.updateLabelText(self, 2, DownloadDataString)
         except:
             pass
 
