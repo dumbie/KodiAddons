@@ -110,6 +110,7 @@ def play_stream_recorded(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
+        StreamUrl = StreamUrl.replace('/Manifest?', '/.mpd?')
         if "&max_bitrate=" in StreamUrl:
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
@@ -225,6 +226,7 @@ def play_stream_program(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
+        StreamUrl = StreamUrl.replace('/Manifest?', '/.mpd?')
         if "&max_bitrate=" in StreamUrl:
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
@@ -339,6 +341,7 @@ def play_stream_vod(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
+        StreamUrl = StreamUrl.replace('/Manifest?', '/.mpd?')
         if "&max_bitrate=" in StreamUrl:
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
@@ -444,6 +447,7 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
+        StreamUrl = StreamUrl.replace('/Manifest?', '/.mpd?')
         if "&max_bitrate=" in StreamUrl:
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:

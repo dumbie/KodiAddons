@@ -438,13 +438,6 @@ def get_stream_targetbitrate():
         pass
     return '100000000'
 
-#Get stream target profile
-def get_stream_targetprofile(playReadyStream=False):
-    if playReadyStream:
-        return 'M03'
-    else:
-        return 'G03'
-
 #Get recording available time
 def recording_available_time(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
