@@ -110,7 +110,6 @@ def play_stream_recorded(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = StreamUrl.replace('/Manifest?', '/.mpd?')
         if "&max_bitrate=" in StreamUrl:
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
@@ -226,7 +225,6 @@ def play_stream_program(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = StreamUrl.replace('/Manifest?', '/.mpd?')
         if "&max_bitrate=" in StreamUrl:
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
@@ -341,7 +339,6 @@ def play_stream_vod(listItem, Windowed):
     #Get and adjust the stream url
     try:
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
-        StreamUrl = StreamUrl.replace('/Manifest?', '/.mpd?')
         if "&max_bitrate=" in StreamUrl:
             StreamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), StreamUrl)
         else:
@@ -455,6 +452,16 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
+        return
+
+    #Download mpd to gain access to no drm stream
+    try:
+        DownloadRequest = hybrid.urllib_request(StreamUrl, headers=StreamHeadersDict)
+        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
+        StreamUrl = StreamUrl.replace('v.isml/', 'n.isml/')
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/television.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Stream zonder DRM is niet beschikbaar.', notificationIcon, 2500, False)
         return
 
     #Update stream url with localhost proxy
