@@ -75,12 +75,12 @@
             <textcolor>FFFFFFFF</textcolor>
         </control>
         <control type="label" id="4">
-            <top>162</top>
-            <right>50</right>
-            <width>1230</width>
+            <top>130</top>
+            <left>325</left>
+            <width>500</width>
             <height>30</height>
-            <align>right</align>
-            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <textcolor>FF888888</textcolor>
         </control>
         <!-- Volume Muted -->
         <control type="image">
