@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timedelta
 import hybrid
 import player
+import threadclass
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -74,6 +75,7 @@ guiHelp = None
 windowHome = xbmcgui.Window(10000)
 WINDOW_DIALOG_VIDEO_OSD_SETTINGS = 10123
 WINDOW_DIALOG_AUDIO_OSD_SETTINGS = 10124
+WINDOW_DIALOG_SUBTITLE_OSD_SETTINGS = 10159
 WINDOW_FULLSCREEN_VIDEO = 12005
 WINDOW_VISUALISATION = 12006
 WINDOW_ADDON = 13000
@@ -96,17 +98,17 @@ LaunchArgument = ''
 DialogResult = None
 
 #Thread variables
-thread_notification = None
-thread_check_requirements = None
-thread_zap_wait_timer = None
-thread_channel_delay_timer = None
-thread_update_television_program = None
-thread_update_epg_program = None
-thread_update_epg_channel = None
-thread_update_playergui_info = None
-thread_hide_playergui_info = None
-thread_sleep_timer = None
-thread_login_auto = None
+thread_notification = threadclass.Class_ThreadSafe()
+thread_check_requirements = threadclass.Class_ThreadSafe()
+thread_zap_wait_timer = threadclass.Class_ThreadSafe()
+thread_channel_delay_timer = threadclass.Class_ThreadSafe()
+thread_update_television_program = threadclass.Class_ThreadSafe()
+thread_update_epg_program = threadclass.Class_ThreadSafe()
+thread_update_epg_channel = threadclass.Class_ThreadSafe()
+thread_update_playergui_info = threadclass.Class_ThreadSafe()
+thread_hide_playergui_info = threadclass.Class_ThreadSafe()
+thread_sleep_timer = threadclass.Class_ThreadSafe()
+thread_login_auto = threadclass.Class_ThreadSafe()
 
 #Player variables
 PlayerCustom = player.PlayerCustom()
@@ -214,8 +216,8 @@ AlarmDataJson = []
 WidevineUpdating = False
 
 #Service - Alarm variables
-thread_alarm_timer = None
+thread_alarm_timer = threadclass.Class_ThreadSafe()
 
 #Service - Proxy variables
 ProxyServer = None
-thread_proxy_server = None
+thread_proxy_server = threadclass.Class_ThreadSafe()

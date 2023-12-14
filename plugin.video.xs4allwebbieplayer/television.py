@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
@@ -15,7 +14,6 @@ import litelevision
 import recordingfunc
 import searchdialog
 import stream
-import threadfunc
 import var
 import zap
 
@@ -33,7 +31,7 @@ def switch_to_page():
 def close_the_page():
     if var.guiTelevision != None:
         #Stop the epg refresh thread
-        var.thread_update_television_program = None
+        var.thread_update_television_program.Stop()
 
         #Close the shown window
         var.guiTelevision.close()
@@ -52,7 +50,7 @@ class Gui(xbmcgui.WindowXML):
         self.start_threads()
 
     def onClick(self, clickId):
-        if var.thread_zap_wait_timer == None:
+        if var.thread_zap_wait_timer.Finished():
             clickedControl = self.getControl(clickId)
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()
@@ -104,12 +102,7 @@ class Gui(xbmcgui.WindowXML):
         self.EpgForceUpdate = False
 
         #Start the epg update thread
-        if var.thread_update_television_program != None:
-            var.thread_update_television_program = None
-            xbmc.sleep(500)
-        if var.thread_update_television_program == None:
-            var.thread_update_television_program = Thread(target=self.thread_update_television_epg)
-            var.thread_update_television_program.start()
+        var.thread_update_television_program.Start(self.thread_update_television_program)
 
     def open_context_menu(self):
         dialogAnswers = []
@@ -373,9 +366,9 @@ class Gui(xbmcgui.WindowXML):
                 listcontainer.selectItem(0)
             xbmc.sleep(100)
 
-    def thread_update_television_epg(self):
+    def thread_update_television_program(self):
         threadLastTime = ''
-        while threadfunc.loop_allowed_addon(var.thread_update_television_program):
+        while var.thread_update_television_program.Allowed():
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
                 threadLastTime = threadCurrentTime
@@ -383,12 +376,12 @@ class Gui(xbmcgui.WindowXML):
                 self.EpgManualUpdate = False
                 self.EpgForceUpdate = False
 
-                #Update epg information
-                self.update_epg_information(forceUpdate)
+                #Update program information
+                self.update_television_program(forceUpdate)
             else:
-                xbmc.sleep(1000)
+                var.thread_update_television_program.Sleep(1000)
 
-    def update_epg_information(self, forceUpdate=False):
+    def update_television_program(self, forceUpdate=False):
         try:
             if forceUpdate == True:
                 #Show tv guide refresh notification

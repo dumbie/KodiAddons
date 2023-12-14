@@ -1,11 +1,9 @@
 from datetime import datetime, timedelta
-from threading import Thread
 import xbmc
 import xbmcgui
 import dialog
 import func
 import path
-import threadfunc
 import var
 
 def dialog_sleep():
@@ -47,14 +45,14 @@ def dialog_sleep():
 
 def thread_sleep_timer():
     threadLastTime = ''
-    while threadfunc.loop_allowed_addon(var.thread_sleep_timer):
+    while var.thread_sleep_timer.Allowed():
         threadCurrentTime = datetime.now().strftime('%H:%M')
         if threadLastTime != threadCurrentTime:
             threadLastTime = threadCurrentTime
             var.SleepEndingMinutes -= 1
             sleep_notification()
         else:
-            xbmc.sleep(2000)
+            var.thread_sleep_timer.Sleep(2000)
 
 def sleep_notification():
     #Check sleep times
@@ -82,8 +80,8 @@ def sleep_close():
         func.device_shutdown_force()
 
 def sleep_timeroff(showDialog):
-    var.thread_sleep_timer = None
     var.SleepEndingMinutes = 9999
+    var.thread_sleep_timer.Stop()
     var.windowHome.clearProperty('WebbiePlayerSleepTimer')
     if showDialog:
         notificationIcon = path.resources('resources/skins/default/media/common/sleep.png')
@@ -91,11 +89,8 @@ def sleep_timeroff(showDialog):
 
 def sleep_timerset(minutes):
     var.SleepEndingMinutes = minutes
+    var.thread_sleep_timer.Start(thread_sleep_timer)
     var.windowHome.setProperty('WebbiePlayerSleepTimer', 'True')
-
-    if var.thread_sleep_timer == None:
-        var.thread_sleep_timer = Thread(target=thread_sleep_timer)
-        var.thread_sleep_timer.start()
 
     notificationIcon = path.resources('resources/skins/default/media/common/sleep.png')
     xbmcgui.Dialog().notification(var.addonname, 'Slaap timer voor ' + str(minutes) + ' min is gezet.', notificationIcon, 2500, False)

@@ -39,7 +39,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_channels(False, False)
 
     def onClick(self, clickId):
-        if var.thread_zap_wait_timer == None:
+        if var.thread_zap_wait_timer.Finished():
             clickedControl = self.getControl(clickId)
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()

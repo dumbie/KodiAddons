@@ -2,7 +2,6 @@ import json
 import random
 import re
 from datetime import datetime, timedelta
-from threading import Thread
 import xbmc
 import xbmcgui
 import classes
@@ -10,7 +9,6 @@ import default
 import func
 import hybrid
 import path
-import threadfunc
 import var
 
 def ApiGenerateDeviceId():
@@ -25,14 +23,14 @@ def ApiGenerateDeviceId():
         var.addon.setSetting('LoginDeviceId120', DeviceId)
 
 def thread_login_auto():
-    while threadfunc.loop_allowed_addon(var.thread_login_auto):
+    while var.thread_login_auto.Allowed():
         #Check if it is time to auto login
         LastLoginSeconds = int((datetime.now() - var.ApiLastLogin).total_seconds())
         if LastLoginSeconds >= 890:
             if var.ApiLoggedIn == True:
                 ApiLogin(False)
         else:
-            xbmc.sleep(2000)
+            var.thread_login_auto.Sleep(2000)
 
 def ApiSetEndpointAdresNumber():
     try:
@@ -233,10 +231,8 @@ def ApiLogin(LoginNotification=False):
     var.ApiLoggedIn = True
     var.ApiLastLogin = datetime.now()
 
-    #Start the auto login thread
-    if var.thread_login_auto == None:
-        var.thread_login_auto = Thread(target=thread_login_auto)
-        var.thread_login_auto.start()
+    #Start auto login thread
+    var.thread_login_auto.Start(thread_login_auto)
 
     return True
 

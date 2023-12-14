@@ -18,15 +18,10 @@ class PlayerCustom(xbmc.Player):
         var.PlayerSeekOffset = SeekOffset
 
         #Check which video player should be used for playback
-        super(PlayerCustom, self).play(title, listitem, Windowed)
+        self.play(title, listitem, Windowed)
 
     def Fullscreen(self, ForceFullscreen=False, ForceOverlay=False):
-        #Stop all epg update threads
-        var.thread_update_television_program = None
-        var.thread_update_epg_program = None
-        var.thread_update_epg_channel = None
-
-        #Switch to the desired video player window
+        xbmc.sleep(100)
         if xbmc.Player().isPlayingVideo():
             #Fullscreen the video player
             if ForceFullscreen == True or var.PlayerWindowed == False and xbmc.getCondVisibility('VideoPlayer.IsFullscreen') == False:

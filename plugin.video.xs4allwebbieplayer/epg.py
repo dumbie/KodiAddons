@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
@@ -13,7 +12,6 @@ import path
 import recordingfunc
 import searchdialog
 import stream
-import threadfunc
 import liepgload
 import liepgupdate
 import var
@@ -26,9 +24,9 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiEpg != None:
-        #Stop the update progress thread
-        var.thread_update_epg_program = None
-        var.thread_update_epg_channel = None
+        #Stop update progress threads
+        var.thread_update_epg_program.Stop()
+        var.thread_update_epg_channel.Stop()
 
         #Close the shown window
         var.guiEpg.close()
@@ -51,7 +49,7 @@ class Gui(xbmcgui.WindowXML):
             self.start_threads()
 
     def onClick(self, clickId):
-        if var.thread_zap_wait_timer == None:
+        if var.thread_zap_wait_timer.Finished():
             clickedControl = self.getControl(clickId)
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()
@@ -126,21 +124,9 @@ class Gui(xbmcgui.WindowXML):
         self.ProgramManualUpdate = True
         self.ChannelManualUpdate = True
 
-        #Start the program update thread
-        if var.thread_update_epg_program != None:
-            var.thread_update_epg_program = None
-            xbmc.sleep(500)
-        if var.thread_update_epg_program == None:
-            var.thread_update_epg_program = Thread(target=self.thread_update_program_progress)
-            var.thread_update_epg_program.start()
-
-        #Start the channel update thread
-        if var.thread_update_epg_channel != None:
-            var.thread_update_epg_channel = None
-            xbmc.sleep(500)
-        if var.thread_update_epg_channel == None:
-            var.thread_update_epg_channel = Thread(target=self.thread_update_channel_progress)
-            var.thread_update_epg_channel.start()
+        #Start update progress threads
+        var.thread_update_epg_program.Start(self.thread_update_program_progress)
+        var.thread_update_epg_channel.Start(self.thread_update_channel_progress)
 
     def buttons_add_navigation(self):
         listcontainer = self.getControl(1000)
@@ -642,7 +628,7 @@ class Gui(xbmcgui.WindowXML):
 
     def thread_update_program_progress(self):
         threadLastTime = ''
-        while threadfunc.loop_allowed_addon(var.thread_update_epg_program):
+        while var.thread_update_epg_program.Allowed():
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime or self.ProgramManualUpdate:
                 threadLastTime = threadCurrentTime
@@ -651,11 +637,11 @@ class Gui(xbmcgui.WindowXML):
                 #Update program status
                 self.update_program_status()
             else:
-                xbmc.sleep(1000)
+                var.thread_update_epg_program.Sleep(1000)
 
     def thread_update_channel_progress(self):
         threadLastTime = ''
-        while threadfunc.loop_allowed_addon(var.thread_update_epg_channel):
+        while var.thread_update_epg_channel.Allowed():
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime or self.ChannelManualUpdate:
                 threadLastTime = threadCurrentTime
@@ -664,4 +650,4 @@ class Gui(xbmcgui.WindowXML):
                 #Update channel status
                 self.update_channel_status()
             else:
-                xbmc.sleep(1000)
+                var.thread_update_epg_channel.Sleep(1000)

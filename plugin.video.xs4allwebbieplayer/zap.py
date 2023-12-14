@@ -1,15 +1,13 @@
 from datetime import datetime, timedelta
-from threading import Thread
 import xbmc
 import func
 import lifunc
 import stream
-import threadfunc
 import var
 
 def check_remote_number(_self, controlId, actionId, selectMode, clickOnSelection):
     var.ZapControlId = controlId
-    if actionId == var.ACTION_SELECT_ITEM and var.thread_zap_wait_timer != None:
+    if actionId == var.ACTION_SELECT_ITEM and var.thread_zap_wait_timer.Running():
         var.ZapTimerForce = True
         return True
     elif actionId == var.REMOTE_0:
@@ -68,9 +66,7 @@ def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
         var.ZapNumberString = ''
 
     #Start zap wait thread
-    if var.thread_zap_wait_timer == None:
-        var.thread_zap_wait_timer = Thread(target=thread_zap_wait_timer, args=(_self, selectMode, clickOnSelection))
-        var.thread_zap_wait_timer.start()
+    var.thread_zap_wait_timer.Start(thread_zap_wait_timer, (_self, selectMode, clickOnSelection))
 
 def select_remote_number(_self, clickOnSelection):
     listcontainer = _self.getControl(var.ZapControlId)
@@ -95,7 +91,7 @@ def zap_remote_number(_self):
     stream.switch_channel_tv_listitem(listItemSelected, False, True)
 
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
-    while threadfunc.loop_allowed_addon(var.thread_zap_wait_timer):
+    while var.thread_zap_wait_timer.Allowed():
         xbmc.sleep(100)
         interactSecond = 3
         lastInteractSeconds = int((datetime.now() - var.ZapDelayDateTime).total_seconds())
@@ -115,7 +111,7 @@ def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
             var.ZapNumberString = ''
             var.ZapHintString = ''
             var.ZapTimerForce = False
-            var.thread_zap_wait_timer = None
+            var.thread_zap_wait_timer.Stop()
         else:
             #Countdown string
             zapCountInt = interactSecond - lastInteractSeconds

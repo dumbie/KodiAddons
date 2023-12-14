@@ -1,4 +1,3 @@
-from threading import Thread
 import kids
 import xbmc
 import xbmcgui
@@ -122,14 +121,10 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Check if Widevine is installed
-        if var.thread_check_requirements == None:
-            var.thread_check_requirements = Thread(target=widevine.thread_check_requirements)
-            var.thread_check_requirements.start()
+        var.thread_check_requirements.Start(widevine.thread_check_requirements)
 
         #Load Webbie Player notification
-        if var.thread_notification == None:
-            var.thread_notification = Thread(target=self.load_notification)
-            var.thread_notification.start()
+        var.thread_notification.Start(self.thread_load_notification)
 
         #Check if user is logged in
         if var.ApiLoggedIn == True:
@@ -378,7 +373,7 @@ class Gui(xbmcgui.WindowXML):
         except:
             pass
 
-    def load_notification(self):
+    def thread_load_notification(self):
         try:
             #Set the download headers
             DownloadHeaders = {

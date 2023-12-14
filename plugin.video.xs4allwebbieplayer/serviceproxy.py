@@ -1,4 +1,3 @@
-from threading import Thread
 import hybrid
 import var
 import path
@@ -34,9 +33,7 @@ def start_proxy_server():
     try:
         if var.ProxyServer == None:
             var.ProxyServer = ProxyRequestThreading(('127.0.0.1', 4444), ProxyRequestHandler)
-            if var.thread_proxy_server == None:
-                var.thread_proxy_server = Thread(target=thread_proxy_server)
-                var.thread_proxy_server.start()
+            var.thread_proxy_server.Start(thread_proxy_server)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
         xbmcgui.Dialog().notification(var.addonname, "Proxy server starten mislukt", notificationIcon, 2500, False)
@@ -47,7 +44,7 @@ def stop_proxy_server():
             var.ProxyServer.shutdown()
             var.ProxyServer.server_close()
             var.ProxyServer = None
-            var.thread_proxy_server = None
+            var.thread_proxy_server.Stop()
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
         xbmcgui.Dialog().notification(var.addonname, "Proxy server stoppen mislukt", notificationIcon, 2500, False)

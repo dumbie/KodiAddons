@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 import metadatacombine
 import metadatainfo
 import xbmcgui

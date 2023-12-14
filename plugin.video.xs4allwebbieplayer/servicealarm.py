@@ -1,10 +1,8 @@
 from datetime import datetime, timedelta
-from threading import Thread
 import alarm
 import xbmc
 import xbmcgui
 import func
-import threadfunc
 import path
 import var
 
@@ -44,7 +42,7 @@ def alarm_notification():
 
 def thread_alarm_timer():
     threadLastTime = ''
-    while threadfunc.loop_allowed_service(var.thread_alarm_timer):
+    while var.thread_alarm_timer.Allowed(True):
         threadCurrentTime = datetime.now().strftime('%H:%M')
         if threadLastTime != threadCurrentTime:
             threadLastTime = threadCurrentTime
@@ -55,10 +53,7 @@ def thread_alarm_timer():
             xbmc.sleep(2000)
 
 def start_alarm_check():
-    if var.thread_alarm_timer == None:
-        var.thread_alarm_timer = Thread(target=thread_alarm_timer)
-        var.thread_alarm_timer.start()
+    var.thread_alarm_timer.Start(thread_alarm_timer)
 
 def stop_alarm_check():
-    if var.thread_alarm_timer != None:
-        var.thread_alarm_timer = None
+    var.thread_alarm_timer.Stop()

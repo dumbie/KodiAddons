@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 import func
 import metadatainfo
-import metadatafunc
 import metadatacombine
 import xbmcgui
 import path

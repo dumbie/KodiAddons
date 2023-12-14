@@ -1,13 +1,10 @@
-import os
 import sys
 from datetime import datetime, timedelta
 import xbmc
 import xbmcaddon
 import xbmcgui
-import alarm
 import dialog
 import files
-import func
 import hybrid
 import main
 import path

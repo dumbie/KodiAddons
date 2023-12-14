@@ -1,6 +1,5 @@
-import os
-import metadatainfo
 from datetime import datetime, timedelta
+import os
 import func
 import var
 

@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from threading import Thread
 import xbmc
 import xbmcgui
 import alarm
@@ -12,7 +11,6 @@ import liplayergui
 import recordingfunc
 import sleep
 import stream
-import threadfunc
 import var
 import zap
 
@@ -23,11 +21,11 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiPlayer != None:
-        #Stop the update information thread
-        var.thread_update_playergui_info = None
+        #Stop update information thread
+        var.thread_update_playergui_info.Stop()
 
-        #Stop the hide information thread
-        var.thread_hide_playergui_info = None
+        #Stop hide information thread
+        var.thread_hide_playergui_info.Stop()
 
         #Close the custom video player window
         var.guiPlayer.close()
@@ -49,7 +47,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         self.start_threads()
 
     def onClick(self, clickId):
-        if var.thread_zap_wait_timer == None:
+        if var.thread_zap_wait_timer.Finished():
             clickedControl = self.getControl(clickId)
             playerFull = self.getProperty('WebbiePlayerFull') == 'true'
             if clickId == 1001 and playerFull == True:
@@ -165,21 +163,11 @@ class Gui(xbmcgui.WindowXMLDialog):
         return False
 
     def start_threads(self):
-        #Start the update information thread
-        if var.thread_update_playergui_info != None:
-            var.thread_update_playergui_info = None
-            xbmc.sleep(500)
-        if var.thread_update_playergui_info == None:
-            var.thread_update_playergui_info = Thread(target=self.thread_update_playergui_info)
-            var.thread_update_playergui_info.start()
+        #Start update information thread
+        var.thread_update_playergui_info.Start(self.thread_update_playergui_info)
 
-        #Start the hide information thread
-        if var.thread_hide_playergui_info != None:
-            var.thread_hide_playergui_info = None
-            xbmc.sleep(500)
-        if var.thread_hide_playergui_info == None:
-            var.thread_hide_playergui_info = Thread(target=self.thread_hide_playergui_info)
-            var.thread_hide_playergui_info.start()
+        #Start hide information thread
+        var.thread_hide_playergui_info.Start(self.thread_hide_playergui_info)
 
     def switch_subtitles(self):
         if xbmc.getCondVisibility("VideoPlayer.HasSubtitles"):
@@ -189,22 +177,22 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmcgui.Dialog().notification(var.addonname, 'Ondertiteling niet beschikbaar.', notificationIcon, 2500, False)
 
     def thread_update_playergui_info(self):
-        while threadfunc.loop_allowed_addon(var.thread_update_playergui_info):
+        while var.thread_update_playergui_info.Allowed():
             playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
             if playerSeek:
                 self.update_epg_information()
-            xbmc.sleep(333)
+            var.thread_update_playergui_info.Sleep(400)
 
     def thread_hide_playergui_info(self):
-        while threadfunc.loop_allowed_addon(var.thread_hide_playergui_info):
+        while var.thread_hide_playergui_info.Allowed():
             lastInteractSeconds = int((datetime.now() - self.PlayerInfoLastInteraction).total_seconds())
             if lastInteractSeconds >= int(var.addon.getSetting('PlayerInformationCloseTime')):
                 self.hide_epg()
             else:
-                xbmc.sleep(1000)
+                var.thread_hide_playergui_info.Sleep(1000)
 
     def thread_channel_delay_timer(self):
-        while threadfunc.loop_allowed_addon(var.thread_channel_delay_timer):
+        while var.thread_channel_delay_timer.Allowed():
             xbmc.sleep(100)
             interactSecond = 3
             lastInteractSeconds = int((datetime.now() - var.ChannelDelayDateTime).total_seconds())
@@ -226,7 +214,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             #Change the channel
             if lastInteractSeconds >= interactSecond:
                 #Reset channel wait variables
-                var.thread_channel_delay_timer = None
+                var.thread_channel_delay_timer.Stop()
                 self.setProperty('ZapVisible', 'false')
 
                 #Switch to selected channel
@@ -470,9 +458,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmc.sleep(100)
         self.show_epg(False, False, False)
         #Start the channel wait thread
-        if var.thread_channel_delay_timer == None:
-            var.thread_channel_delay_timer = Thread(target=self.thread_channel_delay_timer)
-            var.thread_channel_delay_timer.start()
+        var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def switch_channel_previoustv(self):
         var.ChannelDelayDateTime = datetime.now()
@@ -483,9 +469,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmc.sleep(100)
         self.show_epg(False, False, False)
         #Start the channel wait thread
-        if var.thread_channel_delay_timer == None:
-            var.thread_channel_delay_timer = Thread(target=self.thread_channel_delay_timer)
-            var.thread_channel_delay_timer.start()
+        var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def load_recording_event(self, forceUpdate=False):
         downloadResult = download.download_recording_event(forceUpdate)
