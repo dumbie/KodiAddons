@@ -16,6 +16,7 @@
     <setting id="TelevisionHideEarlierAired" label="Eerder uitgezonden programma's niet tonen" type="bool" default="false"/>
     <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="SearchFilterFuzzy" label="Vergelijkbare zoek resultaten tonen" type="bool" default="false"/>
+    <setting id="AfsluitschermOverslaan" label="Afsluitscherm overslaan" type="bool" default="false"/>
     <setting id="ResetUserdata" type="action" label="Verwijder userdatabestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,ResetUserdata)"/>
     <setting id="ResetThumbnails" type="action" label="Alle zenderlogo's vernieuwen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,ResetThumbnails)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
@@ -34,6 +35,7 @@
   </category>
   <category label="Kids Slot">
     <setting id="KidsPageLock" label="Vraag om pincode bij sluiten van kidspagina" type="bool" default="false"/>
+    <setting id="KidsHiddenLock" label="Vraag om pincode bij zenders niet meer verbergen" type="bool" default="false"/>
     <setting id="KidsPincode" type="text" label="Gebruikte pincode" option="hidden" default="1234"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>

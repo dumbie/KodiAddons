@@ -50,32 +50,35 @@ def close_the_page():
         var.guiMain.close()
 
 def dialog_close():
-    dialogAnswers = ['Webbie Player afsluiten', 'Apparaat uitschakelen', 'Apparaat herstarten', 'Kodi afsluiten']
-    if xbmc.Player().isPlayingVideo():
-        dialogAnswers.insert(0, 'Toon video speler')
-
-    dialogHeader = 'Sluiten'
-
-    if xbmc.Player().isPlaying():
-        dialogSummary = 'Wat wilt u doen? als u afsluit zal de spelende media ook stoppen.'
-    else:
-        dialogSummary = 'Wat wilt u doen?'
-
-    dialogFooter = ''
-
-    dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-    if dialogResult == 'Webbie Player afsluiten':
+    if var.addon.getSetting('AfsluitschermOverslaan') == 'true':
         close_the_page()
-    elif dialogResult == 'Apparaat uitschakelen':
-        func.device_shutdown_dialog()
-    elif dialogResult == 'Apparaat herstarten':
-        func.device_reboot_dialog()
-    elif dialogResult == 'Kodi afsluiten':
-        func.close_kodi_dialog()
-    elif dialogResult == 'Toon video speler':
-        var.PlayerCustom.Fullscreen(True)
     else:
-        var.guiMain.check_focus()
+        dialogAnswers = ['Webbie Player afsluiten', 'Apparaat uitschakelen', 'Apparaat herstarten', 'Kodi afsluiten']
+        if xbmc.Player().isPlayingVideo():
+            dialogAnswers.insert(0, 'Toon video speler')
+
+        dialogHeader = 'Sluiten'
+
+        if xbmc.Player().isPlaying():
+            dialogSummary = 'Wat wilt u doen? als u afsluit zal de spelende media ook stoppen.'
+        else:
+            dialogSummary = 'Wat wilt u doen?'
+
+        dialogFooter = ''
+
+        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+        if dialogResult == 'Webbie Player afsluiten':
+            close_the_page()
+        elif dialogResult == 'Apparaat uitschakelen':
+            func.device_shutdown_dialog()
+        elif dialogResult == 'Apparaat herstarten':
+            func.device_reboot_dialog()
+        elif dialogResult == 'Kodi afsluiten':
+            func.close_kodi_dialog()
+        elif dialogResult == 'Toon video speler':
+            var.PlayerCustom.Fullscreen(True)
+        else:
+            var.guiMain.check_focus()
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):

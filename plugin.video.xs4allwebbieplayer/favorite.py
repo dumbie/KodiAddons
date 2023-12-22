@@ -26,14 +26,7 @@ def favorite_check(ChannelId, favoriteJsonFile):
         favoriteTargetJson = var.FavoriteTelevisionDataJson
     elif favoriteJsonFile == 'FavoriteRadio.js':
         favoriteTargetJson = var.FavoriteRadioDataJson
-
-    for favorite in favoriteTargetJson:
-        try:
-            if favorite == ChannelId:
-                return True
-        except:
-            continue
-    return False
+    return ChannelId in favoriteTargetJson
 
 def favorite_toggle(listItem, favoriteJsonFile):
     #Get channel identifier

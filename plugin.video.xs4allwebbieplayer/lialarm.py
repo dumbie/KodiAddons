@@ -10,6 +10,7 @@ def list_load(listContainer):
             #ChannelName = alarm['channelname']
             ProgramName = alarm['programname']
             ProgramTimeStart = alarm['starttime']
+            AlarmIcon = path.icon_television(ExternalId)
 
             ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
             ProgramDescription = 'Om ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' op ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
@@ -18,7 +19,7 @@ def list_load(listContainer):
             listItem.setProperty('ProgramTimeStart', ProgramTimeStart)
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+            listItem.setArt({'thumb': AlarmIcon, 'icon': AlarmIcon})
             listContainer.append(listItem)
         except:
             continue

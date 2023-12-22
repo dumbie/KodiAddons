@@ -72,6 +72,7 @@ guiSeriesSeason = None
 guiRadio = None
 guiEpg = None
 guiHelp = None
+guiHidden = None
 windowHome = xbmcgui.Window(10000)
 WINDOW_DIALOG_VIDEO_OSD_SETTINGS = 10123
 WINDOW_DIALOG_AUDIO_OSD_SETTINGS = 10124
@@ -128,6 +129,10 @@ ApiLoginCount = 0
 #Favorite variables
 FavoriteTelevisionDataJson = []
 FavoriteRadioDataJson = []
+
+#Hidden variables
+HiddenTelevisionDataJson = []
+HiddenRadioDataJson = []
 
 #Search variables
 SearchSelectIndex = 0

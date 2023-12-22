@@ -1,6 +1,7 @@
 import xbmc
 import xbmcgui
 import favorite
+import hidden
 import func
 import metadatainfo
 import path
@@ -8,6 +9,7 @@ import var
 
 def list_load(listContainer):
     favorite.favorite_television_json_load()
+    hidden.hidden_television_json_load()
     var.ChannelIdsPlayable = []
     for channel in var.ChannelsDataJsonTelevision['resultObj']['containers']:
         try:
@@ -19,6 +21,9 @@ def list_load(listContainer):
 
             #Check if channel is streamable
             if func.string_isnullorempty(AssetId): continue
+
+            #Check if channel is hidden
+            if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
 
             #Add channelId to playable id list
             var.ChannelIdsPlayable.append(ChannelId)
@@ -33,7 +38,7 @@ def list_load(listContainer):
                 if searchResultFound == False: continue
 
             #Check if channel is marked as favorite or epg navigate
-            if ChannelId in var.FavoriteTelevisionDataJson:
+            if favorite.favorite_check(ChannelId, 'FavoriteTelevision.js'):
                 ChannelFavorite = 'true'
             elif ChannelId == var.addon.getSetting('CurrentChannelId') and xbmc.Player().isPlayingVideo():
                 ChannelFavorite = 'false'

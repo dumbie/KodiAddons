@@ -7,6 +7,7 @@ import dialog
 import download
 import epg
 import favorite
+import hidden
 import func
 import lifunc
 import path
@@ -64,6 +65,8 @@ class Gui(xbmcgui.WindowXML):
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
                     self.refresh_programs()
+                elif listItemAction == 'hidden_channels':
+                    hidden.switch_to_page()
                 elif listItemAction == "switch_all_favorites":
                     self.switch_all_favorites()
                 elif listItemAction == "search_channel":
@@ -127,6 +130,9 @@ class Gui(xbmcgui.WindowXML):
         #Add set alarm for next program
         dialogAnswers.append('Alarm volgend programma zetten of annuleren')
 
+        #Add hide channel
+        dialogAnswers.append('Zender verbergen in zenderlijst')
+
         #Check if channel is favorite
         if listItemSelected.getProperty('ChannelFavorite') == 'true':
             dialogAnswers.append('Zender onmarkeren als favoriet')
@@ -152,6 +158,8 @@ class Gui(xbmcgui.WindowXML):
             close_the_page()
             xbmc.sleep(100)
             epg.switch_to_page()
+        elif dialogResult == 'Zender verbergen in zenderlijst':
+            self.hide_channel(listcontainer, listItemSelected)
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
             self.switch_favorite_channel(listcontainer, listItemSelected)
         elif dialogResult == 'Huidig programma opnemen of annuleren':
@@ -202,6 +210,11 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listcontainer.addItem(listitem)
 
+        listitem = xbmcgui.ListItem('Verborgen zenders')
+        listitem.setProperty('Action', 'hidden_channels')
+        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/vodno.png'), 'icon': path.resources('resources/skins/default/media/common/vodno.png')})
+        listcontainer.addItem(listitem)
+
         listitem = xbmcgui.ListItem('Vernieuwen')
         listitem.setProperty('Action', 'refresh_programs')
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
@@ -214,6 +227,25 @@ class Gui(xbmcgui.WindowXML):
             self.load_channels(True, True)
         except:
             pass
+
+    def hide_channel(self, listContainer, listItemSelected):
+        self.EpgPauseUpdate = True
+        xbmc.sleep(250) #Wait for epg update to pause
+        self.hide_channel_code(listContainer, listItemSelected)
+        self.EpgPauseUpdate = False
+
+    def hide_channel_code(self, listContainer, listItemSelected):
+        hiddenResult = hidden.hidden_add(listItemSelected, 'HiddenTelevision.js')
+        if hiddenResult == True:
+            #Remove item from the list
+            removeListItemId = listContainer.getSelectedPosition()
+            listContainer.removeItem(removeListItemId)
+            xbmc.sleep(100)
+            listContainer.selectItem(removeListItemId)
+            xbmc.sleep(100)
+
+            #Update the status
+            self.count_channels(False)
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
         self.EpgPauseUpdate = True

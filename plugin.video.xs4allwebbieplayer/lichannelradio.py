@@ -1,16 +1,22 @@
 import xbmcgui
 import favorite
+import hidden
 import func
 import path
 import var
 
 def list_load(listContainer):
     favorite.favorite_radio_json_load()
+    hidden.hidden_radio_json_load()
     ChannelNumberInt = 0
     for channel in var.ChannelsDataJsonRadio['radios']:
         try:
             #Load channel basics
+            ChannelId = channel['id']
             ChannelName = channel['name']
+
+            #Check if channel is hidden
+            if hidden.hidden_check(ChannelId, 'HiddenRadio.js'): continue
 
             #Check if there are search results
             if var.SearchChannelTerm != '':
@@ -19,11 +25,10 @@ def list_load(listContainer):
                 if searchResultFound == False: continue
 
             #Load channel details
-            ChannelId = channel['id']
             ChannelStream = channel['stream']
 
             #Check if channel is marked as favorite
-            if ChannelId in var.FavoriteRadioDataJson:
+            if favorite.favorite_check(ChannelId, 'FavoriteRadio.js'):
                 ChannelFavorite = 'true'
             elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm):
                 continue
