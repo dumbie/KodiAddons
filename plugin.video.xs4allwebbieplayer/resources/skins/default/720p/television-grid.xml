@@ -324,7 +324,10 @@
                         <width>146</width>
                         <height>5</height>
                         <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
+                        <lefttexture>-</lefttexture>
                         <midtexture>common/background_accent.png</midtexture>
+                        <righttexture>-</righttexture>
+                        <overlaytexture>-</overlaytexture>
                         <info>ListItem.Property(ProgramProgressPercent)</info>
                     </control>
                     <control type="image">
@@ -418,7 +421,10 @@
                         <width>146</width>
                         <height>5</height>
                         <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
+                        <lefttexture>-</lefttexture>
                         <midtexture>common/background_accent.png</midtexture>
+                        <righttexture>-</righttexture>
+                        <overlaytexture>-</overlaytexture>
                         <info>ListItem.Property(ProgramProgressPercent)</info>
                     </control>
                     <control type="image">

@@ -134,7 +134,10 @@
                 <height>15</height>
                 <info>Player.ProgressCache</info>
                 <texturebg>common/background_light.png</texturebg>
+                <lefttexture>-</lefttexture>
                 <midtexture>common/background_light.png</midtexture>
+                <righttexture>-</righttexture>
+                <overlaytexture>-</overlaytexture>
             </control>
             <control type="progress">
                 <left>0</left>
@@ -143,7 +146,10 @@
                 <height>15</height>
                 <info>Player.Progress</info>
                 <texturebg>common/background_transp.png</texturebg>
+                <lefttexture>-</lefttexture>
                 <midtexture>common/background_accent.png</midtexture>
+                <righttexture>-</righttexture>
+                <overlaytexture>-</overlaytexture>
             </control>
             <control type="slider">
                 <left>0</left>
@@ -466,7 +472,10 @@
                 <width>380</width>
                 <height>15</height>
                 <texturebg>common/background_transp.png</texturebg>
+                <lefttexture>-</lefttexture>
                 <midtexture colordiffuse="F0FFFFFF">common/background_light.png</midtexture>
+                <righttexture>-</righttexture>
+                <overlaytexture>-</overlaytexture>
                 <info>Container(1001).ListItem.Property(ProgramProgressPercent)</info>
             </control>
             <control type="progress">
@@ -475,7 +484,10 @@
                 <width>380</width>
                 <height>15</height>
                 <texturebg>common/background_transp.png</texturebg>
+                <lefttexture>-</lefttexture>
                 <midtexture>common/background_accent.png</midtexture>
+                <righttexture>-</righttexture>
+                <overlaytexture>-</overlaytexture>
                 <info>Container(1001).ListItem.Property(ProgramSeekPercent)</info>
             </control>
             <!-- Program Description -->

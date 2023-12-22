@@ -528,7 +528,10 @@
                         <width>660</width>
                         <height>5</height>
                         <texturebg>common/background_transp.png</texturebg>
+                        <lefttexture>-</lefttexture>
                         <midtexture>common/background_accent.png</midtexture>
+                        <righttexture>-</righttexture>
+                        <overlaytexture>-</overlaytexture>
                         <visible>Integer.IsGreater(ListItem().Property(ProgramProgressPercent), 0)</visible>
                         <info>ListItem.Property(ProgramProgressPercent)</info>
                     </control>
@@ -644,7 +647,10 @@
                         <width>660</width>
                         <height>5</height>
                         <texturebg>common/background_transp.png</texturebg>
+                        <lefttexture>-</lefttexture>
                         <midtexture>common/background_accent.png</midtexture>
+                        <righttexture>-</righttexture>
+                        <overlaytexture>-</overlaytexture>
                         <visible>Integer.IsGreater(ListItem().Property(ProgramProgressPercent), 0)</visible>
                         <info>ListItem.Property(ProgramProgressPercent)</info>
                     </control>
