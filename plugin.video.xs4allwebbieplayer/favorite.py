@@ -4,7 +4,7 @@ import files
 import path
 import var
 
-def favorite_json_load():
+def favorite_television_json_load():
     try:
         if var.FavoriteTelevisionDataJson == [] and files.existFile('FavoriteTelevision.js') == True:
             FavoriteJsonString = files.openFile('FavoriteTelevision.js')
@@ -12,6 +12,7 @@ def favorite_json_load():
     except:
         var.FavoriteTelevisionDataJson = []
 
+def favorite_radio_json_load():
     try:
         if var.FavoriteRadioDataJson == [] and files.existFile('FavoriteRadio.js') == True:
             FavoriteJsonString = files.openFile('FavoriteRadio.js')

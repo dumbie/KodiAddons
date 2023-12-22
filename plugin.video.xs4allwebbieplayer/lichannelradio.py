@@ -5,7 +5,7 @@ import path
 import var
 
 def list_load(listContainer):
-    favorite.favorite_json_load()
+    favorite.favorite_radio_json_load()
     ChannelNumberInt = 0
     for channel in var.ChannelsDataJsonRadio['radios']:
         try:

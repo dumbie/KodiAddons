@@ -373,6 +373,8 @@ class Gui(xbmcgui.WindowXML):
             if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
                 threadLastTime = threadCurrentTime
                 forceUpdate = self.EpgForceUpdate
+
+                #Reset update variables
                 self.EpgManualUpdate = False
                 self.EpgForceUpdate = False
 

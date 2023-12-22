@@ -7,7 +7,7 @@ import path
 import var
 
 def list_load(listContainer):
-    favorite.favorite_json_load()
+    favorite.favorite_television_json_load()
     var.ChannelIdsPlayable = []
     for channel in var.ChannelsDataJsonTelevision['resultObj']['containers']:
         try:
