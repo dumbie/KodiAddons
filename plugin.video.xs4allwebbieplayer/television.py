@@ -64,7 +64,7 @@ class Gui(xbmcgui.WindowXML):
                 if listItemAction == 'go_back':
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
-                    self.refresh_programs()
+                    self.refresh_programs(True)
                 elif listItemAction == 'hidden_channels':
                     hidden.switch_to_page()
                 elif listItemAction == "switch_all_favorites":
@@ -220,11 +220,11 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listcontainer.addItem(listitem)
 
-    def refresh_programs(self):
+    def refresh_programs(self, forceUpdate=False):
         try:
-            self.load_recording_event(True)
-            self.load_recording_series(True)
-            self.load_channels(True, True)
+            self.load_recording_event(forceUpdate)
+            self.load_recording_series(forceUpdate)
+            self.load_channels(True, forceUpdate)
         except:
             pass
 

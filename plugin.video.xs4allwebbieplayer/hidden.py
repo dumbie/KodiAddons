@@ -80,7 +80,7 @@ def hidden_remove(listItem, hiddenJsonFile):
 
     #Hidden has been removed notification
     notificationIcon = path.resources('resources/skins/default/media/common/vodyes.png')
-    xbmcgui.Dialog().notification(var.addonname, 'Zender niet meer verborgen, vernieuw de zenderlijst.', notificationIcon, 2500, False)
+    xbmcgui.Dialog().notification(var.addonname, 'Zender niet meer verborgen.', notificationIcon, 2500, False)
     return HiddenRemoved
 
 def switch_to_page():
@@ -96,6 +96,12 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiHidden != None:
+        #Refresh channels on change
+        if var.guiTelevision != None and var.HiddenChannelChanged == True:
+            var.guiTelevision.refresh_programs(False)
+            var.HiddenChannelChanged = False
+
+        #Close the shown window
         var.guiHidden.close()
         var.guiHidden = None
 
@@ -126,6 +132,9 @@ class Gui(xbmcgui.WindowXMLDialog):
                 xbmc.sleep(100)
                 clickedControl.selectItem(removeListItemId)
                 xbmc.sleep(100)
+
+                #Update changed variable
+                var.HiddenChannelChanged = True
 
                 #Update channel count
                 self.count_hidden_channels(False)
@@ -158,7 +167,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         channelcount = len(var.HiddenTelevisionDataJson)
         if channelcount > 0:
             func.updateLabelText(self, 3000, 'Verborgen Zenders (' + str(channelcount) + ')')
-            func.updateLabelText(self, 3001, 'Huidige verborgen zenders, u kunt een zender weer laten verschijnen door er op te klikken en daarna de zenderlijst handmatig te vernieuwen.')
+            func.updateLabelText(self, 3001, 'Huidige verborgen zenders, u kunt een zender weer laten verschijnen in de zenderlijst door er op te klikken.')
             if resetSelect == True:
                 self.setFocus(listcontainer)
                 xbmc.sleep(100)

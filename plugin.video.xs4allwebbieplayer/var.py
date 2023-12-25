@@ -133,6 +133,7 @@ FavoriteRadioDataJson = []
 #Hidden variables
 HiddenTelevisionDataJson = []
 HiddenRadioDataJson = []
+HiddenChannelChanged = False
 
 #Search variables
 SearchSelectIndex = 0
