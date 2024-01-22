@@ -5,41 +5,28 @@ import xbmcgui
 import apilogin
 import re
 import func
+import generate
 import hybrid
 import metadatainfo
 import metadatafunc
 import path
 import var
 
-#Switch to a new channel by listitem
+#Switch to new television channel by listitem
 def switch_channel_tv_listitem(listitem, Windowed=False, showInformation=False, SeekOffset=0):
     play_stream_television(listitem, Windowed, SeekOffset)
 
     if showInformation and var.guiPlayer != None:
         var.guiPlayer.show_epg(True)
 
-#Switch to a new channel by id
+#Switch to new television channel by id
 def switch_channel_tv_channelid(ChannelId, ExternalId='', ChannelName='Onbekende zender', Genre='Onbekend', Windowed=False, showInformation=False):
     if func.string_isnullorempty(ChannelId):
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
         return
 
-    listItem = xbmcgui.ListItem()
-
-    if func.string_isnullorempty(ChannelName):
-        ChannelName = 'Onbekende zender'
-
-    if func.string_isnullorempty(Genre):
-        Genre = 'Onbekend'
-
-    if func.string_isnullorempty(ExternalId) == False:
-        listItem.setProperty('ExternalId', ExternalId)
-        listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-
-    listItem.setProperty('ChannelId', ChannelId)
-    listItem.setProperty('ChannelName', ChannelName)
-    listItem.setInfo('video', {'Genre': Genre})
+    listItem = generate.listitem_play_tv(ChannelId, ExternalId, ChannelName, Genre)
     play_stream_television(listItem, Windowed)
 
     if showInformation and var.guiPlayer != None:
@@ -56,9 +43,11 @@ def play_stream_radio(listItem):
     var.PlayerCustom.PlayCustom(listItem.getProperty('StreamUrl'), listItem, True, False)
 
 def play_stream_recorded(listItem, Windowed):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
+    #Check if user needs to login
+    if apilogin.ApiLogin(False) == False:
+        notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan opname niet openen.', notificationIcon, 2500, False)
+        return
 
     #Download the program stream url
     try:
@@ -153,9 +142,11 @@ def play_stream_recorded(listItem, Windowed):
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
 
 def play_stream_program(listItem, Windowed):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
+    #Check if user needs to login
+    if apilogin.ApiLogin(False) == False:
+        notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan programma niet openen.', notificationIcon, 2500, False)
+        return
 
     #Get the program id
     ProgramId = listItem.getProperty('ProgramId')
@@ -268,9 +259,11 @@ def play_stream_program(listItem, Windowed):
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
 
 def play_stream_vod(listItem, Windowed):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
+    #Check if user needs to login
+    if apilogin.ApiLogin(False) == False:
+        notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan vod niet openen.', notificationIcon, 2500, False)
+        return
 
     ProgramId = listItem.getProperty('ProgramId')
 
@@ -379,6 +372,12 @@ def play_stream_vod(listItem, Windowed):
     var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
 
 def play_stream_television(listItem, Windowed, SeekOffset=0):
+    #Check if user needs to login
+    if apilogin.ApiLogin(False) == False:
+        notificationIcon = path.resources('resources/skins/default/media/common/television.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan zender niet openen.', notificationIcon, 2500, False)
+        return
+
     #Get channel properties
     NewAssetId = listItem.getProperty('AssetId')
     NewChannelId = listItem.getProperty('ChannelId')
@@ -398,10 +397,6 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
     #Allow longer back seeking
     DateTimeUtc = datetime.utcnow() - timedelta(minutes=400)
     StartString = '&time=' + str(func.datetime_to_ticks(DateTimeUtc))
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
 
     #Download the television stream url
     try:

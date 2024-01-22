@@ -11,4 +11,3 @@ def stop_reset_threads():
     var.thread_update_playergui_info.Stop()
     var.thread_hide_playergui_info.Stop()
     var.thread_sleep_timer.Stop()
-    var.thread_login_auto.Stop()

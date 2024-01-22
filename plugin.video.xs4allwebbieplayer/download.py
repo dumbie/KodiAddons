@@ -8,11 +8,11 @@ import path
 import var
 
 def download_channels_radio(forceUpdate=False):
-    #Check if data is already cached
-    if var.ChannelsDataJsonRadio != [] and forceUpdate == False:
-        return None
-
     try:
+        #Check if data is already cached
+        if var.ChannelsDataJsonRadio != [] and forceUpdate == False:
+            return True
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent')
         }
@@ -29,15 +29,17 @@ def download_channels_radio(forceUpdate=False):
         return False
 
 def download_channels_tv(forceUpdate=False):
-    #Check if data is already cached
-    if var.ChannelsDataJsonTelevision != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.ChannelsDataJsonTelevision != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/television.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Televisie download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -66,15 +68,17 @@ def download_channels_tv(forceUpdate=False):
         return False
 
 def download_recording_profile(forceUpdate=False):
-    #Check if data is already cached
-    if var.RecordingProfileDataJson != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.RecordingProfileDataJson != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Opname profiel download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -114,19 +118,21 @@ def download_recording_profile(forceUpdate=False):
         return False
 
 def download_recording_event(forceUpdate=False):
-    #Check if data is already cached
-    if var.ChannelsDataJsonRecordingEvent != [] and forceUpdate == False:
-        return None
-
-    #Check if user has pvr access
-    if var.RecordingAccess == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.ChannelsDataJsonRecordingEvent != [] and forceUpdate == False:
+            return True
+
+        #Check if user has pvr access
+        if var.RecordingAccess == False:
+            return False
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Opnames download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -155,19 +161,21 @@ def download_recording_event(forceUpdate=False):
         return False
 
 def download_recording_series(forceUpdate=False):
-    #Check if data is already cached
-    if var.ChannelsDataJsonRecordingSeries != [] and forceUpdate == False:
-        return None
-
-    #Check if user has pvr access
-    if var.RecordingAccess == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.ChannelsDataJsonRecordingSeries != [] and forceUpdate == False:
+            return True
+
+        #Check if user has pvr access
+        if var.RecordingAccess == False:
+            return False
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Serie opnames download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -196,15 +204,17 @@ def download_recording_series(forceUpdate=False):
         return False
 
 def download_vod_day(dayDateTime, forceUpdate=False):
-    #Check if data is already cached
-    if var.VodCurrentDataJson != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.VodCurrentDataJson != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Programma gemist download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -233,15 +243,17 @@ def download_vod_day(dayDateTime, forceUpdate=False):
         return False
 
 def download_vod_movies(forceUpdate=False):
-    #Check if data is already cached
-    if var.ChannelsDataJsonMovies != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.ChannelsDataJsonMovies != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Films download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -270,15 +282,17 @@ def download_vod_movies(forceUpdate=False):
         return False
 
 def download_vod_series(forceUpdate=False):
-    #Check if data is already cached
-    if var.ChannelsDataJsonSeries != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.ChannelsDataJsonSeries != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/series.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Series download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -307,15 +321,17 @@ def download_vod_series(forceUpdate=False):
         return False
 
 def download_vod_series_kids(forceUpdate=False):
-    #Check if data is already cached
-    if var.ChannelsDataJsonSeriesKids != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.ChannelsDataJsonSeriesKids != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Kids series download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -344,11 +360,13 @@ def download_vod_series_kids(forceUpdate=False):
         return False
 
 def download_series_season(parentId):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/series.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Serie download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return None
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -376,11 +394,13 @@ def download_series_season(parentId):
         return None
 
 def download_search_program(programName):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/search.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Zoek download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return None
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -409,15 +429,17 @@ def download_search_program(programName):
         return None
 
 def download_search_kids(forceUpdate=False):
-    #Check if data is already cached
-    if var.KidsSearchDataJson != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.KidsSearchDataJson != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Kids download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -446,15 +468,17 @@ def download_search_kids(forceUpdate=False):
         return False
 
 def download_search_sport(forceUpdate=False):
-    #Check if data is already cached
-    if var.SportSearchDataJson != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.SportSearchDataJson != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/sport.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Sport download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -483,15 +507,17 @@ def download_search_sport(forceUpdate=False):
         return False
 
 def download_search_movies(forceUpdate=False):
-    #Check if data is already cached
-    if var.MovieSearchDataJson != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.MovieSearchDataJson != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Week films download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -520,15 +546,17 @@ def download_search_movies(forceUpdate=False):
         return False
 
 def download_search_series(forceUpdate=False):
-    #Check if data is already cached
-    if var.SeriesSearchDataJson != [] and forceUpdate == False:
-        return None
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        if var.SeriesSearchDataJson != [] and forceUpdate == False:
+            return True
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/series.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Week series download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -557,11 +585,13 @@ def download_search_series(forceUpdate=False):
         return False
 
 def record_series_add(ChannelId, liveSeriesId):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen planning mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
@@ -605,11 +635,13 @@ def record_series_add(ChannelId, liveSeriesId):
         return False
 
 def record_series_remove(SeriesId, KeepRecordings=True):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
@@ -654,11 +686,13 @@ def record_series_remove(SeriesId, KeepRecordings=True):
         return False
 
 def record_event_add(ProgramId):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Opname planning mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return ''
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
@@ -700,11 +734,13 @@ def record_event_add(ProgramId):
         return ''
 
 def record_event_remove(RecordId, StartDeltaTime=0):
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Opname annulering mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return False
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
@@ -747,29 +783,31 @@ def record_event_remove(RecordId, StartDeltaTime=0):
         return False
 
 def download_epg_day(dayDateTime, forceUpdate=False):
-    #Check if data is already cached
-    epgDayCache = None
-    dayDateString = dayDateTime.strftime('%Y-%m-%d')
-    for epgCache in var.EpgCacheArray:
-        try:
-            if epgCache.dayDateString == dayDateString:
-                epgDayCache = epgCache
-                break
-        except:
-            continue
-
-    #Check if update is needed
-    if epgDayCache != None:
-        if forceUpdate == True:
-            var.EpgCacheArray.remove(epgDayCache)
-        else:
-            return epgDayCache.epgJson
-
-    #Check if user is logged in
-    if var.ApiLoggedIn == False:
-        apilogin.ApiLogin(False)
-
     try:
+        #Check if data is already cached
+        epgDayCache = None
+        dayDateString = dayDateTime.strftime('%Y-%m-%d')
+        for epgCache in var.EpgCacheArray:
+            try:
+                if epgCache.dayDateString == dayDateString:
+                    epgDayCache = epgCache
+                    break
+            except:
+                continue
+
+        #Check if update is needed
+        if epgDayCache != None:
+            if forceUpdate == True:
+                var.EpgCacheArray.remove(epgDayCache)
+            else:
+                return epgDayCache.epgJson
+
+        #Check if user needs to login
+        if apilogin.ApiLogin(False) == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
+            xbmcgui.Dialog().notification(var.addonname, 'TV Gids download mislukt, niet aangemeld.', notificationIcon, 2500, False)
+            return None
+
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie,
@@ -811,5 +849,5 @@ def download_epg_day(dayDateTime, forceUpdate=False):
         return DownloadDataJson
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-        xbmcgui.Dialog().notification(var.addonname, 'TV Gids downloaden mislukt.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'TV Gids download mislukt.', notificationIcon, 2500, False)
         return None

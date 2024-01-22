@@ -2,7 +2,6 @@ import json
 import random
 import re
 from datetime import datetime, timedelta
-import xbmc
 import xbmcgui
 import classes
 import default
@@ -21,16 +20,6 @@ def ApiGenerateDeviceId():
 
         #Update the settings
         var.addon.setSetting('LoginDeviceId120', DeviceId)
-
-def thread_login_auto():
-    while var.thread_login_auto.Allowed():
-        #Check if it is time to auto login
-        LastLoginSeconds = int((datetime.now() - var.ApiLastLogin).total_seconds())
-        if LastLoginSeconds >= 890:
-            if var.ApiLoggedIn == True:
-                ApiLogin(False)
-        else:
-            var.thread_login_auto.Sleep(2000)
 
 def ApiSetEndpointAdresNumber():
     try:
@@ -74,21 +63,24 @@ def ApiSetEndpointAdresEmail():
         xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
         return False
 
-def ApiLogin(LoginNotification=False):
-    #Check login retry limit
-    if var.ApiLoginCount > 2:
-        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Aanmeld poging limiet bereikt, herstart de add-on.', notificationIcon, 2500, False)
-        return False
-    else:
-        var.ApiLoginCount += 1
-
-    #Generate the device id
-    ApiGenerateDeviceId()
-
+def ApiLogin(loginNotification=False, forceLogin=False):
     #Check login settings
     if default.check_login_settings() == False:
         return False
+
+    #Check failed login retry limit
+    if var.ApiLoginFailCount > 2:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Aanmeld poging limiet bereikt, herstart de add-on.', notificationIcon, 2500, False)
+        return False
+
+    #Check if login is needed
+    lastLoginSeconds = int((datetime.now() - var.ApiLastLogin).total_seconds())
+    if forceLogin == False and var.ApiLoggedIn == True and lastLoginSeconds < 890:
+        return True
+
+    #Generate the device id
+    ApiGenerateDeviceId()
 
     #Check the login type
     if var.addon.getSetting('LoginType') == 'Abonnementsnummer':
@@ -156,6 +148,7 @@ def ApiLogin(LoginNotification=False):
         var.ApiLastLogin = datetime(1970, 1, 1)
         var.ApiLoginCookie = ''
         var.ApiLoginToken = ''
+        var.ApiLoginFailCount += 1
         return False
 
     #Check if connection is successful
@@ -170,6 +163,7 @@ def ApiLogin(LoginNotification=False):
             var.ApiLastLogin = datetime(1970, 1, 1)
             var.ApiLoginCookie = ''
             var.ApiLoginToken = ''
+            var.ApiLoginFailCount += 1
             return False
         elif errorDescription == '401-3035':
             notificationIcon = path.resources('resources/skins/default/media/common/error.png')
@@ -178,6 +172,7 @@ def ApiLogin(LoginNotification=False):
             var.ApiLastLogin = datetime(1970, 1, 1)
             var.ApiLoginCookie = ''
             var.ApiLoginToken = ''
+            var.ApiLoginFailCount += 1
             return False
         elif resultCode == 'KO':
             notificationIcon = path.resources('resources/skins/default/media/common/error.png')
@@ -186,6 +181,7 @@ def ApiLogin(LoginNotification=False):
             var.ApiLastLogin = datetime(1970, 1, 1)
             var.ApiLoginCookie = ''
             var.ApiLoginToken = ''
+            var.ApiLoginFailCount += 1
             return False
 
     #Read and set the returned token
@@ -197,6 +193,7 @@ def ApiLogin(LoginNotification=False):
         var.ApiLastLogin = datetime(1970, 1, 1)
         var.ApiLoginCookie = ''
         var.ApiLoginToken = ''
+        var.ApiLoginFailCount += 1
         return False
 
     #Filter and clone the cookie contents
@@ -217,23 +214,20 @@ def ApiLogin(LoginNotification=False):
         var.ApiLastLogin = datetime(1970, 1, 1)
         var.ApiLoginCookie = ''
         var.ApiLoginToken = ''
+        var.ApiLoginFailCount += 1
         return False
 
     #Show the login notification
-    if LoginNotification == True:
+    if loginNotification == True:
         xbmcgui.Dialog().notification(var.addonname, 'Aangemeld, veel kijkplezier.', var.addonicon, 2500, False)
 
     #Check if user has home access
     ApiCheckHomeAccess(DownloadDataJson)
 
     #Update api login variables
-    var.ApiLoginCount = 0
     var.ApiLoggedIn = True
     var.ApiLastLogin = datetime.now()
-
-    #Start auto login thread
-    var.thread_login_auto.Start(thread_login_auto)
-
+    var.ApiLoginFailCount = 0
     return True
 
 def ApiCheckHomeAccess(DownloadDataJson):
