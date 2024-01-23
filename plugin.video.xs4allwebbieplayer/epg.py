@@ -12,6 +12,7 @@ import path
 import recordingfunc
 import searchdialog
 import stream
+import switch
 import liepgload
 import liepgupdate
 import var
@@ -271,7 +272,7 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Serie seizoen opnemen of annuleren':
             recordingfunc.record_series_epg(self, listItemSelected)
         elif dialogResult == 'Live programma kijken':
-            stream.switch_channel_tv_listitem(listItemSelected, False, False)
+            switch.channel_tv_listitem(listItemSelected, False, False)
         elif dialogResult == 'Programma terug kijken':
             stream.play_stream_program(listItemSelected, False)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':

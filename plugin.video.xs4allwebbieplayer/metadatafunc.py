@@ -137,3 +137,18 @@ def search_channelid_jsontelevision(searchChannelId):
         return None
     except:
         return None
+
+#Search for ChannelId in json radio
+def search_channelid_jsonradio(searchChannelId):
+    try:
+        #lengt = str(len(var.ChannelsDataJsonRadio['radios']))
+        if var.ChannelsDataJsonRadio == []: return None
+        for channel in var.ChannelsDataJsonRadio['radios']:
+            try:
+                if str(channel['id']) == searchChannelId:
+                    return channel
+            except:
+                continue
+        return None
+    except:
+        return None

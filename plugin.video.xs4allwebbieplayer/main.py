@@ -9,6 +9,7 @@ import download
 import epg
 import func
 import lifunc
+import limain
 import helpx
 import hybrid
 import movies
@@ -22,7 +23,7 @@ import search
 import series
 import sleep
 import sport
-import stream
+import switch
 import television
 import threadfunc
 import var
@@ -140,7 +141,7 @@ class Gui(xbmcgui.WindowXML):
                 CurrentChannelId = var.addon.getSetting('CurrentChannelId')
                 CurrentExternalId = var.addon.getSetting('CurrentExternalId')
                 CurrentChannelName = var.addon.getSetting('CurrentChannelName')
-                stream.switch_channel_tv_channelid(CurrentChannelId, CurrentExternalId, CurrentChannelName, 'Televisie', True, False)
+                switch.channel_tv_channelid(CurrentChannelId, CurrentExternalId, CurrentChannelName, 'Televisie', True, False)
 
             #Go to the desired page on startup
             if var.addon.getSetting('StartWithTelevision') == 'true':
@@ -209,108 +210,12 @@ class Gui(xbmcgui.WindowXML):
 
     def buttons_add_menu(self):
         #Get and check the main list container
-        listcontainer = self.getControl(1000)
-        if listcontainer.size() > 0: return True
+        listContainer = self.getControl(1000)
+        if listContainer.size() > 0:
+            return True
 
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Televisie')
-            listitem.setProperty('Action', 'page_television')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/television.png'),'icon': path.resources('resources/skins/default/media/common/television.png')})
-            listcontainer.addItem(listitem)
-
-        listitem = xbmcgui.ListItem('Radio')
-        listitem.setProperty('Action', 'page_radio')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/radio.png'), 'icon': path.resources('resources/skins/default/media/common/radio.png')})
-        listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Films')
-            listitem.setProperty('Action', 'page_movies')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/movies.png'), 'icon': path.resources('resources/skins/default/media/common/movies.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Series')
-            listitem.setProperty('Action', 'page_series')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/series.png'), 'icon': path.resources('resources/skins/default/media/common/series.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('TV Gids')
-            listitem.setProperty('Action', 'page_epg')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/epg.png'), 'icon': path.resources('resources/skins/default/media/common/epg.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Terugzoeken')
-            listitem.setProperty('Action', 'page_search')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Sport Gemist')
-            listitem.setProperty('Action', 'page_sport')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/sport.png'), 'icon': path.resources('resources/skins/default/media/common/sport.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Programma Gemist')
-            listitem.setProperty('Action', 'page_vod')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/vod.png'), 'icon': path.resources('resources/skins/default/media/common/vod.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            if var.addon.getSetting('KidsPageLock') == 'true':
-                listitem = xbmcgui.ListItem('Kids met slot')
-            else:
-                listitem = xbmcgui.ListItem('Kids')
-            listitem.setProperty('Action', 'page_kids')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/kids.png'), 'icon': path.resources('resources/skins/default/media/common/kids.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True and var.RecordingAccess == True:
-            listitem = xbmcgui.ListItem('Bekijk Opnames (?)')
-            listitem.setProperty('Action', 'page_recorded')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/recorddone.png'), 'icon': path.resources('resources/skins/default/media/common/recorddone.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True and var.RecordingAccess == True:
-            listitem = xbmcgui.ListItem('Geplande Opnames (?)')
-            listitem.setProperty('Action', 'page_recording_event')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/record.png'), 'icon': path.resources('resources/skins/default/media/common/record.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True and var.RecordingAccess == True:
-            listitem = xbmcgui.ListItem('Geplande Series (?)')
-            listitem.setProperty('Action', 'page_recording_series')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/recordseries.png'), 'icon': path.resources('resources/skins/default/media/common/recordseries.png')})
-            listcontainer.addItem(listitem)
-
-        if var.ApiLoggedIn == True:
-            listitem = xbmcgui.ListItem('Alarmen (?)')
-            listitem.setProperty('Action', 'page_alarm')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/alarm.png'), 'icon': path.resources('resources/skins/default/media/common/alarm.png')})
-            listcontainer.addItem(listitem)
-
-        listitem = xbmcgui.ListItem('Slaap Timer')
-        listitem.setProperty('Action', 'page_sleep')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/sleep.png'), 'icon': path.resources('resources/skins/default/media/common/sleep.png')})
-        listcontainer.addItem(listitem)
-
-        listitem = xbmcgui.ListItem('Instellingen')
-        listitem.setProperty('Action', 'addon_settings')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/settings.png'), 'icon': path.resources('resources/skins/default/media/common/settings.png')})
-        listcontainer.addItem(listitem)
-
-        listitem = xbmcgui.ListItem('Help')
-        listitem.setProperty('Action', 'page_help')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/help.png'), 'icon': path.resources('resources/skins/default/media/common/help.png')})
-        listcontainer.addItem(listitem)
-
-        listitem = xbmcgui.ListItem('Sluiten')
-        listitem.setProperty('Action', 'addon_shutdown')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/shutdown.png'), 'icon': path.resources('resources/skins/default/media/common/shutdown.png')})
-        listcontainer.addItem(listitem)
+        #Add buttons to the main menu
+        limain.list_load(listContainer)
 
     def count_recorded_events(self):
         try:

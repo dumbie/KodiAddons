@@ -93,6 +93,8 @@ addonstorage = os.path.join(hybrid.string_decode_utf8(hybrid.xbmc_translate_path
 kodiversion = xbmc.getInfoLabel('System.BuildVersion').split(' ')[0].split('-')[0]
 
 #Launch variables
+LaunchUrl = ''
+LaunchHandle = 0
 LaunchArgument = ''
 
 #Dialog variables
@@ -109,7 +111,6 @@ thread_update_epg_channel = threadclass.Class_ThreadSafe()
 thread_update_playergui_info = threadclass.Class_ThreadSafe()
 thread_hide_playergui_info = threadclass.Class_ThreadSafe()
 thread_sleep_timer = threadclass.Class_ThreadSafe()
-thread_login_auto = threadclass.Class_ThreadSafe()
 
 #Player variables
 PlayerCustom = player.PlayerCustom()
@@ -124,7 +125,7 @@ ApiHomeAccess = True
 ApiLastLogin = datetime(1970,1,1)
 ApiLoginCookie = ''
 ApiLoginToken = ''
-ApiLoginCount = 0
+ApiLoginFailCount = 0
 
 #Favorite variables
 FavoriteTelevisionDataJson = []

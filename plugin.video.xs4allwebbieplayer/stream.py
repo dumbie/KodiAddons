@@ -5,42 +5,37 @@ import xbmcgui
 import apilogin
 import re
 import func
-import generate
 import hybrid
 import metadatainfo
 import metadatafunc
 import path
 import var
 
-#Switch to new television channel by listitem
-def switch_channel_tv_listitem(listitem, Windowed=False, showInformation=False, SeekOffset=0):
-    play_stream_television(listitem, Windowed, SeekOffset)
-
-    if showInformation and var.guiPlayer != None:
-        var.guiPlayer.show_epg(True)
-
-#Switch to new television channel by id
-def switch_channel_tv_channelid(ChannelId, ExternalId='', ChannelName='Onbekende zender', Genre='Onbekend', Windowed=False, showInformation=False):
-    if func.string_isnullorempty(ChannelId):
-        notificationIcon = path.resources('resources/skins/default/media/common/television.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
-        return
-
-    listItem = generate.listitem_play_tv(ChannelId, ExternalId, ChannelName, Genre)
-    play_stream_television(listItem, Windowed)
-
-    if showInformation and var.guiPlayer != None:
-        var.guiPlayer.show_epg(True)
-
 def play_stream_radio(listItem):
-    #Update channel settings and variables
-    var.addon.setSetting('CurrentRadioId', listItem.getProperty('ChannelId'))
+    try:
+        #Get channel properties
+        ChannelId = listItem.getProperty('ChannelId')
+        ChannelName = listItem.getProperty('ChannelName')
+        ChannelStreamUrl = listItem.getProperty('StreamUrl')
 
-    #Update the list item name label
-    listItem.setLabel(listItem.getProperty('ChannelName'))
+        if func.string_isnullorempty(ChannelStreamUrl):
+            #Get channel json
+            channelJson = metadatafunc.search_channelid_jsonradio(ChannelId)
 
-    #Start playing the media
-    var.PlayerCustom.PlayCustom(listItem.getProperty('StreamUrl'), listItem, True, False)
+            #Load channel stream url
+            ChannelStreamUrl = channelJson['stream']
+
+        #Update channel settings and variables
+        var.addon.setSetting('CurrentRadioId', ChannelId)
+
+        #Update the list item name label
+        listItem.setLabel(ChannelName)
+
+        #Start playing the media
+        var.PlayerCustom.PlayCustom(ChannelStreamUrl, listItem, True, False)
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
 
 def play_stream_recorded(listItem, Windowed):
     #Check if user needs to login

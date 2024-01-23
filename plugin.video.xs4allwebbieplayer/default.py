@@ -1,34 +1,38 @@
 import sys
 from datetime import datetime, timedelta
 import xbmc
-import xbmcaddon
 import xbmcgui
+import argument
 import dialog
 import files
 import hybrid
 import main
 import path
 import var
-import widevine
 
-def check_launch_argument():
+def get_launch_type():
     try:
-        var.LaunchArgument = sys.argv[1]
-        if var.LaunchArgument == "InputAdaptiveSettings":
-            xbmcaddon.Addon('inputstream.adaptive').openSettings()
-            return False
-        elif var.LaunchArgument == "UpdateWidevineFiles":
-            widevine.enable_widevine_support(True)
-            return False
-        elif var.LaunchArgument == "ResetUserdata":
-            reset_userdata()
-            return False
-        elif var.LaunchArgument == "ResetThumbnails":
-            reset_thumbnails()
-            return False
-        return True
+        str(sys.argv[0])
+        str(sys.argv[1])
+        str(sys.argv[2])
+        return 'Source'
     except:
-        return True
+        return 'Script'
+
+def launch_source():
+    argument.set_launch_argument_source()
+    argument.handle_launch_argument_source()
+
+def launch_script():
+    argument.set_launch_argument_script()
+    allowLaunch = check_multi_launch()
+    argumentLaunch = argument.handle_launch_argument_script()
+    if allowLaunch and argumentLaunch:
+        reset_home_variables()
+        stop_playing_media()
+        check_login_settings()
+        change_addon_accent()
+        main.switch_to_page()
 
 def reset_thumbnails():
     try:
@@ -169,11 +173,8 @@ def change_addon_accent():
 
 #Add-on launch
 if __name__ == '__main__':
-    allowLaunch = check_multi_launch()
-    argumentLaunch = check_launch_argument()
-    if allowLaunch and argumentLaunch:
-        reset_home_variables()
-        stop_playing_media()
-        check_login_settings()
-        change_addon_accent()
-        main.switch_to_page()
+    launchType = get_launch_type()
+    if launchType == 'Script':
+        launch_script()
+    else:
+        launch_source()

@@ -1,5 +1,31 @@
 import xbmc
+import xbmcplugin
 import func
+import var
+
+#Add item to container or directory
+def auto_add_item(listItem, listContainer, dirUrl='', dirFolder=False):
+    try:
+        if listContainer == None:
+            if func.string_isnullorempty(dirUrl) == False:
+                dirUrl = var.LaunchUrl + '?' + dirUrl
+            xbmcplugin.addDirectoryItem(listitem=listItem,handle=var.LaunchHandle,url=dirUrl,isFolder=dirFolder)
+        else:
+            if type(listContainer) == list:
+                listContainer.append(listItem)
+            else:
+                listContainer.addItem(listItem)
+        return True
+    except:
+        return False
+
+#End adding items to directory
+def auto_end_items():
+    try:
+        xbmcplugin.endOfDirectory(var.LaunchHandle)
+        return True
+    except:
+        return False
 
 #Search for ProgramName in list array
 def search_programname_listarray(listArray, searchProgramName):
