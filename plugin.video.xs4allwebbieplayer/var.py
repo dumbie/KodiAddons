@@ -115,7 +115,8 @@ thread_sleep_timer = threadclass.Class_ThreadSafe()
 #Player variables
 PlayerCustom = player.PlayerCustom()
 PlayerWindowed = False
-PlayerOverlay = False
+PlayerOpenOverlay = False
+PlayerShowInformation = False
 PlayerSeekOffset = 0
 
 #Api variables

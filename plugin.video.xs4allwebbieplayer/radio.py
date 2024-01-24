@@ -23,6 +23,10 @@ def close_the_page():
         var.guiRadio.close()
         var.guiRadio = None
 
+def source_plugin_list():
+    download.download_channels_radio(False)
+    lichannelradio.list_load(None)
+
 def show_visualisation():
     try:
         if xbmc.Player().isPlayingAudio():
@@ -44,8 +48,8 @@ class Gui(xbmcgui.WindowXML):
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')
-                if listItemAction == 'play_stream':
-                    stream.play_stream_radio(listItemSelected)
+                if listItemAction == 'play_stream_radio':
+                    stream.play_stream_radio(listItemSelected, True)
             elif clickId == 1001:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')

@@ -34,8 +34,8 @@ def list_load(listContainer):
             ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add week program
-            listItem = xbmcgui.ListItem()
-            listItem.setProperty('Action', 'play_stream_week')
+            listItem = xbmcgui.ListItem(ProgramName)
+            listItem.setProperty('Action', 'play_stream_program')
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))

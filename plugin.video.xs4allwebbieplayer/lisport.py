@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import func
+import lifunc
 import metadatacombine
 import metadatainfo
 import xbmcgui
@@ -54,8 +55,9 @@ def list_load(listContainer):
             ProgramNameDesc += '\n' + ProgramAvailability
 
             #Add program
-            listItem = xbmcgui.ListItem()
-            listItem.setProperty('Action', 'play_stream')
+            listAction = 'play_stream_program'
+            listItem = xbmcgui.ListItem(ProgramName)
+            listItem.setProperty('Action', listAction)
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
@@ -66,6 +68,7 @@ def list_load(listContainer):
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'Genre': 'Sport Gemist', 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.append(listItem)
+            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ProgramId)
         except:
             continue
+    lifunc.auto_end_items()

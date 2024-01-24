@@ -63,8 +63,9 @@ def list_load(listContainer):
             ProgramProgressPercent = '100'
 
             #Add television channel
+            listAction = 'play_stream_tv'
             listItem = xbmcgui.ListItem(ChannelName)
-            listItem.setProperty('Action', 'play_stream')
+            listItem.setProperty('Action', listAction)
             listItem.setProperty('AssetId', AssetId)
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ChannelNumber', ChannelNumber)
@@ -81,7 +82,7 @@ def list_load(listContainer):
             listItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
             listItem.setInfo('video', {'Genre': 'Televisie'})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl='play_stream_tv='+ChannelId)
+            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ChannelId)
         except:
             continue
     lifunc.auto_end_items()

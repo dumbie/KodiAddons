@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import xbmc
 import func
 import lifunc
-import switch
+import stream
 import var
 
 def check_remote_number(_self, controlId, actionId, selectMode, clickOnSelection):
@@ -88,7 +88,7 @@ def zap_remote_number(_self):
         return
 
     listItemSelected = listcontainer.getListItem(itemnum)
-    switch.channel_tv_listitem(listItemSelected, False, True)
+    stream.play_stream_tv(listItemSelected, False, True)
 
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
     while var.thread_zap_wait_timer.Allowed():

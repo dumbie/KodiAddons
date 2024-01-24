@@ -6,7 +6,7 @@ import playergui
 import var
 
 class PlayerCustom(xbmc.Player):
-    def PlayCustom(self, title='Onbekend', listitem=None, Windowed=False, Overlay=False, SeekOffset=0):
+    def PlayCustom(self, title='Onbekend', listitem=None, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffset=0):
         #Check if audio is playing in visualization
         if xbmc.Player().isPlayingAudio():
             func.close_window_id(var.WINDOW_VISUALISATION)
@@ -14,33 +14,35 @@ class PlayerCustom(xbmc.Player):
 
         #Update the video player settings
         var.PlayerWindowed = Windowed
-        var.PlayerOverlay = Overlay
+        var.PlayerOpenOverlay = OpenOverlay
+        var.PlayerShowInformation = ShowInformation
         var.PlayerSeekOffset = SeekOffset
 
-        #Check which video player should be used for playback
+        #Start playing list item media
         self.play(title, listitem, Windowed)
 
     def Fullscreen(self, ForceFullscreen=False, ForceOverlay=False):
         xbmc.sleep(100)
         if xbmc.Player().isPlayingVideo():
-            #Fullscreen the video player
+            #Fullscreen video player
             if ForceFullscreen == True or var.PlayerWindowed == False and xbmc.getCondVisibility('VideoPlayer.IsFullscreen') == False:
                 xbmc.executebuiltin('Action(FullScreen)')
                 xbmc.sleep(100)
 
-            #Overlay the custom player gui
-            if ForceOverlay == True or var.PlayerOverlay == True and xbmc.getCondVisibility('VideoPlayer.IsFullscreen') == True:
+            #Overlay custom player gui
+            if ForceOverlay == True or var.PlayerOpenOverlay == True and xbmc.getCondVisibility('VideoPlayer.IsFullscreen') == True:
+                #Open player gui page
                 playergui.switch_to_page()
-            else:
-                playergui.close_the_page()
-        else:
-            notificationIcon = path.resources('resources/skins/default/media/common/television.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Televisie speelt niet.', notificationIcon, 2500, False)
+                xbmc.sleep(100)
+
+                #Show player gui interface
+                if var.PlayerShowInformation == True and var.guiPlayer != None:
+                    var.guiPlayer.show_epg(True)
 
     def onAVStarted(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlayingVideo():
-            #Switch to full screen video player
+            #Switch to full screen player
             self.Fullscreen()
 
             #Player seek back stream
@@ -63,7 +65,7 @@ class PlayerCustom(xbmc.Player):
         if xbmc.Player().isPlaying() == False:
             #Reset the custom player variables
             var.PlayerWindowed = False
-            var.PlayerOverlay = False
+            var.PlayerOpenOverlay = False
 
             #Close the gui video player window
             playergui.close_the_page()
@@ -77,7 +79,7 @@ class PlayerCustom(xbmc.Player):
         if xbmc.Player().isPlaying() == False:
             #Reset the custom player variables
             var.PlayerWindowed = False
-            var.PlayerOverlay = False
+            var.PlayerOpenOverlay = False
 
             #Close the gui video player window
             playergui.close_the_page()
@@ -91,7 +93,7 @@ class PlayerCustom(xbmc.Player):
         if xbmc.Player().isPlaying() == False:
             #Reset the custom player variables
             var.PlayerWindowed = False
-            var.PlayerOverlay = False
+            var.PlayerOpenOverlay = False
 
             #Close the gui video player window
             playergui.close_the_page()

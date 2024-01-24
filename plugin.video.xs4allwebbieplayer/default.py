@@ -20,14 +20,12 @@ def get_launch_type():
         return 'Script'
 
 def launch_source():
+    check_login_settings()
     argument.set_launch_argument_source()
     argument.handle_launch_argument_source()
 
 def launch_script():
-    argument.set_launch_argument_script()
-    allowLaunch = check_multi_launch()
-    argumentLaunch = argument.handle_launch_argument_script()
-    if allowLaunch and argumentLaunch:
+    if check_multi_launch():
         reset_home_variables()
         stop_playing_media()
         check_login_settings()
@@ -86,8 +84,8 @@ def check_multi_launch():
     if var.windowHome.getProperty('WebbiePlayerRunning'):
         lastrunSeconds = float(var.windowHome.getProperty('WebbiePlayerRunning'))
         currentSeconds = float((datetime.now() - datetime(1970,1,1)).total_seconds())
-        if (currentSeconds - lastrunSeconds) <= 15:
-            xbmcgui.Dialog().notification(var.addonname, 'Webbie Player is al geopend.', var.addonicon, 2500, False)
+        if (currentSeconds - lastrunSeconds) <= 10:
+            xbmcgui.Dialog().notification(var.addonname, 'Webbie Player is recent geopend.', var.addonicon, 2500, False)
             return False
         else:
             var.windowHome.setProperty('WebbiePlayerRunning', str(currentSeconds))

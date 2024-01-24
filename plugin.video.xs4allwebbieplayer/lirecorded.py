@@ -63,8 +63,8 @@ def list_load(listContainer):
             ProgramNameDesc += '\n' + ProgramAvailability
 
             #Add program
-            listItem = xbmcgui.ListItem()
-            listItem.setProperty('Action', 'play_stream')
+            listItem = xbmcgui.ListItem(ProgramName)
+            listItem.setProperty('Action', 'play_stream_recorded')
             listItem.setProperty('ProgramAssetId', ProgramAssetId)
             listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
             listItem.setProperty('ProgramStartTime', ProgramStartTime)

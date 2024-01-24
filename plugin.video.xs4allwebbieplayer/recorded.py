@@ -3,6 +3,7 @@ import xbmcgui
 import dialog
 import download
 import func
+import lifunc
 import path
 import lirecorded
 import searchdialog
@@ -23,6 +24,26 @@ def close_the_page():
         var.guiRecorded.close()
         var.guiRecorded = None
 
+def source_plugin_list():
+    downloadResultProfile = download.download_recording_profile()
+    downloadResultEvent = download.download_recording_event()
+    #if downloadResultProfile == False and downloadResultEvent == False:
+
+    #Add items to sort list
+    listcontainersort = []
+    lirecorded.list_load(listcontainersort)
+
+    #Sort items in list
+    listcontainersort.sort(key=lambda x: int(x.getProperty('ProgramStartTime')), reverse=True)
+
+    #Add items to container
+    for listItem in listcontainersort:
+        Action = listItem.getProperty('Action')
+        ProgramAssetId = listItem.getProperty('ProgramAssetId')
+        ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
+        lifunc.auto_add_item(listItem, None, dirUrl=Action+'='+ProgramAssetId+','+ProgramRecordEventId)
+    lifunc.auto_end_items()
+
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Opnames")
@@ -34,7 +55,7 @@ class Gui(xbmcgui.WindowXML):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'play_stream':
+            if listItemAction == 'play_stream_recorded':
                 stream.play_stream_recorded(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()

@@ -14,7 +14,7 @@ import path
 import litelevision
 import recordingfunc
 import searchdialog
-import switch
+import stream
 import var
 import zap
 
@@ -38,6 +38,10 @@ def close_the_page():
         var.guiTelevision.close()
         var.guiTelevision = None
 
+def source_plugin_list():
+    download.download_channels_tv(False)
+    lichanneltelevision.list_load(None)
+
 class Gui(xbmcgui.WindowXML):
     EpgPauseUpdate = False
     EpgForceUpdate = False
@@ -56,8 +60,8 @@ class Gui(xbmcgui.WindowXML):
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')
-                if listItemAction == 'play_stream':
-                    switch.channel_tv_listitem(listItemSelected, False, False)
+                if listItemAction == 'play_stream_tv':
+                    stream.play_stream_tv(listItemSelected, False)
             elif clickId == 1001:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')
@@ -150,7 +154,7 @@ class Gui(xbmcgui.WindowXML):
             ProgramTimeStartProp = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
             ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
             ProgramTimeStartOffset = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
-            switch.channel_tv_listitem(listItemSelected, False, False, ProgramTimeStartOffset)
+            stream.play_stream_tv(listItemSelected, False, False, ProgramTimeStartOffset)
         elif dialogResult == 'Programma in de TV Gids tonen':
             var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramNowId")
             var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")

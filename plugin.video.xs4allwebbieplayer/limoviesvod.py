@@ -34,7 +34,7 @@ def list_load(listContainer):
             ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add vod program
-            listItem = xbmcgui.ListItem()
+            listItem = xbmcgui.ListItem(ProgramName)
             listItem.setProperty('Action', 'play_stream_vod')
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramName", ProgramName)

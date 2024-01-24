@@ -42,8 +42,9 @@ def list_load(listContainer):
             ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
 
             #Add radio channel
+            listAction = 'play_stream_radio'
             listItem = xbmcgui.ListItem(ChannelName)
-            listItem.setProperty('Action', 'play_stream')
+            listItem.setProperty('Action', listAction)
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ChannelName', ChannelName)
             listItem.setProperty('ChannelNumber', ChannelNumberString)
@@ -52,7 +53,7 @@ def list_load(listContainer):
             listItem.setProperty('StreamUrl', ChannelStream)
             listItem.setInfo('video', {'Genre': 'Radio'})
             listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl='play_stream_radio='+ChannelId)
+            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ChannelId)
         except:
             continue
     lifunc.auto_end_items()

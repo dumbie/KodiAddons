@@ -4,6 +4,7 @@ import dialog
 import download
 import epg
 import func
+import lifunc
 import limoviesvod
 import limoviesweek
 import path
@@ -25,6 +26,26 @@ def close_the_page():
         var.guiMovies.close()
         var.guiMovies = None
 
+def source_plugin_list():
+    downloadResult = download.download_vod_movies()
+    downloadResultWeek = download.download_search_movies()
+    #if downloadResult == False or downloadResultWeek == False:
+
+    #Add items to sort list
+    listcontainersort = []
+    limoviesweek.list_load(listcontainersort)
+    limoviesvod.list_load(listcontainersort)
+
+    #Sort items in list
+    listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
+
+    #Add items to container
+    for listItem in listcontainersort:
+        Action = listItem.getProperty('Action')
+        ProgramId = listItem.getProperty('ProgramId')
+        lifunc.auto_add_item(listItem, None, dirUrl=Action+'='+ProgramId)
+    lifunc.auto_end_items()
+
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         self.buttons_add_navigation()
@@ -37,7 +58,7 @@ class Gui(xbmcgui.WindowXML):
             listItemAction = listItemSelected.getProperty('Action')
             if listItemAction == 'play_stream_vod':
                 stream.play_stream_vod(listItemSelected, False)
-            elif listItemAction == 'play_stream_week':
+            elif listItemAction == 'play_stream_program':
                 stream.play_stream_program(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()

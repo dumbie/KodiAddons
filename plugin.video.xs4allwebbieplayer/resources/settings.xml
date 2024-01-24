@@ -17,8 +17,8 @@
     <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="SearchFilterFuzzy" label="Vergelijkbare zoek resultaten tonen" type="bool" default="false"/>
     <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
-    <setting id="ResetUserdata" type="action" label="Verwijder userdatabestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,ResetUserdata)"/>
-    <setting id="ResetThumbnails" type="action" label="Alle zenderlogo's vernieuwen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,ResetThumbnails)"/>
+    <setting id="ResetUserdata" type="action" label="Verwijder userdatabestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
+    <setting id="ResetThumbnails" type="action" label="Alle zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Afspelen">
@@ -47,8 +47,8 @@
     <setting id="StreamResolution" type="select" label="Maximale resolutie van de videostream" default="1080pNormal" values="1080pBest|1080pHigh|1080pNormal|720p|576p|432p|360p|180p"/>
     <setting id="CustomUserAgent" type="text" label="User-agent verbindingsidentificatie" default="Webbie Player"/>
     <setting id="UseLocalhostProxy" label="Gebruik lokale proxy server voor stream verbinding" type="bool" default="false"/>
-    <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream-adaptive add-on instellingen" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,InputAdaptiveSettings)"/>
-    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunScript(plugin.video.xs4allwebbieplayer,UpdateWidevineFiles)"/>
+    <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream-adaptive add-on instellingen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?InputAdaptiveSettings)"/>
+    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
     <setting label="* Hier kunt u de streamkwaliteit-instellingen optimaliseren." type="lsep"/>
     <!-- Hidden variable settings -->
     <setting id="LoginDeviceId120" type="text" visible="false" default=""/>

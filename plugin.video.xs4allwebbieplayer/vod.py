@@ -24,6 +24,11 @@ def close_the_page():
         var.guiVod.close()
         var.guiVod = None
 
+def source_plugin_list():
+    downloadResult = download.download_vod_day(var.VodCurrentLoadDateTime)
+    #if downloadResult == False:
+    livod.list_load(None)
+
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Programma Gemist")
@@ -35,7 +40,7 @@ class Gui(xbmcgui.WindowXML):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'play_stream':
+            if listItemAction == 'play_stream_program':
                 stream.play_stream_program(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()

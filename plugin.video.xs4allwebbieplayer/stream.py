@@ -11,7 +11,7 @@ import metadatafunc
 import path
 import var
 
-def play_stream_radio(listItem):
+def play_stream_radio(listItem, Windowed):
     try:
         #Get channel properties
         ChannelId = listItem.getProperty('ChannelId')
@@ -32,7 +32,7 @@ def play_stream_radio(listItem):
         listItem.setLabel(ChannelName)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(ChannelStreamUrl, listItem, True, False)
+        var.PlayerCustom.PlayCustom(ChannelStreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
@@ -134,7 +134,7 @@ def play_stream_recorded(listItem, Windowed):
     listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
-    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
+    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
 
 def play_stream_program(listItem, Windowed):
     #Check if user needs to login
@@ -251,7 +251,7 @@ def play_stream_program(listItem, Windowed):
     listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
-    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
+    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
 
 def play_stream_vod(listItem, Windowed):
     #Check if user needs to login
@@ -364,9 +364,9 @@ def play_stream_vod(listItem, Windowed):
     listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
-    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, False)
+    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
 
-def play_stream_television(listItem, Windowed, SeekOffset=0):
+def play_stream_tv(listItem, Windowed, ShowInformation=False, SeekOffset=0):
     #Check if user needs to login
     if apilogin.ApiLogin(False) == False:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
@@ -495,4 +495,4 @@ def play_stream_television(listItem, Windowed, SeekOffset=0):
     listItem.setProperty("get_stream_details_from_player", 'true')
 
     #Start playing the media
-    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, True, SeekOffset)
+    var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, True, ShowInformation, SeekOffset)

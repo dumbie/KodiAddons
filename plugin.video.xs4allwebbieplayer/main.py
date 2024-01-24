@@ -50,6 +50,11 @@ def close_the_page():
         #Close the shown window
         var.guiMain.close()
 
+def source_plugin_list():
+    apilogin.ApiLogin(True)
+    download.download_recording_profile()
+    limain.list_load(None)
+
 def dialog_close():
     if var.addon.getSetting('AfsluitschermOverslaan') == 'true':
         close_the_page()
@@ -141,7 +146,7 @@ class Gui(xbmcgui.WindowXML):
                 CurrentChannelId = var.addon.getSetting('CurrentChannelId')
                 CurrentExternalId = var.addon.getSetting('CurrentExternalId')
                 CurrentChannelName = var.addon.getSetting('CurrentChannelName')
-                switch.channel_tv_channelid(CurrentChannelId, CurrentExternalId, CurrentChannelName, 'Televisie', True, False)
+                switch.stream_tv_channelid(CurrentChannelId, CurrentExternalId, CurrentChannelName, 'Televisie', True, False)
 
             #Go to the desired page on startup
             if var.addon.getSetting('StartWithTelevision') == 'true':

@@ -1,25 +1,18 @@
 import xbmcgui
+import download
 import func
 import stream
 import path
 import var
-import playergui
 
-#Switch to new television channel by listitem
-def channel_tv_listitem(listitem, Windowed=False, ShowInformation=False, SeekOffset=0):
-    stream.play_stream_television(listitem, Windowed, SeekOffset)
-
-    if ShowInformation == True:
-        if var.guiPlayer != None:
-            var.guiPlayer.show_epg(True)
-
-#Switch to new television channel by id
-def channel_tv_channelid(ChannelId, ExternalId='', ChannelName='Onbekende zender', ChannelGenre='Onbekend', Windowed=False, ShowInformation=False, SeekOffset=0):
+#Stream television by channel identifier
+def stream_tv_channelid(ChannelId, ExternalId='', ChannelName='', ChannelGenre='', Windowed=False, ShowInformation=False, SeekOffset=0):
     if func.string_isnullorempty(ChannelId):
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
         return
 
+    #Check stream details
     if func.string_isnullorempty(ChannelName):
         ChannelName = 'Onbekende zender'
 
@@ -36,19 +29,17 @@ def channel_tv_channelid(ChannelId, ExternalId='', ChannelName='Onbekende zender
         listItem.setProperty('ExternalId', ExternalId)
         listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
 
-    stream.play_stream_television(listItem, Windowed, SeekOffset)
+    download.download_channels_tv(False)
+    stream.play_stream_tv(listItem, Windowed, ShowInformation, SeekOffset)
 
-    if ShowInformation == True:
-        if var.guiPlayer != None:
-            var.guiPlayer.show_epg(True)
-
-#Switch to new radio channel by id
-def channel_radio_channelid(ChannelId, StreamUrl='', ChannelName='Onbekende zender', ChannelGenre='Onbekend'):
+#Stream radio by channel identifier
+def stream_radio_channelid(ChannelId, StreamUrl='', ChannelName='', ChannelGenre='', Windowed=True):
     if func.string_isnullorempty(ChannelId):
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
         return
 
+    #Check stream details
     if func.string_isnullorempty(ChannelName):
         ChannelName = 'Onbekende zender'
 
@@ -63,4 +54,72 @@ def channel_radio_channelid(ChannelId, StreamUrl='', ChannelName='Onbekende zend
     listItem.setInfo('video', {'Genre': ChannelGenre})
     listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
 
-    stream.play_stream_radio(listItem)
+    download.download_channels_radio(False)
+    stream.play_stream_radio(listItem, Windowed)
+
+#Stream program by identifier
+def stream_program_id(ProgramId, ProgramName='', ProgramGenre='', Windowed=False):
+    if func.string_isnullorempty(ProgramId):
+        notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Ongeldige programma informatie.', notificationIcon, 2500, False)
+        return
+
+    #Check stream details
+    if func.string_isnullorempty(ProgramName):
+        ProgramName = 'Onbekende programma'
+
+    if func.string_isnullorempty(ProgramGenre):
+        ProgramGenre = 'Onbekend'
+
+    #Generate list item
+    listItem = xbmcgui.ListItem(ProgramName)
+    listItem.setProperty('ProgramId', ProgramId)
+    listItem.setProperty('ProgramName', ProgramName)
+    listItem.setInfo('video', {'Genre': ProgramGenre})
+
+    stream.play_stream_program(listItem, Windowed)
+
+#Stream vod by identifier
+def stream_vod_id(ProgramId, ProgramName='', ProgramGenre='', Windowed=False):
+    if func.string_isnullorempty(ProgramId):
+        notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Ongeldige programma informatie.', notificationIcon, 2500, False)
+        return
+
+    #Check stream details
+    if func.string_isnullorempty(ProgramName):
+        ProgramName = 'Onbekende programma'
+
+    if func.string_isnullorempty(ProgramGenre):
+        ProgramGenre = 'Onbekend'
+
+    #Generate list item
+    listItem = xbmcgui.ListItem(ProgramName)
+    listItem.setProperty('ProgramId', ProgramId)
+    listItem.setProperty('ProgramName', ProgramName)
+    listItem.setInfo('video', {'Genre': ProgramGenre})
+
+    stream.play_stream_vod(listItem, Windowed)
+
+#Stream recorded by identifier
+def stream_recorded_id(ProgramAssetId, ProgramRecordEventId, ProgramName='', ProgramGenre='', Windowed=False):
+    if func.string_isnullorempty(ProgramAssetId) or func.string_isnullorempty(ProgramRecordEventId):
+        notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Ongeldige opname informatie.', notificationIcon, 2500, False)
+        return
+
+    #Check stream details
+    if func.string_isnullorempty(ProgramName):
+        ProgramName = 'Onbekende programma'
+
+    if func.string_isnullorempty(ProgramGenre):
+        ProgramGenre = 'Onbekend'
+
+    #Generate list item
+    listItem = xbmcgui.ListItem(ProgramName)
+    listItem.setProperty('ProgramAssetId', ProgramAssetId)
+    listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
+    listItem.setProperty('ProgramName', ProgramName)
+    listItem.setInfo('video', {'Genre': ProgramGenre})
+
+    stream.play_stream_recorded(listItem, Windowed)

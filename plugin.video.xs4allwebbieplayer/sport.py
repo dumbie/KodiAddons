@@ -24,6 +24,10 @@ def close_the_page():
         var.guiSport.close()
         var.guiSport = None
 
+def source_plugin_list():
+    download.download_search_sport()
+    lisport.list_load(None)
+
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Sport Gemist")
@@ -35,7 +39,7 @@ class Gui(xbmcgui.WindowXML):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'play_stream':
+            if listItemAction == 'play_stream_program':
                 stream.play_stream_program(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()

@@ -10,6 +10,7 @@ import path
 import liplayergui
 import recordingfunc
 import sleep
+import stream
 import switch
 import var
 import zap
@@ -52,7 +53,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             playerFull = self.getProperty('WebbiePlayerFull') == 'true'
             if clickId == 1001 and playerFull == True:
                 listItemSelectedClicked = clickedControl.getSelectedItem()
-                switch.channel_tv_listitem(listItemSelectedClicked, False, True)
+                stream.play_stream_tv(listItemSelectedClicked, False, True)
             elif clickId == 1002 and playerFull == True:
                 listItemSelectedClicked = clickedControl.getSelectedItem()
                 listItemAction = listItemSelectedClicked.getProperty('Action')
@@ -218,7 +219,7 @@ class Gui(xbmcgui.WindowXMLDialog):
                 self.setProperty('ZapVisible', 'false')
 
                 #Switch to selected channel
-                switch.channel_tv_listitem(listItemSelected, False, False)
+                stream.play_stream_tv(listItemSelected, False, True)
 
     def buttons_add_sidebar(self):
         #Get and check the list container
@@ -444,7 +445,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         if LastChannelId != CurrentChannelId:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Gezapt naar vorige zender.', notificationIcon, 2500, False)
-            switch.channel_tv_channelid(LastChannelId, LastExternalId, LastChannelName, 'Televisie', False, True)
+            switch.stream_tv_channelid(LastChannelId, LastExternalId, LastChannelName, 'Televisie', False, True)
         else:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)
