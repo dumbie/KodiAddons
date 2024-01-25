@@ -29,15 +29,15 @@ class PlayerCustom(xbmc.Player):
                 xbmc.executebuiltin('Action(FullScreen)')
                 xbmc.sleep(100)
 
-            #Overlay custom player gui
+            #Open custom player gui
             if ForceOverlay == True or var.PlayerOpenOverlay == True and xbmc.getCondVisibility('VideoPlayer.IsFullscreen') == True:
-                #Open player gui page
                 playergui.switch_to_page()
                 xbmc.sleep(100)
 
-                #Show player gui interface
-                if var.PlayerShowInformation == True and var.guiPlayer != None:
-                    var.guiPlayer.show_epg(True)
+            #Show custom player gui
+            if var.PlayerShowInformation == True and var.guiPlayer != None:
+                var.guiPlayer.show_epg(True)
+                xbmc.sleep(100)
 
     def onAVStarted(self):
         xbmc.sleep(100)

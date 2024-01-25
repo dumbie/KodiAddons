@@ -115,8 +115,9 @@ def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
         else:
             #Countdown string
             zapCountInt = interactSecond - lastInteractSeconds
-            zapCountDownString = '[COLOR gray]' + str(zapCountInt) + '[/COLOR] ' + var.ZapHintString
+            zapCountString = '[COLOR gray]' + str(zapCountInt) + '[/COLOR]'
 
             #Show remote number popup
-            func.updateLabelText(_self, 7001, zapCountDownString)
+            func.updateLabelText(_self, 7001, zapCountString)
+            func.updateLabelText(_self, 7002, var.ZapHintString)
             _self.setProperty('ZapVisible', 'true')

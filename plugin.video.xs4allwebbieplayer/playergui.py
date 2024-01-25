@@ -206,10 +206,12 @@ class Gui(xbmcgui.WindowXMLDialog):
 
             #Countdown string
             delayCountInt = interactSecond - lastInteractSeconds
-            delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR] ' + func.get_provider_color_string() + channelNumberProp + '[/COLOR] ' + channelNameProp
+            delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR]'
+            delayChannelString = func.get_provider_color_string() + channelNumberProp + '[/COLOR] ' + channelNameProp
 
             #Show remaining time
             func.updateLabelText(self, 7001, delayCountString)
+            func.updateLabelText(self, 7002, delayChannelString)
             self.setProperty('ZapVisible', 'true')
 
             #Change the channel
@@ -519,6 +521,9 @@ class Gui(xbmcgui.WindowXMLDialog):
         self.setProperty('WebbiePlayerSeek', 'false')
 
     def show_epg(self, seekInterface=False, removeFocus=False, selectChannel=True):
+        #Update the last interaction time
+        self.PlayerInfoLastInteraction = datetime.now()
+
         #Show the epg interface
         if seekInterface == False:
             self.setProperty('WebbiePlayerFull', 'true')

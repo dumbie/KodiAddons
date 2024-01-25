@@ -149,8 +149,15 @@
                 <height>5</height>
                 <texture>common/background_accent.png</texture>
             </control>
-            <!-- Text -->
+            <!-- Text Countdown -->
             <control type="label" id="7001">
+                <top>20</top>
+                <left>5</left>
+                <height>60</height>
+                <aligny>center</aligny>
+            </control>
+            <!-- Text Hint -->
+            <control type="label" id="7002">
                 <top>50</top>
                 <left>5</left>
                 <height>60</height>
