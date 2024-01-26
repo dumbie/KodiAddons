@@ -38,10 +38,10 @@ def source_plugin_list():
 
     #Add items to container
     for listItem in listcontainersort:
-        Action = listItem.getProperty('Action')
+        ListAction = listItem.getProperty('Action')
         ProgramAssetId = listItem.getProperty('ProgramAssetId')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
-        lifunc.auto_add_item(listItem, None, dirUrl=Action+'='+ProgramAssetId+','+ProgramRecordEventId)
+        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramAssetId+var.splitchar+ProgramRecordEventId)
     lifunc.auto_end_items()
 
 class Gui(xbmcgui.WindowXML):

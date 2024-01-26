@@ -25,7 +25,7 @@ def list_load(listContainer):
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/movies.png'), 'icon': path.resources('resources/skins/default/media/common/movies.png')})
             lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
 
-        if listContainer != None and var.ApiLoggedIn == True:
+        if var.ApiLoggedIn == True:
             listAction = 'page_series'
             listItem = xbmcgui.ListItem('Series')
             listItem.setProperty('Action', listAction)
@@ -60,9 +60,9 @@ def list_load(listContainer):
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/vod.png'), 'icon': path.resources('resources/skins/default/media/common/vod.png')})
             lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
 
-        if listContainer != None and var.ApiLoggedIn == True:
+        if var.ApiLoggedIn == True:
             listAction = 'page_kids'
-            if var.addon.getSetting('KidsPageLock') == 'true':
+            if listContainer != None and var.addon.getSetting('KidsPageLock') == 'true':
                 listItem = xbmcgui.ListItem('Kids met slot')
             else:
                 listItem = xbmcgui.ListItem('Kids')

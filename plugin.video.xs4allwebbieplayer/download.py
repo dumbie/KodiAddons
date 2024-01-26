@@ -320,7 +320,7 @@ def download_vod_series(forceUpdate=False):
         xbmcgui.Dialog().notification(var.addonname, 'Series download mislukt.', notificationIcon, 2500, False)
         return False
 
-def download_vod_series_kids(forceUpdate=False):
+def download_vod_kids(forceUpdate=False):
     try:
         #Check if data is already cached
         if var.ChannelsDataJsonSeriesKids != [] and forceUpdate == False:

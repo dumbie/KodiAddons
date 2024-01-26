@@ -5,6 +5,7 @@ import download
 import epg
 import files
 import func
+import lifunc
 import path
 import likidsepisodeweek
 import likidsepisodevod
@@ -34,6 +35,37 @@ def close_the_page():
         var.guiKids.close()
         var.guiKids = None
         return True
+
+def source_plugin_list_program():
+    downloadResult = download.download_vod_kids()
+    downloadResultWeek = download.download_search_kids()
+    #if downloadResult == False or downloadResultWeek == False:
+
+    #Add items to sort list
+    listcontainersort = []
+    likidsprogramweek.list_load(listcontainersort)
+    likidsprogramvod.list_load(listcontainersort)
+
+    #Sort items in list
+    listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
+
+    #Add items to container
+    for listItem in listcontainersort:
+        ListAction = str(listItem.getProperty('Action'))
+        ProgramId = listItem.getProperty('ProgramId')
+        ProgramName = listItem.getProperty('ProgramName')
+        ItemIsFolder = ListAction.startswith('play_stream') == False
+        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramId+var.splitchar+ProgramName, dirFolder=ItemIsFolder)
+    lifunc.auto_end_items()
+
+def source_plugin_list_episode_vod(ProgramId):
+    seasonDownloaded = download.download_series_season(ProgramId)
+    #if seasonDownloaded == None:
+    likidsepisodevod.list_load(None, seasonDownloaded, '', '')
+
+def source_plugin_list_episode_week(ProgramName):
+    downloadResultWeek = download.download_search_kids()
+    likidsepisodeweek.list_load(None, ProgramName, '')
 
 def lock_check_hidden():
     if var.addon.getSetting('KidsHiddenLock') == 'true':
@@ -70,11 +102,11 @@ class Gui(xbmcgui.WindowXML):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'load_episodes_vod':
-                self.load_episodes_vod(listItemSelected, True)
-            elif listItemAction == 'load_episodes_week':
-                self.load_episodes_week(listItemSelected, True)
-            elif listItemAction == 'play_episode_week':
+            if listItemAction == 'load_kids_episodes_vod':
+                self.load_kids_episodes_vod(listItemSelected, True)
+            elif listItemAction == 'load_kids_episodes_week':
+                self.load_kids_episodes_week(listItemSelected, True)
+            elif listItemAction == 'play_stream_program':
                 stream.play_stream_program(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()
@@ -88,9 +120,9 @@ class Gui(xbmcgui.WindowXML):
         elif clickId == 1002:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'play_episode_vod':
+            if listItemAction == 'play_stream_vod':
                 stream.play_stream_vod(listItemSelected, False)
-            elif listItemAction == 'play_episode_week':
+            elif listItemAction == 'play_stream_program':
                 stream.play_stream_program(listItemSelected, False)
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
@@ -184,7 +216,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, False)
         var.SearchChannelTerm = ''
 
-    def load_episodes_vod(self, listItem, selectList=False, selectIndex=0):
+    def load_kids_episodes_vod(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
         selectedParentId = listItem.getProperty('ProgramId')
         selectedSeriesName = listItem.getProperty('ProgramName')
@@ -225,7 +257,7 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.selectItem(selectIndex)
             xbmc.sleep(100)
 
-    def load_episodes_week(self, listItem, selectList=False, selectIndex=0):
+    def load_kids_episodes_week(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
         selectedSeriesName = listItem.getProperty('ProgramName')
         selectedPictureUrl = listItem.getProperty('PictureUrl')
@@ -272,7 +304,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Download the programs
         func.updateLabelText(self, 1, "Programma's downloaden")
-        downloadResult = download.download_vod_series_kids(forceUpdate)
+        downloadResult = download.download_vod_kids(forceUpdate)
         downloadResultWeek = download.download_search_kids(forceUpdate)
         if downloadResult == False or downloadResultWeek == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
@@ -300,10 +332,10 @@ class Gui(xbmcgui.WindowXML):
         #Load selected episodes
         listItemSelected = listcontainer.getSelectedItem()
         listItemAction = listItemSelected.getProperty('Action')
-        if listItemAction == 'load_episodes_vod':
-            self.load_episodes_vod(listItemSelected, False, episodeSelectIndex)
-        elif listItemAction == 'load_episodes_week':
-            self.load_episodes_week(listItemSelected, False, episodeSelectIndex)
+        if listItemAction == 'load_kids_episodes_vod':
+            self.load_kids_episodes_vod(listItemSelected, False, episodeSelectIndex)
+        elif listItemAction == 'load_kids_episodes_week':
+            self.load_kids_episodes_week(listItemSelected, False, episodeSelectIndex)
 
     #Update the status
     def count_program(self, resetSelect=False, selectIndex=0):

@@ -4,6 +4,7 @@ import dialog
 import download
 import epg
 import func
+import lifunc
 import path
 import liseriesepisodeweek
 import liseriesepisodevod
@@ -27,6 +28,36 @@ def close_the_page():
         var.guiSeries.close()
         var.guiSeries = None
 
+def source_plugin_list_program():
+    downloadResult = download.download_vod_series()
+    downloadResultWeek = download.download_search_series()
+    #if downloadResult == False or downloadResultWeek == False:
+
+    #Add items to sort list
+    listcontainersort = []
+    liseriesprogramweek.list_load(listcontainersort)
+    liseriesprogramvod.list_load(listcontainersort)
+
+    #Sort items in list
+    listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
+
+    #Add items to container
+    for listItem in listcontainersort:
+        ListAction = str(listItem.getProperty('Action'))
+        ProgramId = listItem.getProperty('ProgramId')
+        ProgramName = listItem.getProperty('ProgramName')
+        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramId+var.splitchar+ProgramName, dirFolder=True)
+    lifunc.auto_end_items()
+
+def source_plugin_list_episode_vod(ProgramId):
+    seasonDownloaded = download.download_series_season(ProgramId)
+    #if seasonDownloaded == None:
+    liseriesepisodevod.list_load(None, seasonDownloaded, '', '')
+
+def source_plugin_list_episode_week(ProgramName):
+    downloadResultWeek = download.download_search_series()
+    liseriesepisodeweek.list_load(None, ProgramName, '')
+
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 3, "Series")
@@ -38,10 +69,10 @@ class Gui(xbmcgui.WindowXML):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'load_episodes_vod':
-                self.load_episodes_vod(listItemSelected, True)
-            elif listItemAction == 'load_episodes_week':
-                self.load_episodes_week(listItemSelected, True)
+            if listItemAction == 'load_series_episodes_vod':
+                self.load_series_episodes_vod(listItemSelected, True)
+            elif listItemAction == 'load_series_episodes_week':
+                self.load_series_episodes_week(listItemSelected, True)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
@@ -54,9 +85,9 @@ class Gui(xbmcgui.WindowXML):
         elif clickId == 1002:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
-            if listItemAction == 'play_episode_vod':
+            if listItemAction == 'play_stream_vod':
                 stream.play_stream_vod(listItemSelected, False)
-            elif listItemAction == 'play_episode_week':
+            elif listItemAction == 'play_stream_program':
                 stream.play_stream_program(listItemSelected, False)
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
@@ -146,7 +177,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, False)
         var.SearchChannelTerm = ''
 
-    def load_episodes_vod(self, listItem, selectList=False, selectIndex=0):
+    def load_series_episodes_vod(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
         selectedParentId = listItem.getProperty('ProgramId')
         selectedSeriesName = listItem.getProperty('ProgramName')
@@ -188,7 +219,7 @@ class Gui(xbmcgui.WindowXML):
             listcontainer.selectItem(selectIndex)
             xbmc.sleep(100)
 
-    def load_episodes_week(self, listItem, selectList=False, selectIndex=0):
+    def load_series_episodes_week(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
         selectedSeriesName = listItem.getProperty('ProgramName')
         selectedPictureUrl = listItem.getProperty('PictureUrl')
@@ -263,10 +294,10 @@ class Gui(xbmcgui.WindowXML):
         #Load selected episodes
         listItemSelected = listcontainer.getSelectedItem()
         listItemAction = listItemSelected.getProperty('Action')
-        if listItemAction == 'load_episodes_vod':
-            self.load_episodes_vod(listItemSelected, False, episodeSelectIndex)
-        elif listItemAction == 'load_episodes_week':
-            self.load_episodes_week(listItemSelected, False, episodeSelectIndex)
+        if listItemAction == 'load_series_episodes_vod':
+            self.load_series_episodes_vod(listItemSelected, False, episodeSelectIndex)
+        elif listItemAction == 'load_series_episodes_week':
+            self.load_series_episodes_week(listItemSelected, False, episodeSelectIndex)
 
     #Update the status
     def count_program(self, resetSelect=False, selectIndex=0):

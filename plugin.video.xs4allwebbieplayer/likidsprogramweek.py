@@ -24,13 +24,13 @@ def list_load(listContainer):
             #Check if program is serie or movie
             ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
             if ContentSubtype == "VOD":
-                ProgramAction = 'play_episode_week'
+                ProgramAction = 'play_stream_program'
                 iconProgramType = "common/movies.png"
                 ProgramDuration = True
                 ProgramDescription = metadatacombine.program_description_extended(program)
                 ProgramAvailability = metadatainfo.vod_week_available_time(program)
             else:
-                ProgramAction = 'load_episodes_week'
+                ProgramAction = 'load_kids_episodes_week'
                 iconProgramType = "common/series.png"
                 ProgramDuration = False
                 ProgramDescription = ""
@@ -47,7 +47,7 @@ def list_load(listContainer):
             ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add week program
-            listItem = xbmcgui.ListItem()
+            listItem = xbmcgui.ListItem(ProgramName)
             listItem.setProperty('Action', ProgramAction)
             listItem.setProperty('PictureUrl', PictureUrl)
             listItem.setProperty('SeriesId', SeriesId)

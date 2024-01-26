@@ -25,8 +25,8 @@ def list_load(listContainer):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
 
             #Add vod program
-            listItem = xbmcgui.ListItem()
-            listItem.setProperty('Action', 'load_episodes_vod')
+            listItem = xbmcgui.ListItem(ProgramName)
+            listItem.setProperty('Action', 'load_series_episodes_vod')
             listItem.setProperty('PictureUrl', PictureUrl)
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramName", ProgramName)

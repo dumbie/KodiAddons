@@ -31,8 +31,8 @@ def list_load(listContainer):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
 
             #Add week program
-            listItem = xbmcgui.ListItem()
-            listItem.setProperty('Action', 'load_episodes_week')
+            listItem = xbmcgui.ListItem(ProgramName)
+            listItem.setProperty('Action', 'load_series_episodes_week')
             listItem.setProperty('PictureUrl', PictureUrl)
             listItem.setProperty('SeriesId', SeriesId)
             listItem.setProperty('ProgramId', ProgramId)

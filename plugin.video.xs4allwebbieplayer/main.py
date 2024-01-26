@@ -51,7 +51,7 @@ def close_the_page():
         var.guiMain.close()
 
 def source_plugin_list():
-    apilogin.ApiLogin(True)
+    apilogin.ApiLogin()
     download.download_recording_profile()
     limain.list_load(None)
 

@@ -518,7 +518,7 @@
             <left>540</left>
             <width>690</width>
             <height>475</height>
-            <visible>Control.HasFocus(1000) + String.IsEqual(Container(1000).ListItem().Property(Action), play_episode_week) | Control.HasFocus(2000) + String.IsEqual(Container(1000).ListItem().Property(Action), play_episode_week)</visible>
+            <visible>Control.HasFocus(1000) + String.IsEqual(Container(1000).ListItem().Property(Action), play_stream_program) | Control.HasFocus(2000) + String.IsEqual(Container(1000).ListItem().Property(Action), play_stream_program)</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
             <control type="image">

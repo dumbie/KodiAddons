@@ -9,6 +9,8 @@ import main
 import radio
 import television
 import movies
+import series
+import kids
 import switch
 import sport
 import vod
@@ -20,7 +22,6 @@ def set_launch_argument_source():
         var.LaunchUrl = str(sys.argv[0])
         var.LaunchHandle = int(sys.argv[1])
         var.LaunchArgument = str(sys.argv[2])
-        xbmcgui.Dialog().notification(var.addonname, "Launch argument source: " + var.LaunchArgument, var.addonicon, 2500, False)
         return True
     except:
         return False
@@ -50,12 +51,28 @@ def handle_launch_argument_source():
             radio.source_plugin_list()
         elif var.LaunchArgument == "?page_movies":
             movies.source_plugin_list()
+        elif var.LaunchArgument == "?page_series":
+            series.source_plugin_list_program()
+        elif var.LaunchArgument == "?page_kids":
+            kids.source_plugin_list_program()
         elif var.LaunchArgument == "?page_sport":
             sport.source_plugin_list()
         elif var.LaunchArgument == "?page_vod":
             vod.source_plugin_list()
         elif var.LaunchArgument == "?page_recorded":
             recorded.source_plugin_list()
+        elif var.LaunchArgument.startswith("?load_series_episodes_week="):
+            actionSplit = var.LaunchArgument.replace('?load_series_episodes_week=', '').split(var.splitchar)
+            series.source_plugin_list_episode_week(actionSplit[1])
+        elif var.LaunchArgument.startswith("?load_series_episodes_vod="):
+            actionSplit = var.LaunchArgument.replace('?load_series_episodes_vod=', '').split(var.splitchar)
+            series.source_plugin_list_episode_vod(actionSplit[0])
+        elif var.LaunchArgument.startswith("?load_kids_episodes_week="):
+            actionSplit = var.LaunchArgument.replace('?load_kids_episodes_week=', '').split(var.splitchar)
+            kids.source_plugin_list_episode_week(actionSplit[1])
+        elif var.LaunchArgument.startswith("?load_kids_episodes_vod="):
+            actionSplit = var.LaunchArgument.replace('?load_kids_episodes_vod=', '').split(var.splitchar)
+            kids.source_plugin_list_episode_vod(actionSplit[0])
 
         #Play streams
         elif var.LaunchArgument.startswith("?play_stream_tv="):
@@ -65,13 +82,13 @@ def handle_launch_argument_source():
             channelId = var.LaunchArgument.replace('?play_stream_radio=', '')
             switch.stream_radio_channelid(channelId)
         elif var.LaunchArgument.startswith("?play_stream_program="):
-            programId = var.LaunchArgument.replace('?play_stream_program=', '')
-            switch.stream_program_id(programId)
+            actionSplit = var.LaunchArgument.replace('?play_stream_program=', '').split(var.splitchar)
+            switch.stream_program_id(actionSplit[0])
         elif var.LaunchArgument.startswith("?play_stream_vod="):
             programId = var.LaunchArgument.replace('?play_stream_vod=', '')
             switch.stream_vod_id(programId)
         elif var.LaunchArgument.startswith("?play_stream_recorded="):
-            actionSplit = var.LaunchArgument.replace('?play_stream_recorded=', '').split(',')
+            actionSplit = var.LaunchArgument.replace('?play_stream_recorded=', '').split(var.splitchar)
             switch.stream_recorded_id(actionSplit[0], actionSplit[1])
         return True
     except:
