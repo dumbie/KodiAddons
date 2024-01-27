@@ -1,5 +1,7 @@
 import re
 import time
+import pickle
+import codecs
 from datetime import datetime, date, timedelta
 import xbmc
 import xbmcgui
@@ -231,3 +233,28 @@ def device_reboot_dialog():
     dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
     if dialogResult == 'Ja':
         xbmc.executebuiltin('Reboot')
+
+#Set global variable
+def globalvar_set(varName, varObject, varHead='Webbie'):
+    try:
+        pickleString = object_to_picklestring(varObject)
+        var.windowHome.setProperty(varHead + varName, pickleString)
+        return True
+    except:
+        return False
+
+#Get global variable
+def globalvar_get(varName, defaultObject=None, varHead='Webbie'):
+    try:
+        pickleString = var.windowHome.getProperty(varHead + varName)
+        return picklestring_to_object(pickleString)
+    except:
+        return defaultObject
+
+#Convert object to pickle string
+def object_to_picklestring(object):
+    return codecs.encode(pickle.dumps(object), "base64").decode()
+
+#Convert pickle string to object
+def picklestring_to_object(picklestring):
+    return pickle.loads(codecs.decode(picklestring.encode(), "base64"))
