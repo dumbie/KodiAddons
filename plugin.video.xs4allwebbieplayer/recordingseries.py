@@ -69,8 +69,8 @@ class Gui(xbmcgui.WindowXMLDialog):
             close_the_page()
 
     def load_recording(self, forceUpdate=False):
-        listcontainer = self.getControl(1000)
-        listcontainer.reset()
+        listContainer = self.getControl(1000)
+        listContainer.reset()
 
         #Download the tv channels
         func.updateLabelText(self, 3001, 'Televisie zenders worden gedownload.')
@@ -89,12 +89,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         func.updateLabelText(self, 3001, "Geplande series worden geladen.")
 
         #Add items to sort list
-        listcontainersort = []
-        lirecordingseries.list_load(listcontainersort)
+        listContainerSort = []
+        lirecordingseries.list_load(listContainerSort)
 
         #Sort and add items to container
-        listcontainersort.sort(key=lambda x: x.getProperty('ProgramName'))
-        listcontainer.addItems(listcontainersort)
+        listContainerSort.sort(key=lambda x: x.getProperty('ProgramName'))
+        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_recording(True)
@@ -105,14 +105,14 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     #Update the status
     def count_recording(self, resetSelect=False):
-        listcontainer = self.getControl(1000)
-        if listcontainer.size() > 0:
-            func.updateLabelText(self, 3000, 'Geplande Series (' + str(listcontainer.size()) + ')')
+        listContainer = self.getControl(1000)
+        if listContainer.size() > 0:
+            func.updateLabelText(self, 3000, 'Geplande Series (' + str(listContainer.size()) + ')')
             func.updateLabelText(self, 3001, 'U kunt een serie seizoen annuleren door er op te klikken.')
             if resetSelect == True:
-                self.setFocus(listcontainer)
+                self.setFocus(listContainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listContainer.selectItem(0)
                 xbmc.sleep(100)
         else:
             func.updateLabelText(self, 3000, 'Geplande Series (0)')

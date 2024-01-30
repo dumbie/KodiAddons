@@ -127,15 +127,19 @@ def technicalPackageIds_from_json_metadata(metaData):
 #Get program title from json metadata
 def programtitle_from_json_metadata(metaData, stripTitle=False):
     try:
-        programNameString = metaData['metadata']['title']
+        #Get the program title
+        if 'seriesTitle' in metaData['metadata']:
+            programNameString = metaData['metadata']['seriesTitle']
+        elif 'title' in metaData['metadata']:
+            programNameString = metaData['metadata']['title']
         programNameString = hybrid.unicode_to_string(programNameString)
         programNameString = hybrid.htmlparser_unescape(programNameString)
 
-        #Check the program name
+        #Check the program title
         if func.string_isnullorempty(programNameString):
             programNameString = 'Onbekend programma'
 
-        #Strip the program name
+        #Strip the program title
         if stripTitle:
             for stripString in var.ProgramTitleStripStrings:
                 programNameString = func.string_replace_insensitive(stripString, '', programNameString)
@@ -171,9 +175,9 @@ def programstartdatetime_from_json_metadata(metaData):
             return func.datetime_from_ticks(int(metaData['metadata']['airingStartTime']))
         if 'programStartTime' in metaData['metadata']:
             return func.datetime_from_ticks(int(metaData['metadata']['programStartTime']))
-        return datetime(1970, 1, 1)
+        return datetime(1970,1,1)
     except:
-        return datetime(1970, 1, 1)
+        return datetime(1970,1,1)
 
 #Get program endtime from json metadata
 def programenddatetime_from_json_metadata(metaData):
@@ -182,16 +186,16 @@ def programenddatetime_from_json_metadata(metaData):
             return func.datetime_from_ticks(int(metaData['metadata']['airingEndTime']))
         if 'programEndTime' in metaData['metadata']:
             return func.datetime_from_ticks(int(metaData['metadata']['programEndTime']))
-        return datetime(1970, 1, 1)
+        return datetime(1970,1,1)
     except:
-        return datetime(1970, 1, 1)
+        return datetime(1970,1,1)
 
 #Get contract endtime from json metadata
 def contractenddatetime_from_json_metadata(metaData):
     try:
         return func.datetime_from_ticks(int(metaData['metadata']['contractEndDate']))
     except:
-        return datetime(1970, 1, 1)
+        return datetime(1970,1,1)
 
 #Generate program endtime from json metadata
 def programenddatetime_generate_from_json_metadata(metaData):
@@ -201,7 +205,7 @@ def programenddatetime_generate_from_json_metadata(metaData):
         programTimeEndTicks = int(programStartTimeTicks + programDurationTicks)
         return func.datetime_from_ticks(programTimeEndTicks)
     except:
-        return datetime(1970, 1, 1)
+        return datetime(1970,1,1)
 
 #Get program duration from json metadata
 def programdurationint_from_json_metadata(metaData):
@@ -318,6 +322,17 @@ def programdirectors_from_json_metadata(metaData):
     except:
         return ''
 
+#Get program authors from json metadata
+def programauthors_from_json_metadata(metaData):
+    try:
+        authorsArray = metaData["metadata"]["authors"]
+        if authorsArray != None:
+            return ', '.join(filter(None, authorsArray))
+        else:
+            return ''
+    except:
+        return ''
+
 #Get program description from json metadata
 def programdescription_from_json_metadata(metaData):
     try:
@@ -400,13 +415,34 @@ def isAdult_from_json_metadata(metaData):
     except:
         return False
 
-#Get stream asset id from json metadata
-def stream_assetid_from_json_metadata(assetsArray):
+#Get stream assets array from json metadata
+def stream_assets_array_from_json_metadata(metaData):
+    try:
+        return metaData['assets']
+    except:
+        pass
+    try:
+        return metaData['entitlement']['assets']
+    except:
+        pass
+    try:
+        return metaData['resultObj']['containers'][0]['assets']
+    except:
+        pass
+    try:
+        return metaData['resultObj']['containers'][0]['entitlement']['assets']
+    except:
+        pass
+    return []
+
+#Get stream asset id from assets array
+def stream_assetid_from_assets_array(assetsArray):
     try:
         for asset in assetsArray:
             try:
                 if asset['videoType'] == 'SD_DASH_WV':
                     if 'rights' in asset and asset['rights'] != 'watch': continue
+                    if 'programType' in asset and asset['programType'] != 'CUTV': continue
                     return str(asset['assetId'])
             except:
                 continue
@@ -414,8 +450,23 @@ def stream_assetid_from_json_metadata(assetsArray):
     except:
         return ''
 
+#Get stream asset id from json metadata
+def stream_assetid_from_json_metadata(metaData):
+    try:
+        assetsArray = stream_assets_array_from_json_metadata(metaData)
+        return stream_assetid_from_assets_array(assetsArray)
+    except:
+        return ''
+
+#Get stream target profile
+def stream_targetprofile(playReadyStream=False):
+    if playReadyStream:
+        return 'M03'
+    else:
+        return 'G03'
+
 #Get stream target bitrate
-def get_stream_targetbitrate():
+def stream_targetbitrate():
     try:
         streamResolutionSetting = var.addon.getSetting('StreamResolution')
         if streamResolutionSetting == '2160p' or streamResolutionSetting == '1080pBest':
@@ -437,6 +488,25 @@ def get_stream_targetbitrate():
     except:
         pass
     return '100000000'
+
+#Get recording access from profile
+def recording_access(metaData):
+    try:
+        return bool(metaData['resultObj']['profile']['recordingProfileData']['isRecordingEnabled'])
+    except:
+        return False
+
+#Get recording space from profile
+def recording_space(metaData):
+    try:
+        usedMinutes = int(metaData['resultObj']['profile']['recordingProfileData']['usedMinutes'])
+        totalMinutes = int(metaData['resultObj']['profile']['recordingProfileData']['totalMinutes'])
+        if usedMinutes != 0 and totalMinutes != 0:
+            return str(round(100 - (usedMinutes * 100 / totalMinutes))) + "% ruimte beschikbaar"
+        else:
+            return "Onbekende ruimte beschikbaar"
+    except:
+        return "Onbekende ruimte beschikbaar"
 
 #Get recording available time
 def recording_available_time(metaData):
@@ -476,7 +546,7 @@ def vod_week_available_time(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
     try:
         DateTimeStartTime = programstartdatetime_from_json_metadata(metaData)
-        DateTimeExpireTime = DateTimeStartTime + timedelta(days=var.VodDaysOffsetPast)
+        DateTimeExpireTime = DateTimeStartTime + timedelta(days=var.VodDayOffsetPast)
         TimeRemainingSeconds = int((DateTimeExpireTime - datetime.now()).total_seconds())
         if TimeRemainingSeconds > 0:
             TimeRemainingDays = TimeRemainingSeconds // 86400

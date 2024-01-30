@@ -23,7 +23,7 @@ import search
 import series
 import sleep
 import sport
-import switch
+import streamswitch
 import television
 import threadfunc
 import var
@@ -51,8 +51,15 @@ def close_the_page():
         var.guiMain.close()
 
 def source_plugin_list():
-    apilogin.ApiLogin()
-    download.download_recording_profile()
+    #Check if logged in on launch
+    if var.ApiLoggedIn() == False:
+        apilogin.ApiLogin()
+
+    #Check if user is logged in
+    if var.ApiLoggedIn() == True:
+        download.download_recording_profile()
+
+    #Add buttons to the main menu
     limain.list_load(None)
 
 def dialog_close():
@@ -89,18 +96,20 @@ def dialog_close():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         #Check if logged in on launch
-        if var.ApiLoggedIn == False:
+        if var.ApiLoggedIn() == False:
             func.updateLabelText(self, 1, "Aan het aanmelden.")
-            apilogin.ApiLogin(False)
+            apilogin.ApiLogin()
 
-        #Update the current login status
-        if var.ApiLoggedIn == True:
+        #Check if user is logged in
+        if var.ApiLoggedIn() == True:
+            #Update the current login status
             func.updateLabelText(self, 1, "Aangemeld, veel kijkplezier.")
-        else:
-            func.updateLabelText(self, 1, "Aanmelden is mislukt.")
 
-        #Update recording profile
-        download.download_recording_profile(False)
+            #Update recording profile
+            download.download_recording_profile()
+        else:
+            #Update the current login status
+            func.updateLabelText(self, 1, "Aanmelden is mislukt.")
 
         #Add menu buttons to the page
         menuButtons = self.buttons_add_menu()
@@ -109,8 +118,8 @@ class Gui(xbmcgui.WindowXML):
         self.buttons_add_media(False)
 
         #Focus on the menu buttons
-        listcontainer = self.getControl(1000)
-        self.setFocus(listcontainer)
+        listContainer = self.getControl(1000)
+        self.setFocus(listContainer)
         xbmc.sleep(100)
 
         #Update the active alarms count
@@ -136,17 +145,11 @@ class Gui(xbmcgui.WindowXML):
         var.thread_notification.Start(self.thread_load_notification)
 
         #Check if user is logged in
-        if var.ApiLoggedIn == True:
-            #Open the last known television channel
+        if var.ApiLoggedIn() == True:
+            #Switch to last known television channel
             if var.addon.getSetting('StartWithLastChannel') == 'true' and var.addon.getSetting('StartWithKids') == 'false':
-                #Download television channels
-                download.download_channels_tv()
-
-                #Switch to last known channel
                 CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-                CurrentExternalId = var.addon.getSetting('CurrentExternalId')
-                CurrentChannelName = var.addon.getSetting('CurrentChannelName')
-                switch.stream_tv_channelid(CurrentChannelId, CurrentExternalId, CurrentChannelName, 'Televisie', True, False)
+                streamswitch.switch_tv_id(CurrentChannelId, True)
 
             #Go to the desired page on startup
             if var.addon.getSetting('StartWithTelevision') == 'true':
@@ -156,61 +159,59 @@ class Gui(xbmcgui.WindowXML):
 
     def buttons_add_media(self, resetButtons):
         #Get and check the media control list container
-        listcontainer = self.getControl(1001)
+        listContainer = self.getControl(1001)
         if resetButtons:
-            listcontainer.reset()
-            listcontainer = self.getControl(1000)
-            self.setFocus(listcontainer)
+            listContainer.reset()
+            listContainer = self.getControl(1000)
+            self.setFocus(listContainer)
             xbmc.sleep(100)
             return
 
         if xbmc.Player().isPlaying():
             #Add stop button
-            if listcontainer.size() == 0:
-                listitem = xbmcgui.ListItem('Stop met afspelen')
-                listitem.setProperty('Action', 'media_stop')
-                listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/stop.png'),'icon': path.resources('resources/skins/default/media/common/stop.png')})
-                listcontainer.addItem(listitem)
+            if listContainer.size() == 0:
+                listItem = xbmcgui.ListItem('Stop met afspelen')
+                listItem.setProperty('Action', 'media_stop')
+                listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/stop.png'),'icon': path.resources('resources/skins/default/media/common/stop.png')})
+                listContainer.addItem(listItem)
 
             #Add mute button
-            if listcontainer.size() == 1:
-                listitem = xbmcgui.ListItem('On/demp het geluid')
-                listitem.setProperty('Action', 'media_togglemute')
-                listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
-                listcontainer.addItem(listitem)
+            if listContainer.size() == 1:
+                listItem = xbmcgui.ListItem('On/demp het geluid')
+                listItem.setProperty('Action', 'media_togglemute')
+                listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
+                listContainer.addItem(listItem)
 
             #Add fullscreen button
             if xbmc.Player().isPlayingVideo():
-                if listcontainer.size() == 2:
-                    listitem = xbmcgui.ListItem()
-                    listitem.setLabel('Toon video speler')
-                    listitem.setProperty('Action', 'media_fullscreen')
-                    listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
-                    listcontainer.addItem(listitem)
-                elif listcontainer.size() == 3:
-                    updateItem = listcontainer.getListItem(2)
+                if listContainer.size() == 2:
+                    listItem = xbmcgui.ListItem('Toon video speler')
+                    listItem.setProperty('Action', 'media_fullscreen')
+                    listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
+                    listContainer.addItem(listItem)
+                elif listContainer.size() == 3:
+                    updateItem = listContainer.getListItem(2)
                     updateItem.setLabel('Toon video speler')
                     updateItem.setProperty('Action', 'media_fullscreen')
                     updateItem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
             elif xbmc.Player().isPlayingAudio():
-                if listcontainer.size() == 2:
-                    listitem = xbmcgui.ListItem()
-                    listitem.setLabel('Toon visualisatie')
-                    listitem.setProperty('Action', 'show_visualisation')
-                    listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'),'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
-                    listcontainer.addItem(listitem)
-                elif listcontainer.size() == 3:
-                    updateItem = listcontainer.getListItem(2)
+                if listContainer.size() == 2:
+                    listItem = xbmcgui.ListItem('Toon visualisatie')
+                    listItem.setProperty('Action', 'show_visualisation')
+                    listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'),'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
+                    listContainer.addItem(listItem)
+                elif listContainer.size() == 3:
+                    updateItem = listContainer.getListItem(2)
                     updateItem.setLabel('Toon visualisatie')
                     updateItem.setProperty('Action', 'show_visualisation')
                     updateItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'),'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
-            elif listcontainer.size() == 3:
-                listcontainer.removeItem(2)
+            elif listContainer.size() == 3:
+                listContainer.removeItem(2)
                 xbmc.sleep(100)
         else:
-            listcontainer.reset()
-            listcontainer = self.getControl(1000)
-            self.setFocus(listcontainer)
+            listContainer.reset()
+            listContainer = self.getControl(1000)
+            self.setFocus(listContainer)
             xbmc.sleep(100)
 
     def buttons_add_menu(self):
@@ -225,15 +226,15 @@ class Gui(xbmcgui.WindowXML):
     def count_recorded_events(self):
         try:
             #Get and check the main list container
-            listcontainer = self.getControl(1000)
-            if listcontainer.size() == 0 or var.ApiLoggedIn == False:
+            listContainer = self.getControl(1000)
+            if listContainer.size() == 0 or var.ApiLoggedIn() == False:
                 return False
 
             #Load and count the planned recording
             recordingCount = recordingfunc.count_recorded_events()
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listcontainer, 'Bekijk Opnames')
+            countItem = lifunc.search_label_listcontainer(listContainer, 'Bekijk Opnames')
             countItem.setLabel('Bekijk Opnames (' + str(recordingCount) + ')')
         except:
             pass
@@ -241,15 +242,15 @@ class Gui(xbmcgui.WindowXML):
     def count_recording_events(self):
         try:
             #Get and check the main list container
-            listcontainer = self.getControl(1000)
-            if listcontainer.size() == 0 or var.ApiLoggedIn == False:
+            listContainer = self.getControl(1000)
+            if listContainer.size() == 0 or var.ApiLoggedIn() == False:
                 return False
 
             #Load and count the planned recording
             recordingCount = recordingfunc.count_recording_events()
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listcontainer, 'Geplande Opnames')
+            countItem = lifunc.search_label_listcontainer(listContainer, 'Geplande Opnames')
             countItem.setLabel('Geplande Opnames (' + str(recordingCount) + ')')
         except:
             pass
@@ -257,15 +258,15 @@ class Gui(xbmcgui.WindowXML):
     def count_recording_series(self):
         try:
             #Get and check the main list container
-            listcontainer = self.getControl(1000)
-            if listcontainer.size() == 0 or var.ApiLoggedIn == False:
+            listContainer = self.getControl(1000)
+            if listContainer.size() == 0 or var.ApiLoggedIn() == False:
                 return False
 
             #Load and count the planned recording
             recordingCount = recordingfunc.count_recording_series()
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listcontainer, 'Geplande Series')
+            countItem = lifunc.search_label_listcontainer(listContainer, 'Geplande Series')
             countItem.setLabel('Geplande Series (' + str(recordingCount) + ')')
         except:
             pass
@@ -273,15 +274,15 @@ class Gui(xbmcgui.WindowXML):
     def count_alarm(self, forceLoad=False):
         try:
             #Get and check the main list container
-            listcontainer = self.getControl(1000)
-            if listcontainer.size() == 0 or var.ApiLoggedIn == False:
+            listContainer = self.getControl(1000)
+            if listContainer.size() == 0 or var.ApiLoggedIn() == False:
                 return False
 
             #Load the program alarms
             alarm.alarm_json_load(forceLoad)
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listcontainer, 'Alarmen')
+            countItem = lifunc.search_label_listcontainer(listContainer, 'Alarmen')
             countItem.setLabel('Alarmen (' + str(len(var.AlarmDataJson)) + ')')
         except:
             pass

@@ -75,17 +75,17 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def update_dialogAnswers(self, dialogAnswers, selectIndex=0):
         #Get and check the button list container
-        listcontainer = self.getControl(1000)
-        if listcontainer.size() > 0: return True
+        listContainer = self.getControl(1000)
+        if listContainer.size() > 0: return True
 
         for string in dialogAnswers:
-            listitem = xbmcgui.ListItem(string)
-            listcontainer.addItem(listitem)
+            listItem = xbmcgui.ListItem(string)
+            listContainer.addItem(listItem)
 
         #Focus on the list
-        self.setFocus(listcontainer)
+        self.setFocus(listContainer)
         xbmc.sleep(100)
-        listcontainer.selectItem(selectIndex)
+        listContainer.selectItem(selectIndex)
         xbmc.sleep(100)
 
     def onAction(self, action):

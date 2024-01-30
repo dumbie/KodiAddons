@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import metadatainfo
 import os
 import func
 import var
@@ -25,7 +26,7 @@ def icon_radio(channelId):
     return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/' + channelId + '.png'
 
 def api_url_120(arguments):
-    return 'https://' + var.ApiEndpointUrl + '/101/1.2.0/A/nld/pctv/kpn/' + arguments
+    return 'https://' + var.ApiEndpointUrl() + '/101/1.2.0/A/nld/pctv/kpn/' + arguments
 
 def api_endpoint_number():
     return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott&tan=' + var.addon.getSetting('LoginUsername')
@@ -37,26 +38,22 @@ def api_login():
     return api_url_120('USER/SESSIONS/')
 
 def stream_url_tv(channelId, assetId):
-    targetProfile = 'G03'
-    return api_url_120('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + targetProfile)
+    return api_url_120('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_recording(programId, assetId):
-    targetProfile = 'G03'
-    return api_url_120('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + targetProfile)
+    return api_url_120('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_vod(programId, assetId):
-    targetProfile = 'G03'
-    return api_url_120('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + targetProfile)
+    return api_url_120('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_program(programId, assetId):
-    targetProfile = 'G03'
-    return api_url_120('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + targetProfile)
+    return api_url_120('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + var.addon.getSetting('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
-def userdata_vod(programId):
-    return api_url_120('CONTENT/USERDATA/VOD/' + programId)
+def detail_vod(programId):
+    return api_url_120('CONTENT/DETAIL/VOD/' + programId)
 
-def userdata_program(programId):
-    return api_url_120('CONTENT/USERDATA/PROGRAM/' + programId)
+def detail_program(programId):
+    return api_url_120('CONTENT/DETAIL/PROGRAM/' + programId)
 
 def channels_list_radio():
     return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/listradios.js'
@@ -126,19 +123,19 @@ def vod_series_season(parentId):
 def search_sport():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_genre=sport')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
-    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     return downloadPath
 
 def search_kids():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_genre=kinderen,kids')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
-    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     return downloadPath
 
 def search_movies():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_programType=film')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
-    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
@@ -148,7 +145,7 @@ def search_movies():
 def search_series():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_programType=serie')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
-    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     if var.addon.getSetting('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
@@ -158,7 +155,7 @@ def search_series():
 def search_program(programName):
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&from=0&to=9999&orderBy=airingStartTime&sortOrder=desc')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
-    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDaysOffsetPast)))
+    downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
 
     if var.addon.getSetting('SearchFilterFuzzy') == 'true':
         downloadPath += '&filter_fuzzy=true'
@@ -171,7 +168,7 @@ def search_program(programName):
 def epg_day(dayDateTime):
     #Get all playable channel ids
     ChannelIdsPlayableString = ''
-    for playableId in var.ChannelIdsPlayable:
+    for playableId in var.TelevisionChannelIdsPlayable:
         ChannelIdsPlayableString += playableId + ','
     ChannelIdsPlayableString = ChannelIdsPlayableString[:-1]
 

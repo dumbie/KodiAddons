@@ -113,16 +113,13 @@ def play_radio(listItem, Windowed):
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
 
-def play_program(listItem, Windowed, SeekOffsetStart=150):
+def play_program(listItem, Windowed, SeekOffsetStart=120):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
             notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
             xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan stream niet openen.', notificationIcon, 2500, False)
             return
-
-        #Check program properties
-        streamcheck.check_program(listItem)
 
         #Get the program id
         ProgramId = listItem.getProperty('ProgramId')
@@ -140,9 +137,12 @@ def play_program(listItem, Windowed, SeekOffsetStart=150):
             "X-Xsrf-Token": var.ApiLoginToken()
         }
 
-        DownloadRequest = hybrid.urllib_request(path.userdata_program(ProgramId), headers=DownloadHeaders)
+        DownloadRequest = hybrid.urllib_request(path.detail_program(ProgramId), headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
+
+        #Check program properties
+        streamcheck.check_program(listItem, DownloadDataJson)
 
         #Get and set the stream asset id
         StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson)
@@ -203,9 +203,6 @@ def play_vod(listItem, Windowed):
             xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan stream niet openen.', notificationIcon, 2500, False)
             return
 
-        #Check vod properties
-        streamcheck.check_vod(listItem)
-
         #Get the program id
         ProgramId = listItem.getProperty('ProgramId')
 
@@ -222,9 +219,12 @@ def play_vod(listItem, Windowed):
             "X-Xsrf-Token": var.ApiLoginToken()
         }
 
-        DownloadRequest = hybrid.urllib_request(path.userdata_vod(ProgramId), headers=DownloadHeaders)
+        DownloadRequest = hybrid.urllib_request(path.detail_vod(ProgramId), headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
+
+        #Check vod properties
+        streamcheck.check_vod(listItem, DownloadDataJson)
 
         #Get and set the stream asset id
         StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson)
@@ -277,7 +277,7 @@ def play_vod(listItem, Windowed):
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
 
-def play_recorded(listItem, Windowed, SeekOffsetStart=150):
+def play_recorded(listItem, Windowed, SeekOffsetStart=120):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:

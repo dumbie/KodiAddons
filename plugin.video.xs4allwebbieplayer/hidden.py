@@ -10,26 +10,26 @@ import var
 
 def hidden_television_json_load():
     try:
-        if var.HiddenTelevisionDataJson == [] and files.existFile('HiddenTelevision.js') == True:
+        if var.HiddenTelevisionJson == [] and files.existFile('HiddenTelevision.js') == True:
             HiddenJsonString = files.openFile('HiddenTelevision.js')
-            var.HiddenTelevisionDataJson = json.loads(HiddenJsonString)
+            var.HiddenTelevisionJson = json.loads(HiddenJsonString)
     except:
-        var.HiddenTelevisionDataJson = []
+        var.HiddenTelevisionJson = []
 
 def hidden_radio_json_load():
     try:
-        if var.HiddenRadioDataJson == [] and files.existFile('HiddenRadio.js') == True:
+        if var.HiddenRadioJson == [] and files.existFile('HiddenRadio.js') == True:
             HiddenJsonString = files.openFile('HiddenRadio.js')
-            var.HiddenRadioDataJson = json.loads(HiddenJsonString)
+            var.HiddenRadioJson = json.loads(HiddenJsonString)
     except:
-        var.HiddenRadioDataJson = []
+        var.HiddenRadioJson = []
 
 def hidden_check(ChannelId, hiddenJsonFile):
     #Set Json target list variable
     if hiddenJsonFile == 'HiddenTelevision.js':
-        hiddenTargetJson = var.HiddenTelevisionDataJson
+        hiddenTargetJson = var.HiddenTelevisionJson
     elif hiddenJsonFile == 'HiddenRadio.js':
-        hiddenTargetJson = var.HiddenRadioDataJson
+        hiddenTargetJson = var.HiddenRadioJson
     return ChannelId in hiddenTargetJson
 
 def hidden_add(listItem, hiddenJsonFile):
@@ -38,9 +38,9 @@ def hidden_add(listItem, hiddenJsonFile):
 
     #Set Json target list variable
     if hiddenJsonFile == 'HiddenTelevision.js':
-        hiddenTargetJson = var.HiddenTelevisionDataJson
+        hiddenTargetJson = var.HiddenTelevisionJson
     elif hiddenJsonFile == 'HiddenRadio.js':
-        hiddenTargetJson = var.HiddenRadioDataJson
+        hiddenTargetJson = var.HiddenRadioJson
 
     #Append the new hidden to Json
     hiddenTargetJson.append(ChannelId)
@@ -60,16 +60,16 @@ def hidden_remove(listItem, hiddenJsonFile):
 
     #Set Json target list variable
     if hiddenJsonFile == 'HiddenTelevision.js':
-        hiddenTargetJson = var.HiddenTelevisionDataJson
+        hiddenTargetJson = var.HiddenTelevisionJson
     elif hiddenJsonFile == 'HiddenRadio.js':
-        hiddenTargetJson = var.HiddenRadioDataJson
+        hiddenTargetJson = var.HiddenRadioJson
 
-    HiddenRemoved = False
+    hiddenRemoved = False
     for hidden in hiddenTargetJson:
         try:
             if hidden == ChannelId:
                 hiddenTargetJson.remove(hidden)
-                HiddenRemoved = True
+                hiddenRemoved = True
                 break
         except:
             continue
@@ -81,7 +81,7 @@ def hidden_remove(listItem, hiddenJsonFile):
     #Hidden has been removed notification
     notificationIcon = path.resources('resources/skins/default/media/common/vodyes.png')
     xbmcgui.Dialog().notification(var.addonname, 'Zender niet meer verborgen.', notificationIcon, 2500, False)
-    return HiddenRemoved
+    return hiddenRemoved
 
 def switch_to_page():
     #Check kids hidden lock
@@ -148,30 +148,30 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def load_hidden_channels(self):
         #Get and check the list container
-        listcontainer = self.getControl(1000)
-        listcontainer.reset()
+        listContainer = self.getControl(1000)
+        listContainer.reset()
 
         #Add items to sort list
-        listcontainersort = []
-        lihidden.list_load(listcontainersort, 'HiddenTelevision.js')
+        listContainerSort = []
+        lihidden.list_load(listContainerSort, 'HiddenTelevision.js')
 
         #Sort and add items to container
-        listcontainer.addItems(listcontainersort)
+        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_hidden_channels(True)
 
     #Update the status
     def count_hidden_channels(self, resetSelect=False):
-        listcontainer = self.getControl(1000)
-        channelcount = len(var.HiddenTelevisionDataJson)
+        listContainer = self.getControl(1000)
+        channelcount = len(var.HiddenTelevisionJson)
         if channelcount > 0:
             func.updateLabelText(self, 3000, 'Verborgen Zenders (' + str(channelcount) + ')')
             func.updateLabelText(self, 3001, 'Huidige verborgen zenders, u kunt een zender weer laten verschijnen in de zenderlijst door er op te klikken.')
             if resetSelect == True:
-                self.setFocus(listcontainer)
+                self.setFocus(listContainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listContainer.selectItem(0)
                 xbmc.sleep(100)
         else:
             func.updateLabelText(self, 3000, 'Verborgen Zenders (0)')

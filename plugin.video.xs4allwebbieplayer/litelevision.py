@@ -77,7 +77,7 @@ def list_update(listItem):
             ProgramNowTiming = '[COLOR gray]onbekend programmaduur[/COLOR]'
             ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
             ProgramNowDetails = 'Onbekend seizoen en aflevering'
-            ProgramNowTimeStartDateTime = datetime(1970, 1, 1)
+            ProgramNowTimeStartDateTime = datetime(1970,1,1)
             ProgramProgressPercent = '100'
             ProgramNowRerun = 'false'
             ProgramNowRecordEvent = 'false'
@@ -127,7 +127,7 @@ def list_update(listItem):
             ProgramNextRecordSeriesId = ''
             ProgramNextName = '[COLOR gray]Onbekend programma[/COLOR]'
             ProgramNextNameRaw = 'Onbekend programma'
-            ProgramNextTimeStartDateTime = datetime(1970, 1, 1)
+            ProgramNextTimeStartDateTime = datetime(1970,1,1)
             ProgramNextTimeStartString = 'Onbekend'
             ProgramNextAlarm = 'false'
             ProgramNextRerun = 'false'

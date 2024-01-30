@@ -11,15 +11,19 @@ import path
 import var
 
 def ApiGenerateDeviceId():
-    if var.addon.getSetting('LoginDeviceId120') == '':
-        DeviceId = ''
-        CurrentTimeUtc = str(datetime.utcnow())
-        random.seed(CurrentTimeUtc)
-        for _ in range(64):
-            DeviceId += str(random.randint(0,9))
+    try:
+        if func.string_isnullorempty(var.addon.getSetting('LoginDeviceId120')) == True:
+            DeviceId = ''
+            CurrentTimeUtc = str(datetime.utcnow())
+            random.seed(CurrentTimeUtc)
+            for _ in range(64):
+                DeviceId += str(random.randint(0,9))
 
-        #Update the settings
-        var.addon.setSetting('LoginDeviceId120', DeviceId)
+            #Update the settings
+            var.addon.setSetting('LoginDeviceId120', DeviceId)
+        return True
+    except:
+        return False
 
 def ApiSetEndpointAdresNumber():
     try:
@@ -32,7 +36,7 @@ def ApiSetEndpointAdresNumber():
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
-        var.ApiEndpointUrl = str(DownloadDataJson['result']['url'])
+        var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
@@ -45,7 +49,7 @@ def ApiSetEndpointAdresEmail():
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json"
         }
-        
+
         apiEndpoint = classes.Class_ApiEndpoint()
         apiEndpoint.username = var.addon.getSetting('LoginEmail')
         apiEndpoint.password = var.addon.getSetting('LoginPasswordEmail')
@@ -56,82 +60,107 @@ def ApiSetEndpointAdresEmail():
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
-        var.ApiEndpointUrl = str(DownloadDataJson['result']['url'])
+        var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
         xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
         return False
 
-def ApiLogin(loginNotification=False, forceLogin=False):
-    #Check login settings
-    if default.check_login_settings() == False:
-        return False
-
-    #Check failed login retry limit
-    if var.ApiLoginFailCount > 2:
-        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Aanmeld poging limiet bereikt, herstart de add-on.', notificationIcon, 2500, False)
-        return False
-
-    #Check if login is needed
-    lastLoginSeconds = int((datetime.now() - var.ApiLastLogin).total_seconds())
-    if forceLogin == False and var.ApiLoggedIn == True and lastLoginSeconds < 890:
+def ApiCheckHomeAccess(DownloadDataJson):
+    try:
+        if bool(DownloadDataJson['resultObj']['profile']['sessionProfileData']['isOutOfHome']):
+            var.windowHome.setProperty('WebbiePlayerHomeAccess', 'False')
+            var.ApiHomeAccess(False)
+            return False
+        else:
+            var.windowHome.setProperty('WebbiePlayerHomeAccess', 'True')
+            var.ApiHomeAccess(True)
+            return True
+    except:
         return True
 
-    #Generate the device id
-    ApiGenerateDeviceId()
-
-    #Check the login type
-    if var.addon.getSetting('LoginType') == 'Abonnementsnummer':
-        #Download and set api endpoint adres
-        ApiSetEndpointAdresNumber()
-
-        loginDevice = classes.Class_ApiLogin_deviceRegistrationData()
-        loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')
-        loginDevice.vendor = "Webbie Player"
-        loginDevice.model = str(var.addonversion)
-        loginDevice.deviceFirmVersion = "Kodi"
-        loginDevice.appVersion = str(var.kodiversion)
-        loginDevice = loginDevice.__dict__
-
-        loginAuth = classes.Class_ApiLogin_credentialsStdAuth()
-        loginAuth.username = var.addon.getSetting('LoginUsername')
-        loginAuth.password = var.addon.getSetting('LoginPassword')
-        loginAuth.deviceRegistrationData = loginDevice
-        loginAuth = loginAuth.__dict__
-
-        loginData = classes.Class_ApiLogin_stdAuth()
-        loginData.credentialsStdAuth = loginAuth
-        loginData = loginData.__dict__
-    else:
-        #Download and set api endpoint adres
-        ApiSetEndpointAdresEmail()
-
-        loginDevice = classes.Class_ApiLogin_deviceInfo()
-        loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')
-        loginDevice.deviceVendor = "Webbie Player"
-        loginDevice.deviceModel = str(var.addonversion)
-        loginDevice.deviceFirmVersion = "Kodi"
-        loginDevice.appVersion = str(var.kodiversion)
-        loginDevice = loginDevice.__dict__
-
-        loginCredentials = classes.Class_ApiLogin_credentials()
-        loginCredentials.username = var.addon.getSetting('LoginEmail')
-        loginCredentials.password = var.addon.getSetting('LoginPasswordEmail')
-        loginCredentials = loginCredentials.__dict__
-
-        loginAuth = classes.Class_ApiLogin_credentialsExtAuth()
-        loginAuth.deviceInfo = loginDevice
-        loginAuth.credentials = loginCredentials
-        loginAuth = loginAuth.__dict__
-
-        loginData = classes.Class_ApiLogin_extAuth()
-        loginData.credentialsExtAuth = loginAuth
-        loginData = loginData.__dict__
-
-    #Request login by sending data
+def ApiFailVariableUpdate():
     try:
+        var.ApiLoggedIn(False)
+        var.ApiLastLogin(datetime(1970,1,1))
+        var.ApiLoginCookie('')
+        var.ApiLoginToken('')
+        newFailCount = var.ApiLoginFailCount() + 1
+        var.ApiLoginFailCount(newFailCount)
+        return True
+    except:
+        return False
+
+def ApiLogin(loginNotification=False, forceLogin=False):
+    try:
+        #Check login settings
+        if default.check_login_settings() == False:
+            return False
+
+        #Check failed login retry limit
+        if var.ApiLoginFailCount() > 2:
+            notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Aanmeld poging limiet bereikt, herstart Kodi.', notificationIcon, 2500, False)
+            return False
+
+        #Check if login is needed
+        lastLoginSeconds = int((datetime.now() - var.ApiLastLogin()).total_seconds())
+        if forceLogin == False and var.ApiLoggedIn() == True and lastLoginSeconds < 890:
+            return True
+
+        #Generate the device id
+        ApiGenerateDeviceId()
+
+        #Check the login type
+        if var.addon.getSetting('LoginType') == 'Abonnementsnummer':
+            #Download and set api endpoint adres
+            ApiSetEndpointAdresNumber()
+
+            loginDevice = classes.Class_ApiLogin_deviceRegistrationData()
+            loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')
+            loginDevice.vendor = "Webbie Player"
+            loginDevice.model = str(var.addonversion)
+            loginDevice.deviceFirmVersion = "Kodi"
+            loginDevice.appVersion = str(var.kodiversion)
+            loginDevice = loginDevice.__dict__
+
+            loginAuth = classes.Class_ApiLogin_credentialsStdAuth()
+            loginAuth.username = var.addon.getSetting('LoginUsername')
+            loginAuth.password = var.addon.getSetting('LoginPassword')
+            loginAuth.deviceRegistrationData = loginDevice
+            loginAuth = loginAuth.__dict__
+
+            loginData = classes.Class_ApiLogin_stdAuth()
+            loginData.credentialsStdAuth = loginAuth
+            loginData = loginData.__dict__
+        else:
+            #Download and set api endpoint adres
+            ApiSetEndpointAdresEmail()
+
+            loginDevice = classes.Class_ApiLogin_deviceInfo()
+            loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')
+            loginDevice.deviceVendor = "Webbie Player"
+            loginDevice.deviceModel = str(var.addonversion)
+            loginDevice.deviceFirmVersion = "Kodi"
+            loginDevice.appVersion = str(var.kodiversion)
+            loginDevice = loginDevice.__dict__
+
+            loginCredentials = classes.Class_ApiLogin_credentials()
+            loginCredentials.username = var.addon.getSetting('LoginEmail')
+            loginCredentials.password = var.addon.getSetting('LoginPasswordEmail')
+            loginCredentials = loginCredentials.__dict__
+
+            loginAuth = classes.Class_ApiLogin_credentialsExtAuth()
+            loginAuth.deviceInfo = loginDevice
+            loginAuth.credentials = loginCredentials
+            loginAuth = loginAuth.__dict__
+
+            loginData = classes.Class_ApiLogin_extAuth()
+            loginData.credentialsExtAuth = loginAuth
+            loginData = loginData.__dict__
+
+        #Request login by sending data
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json"
@@ -141,104 +170,71 @@ def ApiLogin(loginNotification=False, forceLogin=False):
         DownloadRequest = hybrid.urllib_request(path.api_login(), data=DownloadData, headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
+
+        #Check if connection is successful
+        if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
+            resultCode = DownloadDataJson['resultCode']
+            resultMessage = DownloadDataJson['message']
+            errorDescription = DownloadDataJson['errorDescription']
+            if errorDescription == '403-3161':
+                notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+                xbmcgui.Dialog().notification(var.addonname, 'Inloggen 24 uur geblokkeerd.', notificationIcon, 2500, False)
+                ApiFailVariableUpdate()
+                return False
+            elif errorDescription == '401-3035':
+                notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+                xbmcgui.Dialog().notification(var.addonname, 'Uw account is (tijdelijk) geblokkeerd.', notificationIcon, 2500, False)
+                ApiFailVariableUpdate()
+                return False
+            elif resultCode == 'KO':
+                notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+                xbmcgui.Dialog().notification(var.addonname, 'Onjuiste gegevens: ' + resultMessage, notificationIcon, 5000, False)
+                ApiFailVariableUpdate()
+                return False
+
+        #Read and set the returned token
+        newApiLoginToken = hybrid.urllib_getheader(DownloadDataHttp, 'X-Xsrf-Token')
+        if func.string_isnullorempty(newApiLoginToken) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Login token lezen mislukt.', notificationIcon, 2500, False)
+            ApiFailVariableUpdate()
+            return False
+        else:
+            var.ApiLoginToken(newApiLoginToken)
+
+        #Filter and clone the cookie contents
+        newApiLoginCookie = ''
+        HeaderCookie = hybrid.urllib_getheader(DownloadDataHttp, 'Set-Cookie')
+        try:
+            cookie_split = re.findall(r"([^\s]*?=.*?(?=;|,|$))", HeaderCookie)
+            for cookie in cookie_split:
+                if cookie.startswith('Path') == False and cookie.startswith('Expires') == False and cookie.startswith('Max-Age') == False:
+                    newApiLoginCookie += cookie + ';'
+            newApiLoginCookie = newApiLoginCookie[:-1]
+        except:
+            pass
+        if func.string_isnullorempty(newApiLoginCookie) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Login cookie lezen mislukt.', notificationIcon, 2500, False)
+            ApiFailVariableUpdate()
+            return False
+        else:
+            var.ApiLoginCookie(newApiLoginCookie)
+
+        #Check if user has home access
+        ApiCheckHomeAccess(DownloadDataJson)
+
+        #Update api login variables
+        var.ApiLoggedIn(True)
+        var.ApiLastLogin(datetime.now())
+        var.ApiLoginFailCount(0)
+
+        #Show the login notification
+        if loginNotification == True:
+            xbmcgui.Dialog().notification(var.addonname, 'Aangemeld, veel kijkplezier.', var.addonicon, 2500, False)
+        return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
         xbmcgui.Dialog().notification(var.addonname, 'Aanmelden is mislukt.', notificationIcon, 2500, False)
-        var.ApiLoggedIn = False
-        var.ApiLastLogin = datetime(1970, 1, 1)
-        var.ApiLoginCookie = ''
-        var.ApiLoginToken = ''
-        var.ApiLoginFailCount += 1
+        ApiFailVariableUpdate()
         return False
-
-    #Check if connection is successful
-    if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
-        resultCode = DownloadDataJson['resultCode']
-        resultMessage = DownloadDataJson['message']
-        errorDescription = DownloadDataJson['errorDescription']
-        if errorDescription == '403-3161':
-            notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Inloggen 24 uur geblokkeerd.', notificationIcon, 2500, False)
-            var.ApiLoggedIn = False
-            var.ApiLastLogin = datetime(1970, 1, 1)
-            var.ApiLoginCookie = ''
-            var.ApiLoginToken = ''
-            var.ApiLoginFailCount += 1
-            return False
-        elif errorDescription == '401-3035':
-            notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Uw account is (tijdelijk) geblokkeerd.', notificationIcon, 2500, False)
-            var.ApiLoggedIn = False
-            var.ApiLastLogin = datetime(1970, 1, 1)
-            var.ApiLoginCookie = ''
-            var.ApiLoginToken = ''
-            var.ApiLoginFailCount += 1
-            return False
-        elif resultCode == 'KO':
-            notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Onjuiste gegevens: ' + resultMessage, notificationIcon, 5000, False)
-            var.ApiLoggedIn = False
-            var.ApiLastLogin = datetime(1970, 1, 1)
-            var.ApiLoginCookie = ''
-            var.ApiLoginToken = ''
-            var.ApiLoginFailCount += 1
-            return False
-
-    #Read and set the returned token
-    var.ApiLoginToken = hybrid.urllib_getheader(DownloadDataHttp, 'X-Xsrf-Token')
-    if func.string_isnullorempty(var.ApiLoginToken) == True:
-        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Login token lezen mislukt.', notificationIcon, 2500, False)
-        var.ApiLoggedIn = False
-        var.ApiLastLogin = datetime(1970, 1, 1)
-        var.ApiLoginCookie = ''
-        var.ApiLoginToken = ''
-        var.ApiLoginFailCount += 1
-        return False
-
-    #Filter and clone the cookie contents
-    var.ApiLoginCookie = ''
-    HeaderCookie = hybrid.urllib_getheader(DownloadDataHttp, 'Set-Cookie')
-    try:
-        cookie_split = re.findall(r"([^\s]*?=.*?(?=;|,|$))", HeaderCookie)
-        for cookie in cookie_split:
-            if cookie.startswith('Path') == False and cookie.startswith('Expires') == False and cookie.startswith('Max-Age') == False:
-                var.ApiLoginCookie += cookie + ';'
-        var.ApiLoginCookie = var.ApiLoginCookie[:-1]
-    except:
-        pass
-    if func.string_isnullorempty(var.ApiLoginCookie) == True:
-        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Login cookie lezen mislukt.', notificationIcon, 2500, False)
-        var.ApiLoggedIn = False
-        var.ApiLastLogin = datetime(1970, 1, 1)
-        var.ApiLoginCookie = ''
-        var.ApiLoginToken = ''
-        var.ApiLoginFailCount += 1
-        return False
-
-    #Show the login notification
-    if loginNotification == True:
-        xbmcgui.Dialog().notification(var.addonname, 'Aangemeld, veel kijkplezier.', var.addonicon, 2500, False)
-
-    #Check if user has home access
-    ApiCheckHomeAccess(DownloadDataJson)
-
-    #Update api login variables
-    var.ApiLoggedIn = True
-    var.ApiLastLogin = datetime.now()
-    var.ApiLoginFailCount = 0
-    return True
-
-def ApiCheckHomeAccess(DownloadDataJson):
-    try:
-        if bool(DownloadDataJson['resultObj']['profile']['sessionProfileData']['isOutOfHome']):
-            var.windowHome.setProperty('WebbiePlayerHomeAccess', 'False')
-            var.ApiHomeAccess = False
-            return False
-        else:
-            var.windowHome.setProperty('WebbiePlayerHomeAccess', 'True')
-            var.ApiHomeAccess = True
-            return True
-    except:
-        return True

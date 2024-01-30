@@ -6,26 +6,26 @@ import var
 
 def favorite_television_json_load():
     try:
-        if var.FavoriteTelevisionDataJson == [] and files.existFile('FavoriteTelevision.js') == True:
+        if var.FavoriteTelevisionJson == [] and files.existFile('FavoriteTelevision.js') == True:
             FavoriteJsonString = files.openFile('FavoriteTelevision.js')
-            var.FavoriteTelevisionDataJson = json.loads(FavoriteJsonString)
+            var.FavoriteTelevisionJson = json.loads(FavoriteJsonString)
     except:
-        var.FavoriteTelevisionDataJson = []
+        var.FavoriteTelevisionJson = []
 
 def favorite_radio_json_load():
     try:
-        if var.FavoriteRadioDataJson == [] and files.existFile('FavoriteRadio.js') == True:
+        if var.FavoriteRadioJson == [] and files.existFile('FavoriteRadio.js') == True:
             FavoriteJsonString = files.openFile('FavoriteRadio.js')
-            var.FavoriteRadioDataJson = json.loads(FavoriteJsonString)
+            var.FavoriteRadioJson = json.loads(FavoriteJsonString)
     except:
-        var.FavoriteRadioDataJson = []
+        var.FavoriteRadioJson = []
 
 def favorite_check(ChannelId, favoriteJsonFile):
     #Set Json target list variable
     if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionDataJson
+        favoriteTargetJson = var.FavoriteTelevisionJson
     elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioDataJson
+        favoriteTargetJson = var.FavoriteRadioJson
     return ChannelId in favoriteTargetJson
 
 def favorite_toggle(listItem, favoriteJsonFile):
@@ -44,9 +44,9 @@ def favorite_add(listItem, favoriteJsonFile):
 
     #Set Json target list variable
     if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionDataJson
+        favoriteTargetJson = var.FavoriteTelevisionJson
     elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioDataJson
+        favoriteTargetJson = var.FavoriteRadioJson
 
     #Append the new favorite to Json
     favoriteTargetJson.append(ChannelId)
@@ -69,9 +69,9 @@ def favorite_remove(listItem, favoriteJsonFile):
 
     #Set Json target list variable
     if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionDataJson
+        favoriteTargetJson = var.FavoriteTelevisionJson
     elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioDataJson
+        favoriteTargetJson = var.FavoriteRadioJson
 
     for favorite in favoriteTargetJson:
         try:

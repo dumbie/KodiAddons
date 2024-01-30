@@ -7,9 +7,9 @@ import var
 def list_load(listContainer, hiddenJsonFile):
     #Set Json target list variable
     if hiddenJsonFile == 'HiddenTelevision.js':
-        hiddenTargetJson = var.HiddenTelevisionDataJson
+        hiddenTargetJson = var.HiddenTelevisionJson
     elif hiddenJsonFile == 'HiddenRadio.js':
-        hiddenTargetJson = var.HiddenRadioDataJson
+        hiddenTargetJson = var.HiddenRadioJson
 
     for hiddenChannelId in hiddenTargetJson:
         try:

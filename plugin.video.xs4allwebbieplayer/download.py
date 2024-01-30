@@ -1,5 +1,6 @@
 import gzip
 import json
+import metadatainfo
 import xbmcgui
 import apilogin
 import classes
@@ -10,7 +11,7 @@ import var
 def download_channels_radio(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.ChannelsDataJsonRadio != [] and forceUpdate == False:
+        if var.RadioChannelsDataJson != [] and forceUpdate == False:
             return True
 
         DownloadHeaders = {
@@ -21,7 +22,7 @@ def download_channels_radio(forceUpdate=False):
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 
-        var.ChannelsDataJsonRadio = DownloadDataJson
+        var.RadioChannelsDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
@@ -31,7 +32,7 @@ def download_channels_radio(forceUpdate=False):
 def download_channels_tv(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.ChannelsDataJsonTelevision != [] and forceUpdate == False:
+        if var.TelevisionChannelsDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -42,8 +43,8 @@ def download_channels_tv(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.channels_list_tv(), headers=DownloadHeaders)
@@ -55,12 +56,12 @@ def download_channels_tv(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/television.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Televisie download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.ChannelsDataJsonTelevision = DownloadDataJson
+        var.TelevisionChannelsDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
@@ -70,7 +71,7 @@ def download_channels_tv(forceUpdate=False):
 def download_recording_profile(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.RecordingProfileDataJson != [] and forceUpdate == False:
+        if var.RecordingProfileLoaded() == True and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -81,8 +82,8 @@ def download_recording_profile(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.recording_profile(), headers=DownloadHeaders)
@@ -94,23 +95,15 @@ def download_recording_profile(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/record.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Opname profiel download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        #Update recording access
-        var.RecordingAccess = bool(DownloadDataJson['resultObj']['profile']['recordingProfileData']['isRecordingEnabled'])
-
-        #Update recording space
-        usedMinutes = int(DownloadDataJson['resultObj']['profile']['recordingProfileData']['usedMinutes'])
-        totalMinutes = int(DownloadDataJson['resultObj']['profile']['recordingProfileData']['totalMinutes'])
-        if usedMinutes != 0 and totalMinutes != 0:
-            var.RecordingSpaceString = str(round(100 - (usedMinutes * 100 / totalMinutes))) + '% ruimte beschikbaar'
-        else:
-            var.RecordingSpaceString = "Onbekende ruimte beschikbaar"
-
-        var.RecordingProfileDataJson = DownloadDataJson
+        #Update recording variables
+        var.RecordingProfileLoaded(True)
+        var.RecordingAccess(metadatainfo.recording_access(DownloadDataJson))
+        var.RecordingAvailableSpace(metadatainfo.recording_space(DownloadDataJson))
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/record.png')
@@ -120,11 +113,11 @@ def download_recording_profile(forceUpdate=False):
 def download_recording_event(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.ChannelsDataJsonRecordingEvent != [] and forceUpdate == False:
+        if var.RecordingEventDataJson != [] and forceUpdate == False:
             return True
 
-        #Check if user has pvr access
-        if var.RecordingAccess == False:
+        #Check if user has recording access
+        if var.RecordingAccess() == False:
             return False
 
         #Check if user needs to login
@@ -135,8 +128,8 @@ def download_recording_event(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.recording_event(), headers=DownloadHeaders)
@@ -148,12 +141,12 @@ def download_recording_event(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/record.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Opnames download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.ChannelsDataJsonRecordingEvent = DownloadDataJson
+        var.RecordingEventDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/record.png')
@@ -163,11 +156,11 @@ def download_recording_event(forceUpdate=False):
 def download_recording_series(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.ChannelsDataJsonRecordingSeries != [] and forceUpdate == False:
+        if var.RecordingSeriesDataJson != [] and forceUpdate == False:
             return True
 
-        #Check if user has pvr access
-        if var.RecordingAccess == False:
+        #Check if user has recording access
+        if var.RecordingAccess() == False:
             return False
 
         #Check if user needs to login
@@ -178,8 +171,8 @@ def download_recording_series(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.recording_series(), headers=DownloadHeaders)
@@ -191,12 +184,12 @@ def download_recording_series(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Serie opnames download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.ChannelsDataJsonRecordingSeries = DownloadDataJson
+        var.RecordingSeriesDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
@@ -206,7 +199,7 @@ def download_recording_series(forceUpdate=False):
 def download_vod_day(dayDateTime, forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.VodCurrentDataJson != [] and forceUpdate == False:
+        if var.VodDayDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -217,8 +210,8 @@ def download_vod_day(dayDateTime, forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.vod_day(dayDateTime), headers=DownloadHeaders)
@@ -230,12 +223,12 @@ def download_vod_day(dayDateTime, forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Programma gemist download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.VodCurrentDataJson = DownloadDataJson
+        var.VodDayDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
@@ -245,7 +238,7 @@ def download_vod_day(dayDateTime, forceUpdate=False):
 def download_vod_movies(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.ChannelsDataJsonMovies != [] and forceUpdate == False:
+        if var.MoviesVodDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -256,8 +249,8 @@ def download_vod_movies(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.vod_movies(), headers=DownloadHeaders)
@@ -269,12 +262,12 @@ def download_vod_movies(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Films download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.ChannelsDataJsonMovies = DownloadDataJson
+        var.MoviesVodDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
@@ -284,7 +277,7 @@ def download_vod_movies(forceUpdate=False):
 def download_vod_series(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.ChannelsDataJsonSeries != [] and forceUpdate == False:
+        if var.SeriesVodDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -295,8 +288,8 @@ def download_vod_series(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.vod_series(), headers=DownloadHeaders)
@@ -308,12 +301,12 @@ def download_vod_series(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/series.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Series download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.ChannelsDataJsonSeries = DownloadDataJson
+        var.SeriesVodDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/series.png')
@@ -323,7 +316,7 @@ def download_vod_series(forceUpdate=False):
 def download_vod_kids(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.ChannelsDataJsonSeriesKids != [] and forceUpdate == False:
+        if var.KidsVodDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -334,8 +327,8 @@ def download_vod_kids(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.vod_series_kids(), headers=DownloadHeaders)
@@ -347,12 +340,12 @@ def download_vod_kids(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Kids series download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.ChannelsDataJsonSeriesKids = DownloadDataJson
+        var.KidsVodDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
@@ -369,8 +362,8 @@ def download_series_season(parentId):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.vod_series_season(parentId), headers=DownloadHeaders)
@@ -382,7 +375,7 @@ def download_series_season(parentId):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/series.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Serie download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return None
@@ -403,8 +396,8 @@ def download_search_program(programName):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         programName = hybrid.urllib_quote(programName)
@@ -417,7 +410,7 @@ def download_search_program(programName):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/search.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Zoek download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return None
@@ -431,7 +424,7 @@ def download_search_program(programName):
 def download_search_kids(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.KidsSearchDataJson != [] and forceUpdate == False:
+        if var.KidsProgramDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -442,8 +435,8 @@ def download_search_kids(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.search_kids(), headers=DownloadHeaders)
@@ -455,12 +448,12 @@ def download_search_kids(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Kids download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.KidsSearchDataJson = DownloadDataJson
+        var.KidsProgramDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
@@ -470,7 +463,7 @@ def download_search_kids(forceUpdate=False):
 def download_search_sport(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.SportSearchDataJson != [] and forceUpdate == False:
+        if var.SportProgramDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -481,8 +474,8 @@ def download_search_sport(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.search_sport(), headers=DownloadHeaders)
@@ -494,12 +487,12 @@ def download_search_sport(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/sport.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Sport download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.SportSearchDataJson = DownloadDataJson
+        var.SportProgramDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/sport.png')
@@ -509,7 +502,7 @@ def download_search_sport(forceUpdate=False):
 def download_search_movies(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.MovieSearchDataJson != [] and forceUpdate == False:
+        if var.MoviesProgramDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -520,8 +513,8 @@ def download_search_movies(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.search_movies(), headers=DownloadHeaders)
@@ -533,12 +526,12 @@ def download_search_movies(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Week films download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.MovieSearchDataJson = DownloadDataJson
+        var.MoviesProgramDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
@@ -548,7 +541,7 @@ def download_search_movies(forceUpdate=False):
 def download_search_series(forceUpdate=False):
     try:
         #Check if data is already cached
-        if var.SeriesSearchDataJson != [] and forceUpdate == False:
+        if var.SeriesProgramDataJson != [] and forceUpdate == False:
             return True
 
         #Check if user needs to login
@@ -559,8 +552,8 @@ def download_search_series(forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadRequest = hybrid.urllib_request(path.search_series(), headers=DownloadHeaders)
@@ -572,12 +565,12 @@ def download_search_series(forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/series.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Week series download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
 
-        var.SeriesSearchDataJson = DownloadDataJson
+        var.SeriesProgramDataJson = DownloadDataJson
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/series.png')
@@ -595,8 +588,8 @@ def record_series_add(ChannelId, liveSeriesId):
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadData = json.dumps({"channelId":ChannelId,"seriesId":liveSeriesId,"isAutoDeletionEnabled":True,"episodeScope":"ALL","isChannelBoundEnabled":True}).encode('ascii')
@@ -609,7 +602,7 @@ def record_series_add(ChannelId, liveSeriesId):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen planning mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
@@ -645,8 +638,8 @@ def record_series_remove(SeriesId, KeepRecordings=True):
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadData = json.dumps({"seriesIds":[int(SeriesId)],"isKeepRecordingsEnabled":KeepRecordings}).encode('ascii')
@@ -660,7 +653,7 @@ def record_series_remove(SeriesId, KeepRecordings=True):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
@@ -696,8 +689,8 @@ def record_event_add(ProgramId):
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadData = json.dumps({"externalContentId":ProgramId,"isAutoDeletionEnabled":True}).encode('ascii')
@@ -710,7 +703,7 @@ def record_event_add(ProgramId):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/record.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Opname planning mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return ''
@@ -727,7 +720,7 @@ def record_event_add(ProgramId):
             var.guiMain.count_recorded_events()
             var.guiMain.count_recording_events()
 
-        return str(DownloadDataJson['resultObj']['containers'][0]['metadata']['contentId'])
+        return metadatainfo.contentId_from_json_metadata(DownloadDataJson['resultObj']['containers'][0])
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/record.png')
         xbmcgui.Dialog().notification(var.addonname, 'Opname planning mislukt.', notificationIcon, 2500, False)
@@ -744,8 +737,8 @@ def record_event_remove(RecordId, StartDeltaTime=0):
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken()
         }
 
         DownloadData = json.dumps([{"recordId":int(RecordId),"startDeltaTime":int(StartDeltaTime)}]).encode('ascii')
@@ -759,7 +752,7 @@ def record_event_remove(RecordId, StartDeltaTime=0):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/record.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Opname annulering mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return False
@@ -787,7 +780,7 @@ def download_epg_day(dayDateTime, forceUpdate=False):
         #Check if data is already cached
         epgDayCache = None
         dayDateString = dayDateTime.strftime('%Y-%m-%d')
-        for epgCache in var.EpgCacheArray:
+        for epgCache in var.EpgCacheArrayDataJson:
             try:
                 if epgCache.dayDateString == dayDateString:
                     epgDayCache = epgCache
@@ -798,7 +791,7 @@ def download_epg_day(dayDateTime, forceUpdate=False):
         #Check if update is needed
         if epgDayCache != None:
             if forceUpdate == True:
-                var.EpgCacheArray.remove(epgDayCache)
+                var.EpgCacheArrayDataJson.remove(epgDayCache)
             else:
                 return epgDayCache.epgJson
 
@@ -810,8 +803,8 @@ def download_epg_day(dayDateTime, forceUpdate=False):
 
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie,
-            "X-Xsrf-Token": var.ApiLoginToken,
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken(),
             'Content-Type': 'application/json',
             'Accept-Encoding': 'gzip'
         }
@@ -835,7 +828,7 @@ def download_epg_day(dayDateTime, forceUpdate=False):
             resultCode = DownloadDataJson['resultCode']
             resultMessage = DownloadDataJson['message']
             if resultCode == 'KO':
-                var.ApiLoggedIn = False
+                var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
                 xbmcgui.Dialog().notification(var.addonname, 'TV Gids download mislukt: ' + resultMessage, notificationIcon, 2500, False)
                 return None
@@ -844,7 +837,7 @@ def download_epg_day(dayDateTime, forceUpdate=False):
         classAdd = classes.Class_EpgCache()
         classAdd.dayDateString = dayDateString
         classAdd.epgJson = DownloadDataJson
-        var.EpgCacheArray.append(classAdd)
+        var.EpgCacheArrayDataJson.append(classAdd)
 
         return DownloadDataJson
     except:

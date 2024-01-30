@@ -55,11 +55,7 @@
     <setting id="WidevineVersion" type="text" visible="false" default=""/>
     <setting id="CurrentRadioId" type="text" visible="false" default=""/>
     <setting id="CurrentChannelId" type="text" visible="false" default=""/>
-    <setting id="CurrentExternalId" type="text" visible="false" default=""/>
-    <setting id="CurrentChannelName" type="text" visible="false" default="Onbekende zender"/>
     <setting id="LastChannelId" type="text" visible="false" default=""/>
-    <setting id="LastExternalId" type="text" visible="false" default=""/>
-    <setting id="LastChannelName" type="text" visible="false" default="Onbekende zender"/>
     <setting id="LoadChannelFavoritesOnly" type="text" visible="false" default="false"/>
   </category>
 </settings>

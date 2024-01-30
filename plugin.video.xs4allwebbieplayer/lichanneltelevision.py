@@ -11,11 +11,11 @@ import var
 def list_load(listContainer):
     favorite.favorite_television_json_load()
     hidden.hidden_television_json_load()
-    var.ChannelIdsPlayable = []
-    for channel in var.ChannelsDataJsonTelevision['resultObj']['containers']:
+    var.TelevisionChannelIdsPlayable = []
+    for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
-            AssetId = metadatainfo.stream_assetid_from_json_metadata(channel['assets'])
+            AssetId = metadatainfo.stream_assetid_from_json_metadata(channel)
             ChannelId = metadatainfo.channelId_from_json_metadata(channel)
             ChannelName = metadatainfo.channelName_from_json_metadata(channel)
             ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(channel)
@@ -27,7 +27,7 @@ def list_load(listContainer):
             if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
 
             #Add channelId to playable id list
-            var.ChannelIdsPlayable.append(ChannelId)
+            var.TelevisionChannelIdsPlayable.append(ChannelId)
 
             #Check if channel is filtered
             if var.addon.getSetting('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue

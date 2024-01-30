@@ -7,7 +7,7 @@ import path
 import var
 
 def list_load(listContainer, selectedSeriesName, selectedPictureUrl):
-    for program in var.KidsSearchDataJson["resultObj"]["containers"]:
+    for program in var.KidsProgramDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)

@@ -11,9 +11,9 @@ def adjust_streamurl_bitrate(streamUrl):
     else:
         streamUrl += "&min_bitrate=0"
     if "&max_bitrate=" in streamUrl:
-        streamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.get_stream_targetbitrate(), streamUrl)
+        streamUrl = re.sub("&max_bitrate=([0-9]+)", "&max_bitrate=" + metadatainfo.stream_targetbitrate(), streamUrl)
     else:
-        streamUrl += "&max_bitrate=" + metadatainfo.get_stream_targetbitrate()
+        streamUrl += "&max_bitrate=" + metadatainfo.stream_targetbitrate()
     return streamUrl
 
 #Update stream url with localhost proxy

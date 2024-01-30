@@ -1,5 +1,7 @@
 import os
+import sys
 from datetime import datetime, timedelta
+import func
 import hybrid
 import player
 import threadclass
@@ -115,34 +117,106 @@ thread_sleep_timer = threadclass.Class_ThreadSafe()
 
 #Player variables
 PlayerCustom = player.PlayerCustom()
-PlayerWindowed = False
-PlayerOpenOverlay = False
-PlayerShowInformation = False
-PlayerSeekOffset = 0
+PlayerChannelDelayDateTime = datetime(1970,1,1)
+def PlayerWindowed(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerOpenOverlay(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerShowInformation(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerSeekOffsetStart(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, 0)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerSeekOffsetEnd(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, 0)
+    else:
+         return func.globalvar_set(varName, setObject)
 
 #Api variables
-ApiEndpointUrl = 'api.tv.kpn.com'
-ApiLoggedIn = False
-ApiHomeAccess = True
-ApiLastLogin = datetime(1970,1,1)
-ApiLoginCookie = ''
-ApiLoginToken = ''
-ApiLoginFailCount = 0
+def ApiLoginFailCount(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, 0)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def ApiEndpointUrl(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, 'api.tv.kpn.com')
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def ApiLoggedIn(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def ApiHomeAccess(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, True)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def ApiLastLogin(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, datetime(1970,1,1))
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def ApiLoginCookie(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, '')
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def ApiLoginToken(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, '')
+    else:
+         return func.globalvar_set(varName, setObject)
 
 #Favorite variables
-FavoriteTelevisionDataJson = []
-FavoriteRadioDataJson = []
+FavoriteTelevisionJson = []
+FavoriteRadioJson = []
 
 #Hidden variables
-HiddenTelevisionDataJson = []
-HiddenRadioDataJson = []
 HiddenChannelChanged = False
+HiddenTelevisionJson = []
+HiddenRadioJson = []
 
 #Search variables
 SearchSelectIndex = 0
 SearchChannelTerm = ''
 SearchDownloadSearchTerm = ''
-SearchDownloadResultJson = []
+SearchProgramDataJson = []
 SearchHistoryProgramJson = []
 SearchHistoryChannelJson = []
 SearchHistoryRadioJson = []
@@ -150,58 +224,74 @@ SearchHistoryRadioJson = []
 #Kids variables
 KidsProgramSelectIndex = 0
 KidsEpisodeSelectIndex = 0
-KidsSearchDataJson = []
-ChannelsDataJsonSeriesKids = []
+KidsProgramDataJson = []
+KidsVodDataJson = []
 
 #Sport variables
 SportSelectIndex = 0
-SportSearchDataJson = []
+SportProgramDataJson = []
 
 #Radio variables
-ChannelsDataJsonRadio = []
+RadioChannelsDataJson = []
 
 #Television variables
-ChannelDelayDateTime = datetime(1970,1,1)
-ChannelIdsPlayable = []
-ChannelsDataJsonTelevision = []
+TelevisionChannelIdsPlayable = []
+TelevisionChannelsDataJson = []
 
 #Vod variables
 VodSelectIndex = 0
-VodCurrentDataJson = []
-VodCurrentLoadDateTime = datetime.now()
-VodDaysOffsetPast = 10
-VodDaysOffsetFuture = 1
+VodDayLoadDateTime = datetime.now()
+VodDayOffsetPast = 10
+VodDayOffsetFuture = 1
+VodDayDataJson = []
 
 #Movies variables
 MovieSelectIndex = 0
-MovieSearchDataJson = []
-ChannelsDataJsonMovies = []
+MoviesProgramDataJson = []
+MoviesVodDataJson = []
 
 #Series variables
 SeriesProgramSelectIndex = 0
 SeriesEpisodeSelectIndex = 0
-SeriesSearchDataJson = []
-ChannelsDataJsonSeries = []
+SeriesProgramDataJson = []
+SeriesVodDataJson = []
 
 #Recording variables
 RecordedSelectIndex = 0
-RecordingAccess = False
-RecordingSpaceString = "Onbekende ruimte beschikbaar"
 RecordingProcessMinutes = 10
-RecordingProfileDataJson = []
-ChannelsDataJsonRecordingEvent = []
-ChannelsDataJsonRecordingSeries = []
+RecordingEventDataJson = []
+RecordingSeriesDataJson = []
+def RecordingProfileLoaded(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def RecordingAccess(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def RecordingAvailableSpace(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, "Onbekende ruimte beschikbaar")
+    else:
+         return func.globalvar_set(varName, setObject)
 
 #Epg variables
 EpgCurrentLoadDateTime = datetime.now()
 EpgPreviousLoadDateTime = datetime(1970,1,1)
-EpgCurrentDayJson = []
+EpgCurrentChannelName = ''
 EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
-EpgCurrentChannelName = ''
 EpgNavigateProgramId = ''
 EpgDaysOffsetFuture = 7
-EpgCacheArray = []
+EpgCurrentDayDataJson = []
+EpgCacheArrayDataJson = []
 
 #Program variables
 ProgramRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten', 'round-up', 'replay', 'wiederholung']

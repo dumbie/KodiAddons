@@ -39,12 +39,24 @@ def search_programname_listarray(listArray, searchProgramName):
             continue
     return None
 
-#Search for ChannelId in container
-def search_channelid_listcontainer(listcontainer, searchChannelId):
-    listitemcount = listcontainer.size()
-    for itemNum in range(0, listitemcount):
+#Search for SeriesId in list array
+def search_seriesid_listarray(listArray, searchSeriesId):
+    for Program in listArray:
         try:
-            ChannelId = listcontainer.getListItem(itemNum).getProperty('ChannelId')
+            checkProgram1 = searchSeriesId.lower()
+            checkProgram2 = Program.getProperty('SeriesId').lower()
+            if checkProgram1 == checkProgram2:
+                return Program
+        except:
+            continue
+    return None
+
+#Search for ChannelId in container
+def search_channelid_listcontainer(listContainer, searchChannelId):
+    listItemCount = listContainer.size()
+    for itemNum in range(0, listItemCount):
+        try:
+            ChannelId = listContainer.getListItem(itemNum).getProperty('ChannelId')
             if ChannelId == searchChannelId:
                 return itemNum
         except:
@@ -52,11 +64,11 @@ def search_channelid_listcontainer(listcontainer, searchChannelId):
     return None
 
 #Search for ChannelName in container
-def search_channelname_listcontainer(listcontainer, searchChannelName):
-    listitemcount = listcontainer.size()
-    for itemNum in range(0, listitemcount):
+def search_channelname_listcontainer(listContainer, searchChannelName):
+    listItemCount = listContainer.size()
+    for itemNum in range(0, listItemCount):
         try:
-            ChannelName = listcontainer.getListItem(itemNum).getProperty('ChannelName')
+            ChannelName = listContainer.getListItem(itemNum).getProperty('ChannelName')
             if ChannelName == searchChannelName:
                 return itemNum
         except:
@@ -64,11 +76,11 @@ def search_channelname_listcontainer(listcontainer, searchChannelName):
     return None
 
 #Search for ChannelNumber in container
-def search_channelnumber_listcontainer(listcontainer, searchChannelNumber):
-    listitemcount = listcontainer.size()
-    for itemNum in range(0, listitemcount):
+def search_channelnumber_listcontainer(listContainer, searchChannelNumber):
+    listItemCount = listContainer.size()
+    for itemNum in range(0, listItemCount):
         try:
-            ChannelNumber = listcontainer.getListItem(itemNum).getProperty('ChannelNumber')
+            ChannelNumber = listContainer.getListItem(itemNum).getProperty('ChannelNumber')
             if ChannelNumber == searchChannelNumber:
                 return itemNum
         except:
@@ -76,11 +88,11 @@ def search_channelnumber_listcontainer(listcontainer, searchChannelNumber):
     return None
 
 #Search for label in container
-def search_label_listcontainer(listcontainer, searchLabel):
-    listitemcount = listcontainer.size()
-    for itemNum in range(0, listitemcount):
+def search_label_listcontainer(listContainer, searchLabel):
+    listItemCount = listContainer.size()
+    for itemNum in range(0, listItemCount):
         try:
-            listItem = listcontainer.getListItem(itemNum)
+            listItem = listContainer.getListItem(itemNum)
             if str(listItem.getLabel()).startswith(searchLabel):
                 return listItem
         except:
@@ -89,16 +101,16 @@ def search_label_listcontainer(listcontainer, searchLabel):
 
 #Focus on channel in list
 def focus_on_channelid_in_list(_self, controlId, defaultNum, forceFocus, channelId):
-    listcontainer = _self.getControl(controlId)
+    listContainer = _self.getControl(controlId)
     if forceFocus:
-        _self.setFocus(listcontainer)
+        _self.setFocus(listContainer)
         xbmc.sleep(100)
     if func.string_isnullorempty(channelId) == False:
-        itemNum = search_channelid_listcontainer(listcontainer, channelId)
+        itemNum = search_channelid_listcontainer(listContainer, channelId)
         if itemNum == None:
-            listcontainer.selectItem(defaultNum)
+            listContainer.selectItem(defaultNum)
         else:
-            listcontainer.selectItem(itemNum)
+            listContainer.selectItem(itemNum)
     else:
-        listcontainer.selectItem(defaultNum)
+        listContainer.selectItem(defaultNum)
     xbmc.sleep(100)

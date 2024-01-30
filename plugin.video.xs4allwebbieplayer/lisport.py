@@ -11,7 +11,7 @@ def list_load(listContainer):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
-    for program in var.SportSearchDataJson['resultObj']['containers']:
+    for program in var.SportProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)

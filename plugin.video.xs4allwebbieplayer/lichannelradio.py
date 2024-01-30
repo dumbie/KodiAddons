@@ -10,7 +10,7 @@ def list_load(listContainer):
     favorite.favorite_radio_json_load()
     hidden.hidden_radio_json_load()
     ChannelNumberInt = 0
-    for channel in var.ChannelsDataJsonRadio['radios']:
+    for channel in var.RadioChannelsDataJson['radios']:
         try:
             #Load channel basics
             ChannelId = channel['id']

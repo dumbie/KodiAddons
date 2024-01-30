@@ -15,7 +15,7 @@ def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictu
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramName = metadatainfo.programtitle_from_json_metadata(program)
+            EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, False)
             ProgramAvailability = metadatainfo.vod_ondemand_available_time(program)
 
             #Combine program description extended
@@ -23,14 +23,14 @@ def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictu
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, True, False, False)
-            ProgramTitle = ProgramName + " " + ProgramDetails
+            ProgramTitle = EpisodeTitle + " " + ProgramDetails
 
             #Add vod program
             listAction = 'play_stream_vod'
-            listItem = xbmcgui.ListItem(ProgramName)
+            listItem = xbmcgui.ListItem(EpisodeTitle)
             listItem.setProperty('Action', listAction)
             listItem.setProperty('ProgramId', ProgramId)
-            listItem.setProperty("ProgramName", ProgramName)
+            listItem.setProperty("ProgramName", EpisodeTitle)
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setProperty("ProgramAvailability", ProgramAvailability)
             listItem.setProperty('ProgramDescription', ProgramDescription)

@@ -54,8 +54,8 @@ class Gui(xbmcgui.WindowXMLDialog):
             close_the_page()
 
     def load_recording(self, forceUpdate=False):
-        listcontainer = self.getControl(1000)
-        listcontainer.reset()
+        listContainer = self.getControl(1000)
+        listContainer.reset()
 
         #Download the recording programs
         func.updateLabelText(self, 3001, "Geplande opnames worden gedownload.")
@@ -70,12 +70,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         func.updateLabelText(self, 3001, "Geplande opnames worden geladen.")
 
         #Add items to sort list
-        listcontainersort = []
-        lirecordingevent.list_load(listcontainersort)
+        listContainerSort = []
+        lirecordingevent.list_load(listContainerSort)
 
         #Sort and add items to container
-        listcontainersort.sort(key=lambda x: int(x.getProperty('ProgramStartTime')))
-        listcontainer.addItems(listcontainersort)
+        listContainerSort.sort(key=lambda x: int(x.getProperty('ProgramStartTime')))
+        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_recording(True)
@@ -87,14 +87,14 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     #Update the status
     def count_recording(self, resetSelect=False):
-        listcontainer = self.getControl(1000)
-        if listcontainer.size() > 0:
-            func.updateLabelText(self, 3000, 'Geplande Opnames (' + str(listcontainer.size()) + ')')
+        listContainer = self.getControl(1000)
+        if listContainer.size() > 0:
+            func.updateLabelText(self, 3000, 'Geplande Opnames (' + str(listContainer.size()) + ')')
             func.updateLabelText(self, 3001, 'Huidig geplande programma opnames, u kunt een opname annuleren door er op te klikken.')
             if resetSelect == True:
-                self.setFocus(listcontainer)
+                self.setFocus(listContainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listContainer.selectItem(0)
                 xbmc.sleep(100)
         else:
             func.updateLabelText(self, 3000, 'Geplande Opnames (0)')

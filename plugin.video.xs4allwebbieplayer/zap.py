@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import xbmc
 import func
 import lifunc
-import stream
+import streamplay
 import var
 
 def check_remote_number(_self, controlId, actionId, selectMode, clickOnSelection):
@@ -48,12 +48,12 @@ def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
     var.ZapHintString = ''
 
     #Set channel string
-    listcontainer = _self.getControl(var.ZapControlId)
-    listitemcount = listcontainer.size()
-    for itemNum in range(0, listitemcount):
+    listContainer = _self.getControl(var.ZapControlId)
+    listItemCount = listContainer.size()
+    for itemNum in range(0, listItemCount):
         try:
-            channelNameProp = listcontainer.getListItem(itemNum).getProperty('ChannelName')
-            channelNumberProp = listcontainer.getListItem(itemNum).getProperty('ChannelNumber')
+            channelNameProp = listContainer.getListItem(itemNum).getProperty('ChannelName')
+            channelNumberProp = listContainer.getListItem(itemNum).getProperty('ChannelNumber')
             if channelNumberProp.startswith(var.ZapNumberString):
                 channelNumberCut = channelNumberProp.replace(var.ZapNumberString, '', 1)
                 var.ZapHintString += func.get_provider_color_string() + var.ZapNumberString + '[/COLOR][COLOR gray]' + channelNumberCut + '[/COLOR] ' + channelNameProp + ' '
@@ -69,26 +69,26 @@ def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
     var.thread_zap_wait_timer.Start(thread_zap_wait_timer, (_self, selectMode, clickOnSelection))
 
 def select_remote_number(_self, clickOnSelection):
-    listcontainer = _self.getControl(var.ZapControlId)
-    itemnum = lifunc.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
-    if itemnum == None:
+    listContainer = _self.getControl(var.ZapControlId)
+    itemNum = lifunc.search_channelnumber_listcontainer(listContainer, var.ZapNumberString)
+    if itemNum == None:
         return
 
-    _self.setFocus(listcontainer)
+    _self.setFocus(listContainer)
     xbmc.sleep(100)
-    listcontainer.selectItem(itemnum)
+    listContainer.selectItem(itemNum)
     xbmc.sleep(100)
     if clickOnSelection:
         xbmc.executebuiltin('Action(Select)')
 
 def zap_remote_number(_self):
-    listcontainer = _self.getControl(var.ZapControlId)
-    itemnum = lifunc.search_channelnumber_listcontainer(listcontainer, var.ZapNumberString)
+    listContainer = _self.getControl(var.ZapControlId)
+    itemnum = lifunc.search_channelnumber_listcontainer(listContainer, var.ZapNumberString)
     if itemnum == None:
         return
 
-    listItemSelected = listcontainer.getListItem(itemnum)
-    stream.play_stream_tv(listItemSelected, False, True)
+    listItemSelected = listContainer.getListItem(itemnum)
+    streamplay.play_tv(listItemSelected, False, True)
 
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
     while var.thread_zap_wait_timer.Allowed():

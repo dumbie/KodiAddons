@@ -8,7 +8,7 @@ import func
 import lifunc
 import path
 import searchdialog
-import stream
+import streamplay
 import var
 import zap
 
@@ -49,7 +49,7 @@ class Gui(xbmcgui.WindowXML):
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')
                 if listItemAction == 'play_stream_radio':
-                    stream.play_stream_radio(listItemSelected, True)
+                    streamplay.play_radio(listItemSelected, True)
             elif clickId == 1001:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')
@@ -91,8 +91,8 @@ class Gui(xbmcgui.WindowXML):
         dialogFooter = ''
 
         #Get the selected channel
-        listcontainer = self.getControl(1000)
-        listItemSelected = listcontainer.getSelectedItem()
+        listContainer = self.getControl(1000)
+        listItemSelected = listContainer.getSelectedItem()
 
         #Check if channel is favorite
         if listItemSelected.getProperty('ChannelFavorite') == 'true':
@@ -108,38 +108,38 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
-            self.switch_favorite_channel(listcontainer, listItemSelected)
+            self.switch_favorite_channel(listContainer, listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
 
     def buttons_add_navigation(self):
-        listcontainer = self.getControl(1001)
-        if listcontainer.size() > 0: return True
+        listContainer = self.getControl(1001)
+        if listContainer.size() > 0: return True
 
-        listitem = xbmcgui.ListItem('Ga een stap terug')
-        listitem.setProperty('Action', 'go_back')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Ga een stap terug')
+        listItem.setProperty('Action', 'go_back')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Alle of favorieten')
-        listitem.setProperty('Action', 'switch_all_favorites')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Alle of favorieten')
+        listItem.setProperty('Action', 'switch_all_favorites')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Zoek naar zender')
-        listitem.setProperty('Action', 'search_channelprogram')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Zoek naar zender')
+        listItem.setProperty('Action', 'search_channelprogram')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Toon visualisatie')
-        listitem.setProperty('Action', 'show_visualisation')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'), 'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Toon visualisatie')
+        listItem.setProperty('Action', 'show_visualisation')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'), 'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Vernieuwen')
-        listitem.setProperty('Action', 'refresh_programs')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Vernieuwen')
+        listItem.setProperty('Action', 'refresh_programs')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
+        listContainer.addItem(listItem)
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
         favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteRadio.js')
@@ -161,7 +161,7 @@ class Gui(xbmcgui.WindowXML):
                 var.addon.setSetting('LoadChannelFavoritesOnly', 'false')
             else:
                 #Check if there are favorites set
-                if var.FavoriteRadioDataJson == []:
+                if var.FavoriteRadioJson == []:
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
@@ -190,32 +190,32 @@ class Gui(xbmcgui.WindowXML):
             xbmcgui.Dialog().notification(var.addonname, 'Zenders worden vernieuwd.', notificationIcon, 2500, False)
 
         #Get and check the list container
-        listcontainer = self.getControl(1000)
+        listContainer = self.getControl(1000)
         if forceLoad == False and forceUpdate == False:
-            if listcontainer.size() > 0: return True
+            if listContainer.size() > 0: return True
         else:
-            listcontainer.reset()
+            listContainer.reset()
 
         #Download the channels
         func.updateLabelText(self, 1, 'Zenders downloaden')
         downloadResult = download.download_channels_radio(forceUpdate)
         if downloadResult == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
-            listcontainer = self.getControl(1001)
-            self.setFocus(listcontainer)
+            listContainer = self.getControl(1001)
+            self.setFocus(listContainer)
             xbmc.sleep(100)
-            listcontainer.selectItem(0)
+            listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
 
         func.updateLabelText(self, 1, 'Zenders laden')
 
         #Add items to sort list
-        listcontainersort = []
-        lichannelradio.list_load(listcontainersort)
+        listContainerSort = []
+        lichannelradio.list_load(listContainerSort)
 
         #Sort and add items to container
-        listcontainer.addItems(listcontainersort)
+        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_channels(True)
@@ -228,23 +228,23 @@ class Gui(xbmcgui.WindowXML):
             channelTypeString = 'favorieten zenders'
 
         #Update status label text
-        listcontainer = self.getControl(1000)
-        if listcontainer.size() > 0:
+        listContainer = self.getControl(1000)
+        if listContainer.size() > 0:
             if var.SearchChannelTerm != '':
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' zenders gevonden')
+                func.updateLabelText(self, 1, str(listContainer.size()) + ' zenders gevonden')
             else:
-                func.updateLabelText(self, 1, str(listcontainer.size()) + ' ' + channelTypeString)
+                func.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
 
             if resetSelect == True:
                 lifunc.focus_on_channelid_in_list(self, 1000, 0, True, var.addon.getSetting('CurrentRadioId'))
         else:
-            listcontainer = self.getControl(1001)
-            self.setFocus(listcontainer)
+            listContainer = self.getControl(1001)
+            self.setFocus(listContainer)
             xbmc.sleep(100)
             if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                listcontainer.selectItem(1)
+                listContainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
-                listcontainer.selectItem(0)
+                listContainer.selectItem(0)
             xbmc.sleep(100)

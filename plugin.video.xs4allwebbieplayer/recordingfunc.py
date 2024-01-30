@@ -14,7 +14,7 @@ def count_recording_events():
 
     #Count planned recording
     recordingCount = 0
-    for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+    for program in var.RecordingEventDataJson["resultObj"]["containers"]:
         try:
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
             #Check if recording is planned or already recorded
@@ -31,7 +31,7 @@ def count_recorded_events():
 
     #Count finished recordings
     recordingCount = 0
-    for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+    for program in var.RecordingEventDataJson["resultObj"]["containers"]:
         try:
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
             if datetime.now() < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
@@ -46,15 +46,15 @@ def count_recording_series():
     if downloadResult == False: return '?'
 
     #Count planned recording
-    return len(var.ChannelsDataJsonRecordingSeries["resultObj"]["containers"])
+    return len(var.RecordingSeriesDataJson["resultObj"]["containers"])
 
 def count_recorded_series_id(seriesId):
     try:
-        if var.ChannelsDataJsonRecordingEvent == []: return ''
+        if var.RecordingEventDataJson == []: return ''
 
         #Count finished recordings
         recordedCount = 0
-        for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+        for program in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
                 recordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
                 if recordSeriesId == seriesId:

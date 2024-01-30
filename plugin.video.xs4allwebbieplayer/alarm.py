@@ -234,31 +234,31 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def load_alarm(self):
         #Get and check the list container
-        listcontainer = self.getControl(1000)
-        listcontainer.reset()
+        listContainer = self.getControl(1000)
+        listContainer.reset()
 
         #Add items to sort list
-        listcontainersort = []
-        lialarm.list_load(listcontainersort)
+        listContainerSort = []
+        lialarm.list_load(listContainerSort)
 
         #Sort and add items to container
-        listcontainersort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
-        listcontainer.addItems(listcontainersort)
+        listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
+        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_alarm(True)
 
     #Update the status
     def count_alarm(self, resetSelect=False):
-        listcontainer = self.getControl(1000)
-        alarmcount = len(var.AlarmDataJson)
-        if alarmcount > 0:
-            func.updateLabelText(self, 3000, 'Geplande Alarmen (' + str(alarmcount) + ')')
+        listContainer = self.getControl(1000)
+        alarmCount = len(var.AlarmDataJson)
+        if alarmCount > 0:
+            func.updateLabelText(self, 3000, 'Geplande Alarmen (' + str(alarmCount) + ')')
             func.updateLabelText(self, 3001, 'Huidig geplande programma alarmen, u kunt een alarm annuleren door er op te klikken.')
             if resetSelect == True:
-                self.setFocus(listcontainer)
+                self.setFocus(listContainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(0)
+                listContainer.selectItem(0)
                 xbmc.sleep(100)
         else:
             func.updateLabelText(self, 3000, 'Geplande Alarmen (0)')

@@ -7,7 +7,7 @@ import func
 import lisport
 import path
 import searchdialog
-import stream
+import streamplay
 import var
 
 def switch_to_page():
@@ -40,7 +40,7 @@ class Gui(xbmcgui.WindowXML):
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
             if listItemAction == 'play_stream_program':
-                stream.play_stream_program(listItemSelected, False)
+                streamplay.play_program(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('Action')
@@ -54,8 +54,8 @@ class Gui(xbmcgui.WindowXML):
             if xbmc.Player().isPlayingVideo():
                 var.PlayerCustom.Fullscreen(True)
             else:
-                listcontainer = self.getControl(1001)
-                self.setFocus(listcontainer)
+                listContainer = self.getControl(1001)
+                self.setFocus(listContainer)
                 xbmc.sleep(100)
         elif clickId == 3001:
             close_the_page()
@@ -86,8 +86,8 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma zoeken in uitzendingen':
-            listcontainer = self.getControl(1000)
-            listItemSelected = listcontainer.getSelectedItem()
+            listContainer = self.getControl(1000)
+            listItemSelected = listContainer.getSelectedItem()
             ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
 
             #Set search filter term
@@ -95,8 +95,8 @@ class Gui(xbmcgui.WindowXML):
             self.load_program(True, False)
             var.SearchChannelTerm = ''
         elif dialogResult == 'Programma in de TV Gids tonen':
-            listcontainer = self.getControl(1000)
-            listItemSelected = listcontainer.getSelectedItem()
+            listContainer = self.getControl(1000)
+            listItemSelected = listContainer.getSelectedItem()
             var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
             var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
             var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
@@ -105,23 +105,23 @@ class Gui(xbmcgui.WindowXML):
             epg.switch_to_page()
 
     def buttons_add_navigation(self):
-        listcontainer = self.getControl(1001)
-        if listcontainer.size() > 0: return True
+        listContainer = self.getControl(1001)
+        if listContainer.size() > 0: return True
 
-        listitem = xbmcgui.ListItem('Ga een stap terug')
-        listitem.setProperty('Action', 'go_back')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Ga een stap terug')
+        listItem.setProperty('Action', 'go_back')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem("Zoek uitzending")
-        listitem.setProperty('Action', 'search_program')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem("Zoek uitzending")
+        listItem.setProperty('Action', 'search_program')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem("Vernieuwen")
-        listitem.setProperty('Action', 'refresh_program')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem("Vernieuwen")
+        listItem.setProperty('Action', 'refresh_program')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
+        listContainer.addItem(listItem)
 
     def search_program(self):
         #Open the search dialog
@@ -142,62 +142,62 @@ class Gui(xbmcgui.WindowXML):
             xbmcgui.Dialog().notification(var.addonname, "Uitzendingen worden vernieuwd.", notificationIcon, 2500, False)
 
         #Get and check the list container
-        listcontainer = self.getControl(1000)
+        listContainer = self.getControl(1000)
         if forceLoad == False and forceUpdate == False:
-            if listcontainer.size() > 0: return True
+            if listContainer.size() > 0: return True
         else:
-            listcontainer.reset()
+            listContainer.reset()
 
         #Download the programs
         func.updateLabelText(self, 1, "Uitzendingen downloaden")
         downloadResult = download.download_search_sport(forceUpdate)
         if downloadResult == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
-            listcontainer = self.getControl(1001)
-            self.setFocus(listcontainer)
+            listContainer = self.getControl(1001)
+            self.setFocus(listContainer)
             xbmc.sleep(100)
-            listcontainer.selectItem(0)
+            listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
 
         func.updateLabelText(self, 1, "Uitzendingen laden")
 
         #Add items to sort list
-        listcontainersort = []
-        lisport.list_load(listcontainersort)
+        listContainerSort = []
+        lisport.list_load(listContainerSort)
 
         #Sort and add items to container
-        listcontainer.addItems(listcontainersort)
+        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_program(True, selectIndex)
 
     #Update the status
     def count_program(self, resetSelect=False, selectIndex=0):
-        listcontainer = self.getControl(1000)
-        if listcontainer.size() > 0:
+        listContainer = self.getControl(1000)
+        if listContainer.size() > 0:
             if var.SearchChannelTerm != '':
-                func.updateLabelText(self, 1, str(listcontainer.size()) + " uitzendingen gevonden")
+                func.updateLabelText(self, 1, str(listContainer.size()) + " uitzendingen gevonden")
                 func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
             else:
-                func.updateLabelText(self, 1, str(listcontainer.size()) + " uitzendingen")
+                func.updateLabelText(self, 1, str(listContainer.size()) + " uitzendingen")
                 func.updateLabelText(self, 3, "")
 
             if resetSelect == True:
-                self.setFocus(listcontainer)
+                self.setFocus(listContainer)
                 xbmc.sleep(100)
-                listcontainer.selectItem(selectIndex)
+                listContainer.selectItem(selectIndex)
                 xbmc.sleep(100)
         else:
-            listcontainer = self.getControl(1001)
-            self.setFocus(listcontainer)
+            listContainer = self.getControl(1001)
+            self.setFocus(listContainer)
             xbmc.sleep(100)
             if var.SearchChannelTerm != '':
                 func.updateLabelText(self, 1, "Geen uitzendingen gevonden")
                 func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
-                listcontainer.selectItem(1)
+                listContainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen uitzendingen")
                 func.updateLabelText(self, 3, "")
-                listcontainer.selectItem(0)
+                listContainer.selectItem(0)
             xbmc.sleep(100)

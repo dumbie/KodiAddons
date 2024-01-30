@@ -1,5 +1,5 @@
-import metadatainfo
 from datetime import datetime
+import metadatainfo
 import var
 
 #Search for ChannelId in json epg
@@ -37,8 +37,8 @@ def search_programindex_airingtime_jsonepg(jsonEpg, targetTime):
 #Search for ChannelId in json recording event
 def search_channelid_jsonrecording_event(searchChannelId, filterTime=False):
     try:
-        if var.ChannelsDataJsonRecordingEvent == []: return None
-        for Record in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+        if var.RecordingEventDataJson == []: return None
+        for Record in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
                 if filterTime == True:
                     ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(Record)
@@ -54,8 +54,8 @@ def search_channelid_jsonrecording_event(searchChannelId, filterTime=False):
 #Search for ChannelId in json recording series
 def search_channelid_jsonrecording_series(searchChannelId):
     try:
-        if var.ChannelsDataJsonRecordingSeries == []: return None
-        for Record in var.ChannelsDataJsonRecordingSeries["resultObj"]["containers"]:
+        if var.RecordingSeriesDataJson == []: return None
+        for Record in var.RecordingSeriesDataJson["resultObj"]["containers"]:
             try:
                 if metadatainfo.channelId_from_json_metadata(Record) == searchChannelId:
                     return Record
@@ -68,8 +68,8 @@ def search_channelid_jsonrecording_series(searchChannelId):
 #Search for ProgramId in json recording event
 def search_programid_jsonrecording_event(searchProgramId):
     try:
-        if var.ChannelsDataJsonRecordingEvent == []: return None
-        for Record in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+        if var.RecordingEventDataJson == []: return None
+        for Record in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
                 if metadatainfo.contentId_from_json_metadata(Record) == searchProgramId:
                     return Record
@@ -84,8 +84,8 @@ def search_programid_jsonrecording_event(searchProgramId):
 #Search for SeriesId in json recording event
 def search_seriesid_jsonrecording_event(searchSeriesId):
     try:
-        if var.ChannelsDataJsonRecordingEvent == []: return None
-        for Record in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+        if var.RecordingEventDataJson == []: return None
+        for Record in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
                 if metadatainfo.seriesId_from_json_metadata(Record) == searchSeriesId:
                     return Record
@@ -100,8 +100,8 @@ def search_seriesid_jsonrecording_event(searchSeriesId):
 #Search for SeriesId in json recording series
 def search_seriesid_jsonrecording_series(searchSeriesId):
     try:
-        if var.ChannelsDataJsonRecordingSeries == []: return None
-        for Record in var.ChannelsDataJsonRecordingSeries["resultObj"]["containers"]:
+        if var.RecordingSeriesDataJson == []: return None
+        for Record in var.RecordingSeriesDataJson["resultObj"]["containers"]:
             try:
                 if metadatainfo.seriesId_from_json_metadata(Record) == searchSeriesId:
                     return Record
@@ -118,7 +118,7 @@ def search_stream_assetid_by_channelid(searchChannelId):
     try:
         channelDetails = search_channelid_jsontelevision(searchChannelId)
         if channelDetails != None:
-            return metadatainfo.stream_assetid_from_json_metadata(channelDetails['assets'])
+            return metadatainfo.stream_assetid_from_json_metadata(channelDetails)
         else:
             return ''
     except:
@@ -127,11 +127,11 @@ def search_stream_assetid_by_channelid(searchChannelId):
 #Search for ChannelId in json television
 def search_channelid_jsontelevision(searchChannelId):
     try:
-        if var.ChannelsDataJsonTelevision == []: return None
-        for Channel in var.ChannelsDataJsonTelevision["resultObj"]["containers"]:
+        if var.TelevisionChannelsDataJson == []: return None
+        for channel in var.TelevisionChannelsDataJson["resultObj"]["containers"]:
             try:
-                if metadatainfo.channelId_from_json_metadata(Channel) == searchChannelId:
-                    return Channel
+                if metadatainfo.channelId_from_json_metadata(channel) == searchChannelId:
+                    return channel
             except:
                 continue
         return None
@@ -141,9 +141,8 @@ def search_channelid_jsontelevision(searchChannelId):
 #Search for ChannelId in json radio
 def search_channelid_jsonradio(searchChannelId):
     try:
-        #lengt = str(len(var.ChannelsDataJsonRadio['radios']))
-        if var.ChannelsDataJsonRadio == []: return None
-        for channel in var.ChannelsDataJsonRadio['radios']:
+        if var.RadioChannelsDataJson == []: return None
+        for channel in var.RadioChannelsDataJson['radios']:
             try:
                 if str(channel['id']) == searchChannelId:
                     return channel

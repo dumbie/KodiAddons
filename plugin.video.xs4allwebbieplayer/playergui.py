@@ -10,8 +10,8 @@ import path
 import liplayergui
 import recordingfunc
 import sleep
-import stream
-import switch
+import streamplay
+import streamswitch
 import var
 import zap
 
@@ -37,8 +37,8 @@ def close_the_page():
 
 class Gui(xbmcgui.WindowXMLDialog):
     EpgPauseUpdate = False
-    PlayerInfoLastInteraction = datetime(1970, 1, 1)
-    PlayerInfoLastHide = datetime(1970, 1, 1)
+    PlayerInfoLastInteraction = datetime(1970,1,1)
+    PlayerInfoLastHide = datetime(1970,1,1)
 
     def onInit(self):
         self.buttons_add_sidebar()
@@ -53,7 +53,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             playerFull = self.getProperty('WebbiePlayerFull') == 'true'
             if clickId == 1001 and playerFull == True:
                 listItemSelectedClicked = clickedControl.getSelectedItem()
-                stream.play_stream_tv(listItemSelectedClicked, False, True)
+                streamplay.play_tv(listItemSelectedClicked, False, True)
             elif clickId == 1002 and playerFull == True:
                 listItemSelectedClicked = clickedControl.getSelectedItem()
                 listItemAction = listItemSelectedClicked.getProperty('Action')
@@ -64,12 +64,12 @@ class Gui(xbmcgui.WindowXMLDialog):
                 elif listItemAction == 'media_alarmnext':
                     self.set_alarm_next()
                 elif listItemAction == 'media_record_event':
-                    listcontainer = self.getControl(1001)
-                    listItemSelectedChannel = listcontainer.getSelectedItem()
+                    listContainer = self.getControl(1001)
+                    listItemSelectedChannel = listContainer.getSelectedItem()
                     recordingfunc.record_event_now_television_playergui(listItemSelectedChannel)
                 elif listItemAction == 'media_record_series':
-                    listcontainer = self.getControl(1001)
-                    listItemSelectedChannel = listcontainer.getSelectedItem()
+                    listContainer = self.getControl(1001)
+                    listItemSelectedChannel = listContainer.getSelectedItem()
                     recordingfunc.record_series_television_playergui(listItemSelectedChannel)
                 elif listItemAction == 'media_volumeup':
                     self.media_volume_up()
@@ -196,11 +196,11 @@ class Gui(xbmcgui.WindowXMLDialog):
         while var.thread_channel_delay_timer.Allowed():
             xbmc.sleep(100)
             interactSecond = 3
-            lastInteractSeconds = int((datetime.now() - var.ChannelDelayDateTime).total_seconds())
+            lastInteractSeconds = int((datetime.now() - var.PlayerChannelDelayDateTime).total_seconds())
 
             #Channel information
-            listcontainer = self.getControl(1001)
-            listItemSelected = listcontainer.getSelectedItem()
+            listContainer = self.getControl(1001)
+            listItemSelected = listContainer.getSelectedItem()
             channelNameProp = listItemSelected.getProperty("ChannelName")
             channelNumberProp = listItemSelected.getProperty("ChannelNumber")
 
@@ -221,122 +221,122 @@ class Gui(xbmcgui.WindowXMLDialog):
                 self.setProperty('ZapVisible', 'false')
 
                 #Switch to selected channel
-                stream.play_stream_tv(listItemSelected, False, True)
+                streamplay.play_tv(listItemSelected, False, True)
 
     def buttons_add_sidebar(self):
         #Get and check the list container
-        listcontainer = self.getControl(1002)
-        if listcontainer.size() > 0: return True
+        listContainer = self.getControl(1002)
+        if listContainer.size() > 0: return True
 
-        listitem = xbmcgui.ListItem('Ga naar vorige scherm')
-        listitem.setProperty('Action', 'media_previousscreen')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'),'icon': path.resources('resources/skins/default/media/common/back.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Ga naar vorige scherm')
+        listItem.setProperty('Action', 'media_previousscreen')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'),'icon': path.resources('resources/skins/default/media/common/back.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Afspelen of pauzeren')
-        listitem.setProperty('Action', 'media_playpause')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/playpause.png'),'icon': path.resources('resources/skins/default/media/common/playpause.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Afspelen of pauzeren')
+        listItem.setProperty('Action', 'media_playpause')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/playpause.png'),'icon': path.resources('resources/skins/default/media/common/playpause.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Stop met afspelen')
-        listitem.setProperty('Action', 'media_stop')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/stop.png'),'icon': path.resources('resources/skins/default/media/common/stop.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Stop met afspelen')
+        listItem.setProperty('Action', 'media_stop')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/stop.png'),'icon': path.resources('resources/skins/default/media/common/stop.png')})
+        listContainer.addItem(listItem)
 
         if xbmc.getCondVisibility('System.Platform.Android') == False and xbmc.getCondVisibility('System.Platform.IOS') == False:
-            listitem = xbmcgui.ListItem('Schakel tussen scherm modus')
-            listitem.setProperty('Action', 'media_fullscreen')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
-            listcontainer.addItem(listitem)
+            listItem = xbmcgui.ListItem('Schakel tussen scherm modus')
+            listItem.setProperty('Action', 'media_fullscreen')
+            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
+            listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Zap naar vorige zender')
-        listitem.setProperty('Action', 'media_lastchannel')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/last.png'),'icon': path.resources('resources/skins/default/media/common/last.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Zap naar vorige zender')
+        listItem.setProperty('Action', 'media_lastchannel')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/last.png'),'icon': path.resources('resources/skins/default/media/common/last.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Volgend programma alarm')
-        listitem.setProperty('Action', 'media_alarmnext')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/alarm.png'),'icon': path.resources('resources/skins/default/media/common/alarm.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Volgend programma alarm')
+        listItem.setProperty('Action', 'media_alarmnext')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/alarm.png'),'icon': path.resources('resources/skins/default/media/common/alarm.png')})
+        listContainer.addItem(listItem)
 
-        if var.RecordingAccess == True:
-            listitem = xbmcgui.ListItem('Programma opnemen of annuleren')
-            listitem.setProperty('Action', 'media_record_event')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/record.png'),'icon': path.resources('resources/skins/default/media/common/record.png')})
-            listcontainer.addItem(listitem)
+        if var.RecordingAccess() == True:
+            listItem = xbmcgui.ListItem('Programma opnemen of annuleren')
+            listItem.setProperty('Action', 'media_record_event')
+            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/record.png'),'icon': path.resources('resources/skins/default/media/common/record.png')})
+            listContainer.addItem(listItem)
 
-            listitem = xbmcgui.ListItem('Serie seizoen opnemen of annuleren')
-            listitem.setProperty('Action', 'media_record_series')
-            listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/recordseries.png'),'icon': path.resources('resources/skins/default/media/common/recordseries.png')})
-            listcontainer.addItem(listitem)
+            listItem = xbmcgui.ListItem('Serie seizoen opnemen of annuleren')
+            listItem.setProperty('Action', 'media_record_series')
+            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/recordseries.png'),'icon': path.resources('resources/skins/default/media/common/recordseries.png')})
+            listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Beheer de slaap timer')
-        listitem.setProperty('Action', 'media_sleep')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/sleep.png'),'icon': path.resources('resources/skins/default/media/common/sleep.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Beheer de slaap timer')
+        listItem.setProperty('Action', 'media_sleep')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/sleep.png'),'icon': path.resources('resources/skins/default/media/common/sleep.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Stream achteruit spoelen')
-        listitem.setProperty('Action', 'media_seekback')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/seekback.png'),'icon': path.resources('resources/skins/default/media/common/seekback.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Stream achteruit spoelen')
+        listItem.setProperty('Action', 'media_seekback')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/seekback.png'),'icon': path.resources('resources/skins/default/media/common/seekback.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Stream vooruit spoelen')
-        listitem.setProperty('Action', 'media_seekforward')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/seekforward.png'),'icon': path.resources('resources/skins/default/media/common/seekforward.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Stream vooruit spoelen')
+        listItem.setProperty('Action', 'media_seekforward')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/seekforward.png'),'icon': path.resources('resources/skins/default/media/common/seekforward.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Spoel naar live stream')
-        listitem.setProperty('Action', 'media_seeklive')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/seeklive.png'),'icon': path.resources('resources/skins/default/media/common/seeklive.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Spoel naar live stream')
+        listItem.setProperty('Action', 'media_seeklive')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/seeklive.png'),'icon': path.resources('resources/skins/default/media/common/seeklive.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Spoel naar programma begin')
-        listitem.setProperty('Action', 'media_seekbegin')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/rerun.png'),'icon': path.resources('resources/skins/default/media/common/rerun.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Spoel naar programma begin')
+        listItem.setProperty('Action', 'media_seekbegin')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/rerun.png'),'icon': path.resources('resources/skins/default/media/common/rerun.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Geluid volume omhoog')
-        listitem.setProperty('Action', 'media_volumeup')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumeup.png'),'icon': path.resources('resources/skins/default/media/common/volumeup.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Geluid volume omhoog')
+        listItem.setProperty('Action', 'media_volumeup')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumeup.png'),'icon': path.resources('resources/skins/default/media/common/volumeup.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Geluid volume omlaag')
-        listitem.setProperty('Action', 'media_volumedown')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumedown.png'),'icon': path.resources('resources/skins/default/media/common/volumedown.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Geluid volume omlaag')
+        listItem.setProperty('Action', 'media_volumedown')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumedown.png'),'icon': path.resources('resources/skins/default/media/common/volumedown.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Demp of ondemp geluid')
-        listitem.setProperty('Action', 'media_togglemute')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Demp of ondemp geluid')
+        listItem.setProperty('Action', 'media_togglemute')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Ondertiteling aan of uit')
-        listitem.setProperty('Action', 'media_subtitlesonoff')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/subtitles.png'),'icon': path.resources('resources/skins/default/media/common/subtitles.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Ondertiteling aan of uit')
+        listItem.setProperty('Action', 'media_subtitlesonoff')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/subtitles.png'),'icon': path.resources('resources/skins/default/media/common/subtitles.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Geluids instellingen')
-        listitem.setProperty('Action', 'settings_audio')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingsaudio.png'),'icon': path.resources('resources/skins/default/media/common/settingsaudio.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Geluids instellingen')
+        listItem.setProperty('Action', 'settings_audio')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingsaudio.png'),'icon': path.resources('resources/skins/default/media/common/settingsaudio.png')})
+        listContainer.addItem(listItem)
 
-        listitem = xbmcgui.ListItem('Video instellingen')
-        listitem.setProperty('Action', 'settings_video')
-        listitem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingsvideo.png'),'icon': path.resources('resources/skins/default/media/common/settingsvideo.png')})
-        listcontainer.addItem(listitem)
+        listItem = xbmcgui.ListItem('Video instellingen')
+        listItem.setProperty('Action', 'settings_video')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingsvideo.png'),'icon': path.resources('resources/skins/default/media/common/settingsvideo.png')})
+        listContainer.addItem(listItem)
 
         #Focus on the list
-        self.setFocus(listcontainer)
+        self.setFocus(listContainer)
         xbmc.sleep(100)
 
         #Select list item
-        listcontainer.selectItem(0)
+        listContainer.selectItem(0)
         xbmc.sleep(100)
 
     def set_alarm_next(self):
         #Get and check the list container
-        listcontainer = self.getControl(1001)
-        selectedItem = listcontainer.getSelectedItem()
+        listContainer = self.getControl(1001)
+        selectedItem = listContainer.getSelectedItem()
         ProgramNextName = selectedItem.getProperty('ProgramNextNameRaw')
         ProgramNextTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNextTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
         ChannelId = selectedItem.getProperty('ChannelId')
@@ -344,7 +344,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         ChannelName = selectedItem.getProperty('ChannelName')
 
         #Check the program time
-        if ProgramNextTimeStartDateTime != datetime(1970, 1, 1) and datetime.now() > ProgramNextTimeStartDateTime:
+        if ProgramNextTimeStartDateTime != datetime(1970,1,1) and datetime.now() > ProgramNextTimeStartDateTime:
             notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
             xbmcgui.Dialog().notification(var.addonname, 'Programma is al afgelopen.', notificationIcon, 2500, False)
             return
@@ -402,13 +402,12 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def seek_begin_program(self):
         #Get and check the list container
-        listcontainer = self.getControl(1001)
-        selectedItem = listcontainer.getSelectedItem()
-
+        listContainer = self.getControl(1001)
+        selectedItem = listContainer.getSelectedItem()
         ProgramNowTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
 
         #Check the program start time
-        if ProgramNowTimeStartDateTime != datetime(1970, 1, 1):
+        if ProgramNowTimeStartDateTime != datetime(1970,1,1):
             playingSeconds = int((datetime.now() - ProgramNowTimeStartDateTime).total_seconds())
             totalSeconds = int(xbmc.Player().getTotalTime())
             seekSeconds = totalSeconds - playingSeconds + 10
@@ -441,34 +440,32 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def switch_channel_lasttv(self):
         LastChannelId = var.addon.getSetting('LastChannelId')
-        LastExternalId = var.addon.getSetting('LastExternalId')
-        LastChannelName = var.addon.getSetting('LastChannelName')
         CurrentChannelId = var.addon.getSetting('CurrentChannelId')
         if LastChannelId != CurrentChannelId:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Gezapt naar vorige zender.', notificationIcon, 2500, False)
-            switch.stream_tv_channelid(LastChannelId, LastExternalId, LastChannelName, 'Televisie', False, True)
+            streamswitch.switch_tv_id(LastChannelId, False, True)
         else:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)
 
     def switch_channel_nexttv(self):
-        var.ChannelDelayDateTime = datetime.now()
-        listcontainer = self.getControl(1001)
-        self.setFocus(listcontainer)
+        var.PlayerChannelDelayDateTime = datetime.now()
+        listContainer = self.getControl(1001)
+        self.setFocus(listContainer)
         xbmc.sleep(100)
-        listcontainer.selectItem(listcontainer.getSelectedPosition() + 1)
+        listContainer.selectItem(listContainer.getSelectedPosition() + 1)
         xbmc.sleep(100)
         self.show_epg(False, False, False)
         #Start the channel wait thread
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def switch_channel_previoustv(self):
-        var.ChannelDelayDateTime = datetime.now()
-        listcontainer = self.getControl(1001)
-        self.setFocus(listcontainer)
+        var.PlayerChannelDelayDateTime = datetime.now()
+        listContainer = self.getControl(1001)
+        self.setFocus(listContainer)
         xbmc.sleep(100)
-        listcontainer.selectItem(listcontainer.getSelectedPosition() - 1)
+        listContainer.selectItem(listContainer.getSelectedPosition() - 1)
         xbmc.sleep(100)
         self.show_epg(False, False, False)
         #Start the channel wait thread
@@ -490,23 +487,23 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def load_channels_code(self, forceLoad=False):
         #Get and check the list container
-        listcontainer = self.getControl(1001)
+        listContainer = self.getControl(1001)
         if forceLoad == False:
-            if listcontainer.size() > 0:
+            if listContainer.size() > 0:
                 return True
         else:
-            listcontainer.reset()
+            listContainer.reset()
 
         #Download the channels
         downloadResult = download.download_channels_tv(False)
         if downloadResult == False: return False
 
         #Add items to sort list
-        listcontainersort = []
-        lichanneltelevision.list_load(listcontainersort)
+        listContainerSort = []
+        lichanneltelevision.list_load(listContainerSort)
 
         #Sort and add items to container
-        listcontainer.addItems(listcontainersort)
+        listContainer.addItems(listContainerSort)
 
         #Select channel in list container
         currentChannelId = var.addon.getSetting('CurrentChannelId')
@@ -547,10 +544,10 @@ class Gui(xbmcgui.WindowXMLDialog):
             if self.EpgPauseUpdate: return
 
             #Get and check the list container
-            listcontainer = self.getControl(1001)
+            listContainer = self.getControl(1001)
 
             #Generate and update program summary
-            updateItem = listcontainer.getSelectedItem()
+            updateItem = listContainer.getSelectedItem()
             liplayergui.list_update(updateItem)
         except:
             pass

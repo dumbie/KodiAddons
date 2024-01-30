@@ -10,7 +10,7 @@ def list_load(listContainer):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
-    for program in var.ChannelsDataJsonRecordingEvent['resultObj']['containers']:
+    for program in var.RecordingEventDataJson['resultObj']['containers']:
         try:
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
@@ -38,7 +38,7 @@ def list_load(listContainer):
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-            ProgramAssetId = metadatainfo.stream_assetid_from_json_metadata(program['assets'])
+            ProgramAssetId = metadatainfo.stream_assetid_from_json_metadata(program)
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
             ProgramAvailability = metadatainfo.recording_available_time(program)
 
@@ -53,7 +53,7 @@ def list_load(listContainer):
             ProgramDescription = metadatacombine.program_description_extended(program)
 
             #Combine program details
-            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
+            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, False, True)
 
             #Update program name string
             ProgramNameList = ProgramName + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'

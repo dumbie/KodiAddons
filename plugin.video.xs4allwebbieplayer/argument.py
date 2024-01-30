@@ -1,9 +1,9 @@
 import var
-import xbmcgui
 import xbmcaddon
 import widevine
 import default
 import func
+import hybrid
 import var
 import main
 import radio
@@ -11,7 +11,7 @@ import television
 import movies
 import series
 import kids
-import switch
+import streamswitch
 import sport
 import vod
 import recorded
@@ -21,17 +21,13 @@ def set_launch_argument_source():
     try:
         var.LaunchUrl = str(sys.argv[0])
         var.LaunchHandle = int(sys.argv[1])
-        var.LaunchArgument = str(sys.argv[2])
+        var.LaunchArgument = hybrid.urllib_unquote(str(sys.argv[2]))
         return True
     except:
         return False
 
 def handle_launch_argument_source():
     try:
-        #Fix share variables every source request
-        #Fix add listitem to dirurl string conversion
-        #Fix resolve missing details in switch code
-
         #Handle settings
         if var.LaunchArgument == "?InputAdaptiveSettings":
             xbmcaddon.Addon('inputstream.adaptive').openSettings()
@@ -77,19 +73,19 @@ def handle_launch_argument_source():
         #Play streams
         elif var.LaunchArgument.startswith("?play_stream_tv="):
             channelId = var.LaunchArgument.replace('?play_stream_tv=', '')
-            switch.stream_tv_channelid(channelId)
+            streamswitch.switch_tv_id(channelId, ShowInformation=True)
         elif var.LaunchArgument.startswith("?play_stream_radio="):
             channelId = var.LaunchArgument.replace('?play_stream_radio=', '')
-            switch.stream_radio_channelid(channelId)
+            streamswitch.switch_radio_id(channelId)
         elif var.LaunchArgument.startswith("?play_stream_program="):
             actionSplit = var.LaunchArgument.replace('?play_stream_program=', '').split(var.splitchar)
-            switch.stream_program_id(actionSplit[0])
+            streamswitch.switch_program_id(actionSplit[0])
         elif var.LaunchArgument.startswith("?play_stream_vod="):
             programId = var.LaunchArgument.replace('?play_stream_vod=', '')
-            switch.stream_vod_id(programId)
+            streamswitch.switch_vod_id(programId)
         elif var.LaunchArgument.startswith("?play_stream_recorded="):
             actionSplit = var.LaunchArgument.replace('?play_stream_recorded=', '').split(var.splitchar)
-            switch.stream_recorded_id(actionSplit[0], actionSplit[1])
+            streamswitch.switch_recorded_id(actionSplit[0], actionSplit[1])
         return True
     except:
         return True

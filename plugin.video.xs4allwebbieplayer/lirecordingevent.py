@@ -9,7 +9,7 @@ def list_load(listContainer):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
-    for program in var.ChannelsDataJsonRecordingEvent["resultObj"]["containers"]:
+    for program in var.RecordingEventDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)

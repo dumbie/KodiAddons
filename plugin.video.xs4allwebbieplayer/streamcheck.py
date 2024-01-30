@@ -1,5 +1,6 @@
 import download
 import func
+import hybrid
 import metadatainfo
 import metadatafunc
 import path
@@ -13,8 +14,7 @@ def check_tv(listItem, defaultGenre='Televisie'):
         ChannelName = listItem.getProperty('ChannelName')
         ItemLabel = listItem.getLabel()
         ItemArt = listItem.getArt('thumb')
-        ItemVideoInfo = listItem.getVideoInfoTag()
-        ItemGenres = ItemVideoInfo.getGenres()
+        ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Download details and get json
         download.download_channels_tv()
@@ -39,8 +39,8 @@ def check_tv(listItem, defaultGenre='Televisie'):
         if func.string_isnullorempty(ItemArt):
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
 
-        if ItemGenres == []:
-            ItemVideoInfo.setGenres([defaultGenre])
+        if func.string_isnullorempty(ItemGenre):
+            listItem.setInfo('video', {'Genre': defaultGenre})
         return True
     except:
         return False
@@ -53,8 +53,7 @@ def check_radio(listItem, defaultGenre='Radio'):
         StreamUrl = listItem.getProperty('StreamUrl')
         ItemLabel = listItem.getLabel()
         ItemArt = listItem.getArt('thumb')
-        ItemVideoInfo = listItem.getVideoInfoTag()
-        ItemGenres = ItemVideoInfo.getGenres()
+        ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Download details and get json
         download.download_channels_radio()
@@ -75,54 +74,56 @@ def check_radio(listItem, defaultGenre='Radio'):
         if func.string_isnullorempty(ItemArt):
             listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
 
-        if ItemGenres == []:
-            ItemVideoInfo.setGenres([defaultGenre])
+        if func.string_isnullorempty(ItemGenre):
+            listItem.setInfo('video', {'Genre': defaultGenre})
         return True
     except:
         return False
 
-def check_program(listItem, defaultGenre='Programma'):
+def check_program(listItem, metaData=None, defaultGenre='Programma'):
     try:
         #Get item properties
-        ProgramId = listItem.getProperty('ProgramId')
         ProgramName = listItem.getProperty('ProgramName')
         ItemLabel = listItem.getLabel()
-        ItemVideoInfo = listItem.getVideoInfoTag()
-        ItemGenres = ItemVideoInfo.getGenres()
+        ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Set item properties
         if func.string_isnullorempty(ProgramName):
-            ProgramName = 'Onbekend programma'
+            if metaData == None:
+                ProgramName = 'Onbekend programma'
+            else:
+                ProgramName = metadatainfo.episodetitle_from_json_metadata(metaData['resultObj']['containers'][0])
             listItem.setProperty('ProgramName', ProgramName)
 
         if func.string_isnullorempty(ItemLabel):
             listItem.setLabel(ProgramName)
 
-        if ItemGenres == []:
-            ItemVideoInfo.setGenres([defaultGenre])
+        if func.string_isnullorempty(ItemGenre):
+            listItem.setInfo('video', {'Genre': defaultGenre})
         return True
     except:
         return False
 
-def check_vod(listItem, defaultGenre='Video on demand'):
+def check_vod(listItem, metaData=None, defaultGenre='Video on demand'):
     try:
         #Get item properties
-        ProgramId = listItem.getProperty('ProgramId')
         ProgramName = listItem.getProperty('ProgramName')
         ItemLabel = listItem.getLabel()
-        ItemVideoInfo = listItem.getVideoInfoTag()
-        ItemGenres = ItemVideoInfo.getGenres()
+        ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Set item properties
         if func.string_isnullorempty(ProgramName):
-            ProgramName = 'Onbekend programma'
+            if metaData == None:
+                ProgramName = 'Onbekend programma'
+            else:
+                ProgramName = metadatainfo.episodetitle_from_json_metadata(metaData['resultObj']['containers'][0])
             listItem.setProperty('ProgramName', ProgramName)
 
         if func.string_isnullorempty(ItemLabel):
             listItem.setLabel(ProgramName)
 
-        if ItemGenres == []:
-            ItemVideoInfo.setGenres([defaultGenre])
+        if func.string_isnullorempty(ItemGenre):
+            listItem.setInfo('video', {'Genre': defaultGenre})
         return True
     except:
         return False
@@ -135,8 +136,7 @@ def check_recorded(listItem, defaultGenre='Opname'):
         ExternalId = listItem.getProperty('ExternalId')
         ItemLabel = listItem.getLabel()
         ItemArt = listItem.getArt('thumb')
-        ItemVideoInfo = listItem.getVideoInfoTag()
-        ItemGenres = ItemVideoInfo.getGenres()
+        ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Download details and get json
         download.download_recording_event()
@@ -157,8 +157,8 @@ def check_recorded(listItem, defaultGenre='Opname'):
         if func.string_isnullorempty(ItemArt):
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
 
-        if ItemGenres == []:
-            ItemVideoInfo.setGenres([defaultGenre])
+        if func.string_isnullorempty(ItemGenre):
+            listItem.setInfo('video', {'Genre': defaultGenre})
         return True
     except:
         return False
