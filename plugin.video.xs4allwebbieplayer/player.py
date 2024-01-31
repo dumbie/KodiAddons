@@ -22,6 +22,14 @@ class PlayerCustom(xbmc.Player):
         #Start playing list item media
         self.play(streamUrl, listItem, Windowed)
 
+    def ResetVariables():
+        #Reset video player variables
+        var.PlayerWindowed = False
+        var.PlayerOpenOverlay = False
+        var.PlayerShowInformation = False
+        var.PlayerSeekOffsetStart = 0
+        var.PlayerSeekOffsetEnd = 0
+
     def Fullscreen(self, ForceFullscreen=False, ForceOverlay=False):
         xbmc.sleep(100)
         if xbmc.Player().isPlayingVideo():
@@ -70,6 +78,9 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackStopped(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == False:
+            #Reset video player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
@@ -80,6 +91,9 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackEnded(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == False:
+            #Reset video player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
@@ -90,6 +104,9 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackError(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == False:
+            #Reset video player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
