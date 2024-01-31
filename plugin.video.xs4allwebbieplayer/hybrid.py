@@ -151,12 +151,3 @@ def urllib_unquote(string):
 #Htmlparser unescape
 def htmlparser_unescape(string):
     return htmlx.unescape(string)
-
-#Check if genre is null or empty
-def infotag_genre_isnullorempty(itemInfoTag):
-    if pythonversion < 3:
-        itemGenres = itemInfoTag.getGenre()
-        return func.string_isnullorempty(itemGenres)
-    else:
-        itemGenres = itemInfoTag.getGenres()
-        return itemGenres == []

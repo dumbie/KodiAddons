@@ -4,13 +4,12 @@ import xbmcgui
 import apilogin
 import func
 import hybrid
-import metadatainfo
 import path
 import streamadjust
 import streamcheck
 import var
 
-def play_tv(listItem, Windowed, ShowInformation=False, SeekOffsetEnd=0):
+def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, SeekOffsetEnd=0):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -84,19 +83,19 @@ def play_tv(listItem, Windowed, ShowInformation=False, SeekOffsetEnd=0):
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson, True)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, True, ShowInformation, SeekOffsetEnd=SeekOffsetEnd)
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, OpenOverlay, ShowInformation, SeekOffsetEnd=SeekOffsetEnd)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_radio(listItem, Windowed):
+def play_radio(listItem, Windowed=True):
     try:
         #Check channel properties
         streamcheck.check_radio(listItem)
 
         #Get channel properties
         ChannelId = listItem.getProperty('ChannelId')
-        ChannelStreamUrl = listItem.getProperty('StreamUrl')
+        StreamUrl = listItem.getProperty('StreamUrl')
 
         #Check channel properties
         if func.string_isnullorempty(ChannelId):
@@ -108,12 +107,12 @@ def play_radio(listItem, Windowed):
         var.addon.setSetting('CurrentRadioId', ChannelId)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(ChannelStreamUrl, listItem, Windowed)
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_program(listItem, Windowed, SeekOffsetStart=120):
+def play_program(listItem, Windowed=False, SeekOffsetStart=120):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -144,8 +143,8 @@ def play_program(listItem, Windowed, SeekOffsetStart=120):
         #Check program properties
         streamcheck.check_program(listItem, DownloadDataJson)
 
-        #Get and set the stream asset id
-        StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson)
+        #Get the stream asset id
+        StreamAssetId = listItem.getProperty('AssetId')
 
         #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):
@@ -193,9 +192,9 @@ def play_program(listItem, Windowed, SeekOffsetStart=120):
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetStart=SeekOffsetStart)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_vod(listItem, Windowed):
+def play_vod(listItem, Windowed=False):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -226,8 +225,8 @@ def play_vod(listItem, Windowed):
         #Check vod properties
         streamcheck.check_vod(listItem, DownloadDataJson)
 
-        #Get and set the stream asset id
-        StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson)
+        #Get the stream asset id
+        StreamAssetId = listItem.getProperty('AssetId')
 
         #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):
@@ -275,9 +274,9 @@ def play_vod(listItem, Windowed):
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_recorded(listItem, Windowed, SeekOffsetStart=120):
+def play_recorded(listItem, Windowed=False, SeekOffsetStart=120):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -288,12 +287,17 @@ def play_recorded(listItem, Windowed, SeekOffsetStart=120):
         #Check recorded properties
         streamcheck.check_recorded(listItem)
 
-        #Get and set the stream asset id
+        #Get the stream asset id
         ProgramAssetId = listItem.getProperty('ProgramAssetId')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
 
-        #Check the set stream asset id
-        if func.string_isnullorempty(ProgramAssetId) or func.string_isnullorempty(ProgramRecordEventId):
+        #Check recorded properties
+        if func.string_isnullorempty(ProgramRecordEventId):
+            notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Ongeldige opname informatie.', notificationIcon, 2500, False)
+            return
+
+        if func.string_isnullorempty(ProgramAssetId):
             notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
             xbmcgui.Dialog().notification(var.addonname, 'Stream is niet speelbaar wegens rechten.', notificationIcon, 2500, False)
             return
@@ -338,4 +342,4 @@ def play_recorded(listItem, Windowed, SeekOffsetStart=120):
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetStart=SeekOffsetStart)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Stream is niet beschikbaar.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)

@@ -46,17 +46,18 @@ def source_plugin_list_program():
         ListAction = str(listItem.getProperty('Action'))
         ProgramId = listItem.getProperty('ProgramId')
         ProgramName = listItem.getProperty('ProgramName')
-        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramId+var.splitchar+ProgramName, dirFolder=True)
+        PictureUrl = listItem.getProperty('PictureUrl')
+        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramId+var.splitchar+ProgramName+var.splitchar+PictureUrl, dirFolder=True)
     lifunc.auto_end_items()
 
-def source_plugin_list_episode_vod(ProgramId):
+def source_plugin_list_episode_vod(ProgramId, PictureUrl):
     seasonDownloaded = download.download_series_season(ProgramId)
     #if seasonDownloaded == None:
-    liseriesepisodevod.list_load(None, seasonDownloaded, '', '')
+    liseriesepisodevod.list_load(None, seasonDownloaded, PictureUrl)
 
-def source_plugin_list_episode_week(ProgramName):
+def source_plugin_list_episode_week(ProgramName, PictureUrl):
     downloadResultWeek = download.download_search_series()
-    liseriesepisodeweek.list_load(None, ProgramName, '')
+    liseriesepisodeweek.list_load(None, ProgramName, PictureUrl)
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
@@ -201,7 +202,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to sort list
         listContainerSort = []
-        liseriesepisodevod.list_load(listContainerSort, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+        liseriesepisodevod.list_load(listContainerSort, seasonDownloaded, selectedPictureUrl)
 
         #Sort and add items to container
         listContainer.addItems(listContainerSort)

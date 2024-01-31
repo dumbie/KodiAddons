@@ -10,7 +10,7 @@ def list_load(listContainer, selectedSeriesName, selectedPictureUrl):
     for program in var.KidsProgramDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
-            ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
+            ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if program matches serie
             checkSerie1 = ProgramName.lower()
@@ -24,7 +24,7 @@ def list_load(listContainer, selectedSeriesName, selectedPictureUrl):
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
             ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
-            EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, False)
+            EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.vod_week_available_time(program)
 
             #Combine program description extended

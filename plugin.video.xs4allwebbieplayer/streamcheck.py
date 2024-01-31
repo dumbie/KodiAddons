@@ -1,6 +1,5 @@
 import download
 import func
-import hybrid
 import metadatainfo
 import metadatafunc
 import path
@@ -83,11 +82,16 @@ def check_radio(listItem, defaultGenre='Radio'):
 def check_program(listItem, metaData=None, defaultGenre='Programma'):
     try:
         #Get item properties
+        AssetId = listItem.getProperty('AssetId')
         ProgramName = listItem.getProperty('ProgramName')
         ItemLabel = listItem.getLabel()
         ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Set item properties
+        if func.string_isnullorempty(AssetId):
+            AssetId = metadatainfo.stream_assetid_from_json_metadata(metaData)
+            listItem.setProperty('AssetId', AssetId)
+
         if func.string_isnullorempty(ProgramName):
             if metaData == None:
                 ProgramName = 'Onbekend programma'
@@ -107,11 +111,16 @@ def check_program(listItem, metaData=None, defaultGenre='Programma'):
 def check_vod(listItem, metaData=None, defaultGenre='Video on demand'):
     try:
         #Get item properties
+        AssetId = listItem.getProperty('AssetId')
         ProgramName = listItem.getProperty('ProgramName')
         ItemLabel = listItem.getLabel()
         ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Set item properties
+        if func.string_isnullorempty(AssetId):
+            AssetId = metadatainfo.stream_assetid_from_json_metadata(metaData)
+            listItem.setProperty('AssetId', AssetId)
+
         if func.string_isnullorempty(ProgramName):
             if metaData == None:
                 ProgramName = 'Onbekend programma'
@@ -131,6 +140,7 @@ def check_vod(listItem, metaData=None, defaultGenre='Video on demand'):
 def check_recorded(listItem, defaultGenre='Opname'):
     try:
         #Get item properties
+        AssetId = listItem.getProperty('ProgramAssetId')
         ProgramName = listItem.getProperty('ProgramName')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
         ExternalId = listItem.getProperty('ExternalId')
@@ -143,6 +153,10 @@ def check_recorded(listItem, defaultGenre='Opname'):
         programJson = metadatafunc.search_programid_jsonrecording_event(ProgramRecordEventId)
 
         #Set item properties
+        if func.string_isnullorempty(AssetId):
+            AssetId = metadatainfo.stream_assetid_from_json_metadata(programJson)
+            listItem.setProperty('ProgramAssetId', AssetId)
+
         if func.string_isnullorempty(ProgramName):
             ProgramName = metadatainfo.programtitle_from_json_metadata(programJson)
             listItem.setProperty('ProgramName', ProgramName)

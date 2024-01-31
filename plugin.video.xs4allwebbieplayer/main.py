@@ -149,7 +149,7 @@ class Gui(xbmcgui.WindowXML):
             #Switch to last known television channel
             if var.addon.getSetting('StartWithLastChannel') == 'true' and var.addon.getSetting('StartWithKids') == 'false':
                 CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-                streamswitch.switch_tv_id(CurrentChannelId, True)
+                streamswitch.switch_tv_id(CurrentChannelId, Windowed=True)
 
             #Go to the desired page on startup
             if var.addon.getSetting('StartWithTelevision') == 'true':

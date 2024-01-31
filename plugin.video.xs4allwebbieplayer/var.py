@@ -117,41 +117,16 @@ thread_sleep_timer = threadclass.Class_ThreadSafe()
 
 #Player variables
 PlayerCustom = player.PlayerCustom()
-PlayerChannelDelayDateTime = datetime(1970,1,1)
-def PlayerWindowed(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
+PlayerWindowed = False
+PlayerOpenOverlay = False
+PlayerShowInformation = False
+PlayerSeekOffsetStart = 0
+PlayerSeekOffsetEnd = 0
 
-def PlayerOpenOverlay(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerShowInformation(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerSeekOffsetStart(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, 0)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerSeekOffsetEnd(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, 0)
-    else:
-         return func.globalvar_set(varName, setObject)
+#Player gui variables
+PlayerGuiChannelDelay = datetime(1970,1,1)
+PlayerGuiInfoLastHide = datetime(1970,1,1)
+PlayerGuiInfoLastInteraction = datetime(1970,1,1)
 
 #Api variables
 def ApiLoginFailCount(setObject=None):
@@ -295,8 +270,6 @@ EpgCacheArrayDataJson = []
 
 #Program variables
 ProgramRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten', 'round-up', 'replay', 'wiederholung']
-ProgramTitleStripStrings = ['B.O.Z.: ', "Telekids Mini's: ", 'Doc: ', 'Marathon: ', 'Zappbios: ', 'Film: ', 'Premiere: ', u'Premi\xe8re: ', 'Countdown to christmas: ']
-ProgramTitleStripRegEx = ['Detectives op (.*?): ']
 
 #Zap variables
 ZapControlId = 0

@@ -88,7 +88,7 @@ def zap_remote_number(_self):
         return
 
     listItemSelected = listContainer.getListItem(itemnum)
-    streamplay.play_tv(listItemSelected, False, True)
+    streamplay.play_tv(listItemSelected, ShowInformation=True)
 
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
     while var.thread_zap_wait_timer.Allowed():

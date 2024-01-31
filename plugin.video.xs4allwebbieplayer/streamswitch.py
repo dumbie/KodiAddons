@@ -2,11 +2,11 @@ import xbmcgui
 import streamplay
 
 #Switch television by channel identifier
-def switch_tv_id(ChannelId, Windowed=False, ShowInformation=False, SeekOffsetEnd=0):
+def switch_tv_id(ChannelId, Windowed=False, OpenOverlay=True, ShowInformation=False, SeekOffsetEnd=0):
     try:
         listItem = xbmcgui.ListItem()
         listItem.setProperty('ChannelId', ChannelId)
-        streamplay.play_tv(listItem, Windowed, ShowInformation, SeekOffsetEnd)
+        streamplay.play_tv(listItem, Windowed, OpenOverlay, ShowInformation, SeekOffsetEnd)
         return True
     except:
         return False

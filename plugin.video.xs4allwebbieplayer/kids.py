@@ -54,18 +54,19 @@ def source_plugin_list_program():
         ListAction = str(listItem.getProperty('Action'))
         ProgramId = listItem.getProperty('ProgramId')
         ProgramName = listItem.getProperty('ProgramName')
+        PictureUrl = listItem.getProperty('PictureUrl')
         ItemIsFolder = ListAction.startswith('play_stream') == False
-        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramId+var.splitchar+ProgramName, dirFolder=ItemIsFolder)
+        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramId+var.splitchar+ProgramName+var.splitchar+PictureUrl, dirFolder=ItemIsFolder)
     lifunc.auto_end_items()
 
-def source_plugin_list_episode_vod(ProgramId):
+def source_plugin_list_episode_vod(ProgramId, PictureUrl):
     seasonDownloaded = download.download_series_season(ProgramId)
     #if seasonDownloaded == None:
-    likidsepisodevod.list_load(None, seasonDownloaded, '', '')
+    likidsepisodevod.list_load(None, seasonDownloaded, PictureUrl)
 
-def source_plugin_list_episode_week(ProgramName):
+def source_plugin_list_episode_week(ProgramName, PictureUrl):
     downloadResultWeek = download.download_search_kids()
-    likidsepisodeweek.list_load(None, ProgramName, '')
+    likidsepisodeweek.list_load(None, ProgramName, PictureUrl)
 
 def lock_check_hidden():
     if var.addon.getSetting('KidsHiddenLock') == 'true':
@@ -239,7 +240,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to sort list
         listContainerSort = []
-        likidsepisodevod.list_load(listContainerSort, seasonDownloaded, selectedSeriesName, selectedPictureUrl)
+        likidsepisodevod.list_load(listContainerSort, seasonDownloaded, selectedPictureUrl)
 
         #Sort and add items to container
         listContainer.addItems(listContainerSort)

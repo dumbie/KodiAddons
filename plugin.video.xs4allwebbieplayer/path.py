@@ -14,16 +14,34 @@ def requirements():
     return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/requirements/'
 
 def icon_television(externalId):
-    return 'https://images.tv.kpn.com/logo/' + externalId + '/512.png'
+    if func.string_isnullorempty(externalId):
+         return icon_addon('unknown')
+    else:
+        return 'https://images.tv.kpn.com/logo/' + externalId + '/512.png'
 
 def icon_vod(pictureUrl):
-    return 'https://images.tv.kpn.com/vod/' + pictureUrl + '/220x325.jpg'
+    if func.string_isnullorempty(pictureUrl):
+         return icon_addon('unknown')
+    else:
+        return 'https://images.tv.kpn.com/vod/' + pictureUrl + '/220x325.jpg'
 
 def icon_epg(pictureUrl):
-    return 'https://images.tv.kpn.com/epg/' + pictureUrl + '/220x325.jpg'
+    if func.string_isnullorempty(pictureUrl):
+        return icon_addon('unknown')
+    else:
+        return 'https://images.tv.kpn.com/epg/' + pictureUrl + '/220x325.jpg'
 
 def icon_radio(channelId):
-    return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/' + channelId + '.png'
+    if func.string_isnullorempty(channelId):
+         return icon_addon('unknown')
+    else:
+        return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/' + channelId + '.png'
+
+def icon_addon(iconName):
+    if func.string_isnullorempty(iconName):
+        return resources('resources/skins/default/media/common/unknown.png')
+    else:
+        return resources('resources/skins/default/media/common/' + iconName + '.png')
 
 def api_url_120(arguments):
     return 'https://' + var.ApiEndpointUrl() + '/101/1.2.0/A/nld/pctv/kpn/' + arguments

@@ -10,7 +10,7 @@ def list_load(listContainer):
     for program in var.SeriesProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
-            ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
+            ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if serie is already added
             if lifunc.search_programname_listarray(listContainer, ProgramName) != None: continue
@@ -40,7 +40,7 @@ def list_load(listContainer):
             listItem.setProperty("ProgramWeek", 'true')
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setInfo('video', {'Genre': 'Series', 'Plot': ProgramDetails})
-            iconStreamType = "common/calendarweek.png"
+            iconStreamType = path.icon_addon('calendarweek')
             iconProgram = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)
             listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconChannel})

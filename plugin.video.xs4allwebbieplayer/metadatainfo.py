@@ -19,19 +19,19 @@ def channelName_from_json_metadata(metaData):
     try:
         #Get the channel name
         if 'channelName' in metaData['metadata']:
-            channelNameString = metaData['metadata']['channelName']
+            channelName = metaData['metadata']['channelName']
         elif 'channelName' in metaData['channel']:
-            channelNameString = metaData['channel']['channelName']
+            channelName = metaData['channel']['channelName']
 
         #Convert channel name string
-        channelNameString = hybrid.unicode_to_string(channelNameString)
-        channelNameString = hybrid.htmlparser_unescape(channelNameString)
+        channelName = hybrid.unicode_to_string(channelName)
+        channelName = hybrid.htmlparser_unescape(channelName)
 
         #Check the channel name
-        if func.string_isnullorempty(channelNameString):
-            channelNameString = "Onbekende zender"
+        if func.string_isnullorempty(channelName):
+            channelName = "Onbekende zender"
 
-        return str(channelNameString)
+        return str(channelName)
     except:
         return "Onbekende zender"
 
@@ -125,30 +125,29 @@ def technicalPackageIds_from_json_metadata(metaData):
         return []
 
 #Get program title from json metadata
-def programtitle_from_json_metadata(metaData, stripTitle=False):
+def programtitle_from_json_metadata(metaData, returnEmpty=False):
     try:
-        #Get the program title
+        #Get the title
         if 'seriesTitle' in metaData['metadata']:
-            programNameString = metaData['metadata']['seriesTitle']
+            programName = metaData['metadata']['seriesTitle']
         elif 'title' in metaData['metadata']:
-            programNameString = metaData['metadata']['title']
-        programNameString = hybrid.unicode_to_string(programNameString)
-        programNameString = hybrid.htmlparser_unescape(programNameString)
+            programName = metaData['metadata']['title']
+        programName = hybrid.unicode_to_string(programName)
+        programName = hybrid.htmlparser_unescape(programName)
 
-        #Check the program title
-        if func.string_isnullorempty(programNameString):
-            programNameString = 'Onbekend programma'
+        #Check empty title
+        if func.string_isnullorempty(programName):
+            if returnEmpty:
+                return ''
+            else:
+                return 'Onbekende programma'
 
-        #Strip the program title
-        if stripTitle:
-            for stripString in var.ProgramTitleStripStrings:
-                programNameString = func.string_replace_insensitive(stripString, '', programNameString)
-            for stripRegEx in var.ProgramTitleStripRegEx:
-                programNameString = func.string_replace_regex(stripRegEx, '', programNameString)
-
-        return str(programNameString)
+        return str(programName)
     except:
-        return 'Onbekend programma'
+        if returnEmpty:
+            return ''
+        else:
+            return 'Onbekende programma'
 
 #Get program startdelta from json metadata
 def programstartdeltatime_from_json_metadata(metaData):
@@ -337,7 +336,7 @@ def programauthors_from_json_metadata(metaData):
 def programdescription_from_json_metadata(metaData):
     try:
         #Load long program description
-        longDescription = hybrid.htmlparser_unescape(metaData["metadata"]["longDescription"])
+        longDescription = metaData["metadata"]["longDescription"]
         longDescription = hybrid.unicode_to_string(longDescription)
         longDescription = hybrid.htmlparser_unescape(longDescription)
 
@@ -349,7 +348,7 @@ def programdescription_from_json_metadata(metaData):
 
     try:
         #Load short program description
-        shortDescription = hybrid.htmlparser_unescape(metaData["metadata"]["shortDescription"])
+        shortDescription = metaData["metadata"]["shortDescription"]
         shortDescription = hybrid.unicode_to_string(shortDescription)
         shortDescription = hybrid.htmlparser_unescape(shortDescription)
 
@@ -374,25 +373,27 @@ def program_check_paytoplay(technicalPackageIds):
 #Get episode title from json metadata
 def episodetitle_from_json_metadata(metaData, returnEmpty=False):
     try:
-        #Get the episode title
+        #Get the title
         if 'episodeTitle' in metaData['metadata']:
-            EpisodeTitle = metaData['metadata']['episodeTitle']
+            episodeTitle = metaData['metadata']['episodeTitle']
         elif 'title' in metaData['metadata']:
-            EpisodeTitle = metaData['metadata']['title']
+            episodeTitle = metaData['metadata']['title']
+        episodeTitle = hybrid.unicode_to_string(episodeTitle)
+        episodeTitle = hybrid.htmlparser_unescape(episodeTitle)
 
-        #Check empty episode title
-        if func.string_isnullorempty(EpisodeTitle):
+        #Check empty title
+        if func.string_isnullorempty(episodeTitle):
             if returnEmpty:
                 return ''
             else:
-                return 'Titel onbekend'
+                return 'Onbekende aflevering'
 
-        return str(EpisodeTitle)
+        return str(episodeTitle)
     except:
         if returnEmpty:
             return ''
         else:
-            return 'Titel onbekend'
+            return 'Onbekende aflevering'
 
 #Get episode number from json metadata
 def episodenumber_from_json_metadata(metaData, incBrackets=True):

@@ -1,5 +1,6 @@
 import var
 import xbmcaddon
+import xbmcgui
 import widevine
 import default
 import func
@@ -59,21 +60,21 @@ def handle_launch_argument_source():
             recorded.source_plugin_list()
         elif var.LaunchArgument.startswith("?load_series_episodes_week="):
             actionSplit = var.LaunchArgument.replace('?load_series_episodes_week=', '').split(var.splitchar)
-            series.source_plugin_list_episode_week(actionSplit[1])
+            series.source_plugin_list_episode_week(actionSplit[1], actionSplit[2])
         elif var.LaunchArgument.startswith("?load_series_episodes_vod="):
             actionSplit = var.LaunchArgument.replace('?load_series_episodes_vod=', '').split(var.splitchar)
-            series.source_plugin_list_episode_vod(actionSplit[0])
+            series.source_plugin_list_episode_vod(actionSplit[0], actionSplit[2])
         elif var.LaunchArgument.startswith("?load_kids_episodes_week="):
             actionSplit = var.LaunchArgument.replace('?load_kids_episodes_week=', '').split(var.splitchar)
-            kids.source_plugin_list_episode_week(actionSplit[1])
+            kids.source_plugin_list_episode_week(actionSplit[1], actionSplit[2])
         elif var.LaunchArgument.startswith("?load_kids_episodes_vod="):
             actionSplit = var.LaunchArgument.replace('?load_kids_episodes_vod=', '').split(var.splitchar)
-            kids.source_plugin_list_episode_vod(actionSplit[0])
+            kids.source_plugin_list_episode_vod(actionSplit[0], actionSplit[2])
 
         #Play streams
         elif var.LaunchArgument.startswith("?play_stream_tv="):
             channelId = var.LaunchArgument.replace('?play_stream_tv=', '')
-            streamswitch.switch_tv_id(channelId, ShowInformation=True)
+            streamswitch.switch_tv_id(channelId, OpenOverlay=False)
         elif var.LaunchArgument.startswith("?play_stream_radio="):
             channelId = var.LaunchArgument.replace('?play_stream_radio=', '')
             streamswitch.switch_radio_id(channelId)

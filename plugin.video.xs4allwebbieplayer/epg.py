@@ -271,7 +271,7 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Serie seizoen opnemen of annuleren':
             recordingfunc.record_series_epg(self, listItemSelected)
         elif dialogResult == 'Live programma kijken':
-            streamplay.play_tv(listItemSelected, False)
+            streamplay.play_tv(listItemSelected)
         elif dialogResult == 'Programma terug kijken':
             streamplay.play_program(listItemSelected, False)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':

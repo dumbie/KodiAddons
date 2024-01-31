@@ -10,7 +10,7 @@ def list_load(listContainer):
     for program in var.KidsProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
-            ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
+            ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if serie is already added
             if lifunc.search_programname_listarray(listContainer, ProgramName) != None: continue
@@ -25,13 +25,13 @@ def list_load(listContainer):
             ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
             if ContentSubtype == "VOD":
                 ProgramAction = 'play_stream_program'
-                iconProgramType = "common/movies.png"
+                iconProgramType = path.icon_addon('movies')
                 ProgramDuration = True
                 ProgramDescription = metadatacombine.program_description_extended(program)
                 ProgramAvailability = metadatainfo.vod_week_available_time(program)
             else:
                 ProgramAction = 'load_kids_episodes_week'
-                iconProgramType = "common/series.png"
+                iconProgramType = path.icon_addon('series')
                 ProgramDuration = False
                 ProgramDescription = ""
                 ProgramAvailability = ""
@@ -58,7 +58,7 @@ def list_load(listContainer):
             listItem.setProperty("ProgramAvailability", ProgramAvailability)
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Kids', 'Plot': ProgramDescription})
-            iconStreamType = "common/calendarweek.png"
+            iconStreamType = path.icon_addon('calendarweek')
             iconProgram = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)
             listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel})

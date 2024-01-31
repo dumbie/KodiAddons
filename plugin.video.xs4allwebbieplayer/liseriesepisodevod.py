@@ -4,7 +4,7 @@ import metadatainfo
 import xbmcgui
 import path
 
-def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictureUrl):
+def list_load(listContainer, seasonDownloaded, selectedPictureUrl):
     for program in seasonDownloaded["resultObj"]["containers"]:
         try:
             #Load program basics
@@ -15,7 +15,8 @@ def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictu
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, False)
+            EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
+            ProgramTitleRaw = metadatainfo.programtitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.vod_ondemand_available_time(program)
 
             #Combine program description extended
@@ -23,18 +24,18 @@ def list_load(listContainer, seasonDownloaded, selectedSeriesName, selectedPictu
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, True, False, False)
-            ProgramTitle = EpisodeTitle + " " + ProgramDetails
+            EpisodeTitle = EpisodeTitleRaw + " " + ProgramDetails
 
             #Add vod program
             listAction = 'play_stream_vod'
-            listItem = xbmcgui.ListItem(EpisodeTitle)
+            listItem = xbmcgui.ListItem(EpisodeTitleRaw)
             listItem.setProperty('Action', listAction)
             listItem.setProperty('ProgramId', ProgramId)
-            listItem.setProperty("ProgramName", EpisodeTitle)
+            listItem.setProperty("ProgramName", EpisodeTitleRaw)
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setProperty("ProgramAvailability", ProgramAvailability)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': selectedSeriesName, 'Plot': ProgramDescription})
+            listItem.setInfo('video', {'Title': EpisodeTitle, 'Genre': ProgramTitleRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
             lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ProgramId)
         except:

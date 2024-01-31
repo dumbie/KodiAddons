@@ -37,8 +37,6 @@ def close_the_page():
 
 class Gui(xbmcgui.WindowXMLDialog):
     EpgPauseUpdate = False
-    PlayerInfoLastInteraction = datetime(1970,1,1)
-    PlayerInfoLastHide = datetime(1970,1,1)
 
     def onInit(self):
         self.buttons_add_sidebar()
@@ -52,11 +50,11 @@ class Gui(xbmcgui.WindowXMLDialog):
             clickedControl = self.getControl(clickId)
             playerFull = self.getProperty('WebbiePlayerFull') == 'true'
             if clickId == 1001 and playerFull == True:
-                listItemSelectedClicked = clickedControl.getSelectedItem()
-                streamplay.play_tv(listItemSelectedClicked, False, True)
+                listItemClicked = clickedControl.getSelectedItem()
+                streamplay.play_tv(listItemClicked, ShowInformation=True)
             elif clickId == 1002 and playerFull == True:
-                listItemSelectedClicked = clickedControl.getSelectedItem()
-                listItemAction = listItemSelectedClicked.getProperty('Action')
+                listItemClicked = clickedControl.getSelectedItem()
+                listItemAction = listItemClicked.getProperty('Action')
                 if listItemAction == 'media_lastchannel':
                     self.switch_channel_lasttv()
                 elif listItemAction == 'media_sleep':
@@ -104,7 +102,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def onAction(self, action):
         #Update the last interaction time
-        self.PlayerInfoLastInteraction = datetime.now()
+        var.PlayerGuiInfoLastInteraction = datetime.now()
 
         #Check which action needs to execute
         actionId = action.getId()
@@ -143,7 +141,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif zap.check_remote_number(self, 1001, actionId, False, False):
             return
         elif playerFull == False:
-            lastHideSeconds = int((datetime.now() - self.PlayerInfoLastHide).total_seconds())
+            lastHideSeconds = int((datetime.now() - var.PlayerGuiInfoLastHide).total_seconds())
             if lastHideSeconds >= 1:
                 self.show_epg(False, False, True)
             return
@@ -186,7 +184,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def thread_hide_playergui_info(self):
         while var.thread_hide_playergui_info.Allowed():
-            lastInteractSeconds = int((datetime.now() - self.PlayerInfoLastInteraction).total_seconds())
+            lastInteractSeconds = int((datetime.now() - var.PlayerGuiInfoLastInteraction).total_seconds())
             if lastInteractSeconds >= int(var.addon.getSetting('PlayerInformationCloseTime')):
                 self.hide_epg()
             else:
@@ -196,7 +194,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         while var.thread_channel_delay_timer.Allowed():
             xbmc.sleep(100)
             interactSecond = 3
-            lastInteractSeconds = int((datetime.now() - var.PlayerChannelDelayDateTime).total_seconds())
+            lastInteractSeconds = int((datetime.now() - var.PlayerGuiChannelDelay).total_seconds())
 
             #Channel information
             listContainer = self.getControl(1001)
@@ -221,7 +219,7 @@ class Gui(xbmcgui.WindowXMLDialog):
                 self.setProperty('ZapVisible', 'false')
 
                 #Switch to selected channel
-                streamplay.play_tv(listItemSelected, False, True)
+                streamplay.play_tv(listItemSelected, ShowInformation=True)
 
     def buttons_add_sidebar(self):
         #Get and check the list container
@@ -444,13 +442,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         if LastChannelId != CurrentChannelId:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Gezapt naar vorige zender.', notificationIcon, 2500, False)
-            streamswitch.switch_tv_id(LastChannelId, False, True)
+            streamswitch.switch_tv_id(LastChannelId, ShowInformation=True)
         else:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)
 
     def switch_channel_nexttv(self):
-        var.PlayerChannelDelayDateTime = datetime.now()
+        var.PlayerGuiChannelDelay = datetime.now()
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
@@ -461,7 +459,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def switch_channel_previoustv(self):
-        var.PlayerChannelDelayDateTime = datetime.now()
+        var.PlayerGuiChannelDelay = datetime.now()
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
@@ -511,7 +509,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def hide_epg(self):
         #Update the last hide time
-        self.PlayerInfoLastHide = datetime.now()
+        var.PlayerGuiInfoLastHide = datetime.now()
 
         #Hide the epg interface
         self.setProperty('WebbiePlayerFull', 'false')
@@ -519,7 +517,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def show_epg(self, seekInterface=False, removeFocus=False, selectChannel=True):
         #Update the last interaction time
-        self.PlayerInfoLastInteraction = datetime.now()
+        var.PlayerGuiInfoLastInteraction = datetime.now()
 
         #Show the epg interface
         if seekInterface == False:
