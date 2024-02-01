@@ -83,22 +83,31 @@ def hidden_remove(listItem, hiddenJsonFile):
     xbmcgui.Dialog().notification(var.addonname, 'Zender niet meer verborgen.', notificationIcon, 2500, False)
     return hiddenRemoved
 
-def switch_to_page():
+def switch_to_page(hiddenMode='HiddenTelevision.js'):
     #Check kids hidden lock
     if kids.lock_check_hidden() == False:
         notificationIcon = path.resources('resources/skins/default/media/common/kidstongue.png')
         xbmcgui.Dialog().notification(var.addonname, "Helaas pindakaas!", notificationIcon, 2500, False)
         return False
 
+    #Update hidden mode variable
+    var.HiddenChannelMode = hiddenMode
+
+    #Show hidden channel overlay
     if var.guiHidden == None:
         var.guiHidden = Gui('schedule.xml', var.addonpath, 'default', '720p')
         var.guiHidden.show()
 
 def close_the_page():
     if var.guiHidden != None:
-        #Refresh channels on change
+        #Refresh television channels on change
         if var.guiTelevision != None and var.HiddenChannelChanged == True:
             var.guiTelevision.refresh_programs(False)
+            var.HiddenChannelChanged = False
+
+        #Refresh radio channels on change
+        if var.guiRadio != None and var.HiddenChannelChanged == True:
+            var.guiRadio.load_channels(True)
             var.HiddenChannelChanged = False
 
         #Close the shown window
@@ -111,7 +120,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         func.updateLabelText(self, 3000, 'Verborgen Zenders')
         func.updateVisibility(self, 4001, False)
 
-        #Update the alarm panel height
+        #Update the schedule panel height
         dialogControl = self.getControl(8000)
         dialogControl.setHeight(590)
         dialogControl = self.getControl(8001)
@@ -124,7 +133,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         clickedControl = self.getControl(clickId)
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
-            hiddenRemoved = hidden_remove(listItemSelected, 'HiddenTelevision.js')
+            hiddenRemoved = hidden_remove(listItemSelected, var.HiddenChannelMode)
             if hiddenRemoved == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()
@@ -153,7 +162,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Add items to sort list
         listContainerSort = []
-        lihidden.list_load(listContainerSort, 'HiddenTelevision.js')
+        lihidden.list_load(listContainerSort, var.HiddenChannelMode)
 
         #Sort and add items to container
         listContainer.addItems(listContainerSort)
@@ -164,7 +173,10 @@ class Gui(xbmcgui.WindowXMLDialog):
     #Update the status
     def count_hidden_channels(self, resetSelect=False):
         listContainer = self.getControl(1000)
-        channelcount = len(var.HiddenTelevisionJson)
+        if var.HiddenChannelMode == 'HiddenTelevision.js':
+            channelcount = len(var.HiddenTelevisionJson)
+        else:
+            channelcount = len(var.HiddenRadioJson)
         if channelcount > 0:
             func.updateLabelText(self, 3000, 'Verborgen Zenders (' + str(channelcount) + ')')
             func.updateLabelText(self, 3001, 'Huidige verborgen zenders, u kunt een zender weer laten verschijnen in de zenderlijst door er op te klikken.')

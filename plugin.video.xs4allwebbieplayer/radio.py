@@ -6,6 +6,7 @@ import dialog
 import favorite
 import func
 import lifunc
+import hidden
 import path
 import searchdialog
 import streamplay
@@ -57,6 +58,8 @@ class Gui(xbmcgui.WindowXML):
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
                     self.load_channels(True, True)
+                elif listItemAction == 'hidden_channels':
+                    hidden.switch_to_page('HiddenRadio.js')
                 elif listItemAction == "switch_all_favorites":
                     self.switch_all_favorites()
                 elif listItemAction == "search_channelprogram":
@@ -94,6 +97,9 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1000)
         listItemSelected = listContainer.getSelectedItem()
 
+        #Add hide channel
+        dialogAnswers.append('Zender verbergen in zenderlijst')
+
         #Check if channel is favorite
         if listItemSelected.getProperty('ChannelFavorite') == 'true':
             dialogAnswers.append('Zender onmarkeren als favoriet')
@@ -111,6 +117,8 @@ class Gui(xbmcgui.WindowXML):
             self.switch_favorite_channel(listContainer, listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
+        elif dialogResult == 'Zender verbergen in zenderlijst':
+            self.hide_channel(listContainer, listItemSelected)
 
     def buttons_add_navigation(self):
         listContainer = self.getControl(1001)
@@ -136,10 +144,28 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'), 'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
         listContainer.addItem(listItem)
 
+        listItem = xbmcgui.ListItem('Verborgen zenders')
+        listItem.setProperty('Action', 'hidden_channels')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/vodno.png'), 'icon': path.resources('resources/skins/default/media/common/vodno.png')})
+        listContainer.addItem(listItem)
+
         listItem = xbmcgui.ListItem('Vernieuwen')
         listItem.setProperty('Action', 'refresh_programs')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
+
+    def hide_channel(self, listContainer, listItemSelected):
+        hiddenResult = hidden.hidden_add(listItemSelected, 'HiddenRadio.js')
+        if hiddenResult == True:
+            #Remove item from the list
+            removeListItemId = listContainer.getSelectedPosition()
+            listContainer.removeItem(removeListItemId)
+            xbmc.sleep(100)
+            listContainer.selectItem(removeListItemId)
+            xbmc.sleep(100)
+
+            #Update the status
+            self.count_channels(False)
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
         favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteRadio.js')
