@@ -14,13 +14,13 @@ def list_load(listContainer):
     for program in var.VodDayDataJson['resultObj']['containers']:
         try:
             #Load program basics
-            ProgramName = metadatainfo.programtitle_from_json_metadata(program)
+            ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
             EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
 
             #Check if there are search results
             if var.SearchChannelTerm != '':
-                searchMatch1 = func.search_filter_string(ProgramName)
+                searchMatch1 = func.search_filter_string(ProgramNameRaw)
                 searchMatch2 = func.search_filter_string(EpisodeTitle)
                 searchResultFound = var.SearchChannelTerm in searchMatch1 or var.SearchChannelTerm in searchMatch2
                 if searchResultFound == False: continue
@@ -47,22 +47,22 @@ def list_load(listContainer):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
-            ProgramNameList = ProgramName + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
-            ProgramNameDesc = ProgramName + '\n' + ProgramDetails
+            ProgramNameList = ProgramNameRaw + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramNameDesc = ProgramNameRaw + '\n' + ProgramDetails
 
             #Add program
             listAction = 'play_stream_program'
-            listItem = xbmcgui.ListItem(ProgramName)
+            listItem = xbmcgui.ListItem(ProgramNameRaw)
             listItem.setProperty('Action', listAction)
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
             listItem.setProperty("ProgramName", ProgramNameList)
             listItem.setProperty("ProgramNameDesc", ProgramNameDesc)
-            listItem.setProperty("ProgramNameRaw", ProgramName)
+            listItem.setProperty("ProgramNameRaw", ProgramNameRaw)
             listItem.setProperty("ProgramDetails", ProgramTiming)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'Genre': 'Programma Gemist', 'Plot': ProgramDescription})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
             lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ProgramId)
         except:

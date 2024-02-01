@@ -44,7 +44,6 @@ def list_load(listContainer):
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, ProgramDuration, True, False, False, False, True)
-            ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add week program
             listItem = xbmcgui.ListItem(ProgramName)
@@ -57,7 +56,7 @@ def list_load(listContainer):
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setProperty("ProgramAvailability", ProgramAvailability)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Kids', 'Plot': ProgramDescription})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails})
             iconStreamType = path.icon_addon('calendarweek')
             iconProgram = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)

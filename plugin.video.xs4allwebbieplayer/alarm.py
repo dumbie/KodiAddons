@@ -196,7 +196,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         func.updateLabelText(self, 3002, '* Programma alarm werkt alleen als Kodi geopend is.')
         func.updateVisibility(self, 4001, True)
 
-        #Update the alarm panel height
+        #Update the schedule panel height
         dialogControl = self.getControl(8000)
         dialogControl.setHeight(590)
         dialogControl = self.getControl(8001)

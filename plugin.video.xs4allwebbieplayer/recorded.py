@@ -96,7 +96,7 @@ class Gui(xbmcgui.WindowXML):
         var.RecordedSelectIndex = listContainer.getSelectedPosition()
 
     def open_context_menu(self):
-        dialogAnswers = ['Opname verwijderen', 'Programma zoeken']
+        dialogAnswers = ['Opname verwijderen', 'Programma zoeken in opnames']
         dialogHeader = 'Opname verwijderen of programma zoeken'
         dialogSummary = 'Wilt u de geselecteerde opname verwijderen of wilt u alleen naar dit programma zoeken in de opnames?'
         dialogFooter = ''
@@ -118,7 +118,7 @@ class Gui(xbmcgui.WindowXML):
 
                 #Update the status
                 self.count_program(False)
-        elif dialogResult == 'Programma zoeken':
+        elif dialogResult == 'Programma zoeken in opnames':
             listContainer = self.getControl(1000)
             listItemSelected = listContainer.getSelectedItem()
             ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")

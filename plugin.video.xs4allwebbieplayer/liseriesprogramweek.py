@@ -39,7 +39,7 @@ def list_load(listContainer):
             listItem.setProperty("ProgramName", ProgramName)
             listItem.setProperty("ProgramWeek", 'true')
             listItem.setProperty('ProgramDetails', ProgramDetails)
-            listItem.setInfo('video', {'Genre': 'Series', 'Plot': ProgramDetails})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails})
             iconStreamType = path.icon_addon('calendarweek')
             iconProgram = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)

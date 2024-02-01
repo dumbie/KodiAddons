@@ -183,6 +183,7 @@ FavoriteTelevisionJson = []
 FavoriteRadioJson = []
 
 #Hidden variables
+HiddenChannelMode = ''
 HiddenChannelChanged = False
 HiddenTelevisionJson = []
 HiddenRadioJson = []

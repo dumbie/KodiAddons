@@ -60,7 +60,7 @@ def source_plugin_list_program():
     lifunc.auto_end_items()
 
 def source_plugin_list_episode_vod(ProgramId, PictureUrl):
-    seasonDownloaded = download.download_series_season(ProgramId)
+    seasonDownloaded = download.download_vod_series_season(ProgramId)
     #if seasonDownloaded == None:
     likidsepisodevod.list_load(None, seasonDownloaded, PictureUrl)
 
@@ -231,7 +231,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 2, 'Afleveringen downloaden')
 
         #Download the series episodes
-        seasonDownloaded = download.download_series_season(selectedParentId)
+        seasonDownloaded = download.download_vod_series_season(selectedParentId)
         if seasonDownloaded == None:
             func.updateLabelText(self, 2, 'Afleveringen niet beschikbaar')
             return False

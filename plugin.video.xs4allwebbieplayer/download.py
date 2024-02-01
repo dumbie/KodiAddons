@@ -8,19 +8,50 @@ import hybrid
 import path
 import var
 
+def request_download_gzip(urlPath, sendData=None, sendMethod=None):
+    try:
+        downloadHeaders = {
+            "User-Agent": var.addon.getSetting('CustomUserAgent'),
+            "Cookie": var.ApiLoginCookie(),
+            "X-Xsrf-Token": var.ApiLoginToken(),
+            'Content-Type': 'application/json',
+            'Accept-Encoding': 'gzip'
+        }
+
+        #Create request
+        downloadRequest = hybrid.urllib_request(urlPath, headers=downloadHeaders, data=sendData)
+        if sendMethod != None:
+            downloadRequest.get_method = lambda: sendMethod
+
+        #Download information
+        downloadDataHttp = hybrid.urllib_urlopen(downloadRequest)
+        downloadDataInfo = downloadDataHttp.info()
+        downloadDataEncoding = str(downloadDataInfo.get('Content-Encoding'))
+
+        #Decode information
+        if 'gzip' in downloadDataEncoding:
+            gzipObject = hybrid.stringio_from_bytes(downloadDataHttp.read())
+            gzipRead = gzip.GzipFile(fileobj=gzipObject)
+            return json.load(gzipRead)
+        else:
+            return json.load(downloadDataHttp)
+    except:
+        return []
+
 def download_channels_radio(forceUpdate=False):
     try:
         #Check if data is already cached
         if var.RadioChannelsDataJson != [] and forceUpdate == False:
             return True
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent')
-        }
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.channels_list_radio())
 
-        DownloadRequest = hybrid.urllib_request(path.channels_list_radio(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Check if connection is successful
+        if DownloadDataJson == []:
+            notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Radio download mislukt.', notificationIcon, 2500, False)
+            return False
 
         var.RadioChannelsDataJson = DownloadDataJson
         return True
@@ -41,15 +72,8 @@ def download_channels_tv(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Televisie download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.channels_list_tv(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.channels_list_tv())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -80,15 +104,8 @@ def download_recording_profile(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Opname profiel download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.recording_profile(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.recording_profile())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -126,15 +143,8 @@ def download_recording_event(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Opnames download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.recording_event(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.recording_event())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -169,15 +179,8 @@ def download_recording_series(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Serie opnames download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.recording_series(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.recording_series())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -208,15 +211,8 @@ def download_vod_day(dayDateTime, forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Programma gemist download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.vod_day(dayDateTime), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.vod_day(dayDateTime))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -247,15 +243,8 @@ def download_vod_movies(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Films download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.vod_movies(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.vod_movies())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -286,15 +275,8 @@ def download_vod_series(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Series download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.vod_series(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.vod_series())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -325,15 +307,8 @@ def download_vod_kids(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Kids series download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.vod_series_kids(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.vod_kids())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -352,7 +327,7 @@ def download_vod_kids(forceUpdate=False):
         xbmcgui.Dialog().notification(var.addonname, 'Kids series download mislukt.', notificationIcon, 2500, False)
         return False
 
-def download_series_season(parentId):
+def download_vod_series_season(parentId):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -360,15 +335,8 @@ def download_series_season(parentId):
             xbmcgui.Dialog().notification(var.addonname, 'Serie download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return None
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.vod_series_season(parentId), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.vod_series_season(parentId))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -394,16 +362,8 @@ def download_search_program(programName):
             xbmcgui.Dialog().notification(var.addonname, 'Zoek download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return None
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        programName = hybrid.urllib_quote(programName)
-        DownloadRequest = hybrid.urllib_request(path.search_program(programName), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.search_program(programName))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -433,15 +393,8 @@ def download_search_kids(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Kids download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.search_kids(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.search_kids())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -472,15 +425,8 @@ def download_search_sport(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Sport download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.search_sport(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.search_sport())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -511,15 +457,8 @@ def download_search_movies(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Week films download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.search_movies(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.search_movies())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -550,15 +489,8 @@ def download_search_series(forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'Week series download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.search_series(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.search_series())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -585,17 +517,9 @@ def record_series_add(ChannelId, liveSeriesId):
             xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen planning mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadData = json.dumps({"channelId":ChannelId,"seriesId":liveSeriesId,"isAutoDeletionEnabled":True,"episodeScope":"ALL","isChannelBoundEnabled":True}).encode('ascii')
-        DownloadRequest = hybrid.urllib_request(path.recording_series_add_remove(), data=DownloadData, headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataSend = json.dumps({"channelId":ChannelId,"seriesId":liveSeriesId,"isAutoDeletionEnabled":True,"episodeScope":"ALL","isChannelBoundEnabled":True}).encode('ascii')
+        DownloadDataJson = request_download_gzip(path.recording_series_add_remove(), DownloadDataSend)
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -635,18 +559,9 @@ def record_series_remove(SeriesId, KeepRecordings=True):
             xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadData = json.dumps({"seriesIds":[int(SeriesId)],"isKeepRecordingsEnabled":KeepRecordings}).encode('ascii')
-        DownloadRequest = hybrid.urllib_request(path.recording_series_add_remove(), data=DownloadData, headers=DownloadHeaders)
-        DownloadRequest.get_method = lambda: 'DELETE'
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataSend = json.dumps({"seriesIds":[int(SeriesId)],"isKeepRecordingsEnabled":KeepRecordings}).encode('ascii')
+        DownloadDataJson = request_download_gzip(path.recording_series_add_remove(), DownloadDataSend, 'DELETE')
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -686,17 +601,9 @@ def record_event_add(ProgramId):
             xbmcgui.Dialog().notification(var.addonname, 'Opname planning mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return ''
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadData = json.dumps({"externalContentId":ProgramId,"isAutoDeletionEnabled":True}).encode('ascii')
-        DownloadRequest = hybrid.urllib_request(path.recording_event_add_remove(), data=DownloadData, headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataSend = json.dumps({"externalContentId":ProgramId,"isAutoDeletionEnabled":True}).encode('ascii')
+        DownloadDataJson = request_download_gzip(path.recording_event_add_remove(), DownloadDataSend)
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -734,18 +641,9 @@ def record_event_remove(RecordId, StartDeltaTime=0):
             xbmcgui.Dialog().notification(var.addonname, 'Opname annulering mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return False
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Content-Type": "application/json",
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
-        }
-
-        DownloadData = json.dumps([{"recordId":int(RecordId),"startDeltaTime":int(StartDeltaTime)}]).encode('ascii')
-        DownloadRequest = hybrid.urllib_request(path.recording_event_add_remove(), data=DownloadData, headers=DownloadHeaders)
-        DownloadRequest.get_method = lambda: 'DELETE'
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataSend = json.dumps([{"recordId":int(RecordId),"startDeltaTime":int(StartDeltaTime)}]).encode('ascii')
+        DownloadDataJson = request_download_gzip(path.recording_event_add_remove(), DownloadDataSend, 'DELETE')
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -801,27 +699,8 @@ def download_epg_day(dayDateTime, forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, 'TV Gids download mislukt, niet aangemeld.', notificationIcon, 2500, False)
             return None
 
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken(),
-            'Content-Type': 'application/json',
-            'Accept-Encoding': 'gzip'
-        }
-
-        #Download epg information
-        DownloadRequest = hybrid.urllib_request(path.epg_day(dayDateTime), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataInfo = DownloadDataHttp.info()
-        DownloadDataEncoding = str(DownloadDataInfo.get('Content-Encoding'))
-
-        #Decode epg information
-        if 'gzip' in DownloadDataEncoding:
-            gzipObject = hybrid.stringio_from_bytes(DownloadDataHttp.read())
-            gzipRead = gzip.GzipFile(fileobj=gzipObject)
-            DownloadDataJson = json.load(gzipRead)
-        else:
-            DownloadDataJson = json.load(DownloadDataHttp)
+        #Download json data
+        DownloadDataJson = request_download_gzip(path.epg_day(dayDateTime))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:

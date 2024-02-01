@@ -24,7 +24,6 @@ def list_load(listContainer, seasonDownloaded, selectedPictureUrl):
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, True, False, False)
-            EpisodeTitle = EpisodeTitleRaw + " " + ProgramDetails
 
             #Add vod program
             listAction = 'play_stream_vod'
@@ -35,7 +34,7 @@ def list_load(listContainer, seasonDownloaded, selectedPictureUrl):
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setProperty("ProgramAvailability", ProgramAvailability)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'Title': EpisodeTitle, 'Genre': ProgramTitleRaw, 'Plot': ProgramDescription})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
             lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ProgramId)
         except:

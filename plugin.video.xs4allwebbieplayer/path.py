@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import hybrid
 import metadatainfo
 import os
 import func
@@ -131,7 +132,7 @@ def vod_series():
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
     return downloadPath
 
-def vod_series_kids():
+def vod_kids():
     downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999&filter_genres=kinderen,kids')
     return downloadPath
 
@@ -171,6 +172,7 @@ def search_series():
     return downloadPath
 
 def search_program(programName):
+    programName = hybrid.urllib_quote(programName)
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&from=0&to=9999&orderBy=airingStartTime&sortOrder=desc')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))

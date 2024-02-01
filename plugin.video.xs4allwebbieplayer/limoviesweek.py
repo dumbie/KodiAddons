@@ -9,7 +9,7 @@ def list_load(listContainer):
     for program in var.MoviesProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
-            ProgramName = metadatainfo.programtitle_from_json_metadata(program, True)
+            ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if there are search results
             if var.SearchChannelTerm != '':
@@ -31,7 +31,6 @@ def list_load(listContainer):
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)
-            ProgramTitle = ProgramName + " " + ProgramDetails
 
             #Add week program
             listItem = xbmcgui.ListItem(ProgramName)
@@ -44,8 +43,8 @@ def list_load(listContainer):
             listItem.setProperty("ProgramDetails", ProgramDetails)
             listItem.setProperty("ProgramAvailability", ProgramAvailability)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'Title': ProgramTitle, 'Genre': 'Films', 'Plot': ProgramDescription})
-            iconStreamType = "common/calendarweek.png"
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription})
+            iconStreamType = path.icon_addon('calendarweek')
             iconProgram = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)
             listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconChannel})

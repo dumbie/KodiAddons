@@ -52,8 +52,8 @@ def list_load(listContainer):
 
             #Load channel details
             ExternalId = metadatainfo.externalId_from_json_metadata(channel)
-            ChannelNumber = metadatainfo.orderId_from_json_metadata(channel)
-            ChannelNumberAccent = func.get_provider_color_string() + ChannelNumber + '[/COLOR]'
+            ChannelNumberString = metadatainfo.orderId_from_json_metadata(channel)
+            ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
             ChannelRecordEvent = 'false'
             ChannelRecordSeries = 'false'
             ChannelAlarm = 'false'
@@ -68,7 +68,7 @@ def list_load(listContainer):
             listItem.setProperty('Action', listAction)
             listItem.setProperty('AssetId', AssetId)
             listItem.setProperty('ChannelId', ChannelId)
-            listItem.setProperty('ChannelNumber', ChannelNumber)
+            listItem.setProperty('ChannelNumber', ChannelNumberString)
             listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
             listItem.setProperty('ChannelFavorite', ChannelFavorite)
             listItem.setProperty('ExternalId', ExternalId)
@@ -80,7 +80,7 @@ def list_load(listContainer):
             listItem.setProperty("ProgramNextName", ProgramNextName)
             listItem.setProperty("ProgramDescription", ProgramDescription)
             listItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
-            listItem.setInfo('video', {'Genre': 'Televisie'})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
             lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ChannelId)
         except:

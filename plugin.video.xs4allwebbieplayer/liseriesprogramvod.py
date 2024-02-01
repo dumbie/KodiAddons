@@ -31,7 +31,7 @@ def list_load(listContainer):
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramName", ProgramName)
             listItem.setProperty('ProgramDetails', ProgramDetails)
-            listItem.setInfo('video', {'Genre': 'Series', 'Plot': ProgramDetails})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails})
             iconStreamType = path.icon_addon('vod')
             iconProgram = path.icon_vod(PictureUrl)
             listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})

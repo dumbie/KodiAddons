@@ -51,7 +51,7 @@ def list_load(listContainer):
             listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
             listItem.setProperty('ChannelFavorite', ChannelFavorite)
             listItem.setProperty('StreamUrl', ChannelStream)
-            listItem.setInfo('video', {'Genre': 'Radio'})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': 'Radio', 'Tagline': ChannelNumberString, 'Title': ChannelName})
             listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
             lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ChannelId)
         except:
