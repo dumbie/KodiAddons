@@ -69,32 +69,18 @@ class Gui(xbmcgui.WindowXMLDialog):
             close_the_page()
 
     def load_recording(self, forceUpdate=False):
+        #Get and check the list container
         listContainer = self.getControl(1000)
         listContainer.reset()
 
-        #Download the tv channels
-        func.updateLabelText(self, 3001, 'Televisie zenders worden gedownload.')
-        download.download_channels_tv(False)
-
-        #Download the recording programs
-        func.updateLabelText(self, 3001, "Geplande series worden gedownload.")
-        downloadResult = download.download_recording_series(forceUpdate)
-        if downloadResult == False:
+        #Add items to list container
+        func.updateLabelText(self, 3001, "Geplande series worden geladen.")
+        if lirecordingseries.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 3001, 'Geplande series zijn niet beschikbaar')
             closeButton = self.getControl(4000)
             self.setFocus(closeButton)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 3001, "Geplande series worden geladen.")
-
-        #Add items to sort list
-        listContainerSort = []
-        lirecordingseries.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainerSort.sort(key=lambda x: x.getProperty('ProgramName'))
-        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_recording(True)

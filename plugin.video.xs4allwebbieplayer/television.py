@@ -38,10 +38,6 @@ def close_the_page():
         var.guiTelevision.close()
         var.guiTelevision = None
 
-def source_plugin_list():
-    download.download_channels_tv(False)
-    lichanneltelevision.list_load(None)
-
 class Gui(xbmcgui.WindowXML):
     EpgPauseUpdate = False
     EpgForceUpdate = False
@@ -334,10 +330,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer.reset()
 
-        #Download the channels
-        func.updateLabelText(self, 1, 'Zenders downloaden')
-        downloadResult = download.download_channels_tv(forceUpdate)
-        if downloadResult == False:
+        #Add items to list container
+        func.updateLabelText(self, 1, 'Zenders laden')
+        if lichanneltelevision.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
@@ -345,15 +340,6 @@ class Gui(xbmcgui.WindowXML):
             listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 1, 'Zenders laden')
-
-        #Add items to sort list
-        listContainerSort = []
-        lichanneltelevision.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_channels(True)

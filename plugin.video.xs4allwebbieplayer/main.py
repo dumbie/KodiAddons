@@ -50,18 +50,6 @@ def close_the_page():
         #Close the shown window
         var.guiMain.close()
 
-def source_plugin_list():
-    #Check if logged in on launch
-    if var.ApiLoggedIn() == False:
-        apilogin.ApiLogin()
-
-    #Check if user is logged in
-    if var.ApiLoggedIn() == True:
-        download.download_recording_profile()
-
-    #Add buttons to the main menu
-    limain.list_load(None)
-
 def dialog_close():
     if var.addon.getSetting('AfsluitschermOverslaan') == 'true':
         close_the_page()
@@ -220,8 +208,8 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0:
             return True
 
-        #Add buttons to the main menu
-        limain.list_load(listContainer)
+        #Add items to list container
+        limain.list_load_combined(listContainer)
 
     def count_recorded_events(self):
         try:
@@ -278,7 +266,7 @@ class Gui(xbmcgui.WindowXML):
             if listContainer.size() == 0 or var.ApiLoggedIn() == False:
                 return False
 
-            #Load the program alarms
+            #Load set program alarms
             alarm.alarm_json_load(forceLoad)
 
             #Update the list count

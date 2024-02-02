@@ -1,7 +1,6 @@
 import xbmc
 import xbmcgui
 import lichannelradio
-import download
 import dialog
 import favorite
 import func
@@ -23,10 +22,6 @@ def close_the_page():
         #Close the shown window
         var.guiRadio.close()
         var.guiRadio = None
-
-def source_plugin_list():
-    download.download_channels_radio(False)
-    lichannelradio.list_load(None)
 
 def show_visualisation():
     try:
@@ -222,10 +217,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer.reset()
 
-        #Download the channels
-        func.updateLabelText(self, 1, 'Zenders downloaden')
-        downloadResult = download.download_channels_radio(forceUpdate)
-        if downloadResult == False:
+        #Add items to list container
+        func.updateLabelText(self, 1, 'Zenders laden')
+        if lichannelradio.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
@@ -233,15 +227,6 @@ class Gui(xbmcgui.WindowXML):
             listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 1, 'Zenders laden')
-
-        #Add items to sort list
-        listContainerSort = []
-        lichannelradio.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_channels(True)

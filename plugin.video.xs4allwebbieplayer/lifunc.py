@@ -7,14 +7,30 @@ import var
 def auto_add_item(listItem, listContainer, dirUrl='', dirFolder=False):
     try:
         if listContainer == None:
-            if func.string_isnullorempty(dirUrl) == False:
-                dirUrl = var.LaunchUrl + '?' + dirUrl
             xbmcplugin.addDirectoryItem(listitem=listItem,handle=var.LaunchHandle,url=dirUrl,isFolder=dirFolder)
         else:
             if type(listContainer) == list:
                 listContainer.append(listItem)
             else:
                 listContainer.addItem(listItem)
+        return True
+    except:
+        return False
+
+#Add items to container or directory
+def auto_add_items(listItems, listContainer):
+    try:
+        if listContainer == None:
+            xbmcplugin.addDirectoryItems(items=listItems,handle=var.LaunchHandle)
+        else:
+            if type(listContainer) == list:
+                listContainer.append(listItems)
+            else:
+                if type(listItems[0]) == tuple:
+                    listItemsTuple = [x[1] for x in listItems]
+                    listContainer.addItems(listItemsTuple)
+                else:
+                    listContainer.addItems(listItems)
         return True
     except:
         return False

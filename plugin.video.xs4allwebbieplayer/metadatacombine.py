@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-import func
 import metadatainfo
+import func
 
 def program_upcoming_list(metaData, programIndex):
     try:

@@ -24,8 +24,8 @@ def alarm_json_load(forceLoad=False):
     try:
         if var.AlarmDataJson == [] or forceLoad == True:
             if files.existFile('AlarmDataString1.js') == True:
-                AlarmDataString = files.openFile('AlarmDataString1.js')
-                var.AlarmDataJson = json.loads(AlarmDataString)
+                AlarmJsonString = files.openFile('AlarmDataString1.js')
+                var.AlarmDataJson = json.loads(AlarmJsonString)
     except:
         var.AlarmDataJson = []
 
@@ -237,13 +237,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         listContainer = self.getControl(1000)
         listContainer.reset()
 
-        #Add items to sort list
-        listContainerSort = []
-        lialarm.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
-        listContainer.addItems(listContainerSort)
+        #Add items to list container
+        lialarm.list_load_combined(listContainer)
 
         #Update the status
         self.count_alarm(True)

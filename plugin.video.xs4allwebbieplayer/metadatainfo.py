@@ -510,7 +510,7 @@ def recording_space(metaData):
         return "Onbekende ruimte beschikbaar"
 
 #Get recording available time
-def recording_available_time(metaData):
+def available_time_recording(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
     try:
         ProgramEndDateTime = programenddatetime_generate_from_json_metadata(metaData)
@@ -542,8 +542,8 @@ def recording_available_time(metaData):
     except:
         return ProgramAvailability
 
-#Get vod week available time
-def vod_week_available_time(metaData):
+#Get program available time
+def available_time_program(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
     try:
         DateTimeStartTime = programstartdatetime_from_json_metadata(metaData)
@@ -574,8 +574,8 @@ def vod_week_available_time(metaData):
     except:
         return ProgramAvailability
 
-#Get vod ondemand available time
-def vod_ondemand_available_time(metaData):
+#Get vod available time
+def available_time_vod(metaData):
     ProgramAvailability = 'Onbekende beschikbaarheid'
     try:
         DateTimeExpireTime = contractenddatetime_from_json_metadata(metaData)

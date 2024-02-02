@@ -1,7 +1,6 @@
 import xbmc
 import xbmcgui
 import dialog
-import download
 import epg
 import func
 import livod
@@ -23,11 +22,6 @@ def close_the_page():
         #Close the shown window
         var.guiVod.close()
         var.guiVod = None
-
-def source_plugin_list():
-    downloadResult = download.download_vod_day(var.VodDayLoadDateTime)
-    #if downloadResult == False:
-    livod.list_load(None)
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
@@ -190,11 +184,10 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer.reset()
 
-        #Download the programs
-        func.updateLabelText(self, 1, "Programma's downloaden")
+        #Add items to list container
+        func.updateLabelText(self, 1, "Programma's laden")
         func.updateLabelText(self, 3, "")
-        downloadResult = download.download_vod_day(var.VodDayLoadDateTime, forceUpdate)
-        if downloadResult == False:
+        if livod.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
@@ -202,15 +195,6 @@ class Gui(xbmcgui.WindowXML):
             listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 1, "Programma's laden")
-
-        #Add items to sort list
-        listContainerSort = []
-        livod.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_program(True, selectIndex)

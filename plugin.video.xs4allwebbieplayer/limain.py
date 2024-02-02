@@ -1,9 +1,33 @@
+import apilogin
+import download
 import lifunc
 import xbmcgui
 import path
 import var
 
-def list_load(listContainer):
+def list_load_combined(listContainer=None):
+    try:
+        #Check if logged in on launch
+        if var.ApiLoggedIn() == False:
+             apilogin.ApiLogin()
+
+        #Check if user is logged in
+        if var.ApiLoggedIn() == True:
+             download.download_recording_profile()
+
+        #Add items to sort list
+        listContainerSort = []
+        remoteMode = listContainer == None
+        list_load_append(listContainerSort, remoteMode)
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer, remoteMode=False):
     try:
         ApiLoggedIn = var.ApiLoggedIn()
         RecordingAccess = var.RecordingAccess()
@@ -13,115 +37,154 @@ def list_load(listContainer):
             listItem = xbmcgui.ListItem('Televisie')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/television.png'),'icon': path.resources('resources/skins/default/media/common/television.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
         listAction = 'page_radio'
         listItem = xbmcgui.ListItem('Radio')
         listItem.setProperty('Action', listAction)
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/radio.png'), 'icon': path.resources('resources/skins/default/media/common/radio.png')})
-        lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+        dirIsFolder = True
+        dirUrl = var.LaunchUrl + '?' + listAction
+        listContainer.append((dirUrl, listItem, dirIsFolder))
 
         if ApiLoggedIn == True:
             listAction = 'page_movies'
             listItem = xbmcgui.ListItem('Films')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/movies.png'), 'icon': path.resources('resources/skins/default/media/common/movies.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
         if ApiLoggedIn == True:
             listAction = 'page_series'
             listItem = xbmcgui.ListItem('Series')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/series.png'), 'icon': path.resources('resources/skins/default/media/common/series.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None and ApiLoggedIn == True:
+        if remoteMode == False and ApiLoggedIn == True:
             listAction = 'page_epg'
             listItem = xbmcgui.ListItem('TV Gids')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/epg.png'), 'icon': path.resources('resources/skins/default/media/common/epg.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None and ApiLoggedIn == True:
+        if remoteMode == False and ApiLoggedIn == True:
             listAction = 'page_search'
             listItem = xbmcgui.ListItem('Terugzoeken')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
         if ApiLoggedIn == True:
             listAction = 'page_sport'
             listItem = xbmcgui.ListItem('Sport Gemist')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/sport.png'), 'icon': path.resources('resources/skins/default/media/common/sport.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
         if ApiLoggedIn == True:
             listAction = 'page_vod'
             listItem = xbmcgui.ListItem('Programma Gemist')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/vod.png'), 'icon': path.resources('resources/skins/default/media/common/vod.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
         if ApiLoggedIn == True:
             listAction = 'page_kids'
-            if listContainer != None and var.addon.getSetting('KidsPageLock') == 'true':
+            if remoteMode == False and var.addon.getSetting('KidsPageLock') == 'true':
                 listItem = xbmcgui.ListItem('Kids met slot')
             else:
                 listItem = xbmcgui.ListItem('Kids')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/kids.png'), 'icon': path.resources('resources/skins/default/media/common/kids.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
         if ApiLoggedIn == True and RecordingAccess == True:
             listAction = 'page_recorded'
             listItem = xbmcgui.ListItem('Bekijk Opnames')
             listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/recorddone.png'), 'icon': path.resources('resources/skins/default/media/common/recorddone.png')})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction, dirFolder=True)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None and ApiLoggedIn == True and RecordingAccess == True:
+        if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True:
+            listAction = 'page_recording_event'
             listItem = xbmcgui.ListItem('Geplande Opnames')
-            listItem.setProperty('Action', 'page_recording_event')
+            listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/record.png'), 'icon': path.resources('resources/skins/default/media/common/record.png')})
-            lifunc.auto_add_item(listItem, listContainer)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None and ApiLoggedIn == True and RecordingAccess == True:
+        if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True:
+            listAction = 'page_recording_series'
             listItem = xbmcgui.ListItem('Geplande Series')
-            listItem.setProperty('Action', 'page_recording_series')
+            listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/recordseries.png'), 'icon': path.resources('resources/skins/default/media/common/recordseries.png')})
-            lifunc.auto_add_item(listItem, listContainer)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None and ApiLoggedIn == True:
+        if remoteMode == False and ApiLoggedIn == True:
+            listAction = 'page_alarm'
             listItem = xbmcgui.ListItem('Alarmen')
-            listItem.setProperty('Action', 'page_alarm')
+            listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/alarm.png'), 'icon': path.resources('resources/skins/default/media/common/alarm.png')})
-            lifunc.auto_add_item(listItem, listContainer)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None:
+        if remoteMode == False:
+            listAction = 'page_sleep'
             listItem = xbmcgui.ListItem('Slaap Timer')
-            listItem.setProperty('Action', 'page_sleep')
+            listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/sleep.png'), 'icon': path.resources('resources/skins/default/media/common/sleep.png')})
-            lifunc.auto_add_item(listItem, listContainer)
+            dirIsFolder = True
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None:
+        if remoteMode == False:
+            listAction = 'addon_settings'
             listItem = xbmcgui.ListItem('Instellingen')
-            listItem.setProperty('Action', 'addon_settings')
+            listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settings.png'), 'icon': path.resources('resources/skins/default/media/common/settings.png')})
-            lifunc.auto_add_item(listItem, listContainer)
+            dirIsFolder = False
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None:
+        if remoteMode == False:
+            listAction = 'page_help'
             listItem = xbmcgui.ListItem('Help')
-            listItem.setProperty('Action', 'page_help')
+            listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/help.png'), 'icon': path.resources('resources/skins/default/media/common/help.png')})
-            lifunc.auto_add_item(listItem, listContainer)
+            dirIsFolder = False
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
 
-        if listContainer != None:
+        if remoteMode == False:
+            listAction = 'addon_shutdown'
             listItem = xbmcgui.ListItem('Sluiten')
-            listItem.setProperty('Action', 'addon_shutdown')
+            listItem.setProperty('Action', listAction)
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/shutdown.png'), 'icon': path.resources('resources/skins/default/media/common/shutdown.png')})
-            lifunc.auto_add_item(listItem, listContainer)
-
-        lifunc.auto_end_items()
+            dirIsFolder = False
+            dirUrl = var.LaunchUrl + '?' + listAction
+            listContainer.append((dirUrl, listItem, dirIsFolder))
     except:
         pass

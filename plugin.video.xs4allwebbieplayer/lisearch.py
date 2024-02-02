@@ -1,11 +1,25 @@
 import func
+import lifunc
 import metadatacombine
 import metadatainfo
 import xbmcgui
 import path
 import var
 
-def list_load(listContainer):
+def list_load_combined(listContainer=None):
+    try:
+        #Add items to sort list
+        listContainerSort = []
+        list_load_append(listContainerSort)
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer):
     for program in var.SearchProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -23,7 +37,7 @@ def list_load(listContainer):
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramAvailability = metadatainfo.vod_week_available_time(program)
+            ProgramAvailability = metadatainfo.available_time_program(program)
 
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)

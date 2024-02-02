@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import xbmc
 import xbmcgui
 import dialog
 import func

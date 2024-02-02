@@ -1,7 +1,6 @@
 import xbmc
 import xbmcgui
 import dialog
-import download
 import epg
 import func
 import lisport
@@ -24,15 +23,11 @@ def close_the_page():
         var.guiSport.close()
         var.guiSport = None
 
-def source_plugin_list():
-    download.download_search_sport()
-    lisport.list_load(None)
-
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         func.updateLabelText(self, 2, "Sport Gemist")
         self.buttons_add_navigation()
-        self.load_program(False, False, var.SportSelectIndex)
+        self.load_program(False, False, True, var.SportSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -49,7 +44,7 @@ class Gui(xbmcgui.WindowXML):
             elif listItemAction == 'search_program':
                 self.search_program()
             elif listItemAction == 'refresh_program':
-                self.load_program(True, True)
+                self.load_program(True, True, False)
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
                 var.PlayerCustom.Fullscreen(True)
@@ -136,8 +131,8 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, False)
         var.SearchChannelTerm = ''
 
-    def load_program(self, forceLoad=False, forceUpdate=False, selectIndex=0):
-        if forceUpdate == True:
+    def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True, selectIndex=0):
+        if forceUpdate == True and silentUpdate == False:
             notificationIcon = path.resources('resources/skins/default/media/common/sport.png')
             xbmcgui.Dialog().notification(var.addonname, "Uitzendingen worden vernieuwd.", notificationIcon, 2500, False)
 
@@ -148,10 +143,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer.reset()
 
-        #Download the programs
-        func.updateLabelText(self, 1, "Uitzendingen downloaden")
-        downloadResult = download.download_search_sport(forceUpdate)
-        if downloadResult == False:
+        #Add items to list container
+        func.updateLabelText(self, 1, "Uitzendingen laden")
+        if lisport.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
@@ -159,15 +153,6 @@ class Gui(xbmcgui.WindowXML):
             listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 1, "Uitzendingen laden")
-
-        #Add items to sort list
-        listContainerSort = []
-        lisport.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_program(True, selectIndex)

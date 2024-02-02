@@ -175,12 +175,11 @@ class Gui(xbmcgui.WindowXML):
             xbmc.sleep(100)
             return False
 
-        #Update the search result
+        #Update search result
         var.SearchDownloadSearchTerm = searchDialogTerm.string
         var.SearchProgramDataJson = downloadResult
 
-        #List the search results
-        func.updateLabelText(self, 1, "Zoek resultaat laden")
+        #List search results
         self.search_list()
 
     def search_list(self, selectIndex=0):
@@ -188,12 +187,9 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1000)
         listContainer.reset()
 
-        #Add items to sort list
-        listContainerSort = []
-        lisearch.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainer.addItems(listContainerSort)
+        #Add items to list container
+        func.updateLabelText(self, 1, "Zoek resultaat laden")
+        lisearch.list_load_combined(listContainer)
 
         #Update the status
         self.count_program(True, selectIndex)

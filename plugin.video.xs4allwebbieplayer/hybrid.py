@@ -1,5 +1,4 @@
 import sys
-import func
 import unicodedata
 
 pythonversion = sys.version_info[0]

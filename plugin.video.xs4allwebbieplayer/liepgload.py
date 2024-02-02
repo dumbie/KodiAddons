@@ -1,12 +1,29 @@
 from datetime import datetime, timedelta
 import func
+import lifunc
 import metadatainfo
 import metadatacombine
 import xbmcgui
 import path
 import var
 
-def list_load(listContainer, epgJson):
+def list_load_combined(listContainer, epgJson):
+    try:
+        #Add items to sort list
+        listContainerSort = []
+        list_load_append(listContainerSort, epgJson)
+
+        #Sort list items
+        listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer, epgJson):
     #Set the current player play time
     dateTimeNow = datetime.now()
 

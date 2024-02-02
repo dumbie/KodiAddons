@@ -8,19 +8,21 @@ import func
 import path
 import var
 
-def hidden_television_json_load():
+def hidden_television_json_load(forceLoad=False):
     try:
-        if var.HiddenTelevisionJson == [] and files.existFile('HiddenTelevision.js') == True:
-            HiddenJsonString = files.openFile('HiddenTelevision.js')
-            var.HiddenTelevisionJson = json.loads(HiddenJsonString)
+        if var.HiddenTelevisionJson == [] or forceLoad == True:
+            if files.existFile('HiddenTelevision.js') == True:
+                HiddenJsonString = files.openFile('HiddenTelevision.js')
+                var.HiddenTelevisionJson = json.loads(HiddenJsonString)
     except:
         var.HiddenTelevisionJson = []
 
-def hidden_radio_json_load():
+def hidden_radio_json_load(forceLoad=False):
     try:
-        if var.HiddenRadioJson == [] and files.existFile('HiddenRadio.js') == True:
-            HiddenJsonString = files.openFile('HiddenRadio.js')
-            var.HiddenRadioJson = json.loads(HiddenJsonString)
+        if var.HiddenRadioJson == [] or forceLoad == True: 
+            if files.existFile('HiddenRadio.js') == True:
+                HiddenJsonString = files.openFile('HiddenRadio.js')
+                var.HiddenRadioJson = json.loads(HiddenJsonString)
     except:
         var.HiddenRadioJson = []
 
@@ -160,12 +162,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         listContainer = self.getControl(1000)
         listContainer.reset()
 
-        #Add items to sort list
-        listContainerSort = []
-        lihidden.list_load(listContainerSort, var.HiddenChannelMode)
-
-        #Sort and add items to container
-        listContainer.addItems(listContainerSort)
+        #Add items to list container
+        lihidden.list_load_combined(listContainer, var.HiddenChannelMode)
 
         #Update the status
         self.count_hidden_channels(True)

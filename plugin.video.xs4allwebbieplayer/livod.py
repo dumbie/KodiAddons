@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import download
 import func
 import lifunc
 import metadatacombine
@@ -7,7 +8,27 @@ import xbmcgui
 import path
 import var
 
-def list_load(listContainer):
+def list_load_combined(listContainer=None, forceUpdate=False):
+    try:
+        #Download programs
+        downloadResult = download.download_vod_day(var.VodDayLoadDateTime, forceUpdate)
+        if downloadResult == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
+            xbmcgui.Dialog().notification(var.addonname, "Programma's downloaden mislukt.", notificationIcon, 2500, False)
+            return False
+
+        #Add items to sort list
+        listContainerSort = []
+        list_load_append(listContainerSort)
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
@@ -64,7 +85,8 @@ def list_load(listContainer):
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ProgramId)
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramId
+            listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
-    lifunc.auto_end_items()

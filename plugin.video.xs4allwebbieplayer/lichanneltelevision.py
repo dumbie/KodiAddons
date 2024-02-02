@@ -1,5 +1,6 @@
 import xbmc
 import xbmcgui
+import download
 import favorite
 import hidden
 import func
@@ -8,7 +9,27 @@ import metadatainfo
 import path
 import var
 
-def list_load(listContainer):
+def list_load_combined(listContainer=None, forceUpdate=False):
+    try:
+        #Download channels
+        downloadResult = download.download_channels_tv(forceUpdate)
+        if downloadResult == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/television.png')
+            xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
+            return False
+
+        #Add items to sort list
+        listContainerSort = []
+        list_load_append(listContainerSort)
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer):
     favorite.favorite_television_json_load()
     hidden.hidden_television_json_load()
     var.TelevisionChannelIdsPlayable = []
@@ -62,7 +83,7 @@ def list_load(listContainer):
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramProgressPercent = '100'
 
-            #Add television channel
+            #Set item details
             listAction = 'play_stream_tv'
             listItem = xbmcgui.ListItem(ChannelName)
             listItem.setProperty('Action', listAction)
@@ -82,7 +103,8 @@ def list_load(listContainer):
             listItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ChannelId)
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ChannelId
+            listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
-    lifunc.auto_end_items()

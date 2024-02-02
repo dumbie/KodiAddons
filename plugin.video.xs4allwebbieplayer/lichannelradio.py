@@ -1,3 +1,4 @@
+import download
 import xbmcgui
 import favorite
 import hidden
@@ -6,7 +7,27 @@ import lifunc
 import path
 import var
 
-def list_load(listContainer):
+def list_load_combined(listContainer=None, forceUpdate=False):
+    try:
+        #Download channels
+        downloadResult = download.download_channels_radio(forceUpdate)
+        if downloadResult == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
+            xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
+            return False
+
+        #Add items to sort list
+        listContainerSort = []
+        list_load_append(listContainerSort)
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer):
     favorite.favorite_radio_json_load()
     hidden.hidden_radio_json_load()
     ChannelNumberInt = 0
@@ -41,7 +62,7 @@ def list_load(listContainer):
             ChannelNumberString = str(ChannelNumberInt)
             ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
 
-            #Add radio channel
+            #Set item details
             listAction = 'play_stream_radio'
             listItem = xbmcgui.ListItem(ChannelName)
             listItem.setProperty('Action', listAction)
@@ -53,7 +74,8 @@ def list_load(listContainer):
             listItem.setProperty('StreamUrl', ChannelStream)
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': 'Radio', 'Tagline': ChannelNumberString, 'Title': ChannelName})
             listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
-            lifunc.auto_add_item(listItem, listContainer, dirUrl=listAction+'='+ChannelId)
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ChannelId
+            listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
-    lifunc.auto_end_items()

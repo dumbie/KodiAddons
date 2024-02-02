@@ -3,8 +3,6 @@ import xbmcgui
 import dialog
 import download
 import func
-import lifunc
-import metadatainfo
 import path
 import lirecorded
 import searchdialog
@@ -24,26 +22,6 @@ def close_the_page():
         #Close the shown window
         var.guiRecorded.close()
         var.guiRecorded = None
-
-def source_plugin_list():
-    downloadResultProfile = download.download_recording_profile()
-    downloadResultEvent = download.download_recording_event()
-    #if downloadResultProfile == False and downloadResultEvent == False:
-
-    #Add items to sort list
-    listContainerSort = []
-    lirecorded.list_load(listContainerSort)
-
-    #Sort items in list
-    listContainerSort.sort(key=lambda x: int(x.getProperty('ProgramStartTime')), reverse=True)
-
-    #Add items to container
-    for listItem in listContainerSort:
-        ListAction = listItem.getProperty('Action')
-        ProgramAssetId = listItem.getProperty('ProgramAssetId')
-        ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
-        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramAssetId+var.splitchar+ProgramRecordEventId)
-    lifunc.auto_end_items()
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
@@ -172,11 +150,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer.reset()
 
-        #Download the programs
-        func.updateLabelText(self, 1, "Opnames downloaden")
-        downloadResultProfile = download.download_recording_profile(forceUpdate)
-        downloadResultEvent = download.download_recording_event(forceUpdate)
-        if downloadResultProfile == False and downloadResultEvent == False:
+        #Add items to list container
+        func.updateLabelText(self, 1, "Opnames laden")
+        if lirecorded.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
@@ -184,16 +160,6 @@ class Gui(xbmcgui.WindowXML):
             listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 1, "Opnames laden")
-
-        #Add items to sort list
-        listContainerSort = []
-        lirecorded.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainerSort.sort(key=lambda x: int(x.getProperty('ProgramStartTime')), reverse=True)
-        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_program(True, selectIndex)

@@ -1,10 +1,34 @@
+import lifunc
+import hidden
 import metadatafunc
 import metadatainfo
 import xbmcgui
 import path
 import var
 
-def list_load(listContainer, hiddenJsonFile):
+def list_load_combined(listContainer, hiddenJsonFile):
+    try:
+        #Load set hidden channels
+        if hiddenJsonFile == 'HiddenTelevision.js':
+            hidden.hidden_television_json_load()
+        else:
+            hidden.hidden_radio_json_load()
+
+        #Add items to sort list
+        listContainerSort = []
+        list_load_append(listContainerSort, hiddenJsonFile)
+
+        #Sort list items
+        listContainerSort.sort(key=lambda x: x.getProperty('ProgramName'))
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer, hiddenJsonFile):
     if hiddenJsonFile == 'HiddenTelevision.js':
         for hiddenChannelId in var.HiddenTelevisionJson:
             try:

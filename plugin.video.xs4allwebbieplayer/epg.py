@@ -411,11 +411,10 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer.reset()
 
-        #Download the channels
-        func.updateLabelText(self, 1, 'Zenders downloaden')
-        func.updateLabelText(self, 2, '[COLOR gray]Zenders worden gedownload, nog even geduld...[/COLOR]')
-        downloadResult = download.download_channels_tv(False)
-        if downloadResult == False:
+        #Add items to list container
+        func.updateLabelText(self, 1, 'Zenders laden')
+        func.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
+        if lichanneltelevision.list_load_combined(listContainer) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
@@ -424,16 +423,6 @@ class Gui(xbmcgui.WindowXML):
             listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 1, 'Zenders laden')
-        func.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
-
-        #Add items to sort list
-        listContainerSort = []
-        lichanneltelevision.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainer.addItems(listContainerSort)
 
         #Focus on the list container
         if listContainer.size() > 0:
@@ -497,30 +486,31 @@ class Gui(xbmcgui.WindowXML):
 
         #Check if update is needed
         if forceLoad or forceUpdate or epgChannelChanged or epgDayTimeChanged or listItemCount == 0:
-            #Clear the current epg items
+            #Clear current epg items
             listContainer.reset()
-
-            #Download the epg day information
-            func.updateLabelText(self, 1, 'Gids download')
-            func.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt gedownload, nog even geduld...[/COLOR]')
-            var.EpgCurrentDayDataJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
-            if var.EpgCurrentDayDataJson == None:
-                func.updateLabelText(self, 1, 'Niet beschikbaar')
-                func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
-                listContainer = self.getControl(1000)
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
-                listContainer.selectItem(0)
-                xbmc.sleep(100)
-                return
         else:
+            #Keep current epg items
+            return
+
+        #Download epg day information
+        func.updateLabelText(self, 1, 'Gids download')
+        func.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt gedownload, nog even geduld...[/COLOR]')
+        var.EpgCurrentDayDataJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
+        if var.EpgCurrentDayDataJson == None:
+            func.updateLabelText(self, 1, 'Niet beschikbaar')
+            func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
+            listContainer = self.getControl(1000)
+            self.setFocus(listContainer)
+            xbmc.sleep(100)
+            listContainer.selectItem(0)
+            xbmc.sleep(100)
             return
 
         #Update epg status
         func.updateLabelText(self, 1, 'Gids laden')
         func.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt geladen, nog even geduld...[/COLOR]')
 
-        listContainerSort = []
+        #Add items to list container
         if func.string_isnullorempty(var.SearchChannelTerm):
             #Load programs for set day and channel
             channelEpgJson = metadatafunc.search_channelid_jsonepg(var.EpgCurrentDayDataJson, var.EpgCurrentChannelId)
@@ -528,18 +518,11 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 1, 'Zender gids mist')
                 func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar voor[/COLOR] ' + var.EpgCurrentChannelName)
                 return
-
-            #Add items to sort list
-            liepgload.list_load(listContainerSort, channelEpgJson)
+            liepgload.list_load_combined(listContainer, channelEpgJson)
         else:
             #Load programs for search term from all channels
             for channelEpgJson in var.EpgCurrentDayDataJson["resultObj"]["containers"]:
-                #Add items to sort list
-                liepgload.list_load(listContainerSort, channelEpgJson)
-
-        #Sort and add items to container
-        listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
-        listContainer.addItems(listContainerSort)
+                liepgload.list_load_combined(listContainer, channelEpgJson)
 
         #Select program index
         self.epg_selectindex_program(forceFocus)

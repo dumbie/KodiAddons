@@ -1,21 +1,22 @@
 import var
 import xbmcaddon
-import xbmcgui
 import widevine
 import default
 import func
 import hybrid
 import var
-import main
-import radio
-import television
-import movies
-import series
-import kids
+import limain
+import lichannelradio
+import lichanneltelevision
+import limovies
+import liseriesprogram
+import liseriesepisode
+import likidsprogram
+import likidsepisode
+import lisport
+import livod
+import lirecorded
 import streamswitch
-import sport
-import vod
-import recorded
 import sys
 
 def set_launch_argument_source():
@@ -41,35 +42,35 @@ def handle_launch_argument_source():
 
         #List items
         elif func.string_isnullorempty(var.LaunchArgument):
-            main.source_plugin_list()
+            limain.list_load_combined()
         elif var.LaunchArgument == "?page_television":
-            television.source_plugin_list()
+            lichanneltelevision.list_load_combined()
         elif var.LaunchArgument == "?page_radio":
-            radio.source_plugin_list()
+            lichannelradio.list_load_combined()
         elif var.LaunchArgument == "?page_movies":
-            movies.source_plugin_list()
+            limovies.list_load_combined()
         elif var.LaunchArgument == "?page_series":
-            series.source_plugin_list_program()
+            liseriesprogram.list_load_combined()
         elif var.LaunchArgument == "?page_kids":
-            kids.source_plugin_list_program()
+            likidsprogram.list_load_combined()
         elif var.LaunchArgument == "?page_sport":
-            sport.source_plugin_list()
+            lisport.list_load_combined()
         elif var.LaunchArgument == "?page_vod":
-            vod.source_plugin_list()
+            livod.list_load_combined()
         elif var.LaunchArgument == "?page_recorded":
-            recorded.source_plugin_list()
-        elif var.LaunchArgument.startswith("?load_series_episodes_week="):
-            actionSplit = var.LaunchArgument.replace('?load_series_episodes_week=', '').split(var.splitchar)
-            series.source_plugin_list_episode_week(actionSplit[1], actionSplit[2])
+            lirecorded.list_load_combined()
+        elif var.LaunchArgument.startswith("?load_series_episodes_program="):
+            actionSplit = var.LaunchArgument.replace('?load_series_episodes_program=', '').split(var.splitchar)
+            liseriesepisode.list_load_program_combined(actionSplit[1], actionSplit[2])
         elif var.LaunchArgument.startswith("?load_series_episodes_vod="):
             actionSplit = var.LaunchArgument.replace('?load_series_episodes_vod=', '').split(var.splitchar)
-            series.source_plugin_list_episode_vod(actionSplit[0], actionSplit[2])
-        elif var.LaunchArgument.startswith("?load_kids_episodes_week="):
-            actionSplit = var.LaunchArgument.replace('?load_kids_episodes_week=', '').split(var.splitchar)
-            kids.source_plugin_list_episode_week(actionSplit[1], actionSplit[2])
+            liseriesepisode.list_load_vod_combined(actionSplit[0], actionSplit[2])
+        elif var.LaunchArgument.startswith("?load_kids_episodes_program="):
+            actionSplit = var.LaunchArgument.replace('?load_kids_episodes_program=', '').split(var.splitchar)
+            likidsepisode.list_load_program_combined(actionSplit[1], actionSplit[2])
         elif var.LaunchArgument.startswith("?load_kids_episodes_vod="):
             actionSplit = var.LaunchArgument.replace('?load_kids_episodes_vod=', '').split(var.splitchar)
-            kids.source_plugin_list_episode_vod(actionSplit[0], actionSplit[2])
+            likidsepisode.list_load_vod_combined(actionSplit[0], actionSplit[2])
 
         #Play streams
         elif var.LaunchArgument.startswith("?play_stream_tv="):

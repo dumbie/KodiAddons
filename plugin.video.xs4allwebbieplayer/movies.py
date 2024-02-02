@@ -1,12 +1,9 @@
 import xbmc
 import xbmcgui
 import dialog
-import download
 import epg
 import func
-import lifunc
-import limoviesvod
-import limoviesweek
+import limovies
 import path
 import searchdialog
 import streamplay
@@ -25,26 +22,6 @@ def close_the_page():
         #Close the shown window
         var.guiMovies.close()
         var.guiMovies = None
-
-def source_plugin_list():
-    downloadResult = download.download_vod_movies()
-    downloadResultWeek = download.download_search_movies()
-    #if downloadResult == False or downloadResultWeek == False:
-
-    #Add items to sort list
-    listContainerSort = []
-    limoviesweek.list_load(listContainerSort)
-    limoviesvod.list_load(listContainerSort)
-
-    #Sort items in list
-    listContainerSort.sort(key=lambda x: x.getProperty('ProgramName'))
-
-    #Add items to container
-    for listItem in listContainerSort:
-        ListAction = listItem.getProperty('Action')
-        ProgramId = listItem.getProperty('ProgramId')
-        lifunc.auto_add_item(listItem, None, dirUrl=ListAction+'='+ProgramId)
-    lifunc.auto_end_items()
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
@@ -160,11 +137,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer.reset()
 
-        #Download the movies
-        func.updateLabelText(self, 1, "Films downloaden")
-        downloadResult = download.download_vod_movies(forceUpdate)
-        downloadResultWeek = download.download_search_movies(forceUpdate)
-        if downloadResult == False or downloadResultWeek == False:
+        #Add items to list container
+        func.updateLabelText(self, 1, "Films laden")
+        if limovies.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
@@ -172,17 +147,6 @@ class Gui(xbmcgui.WindowXML):
             listContainer.selectItem(0)
             xbmc.sleep(100)
             return False
-
-        func.updateLabelText(self, 1, "Films laden")
-
-        #Add items to sort list
-        listContainerSort = []
-        limoviesweek.list_load(listContainerSort)
-        limoviesvod.list_load(listContainerSort)
-
-        #Sort and add items to container
-        listContainerSort.sort(key=lambda x: x.getProperty('ProgramName'))
-        listContainer.addItems(listContainerSort)
 
         #Update the status
         self.count_movies(True, selectIndex)

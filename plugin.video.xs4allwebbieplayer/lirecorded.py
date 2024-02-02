@@ -1,12 +1,38 @@
 from datetime import datetime, timedelta
+import download
 import func
+import lifunc
 import metadatacombine
 import metadatainfo
 import xbmcgui
 import path
 import var
 
-def list_load(listContainer):
+def list_load_combined(listContainer=None, forceUpdate=False):
+    try:
+        #Download recordings
+        downloadResultProfile = download.download_recording_profile(forceUpdate)
+        downloadResultEvent = download.download_recording_event(forceUpdate)
+        if downloadResultProfile == False or downloadResultEvent == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
+            xbmcgui.Dialog().notification(var.addonname, "Opnames downloaden mislukt.", notificationIcon, 2500, False)
+            return False
+
+        #Add items to sort list
+        listContainerSort = []
+        list_load_append(listContainerSort)
+
+        #Sort list items
+        listContainerSort.sort(key=lambda x: int(x[1].getProperty('ProgramStartTime')), reverse=True)
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_append(listContainer):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
@@ -40,7 +66,7 @@ def list_load(listContainer):
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramAssetId = metadatainfo.stream_assetid_from_json_metadata(program)
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramAvailability = metadatainfo.recording_available_time(program)
+            ProgramAvailability = metadatainfo.available_time_recording(program)
 
             #Load program timing
             ProgramStartTime = str(metadatainfo.programstarttime_from_json_metadata(program))
@@ -63,8 +89,9 @@ def list_load(listContainer):
             ProgramNameDesc += '\n' + ProgramAvailability
 
             #Add program
+            listAction = 'play_stream_recorded'
             listItem = xbmcgui.ListItem(ProgramNameRaw)
-            listItem.setProperty('Action', 'play_stream_recorded')
+            listItem.setProperty('Action', listAction)
             listItem.setProperty('ProgramAssetId', ProgramAssetId)
             listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
             listItem.setProperty('ProgramStartTime', ProgramStartTime)
@@ -76,6 +103,8 @@ def list_load(listContainer):
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
-            listContainer.append(listItem)
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramAssetId + var.splitchar + ProgramRecordEventId
+            listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

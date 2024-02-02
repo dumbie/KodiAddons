@@ -1,5 +1,5 @@
-import xbmcgui
 from datetime import datetime, timedelta
+import xbmcgui
 import dialog
 import download
 import metadatainfo
