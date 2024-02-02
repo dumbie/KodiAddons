@@ -19,7 +19,7 @@ def dialog_sleep():
     else:
         dialogSummary = 'Selecteer hier hoe lang u nog wilt kijken of luisteren voordat uw apparaat zich automatisch zal uitschakelen*'
 
-    if var.thread_sleep_timer != None and var.SleepEndingMinutes > 0:
+    if var.thread_sleep_timer != None and var.SleepEndingMinutes > 0 and var.SleepEndingMinutes < 9999:
         dialogFooter = '* Huidige slaap timer loopt af in ' + str(var.SleepEndingMinutes) + ' minuten.'
     else:
         dialogFooter = '* Slaap timer werkt alleen als Webbie Player geopend is.'
