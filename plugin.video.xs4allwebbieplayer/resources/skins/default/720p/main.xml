@@ -76,7 +76,6 @@
             <width>500</width>
             <height>30</height>
             <align>left</align>
-            <label>Aan het aanmelden.</label>
             <textcolor>FF888888</textcolor>
         </control>
         <control type="label" id="2">

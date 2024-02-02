@@ -103,7 +103,6 @@
             <width>500</width>
             <height>30</height>
             <align>left</align>
-            <label>Zenders laden</label>
             <textcolor>FF888888</textcolor>
         </control>
         <!-- Volume Muted -->
