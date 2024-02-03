@@ -117,11 +117,40 @@ thread_sleep_timer = threadclass.Class_ThreadSafe()
 
 #Player variables
 PlayerCustom = player.PlayerCustom()
-PlayerWindowed = False
-PlayerOpenOverlay = False
-PlayerShowInformation = False
-PlayerSeekOffsetStart = 0
-PlayerSeekOffsetEnd = 0
+def PlayerWindowed(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerOpenOverlay(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerShowInformation(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerSeekOffsetStart(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, 0)
+    else:
+         return func.globalvar_set(varName, setObject)
+
+def PlayerSeekOffsetEnd(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, 0)
+    else:
+         return func.globalvar_set(varName, setObject)
 
 #Player gui variables
 PlayerGuiChannelDelay = datetime(1970,1,1)
@@ -193,7 +222,7 @@ SearchSelectIndex = 0
 SearchChannelTerm = ''
 SearchDownloadSearchTerm = ''
 SearchProgramDataJson = []
-SearchHistoryProgramJson = []
+SearchHistorySearchJson = []
 SearchHistoryChannelJson = []
 SearchHistoryRadioJson = []
 

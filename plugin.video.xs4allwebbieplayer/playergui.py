@@ -28,11 +28,13 @@ def close_the_page():
         #Stop hide information thread
         var.thread_hide_playergui_info.Stop()
 
-        #Close the custom video player window
+        #Close custom video player window
         var.guiPlayer.close()
         var.guiPlayer = None
+        xbmc.sleep(100)
 
-        #Close the fullscreen media player
+        #Check and close fullscreen players
+        func.close_window_id(var.WINDOW_VISUALISATION)
         func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
 
 class Gui(xbmcgui.WindowXMLDialog):
