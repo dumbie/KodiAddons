@@ -153,6 +153,10 @@ def datetime_to_string(date_time, date_format):
 def datetime_from_string(date_string, date_format):
     return datetime(*(time.strptime(date_string, date_format)[0:6]))
 
+#Convert epoch ticks to seconds
+def ticks_to_seconds(ticks):
+    return int(ticks) / 100000 * 60
+
 #Convert epoch ticks to datetime
 def datetime_from_ticks(ticks):
     return datetime.fromtimestamp(int(ticks) / 1000)

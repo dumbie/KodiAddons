@@ -287,9 +287,14 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=120):
         #Check recorded properties
         streamcheck.check_recorded(listItem)
 
-        #Get the stream asset id
+        #Get stream asset id
         ProgramAssetId = listItem.getProperty('ProgramAssetId')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
+
+        #Get stream start delta time
+        ProgramStartDeltaTime = listItem.getProperty('ProgramStartDeltaTime')
+        if SeekOffsetStart == 120 and ProgramStartDeltaTime != '0':
+            SeekOffsetStart = func.ticks_to_seconds(ProgramStartDeltaTime)
 
         #Check recorded properties
         if func.string_isnullorempty(ProgramRecordEventId):
