@@ -329,35 +329,6 @@
                 <texturesliderbackground>-</texturesliderbackground>
             </control>
         </control>
-        <!-- Zap Number -->
-        <control type="group" id="7000">
-            <height>110</height>
-            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
-            <!-- Background -->
-            <control type="image">
-                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
-            </control>
-            <!-- Underbar -->
-            <control type="image">
-                <top>105</top>
-                <height>5</height>
-                <texture>common/background_accent.png</texture>
-            </control>
-            <!-- Text Countdown -->
-            <control type="label" id="7001">
-                <top>20</top>
-                <left>5</left>
-                <height>60</height>
-                <aligny>center</aligny>
-            </control>
-            <!-- Text Hint -->
-            <control type="label" id="7002">
-                <top>50</top>
-                <left>5</left>
-                <height>60</height>
-                <aligny>center</aligny>
-            </control>
-        </control>
         <!-- Sidebar and Information -->
         <control type="group" id="5000">
             <right>0</right>
@@ -542,6 +513,33 @@
                     <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                     <texturesliderbackground>-</texturesliderbackground>
                 </control>
+            </control>
+        </control>
+        <!-- Zap Number -->
+        <control type="group" id="7000">
+            <height>720</height>
+            <width>280</width>
+            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Sidebar -->
+            <control type="image">
+                <left>280</left>
+                <height>720</height>
+                <width>5</width>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Text Countdown -->
+            <control type="label" id="7001">
+                <top>10</top>
+                <left>10</left>
+            </control>
+            <!-- Text Hint -->
+            <control type="label" id="7002">
+                <top>40</top>
+                <left>10</left>
             </control>
         </control>
     </controls>

@@ -164,35 +164,6 @@
             <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
             <textcolor>FF888888</textcolor>
         </control>
-        <!-- Zap Number -->
-        <control type="group" id="7000">
-            <height>110</height>
-            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
-            <!-- Background -->
-            <control type="image">
-                <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
-            </control>
-            <!-- Underbar -->
-            <control type="image">
-                <top>105</top>
-                <height>5</height>
-                <texture>common/background_accent.png</texture>
-            </control>
-            <!-- Text Countdown -->
-            <control type="label" id="7001">
-                <top>20</top>
-                <left>5</left>
-                <height>60</height>
-                <aligny>center</aligny>
-            </control>
-            <!-- Text Hint -->
-            <control type="label" id="7002">
-                <top>50</top>
-                <left>5</left>
-                <height>60</height>
-                <aligny>center</aligny>
-            </control>
-        </control>
         <!-- Navigation Buttons -->
         <control type="panel" id="1001">
             <left>50</left>
@@ -358,6 +329,33 @@
                 <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+        <!-- Zap Number -->
+        <control type="group" id="7000">
+            <height>720</height>
+            <width>280</width>
+            <visible>String.IsEqual(Window().Property(ZapVisible), true)</visible>
+            <!-- Background -->
+            <control type="image">
+                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Sidebar -->
+            <control type="image">
+                <left>280</left>
+                <height>720</height>
+                <width>5</width>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Text Countdown -->
+            <control type="label" id="7001">
+                <top>10</top>
+                <left>10</left>
+            </control>
+            <!-- Text Hint -->
+            <control type="label" id="7002">
+                <top>40</top>
+                <left>10</left>
             </control>
         </control>
     </controls>
