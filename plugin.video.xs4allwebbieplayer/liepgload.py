@@ -61,7 +61,7 @@ def list_load_append(listContainer, epgJson):
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
             ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False, True)
-            ProgramDescription = 'Programmabeschrijving wordt geladen.'
+            ProgramDescriptionDesc = 'Programmabeschrijving wordt geladen.'
             ProgramEpgList = 'Programmaduur wordt geladen'
 
             #Combine program description extended
@@ -75,7 +75,7 @@ def list_load_append(listContainer, epgJson):
 
             #Check if current program is a rerun
             programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramName.lower())
-            programRerunDescription = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramDescription.lower())
+            programRerunDescription = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramDescriptionRaw.lower())
             if programRerunName or programRerunDescription:
                 ProgramRerun = 'true'
             else:
@@ -100,7 +100,7 @@ def list_load_append(listContainer, epgJson):
             listItem.setProperty('ProgramDuration', ProgramDurationString)
             listItem.setProperty('ProgramRecordSeriesId', ProgramRecordSeriesId)
             listItem.setProperty('ProgramDescriptionRaw', ProgramDescriptionRaw)
-            listItem.setProperty('ProgramDescription', ProgramDescription)
+            listItem.setProperty('ProgramDescriptionDesc', ProgramDescriptionDesc)
             listItem.setProperty('ProgramEpgList', ProgramEpgList)
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
