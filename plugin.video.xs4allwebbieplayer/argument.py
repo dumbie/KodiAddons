@@ -74,17 +74,17 @@ def handle_launch_argument_source():
 
         #Play streams
         elif var.LaunchArgument.startswith("?play_stream_tv="):
-            channelId = var.LaunchArgument.replace('?play_stream_tv=', '')
-            streamswitch.switch_tv_id(channelId, OpenOverlay=False)
+            actionSplit = var.LaunchArgument.replace('?play_stream_tv=', '').split(var.splitchar)
+            streamswitch.switch_tv_id(actionSplit[0], ShowInformation=True)
         elif var.LaunchArgument.startswith("?play_stream_radio="):
-            channelId = var.LaunchArgument.replace('?play_stream_radio=', '')
-            streamswitch.switch_radio_id(channelId)
+            actionSplit = var.LaunchArgument.replace('?play_stream_radio=', '').split(var.splitchar)
+            streamswitch.switch_radio_id(actionSplit[0], Windowed=False)
         elif var.LaunchArgument.startswith("?play_stream_program="):
             actionSplit = var.LaunchArgument.replace('?play_stream_program=', '').split(var.splitchar)
             streamswitch.switch_program_id(actionSplit[0])
         elif var.LaunchArgument.startswith("?play_stream_vod="):
-            programId = var.LaunchArgument.replace('?play_stream_vod=', '')
-            streamswitch.switch_vod_id(programId)
+            actionSplit = var.LaunchArgument.replace('?play_stream_vod=', '').split(var.splitchar)
+            streamswitch.switch_vod_id(actionSplit[0])
         elif var.LaunchArgument.startswith("?play_stream_recorded="):
             actionSplit = var.LaunchArgument.replace('?play_stream_recorded=', '').split(var.splitchar)
             streamswitch.switch_recorded_id(actionSplit[0], actionSplit[1])

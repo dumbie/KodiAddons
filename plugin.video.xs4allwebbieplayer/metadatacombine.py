@@ -81,12 +81,12 @@ def program_timing_program_metadata(metaData, dateTimeNow, dateTimeSeek):
 
 def program_timing_program_property(propertyData, dateTimeNow, returnShort=False):
     try:
-        ProgramTimeStartProp = propertyData.getProperty('ProgramTimeStart')
-        ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
+        ProgramTimeStart = propertyData.getProperty('ProgramTimeStart')
+        ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
         ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
         ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
-        ProgramTimeEndProp = propertyData.getProperty('ProgramTimeEnd')
-        ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndProp, '%Y-%m-%d %H:%M:%S')
+        ProgramTimeEnd = propertyData.getProperty('ProgramTimeEnd')
+        ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEnd, '%Y-%m-%d %H:%M:%S')
         ProgramTimeDurationString = propertyData.getProperty('ProgramDuration')
         ProgramTimeLeftMinutes = int((ProgramTimeEndDateTime - dateTimeNow).total_seconds() / 60)
         ProgramTimeLeftString = str(ProgramTimeLeftMinutes)

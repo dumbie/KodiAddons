@@ -42,10 +42,10 @@ def switch_vod_id(ProgramId, Windowed=False):
         return False
 
 #Switch recorded by identifier
-def switch_recorded_id(ProgramAssetId, ProgramRecordEventId, Windowed=False):
+def switch_recorded_id(StreamAssetId, ProgramRecordEventId, Windowed=False):
     try:
         listItem = xbmcgui.ListItem()
-        listItem.setProperty('ProgramAssetId', ProgramAssetId)
+        listItem.setProperty('StreamAssetId', StreamAssetId)
         listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
         streamplay.play_recorded(listItem, Windowed)
         return True

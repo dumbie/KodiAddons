@@ -7,7 +7,7 @@ import path
 def check_tv(listItem, defaultGenre='Televisie'):
     try:
         #Get item properties
-        AssetId = listItem.getProperty('AssetId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
         ChannelId = listItem.getProperty('ChannelId')
         ExternalId = listItem.getProperty('ExternalId')
         ChannelName = listItem.getProperty('ChannelName')
@@ -20,9 +20,9 @@ def check_tv(listItem, defaultGenre='Televisie'):
         channelJson = metadatafunc.search_channelid_jsontelevision(ChannelId)
 
         #Set item properties
-        if func.string_isnullorempty(AssetId):
-            AssetId = metadatainfo.stream_assetid_from_json_metadata(channelJson)
-            listItem.setProperty('AssetId', AssetId)
+        if func.string_isnullorempty(StreamAssetId):
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channelJson)
+            listItem.setProperty('StreamAssetId', StreamAssetId)
 
         if func.string_isnullorempty(ChannelName):
             ChannelName = metadatainfo.channelName_from_json_metadata(channelJson)
@@ -82,15 +82,15 @@ def check_radio(listItem, defaultGenre='Radio'):
 def check_program(listItem, metaData=None, defaultGenre='Programma'):
     try:
         #Get item properties
-        AssetId = listItem.getProperty('AssetId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
         ProgramName = listItem.getProperty('ProgramName')
         ItemLabel = listItem.getLabel()
         ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Set item properties
-        if func.string_isnullorempty(AssetId):
-            AssetId = metadatainfo.stream_assetid_from_json_metadata(metaData)
-            listItem.setProperty('AssetId', AssetId)
+        if func.string_isnullorempty(StreamAssetId):
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(metaData)
+            listItem.setProperty('StreamAssetId', StreamAssetId)
 
         if func.string_isnullorempty(ProgramName):
             if metaData == None:
@@ -111,15 +111,15 @@ def check_program(listItem, metaData=None, defaultGenre='Programma'):
 def check_vod(listItem, metaData=None, defaultGenre='Video on demand'):
     try:
         #Get item properties
-        AssetId = listItem.getProperty('AssetId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
         ProgramName = listItem.getProperty('ProgramName')
         ItemLabel = listItem.getLabel()
         ItemGenre = listItem.getVideoInfoTag().getGenre()
 
         #Set item properties
-        if func.string_isnullorempty(AssetId):
-            AssetId = metadatainfo.stream_assetid_from_json_metadata(metaData)
-            listItem.setProperty('AssetId', AssetId)
+        if func.string_isnullorempty(StreamAssetId):
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(metaData)
+            listItem.setProperty('StreamAssetId', StreamAssetId)
 
         if func.string_isnullorempty(ProgramName):
             if metaData == None:
@@ -140,7 +140,7 @@ def check_vod(listItem, metaData=None, defaultGenre='Video on demand'):
 def check_recorded(listItem, defaultGenre='Opname'):
     try:
         #Get item properties
-        AssetId = listItem.getProperty('ProgramAssetId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
         ProgramName = listItem.getProperty('ProgramName')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
         ExternalId = listItem.getProperty('ExternalId')
@@ -153,9 +153,9 @@ def check_recorded(listItem, defaultGenre='Opname'):
         programJson = metadatafunc.search_programid_jsonrecording_event(ProgramRecordEventId)
 
         #Set item properties
-        if func.string_isnullorempty(AssetId):
-            AssetId = metadatainfo.stream_assetid_from_json_metadata(programJson)
-            listItem.setProperty('ProgramAssetId', AssetId)
+        if func.string_isnullorempty(StreamAssetId):
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(programJson)
+            listItem.setProperty('StreamAssetId', StreamAssetId)
 
         if func.string_isnullorempty(ProgramName):
             ProgramName = metadatainfo.programtitle_from_json_metadata(programJson)

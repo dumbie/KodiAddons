@@ -23,7 +23,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         list_load_append(listContainerSort)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: int(x[1].getProperty('ProgramStartTime')), reverse=True)
+        listContainerSort.sort(key=lambda x: int(x[1].getProperty('ProgramTimeStart')), reverse=True)
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -64,13 +64,13 @@ def list_load_append(listContainer):
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-            ProgramAssetId = metadatainfo.stream_assetid_from_json_metadata(program)
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(program)
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_recording(program)
 
             #Load program timing
-            ProgramStartTime = str(metadatainfo.programstarttime_from_json_metadata(program))
-            ProgramStartDeltaTime = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
+            ProgramTimeStart = str(metadatainfo.programstarttime_from_json_metadata(program))
+            ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
 
             #Combine program timing
             ProgramTiming = metadatacombine.program_timing_vod(program)
@@ -92,10 +92,10 @@ def list_load_append(listContainer):
             listAction = 'play_stream_recorded'
             listItem = xbmcgui.ListItem(ProgramNameRaw)
             listItem.setProperty('Action', listAction)
-            listItem.setProperty('ProgramAssetId', ProgramAssetId)
+            listItem.setProperty('StreamAssetId', StreamAssetId)
             listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
-            listItem.setProperty('ProgramStartTime', ProgramStartTime)
-            listItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
+            listItem.setProperty('ProgramTimeStart', ProgramTimeStart)
+            listItem.setProperty('ProgramDeltaTimeStart', ProgramDeltaTimeStart)
             listItem.setProperty("ProgramName", ProgramNameList)
             listItem.setProperty("ProgramNameDesc", ProgramNameDesc)
             listItem.setProperty("ProgramNameRaw", ProgramNameRaw)
@@ -104,7 +104,7 @@ def list_load_append(listContainer):
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramAssetId + var.splitchar + ProgramRecordEventId
+            dirUrl = var.LaunchUrl + '?' + listAction + '=' + StreamAssetId + var.splitchar + ProgramRecordEventId
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

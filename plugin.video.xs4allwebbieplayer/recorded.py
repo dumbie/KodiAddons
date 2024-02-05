@@ -84,8 +84,8 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1000)
             listItemSelected = listContainer.getSelectedItem()
             ProgramRecordEventId = listItemSelected.getProperty("ProgramRecordEventId")
-            ProgramStartDeltaTime = listItemSelected.getProperty("ProgramStartDeltaTime")
-            recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramStartDeltaTime)
+            ProgramDeltaTimeStart = listItemSelected.getProperty("ProgramDeltaTimeStart")
+            recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
             if recordRemove == True:
                 #Remove item from the list
                 removeListItemId = listContainer.getSelectedPosition()

@@ -68,7 +68,7 @@ def count_recorded_series_id(seriesId):
 def record_event_epg(_self, listItemSelected, forceRecord=False):
     ProgramId = listItemSelected.getProperty('ProgramId')
     ProgramRecordEventId = listItemSelected.getProperty('ProgramRecordEventId')
-    ProgramStartDeltaTime = listItemSelected.getProperty('ProgramStartDeltaTime')
+    ProgramDeltaTimeStart = listItemSelected.getProperty('ProgramDeltaTimeStart')
 
     #Check if recording is already set
     if ProgramRecordEventId == '' or forceRecord == True:
@@ -77,7 +77,7 @@ def record_event_epg(_self, listItemSelected, forceRecord=False):
             _self.update_channel_status()
             _self.update_program_status()
     else:
-        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramStartDeltaTime)
+        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
         if recordRemove == True:
             _self.update_channel_status()
             _self.update_program_status()
@@ -89,8 +89,8 @@ def record_event_now_television_playergui(listItemSelected):
     recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramNowId)
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-        ProgramStartDeltaTime = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramStartDeltaTime)
+        ProgramDeltaTimeStart = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
+        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
         if recordRemove == True:
             listItemSelected.setProperty("ProgramNowRecordEvent", 'false')
     else:
@@ -105,8 +105,8 @@ def record_event_next_television_playergui(listItemSelected):
     recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramNextId)
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-        ProgramStartDeltaTime = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramStartDeltaTime)
+        ProgramDeltaTimeStart = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
+        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
         if recordRemove == True:
             listItemSelected.setProperty("ProgramNextRecordEvent", 'false')
     else:

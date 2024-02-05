@@ -31,8 +31,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             ProgramRecordEventId = listItemSelected.getProperty("ProgramRecordEventId")
-            ProgramStartDeltaTime = listItemSelected.getProperty("ProgramStartDeltaTime")
-            recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramStartDeltaTime)
+            ProgramDeltaTimeStart = listItemSelected.getProperty("ProgramDeltaTimeStart")
+            recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
             if recordRemove == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()

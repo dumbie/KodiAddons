@@ -16,6 +16,10 @@ def list_load_combined(listContainer=None, forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
+        #Load favorite and hidden channels
+        favorite.favorite_radio_json_load()
+        hidden.hidden_radio_json_load()
+
         #Add items to sort list
         listContainerSort = []
         list_load_append(listContainerSort)
@@ -28,8 +32,6 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         return False
 
 def list_load_append(listContainer):
-    favorite.favorite_radio_json_load()
-    hidden.hidden_radio_json_load()
     ChannelNumberInt = 0
     for channel in var.RadioChannelsDataJson['radios']:
         try:

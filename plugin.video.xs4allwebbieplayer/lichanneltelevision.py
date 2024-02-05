@@ -18,6 +18,10 @@ def list_load_combined(listContainer=None, forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
+        #Load favorite and hidden channels
+        favorite.favorite_television_json_load()
+        hidden.hidden_television_json_load()
+
         #Add items to sort list
         listContainerSort = []
         list_load_append(listContainerSort)
@@ -30,19 +34,17 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         return False
 
 def list_load_append(listContainer):
-    favorite.favorite_television_json_load()
-    hidden.hidden_television_json_load()
     var.TelevisionChannelIdsPlayable = []
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
-            AssetId = metadatainfo.stream_assetid_from_json_metadata(channel)
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channel)
             ChannelId = metadatainfo.channelId_from_json_metadata(channel)
             ChannelName = metadatainfo.channelName_from_json_metadata(channel)
             ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(channel)
 
             #Check if channel is streamable
-            if func.string_isnullorempty(AssetId): continue
+            if func.string_isnullorempty(StreamAssetId): continue
 
             #Check if channel is hidden
             if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
@@ -87,7 +89,7 @@ def list_load_append(listContainer):
             listAction = 'play_stream_tv'
             listItem = xbmcgui.ListItem(ChannelName)
             listItem.setProperty('Action', listAction)
-            listItem.setProperty('AssetId', AssetId)
+            listItem.setProperty('StreamAssetId', StreamAssetId)
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ChannelNumber', ChannelNumberString)
             listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)

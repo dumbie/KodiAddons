@@ -44,16 +44,16 @@ def list_update_program(listItem):
 
         #Get program information from item
         ProgramId = listItem.getProperty('ProgramId')
-        ProgramNameProp = listItem.getProperty('ProgramName')
+        ProgramName = listItem.getProperty('ProgramName')
         ProgramDescriptionRaw = listItem.getProperty('ProgramDescriptionRaw')
         ProgramIsCatchup = listItem.getProperty('ProgramIsCatchup')
-        ProgramDetailsProp = listItem.getProperty('ProgramDetails')
+        ProgramDetails = listItem.getProperty('ProgramDetails')
         ProgramRecordSeriesId = listItem.getProperty('ProgramRecordSeriesId')
-        ProgramTimeStartProp = listItem.getProperty('ProgramTimeStart')
-        ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
+        ProgramTimeStart = listItem.getProperty('ProgramTimeStart')
+        ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
         ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
-        ProgramTimeEndProp = listItem.getProperty('ProgramTimeEnd')
-        ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndProp, '%Y-%m-%d %H:%M:%S')
+        ProgramTimeEnd = listItem.getProperty('ProgramTimeEnd')
+        ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEnd, '%Y-%m-%d %H:%M:%S')
 
         #Update program progress
         ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
@@ -78,12 +78,12 @@ def list_update_program(listItem):
                 ProgramRecordEventPlanned = 'true'
                 ProgramRecordEventDone = 'false'
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-            ProgramStartDeltaTime = str(metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent))
+            ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent))
         else:
             ProgramRecordEventPlanned = 'false'
             ProgramRecordEventDone = 'false'
             ProgramRecordEventId = ''
-            ProgramStartDeltaTime = '0'
+            ProgramDeltaTimeStart = '0'
 
         #Check if program is recording series
         recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
@@ -94,7 +94,7 @@ def list_update_program(listItem):
 
         #Combine the program description
         ProgramEpgList = ProgramTimeStartString + ' ' + ProgramTimingList
-        ProgramDescription = ProgramNameProp + ' ' + ProgramTimingDescription + '\n\n' + ProgramDetailsProp + '\n\n' + ProgramDescriptionRaw
+        ProgramDescriptionDesc = ProgramName + ' ' + ProgramTimingDescription + '\n\n' + ProgramDetails + '\n\n' + ProgramDescriptionRaw
 
         #Check if program finished airing
         if ProgramProgressPercent >= 100:
@@ -110,9 +110,9 @@ def list_update_program(listItem):
 
         #Update program list item
         listItem.setProperty('ProgramEpgList', ProgramEpgList)
-        listItem.setProperty('ProgramDescription', ProgramDescription)
+        listItem.setProperty('ProgramDescriptionDesc', ProgramDescriptionDesc)
         listItem.setProperty('ProgramAlarm', ProgramAlarm)
-        listItem.setProperty('ProgramStartDeltaTime', ProgramStartDeltaTime)
+        listItem.setProperty('ProgramDeltaTimeStart', ProgramDeltaTimeStart)
         listItem.setProperty('ProgramRecordEventPlanned', ProgramRecordEventPlanned)
         listItem.setProperty('ProgramRecordEventDone', ProgramRecordEventDone)
         listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)

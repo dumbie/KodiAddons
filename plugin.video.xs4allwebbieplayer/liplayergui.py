@@ -47,7 +47,7 @@ def list_update(listItem):
             #Load program basics
             metaData = channelEpg['containers'][programIndex]
             ProgramNowId = metadatainfo.contentId_from_json_metadata(metaData)
-            ProgramNowNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
+            ProgramNowName = metadatainfo.programtitle_from_json_metadata(metaData)
 
             #Load program timing
             ProgramNowTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
@@ -66,7 +66,7 @@ def list_update(listItem):
             ProgramNowDetails = metadatacombine.program_details(metaData, True, False, True, True, True, True, True)
 
             #Check if program is a rerun
-            programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowNameRaw.lower())
+            programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowName.lower())
             programRerunDescription = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramNowDescription.lower())
             if programRerunName or programRerunDescription:
                 ProgramNowRerun = 'true'
@@ -90,7 +90,7 @@ def list_update(listItem):
         except:
             ProgramNowId = ''
             ProgramNowRecordSeriesId = ''
-            ProgramNowNameRaw = 'Onbekend programma'
+            ProgramNowName = 'Onbekend programma'
             ProgramNowTiming = '[COLOR gray]onbekend programmaduur[/COLOR]'
             ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
             ProgramNowDetails = 'Onbekend seizoen en aflevering'
@@ -162,7 +162,7 @@ def list_update(listItem):
             ProgramEarlier = ''
 
         #Combine program description
-        ProgramDescription = ProgramNowNameRaw + ' ' + ProgramNowTiming + '\n\n' + ProgramNowDetails + '\n\n' + ProgramNowDescription
+        ProgramDescription = ProgramNowName + ' ' + ProgramNowTiming + '\n\n' + ProgramNowDetails + '\n\n' + ProgramNowDescription
 
         #Append upcoming programs to the description
         if func.string_isnullorempty(ProgramUpcoming) == False:
@@ -175,7 +175,7 @@ def list_update(listItem):
         #Update the information in list item
         listItem.setProperty("ProgramNowId", ProgramNowId)
         listItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
-        listItem.setProperty("ProgramNowName", ProgramNowNameRaw)
+        listItem.setProperty("ProgramNowName", ProgramNowName)
         listItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
         listItem.setProperty("ProgramDescription", ProgramDescription)
         listItem.setProperty("ProgramNextId", ProgramNextId)

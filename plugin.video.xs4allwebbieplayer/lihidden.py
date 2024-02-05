@@ -8,7 +8,7 @@ import var
 
 def list_load_combined(listContainer, hiddenJsonFile):
     try:
-        #Load set hidden channels
+        #Load hidden channels
         if hiddenJsonFile == 'HiddenTelevision.js':
             hidden.hidden_television_json_load()
         else:
