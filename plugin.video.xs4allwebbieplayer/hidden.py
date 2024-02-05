@@ -95,6 +95,18 @@ def switch_to_page(hiddenMode='HiddenTelevision.js'):
     #Update hidden mode variable
     var.HiddenChannelMode = hiddenMode
 
+    #Check if there are hidden tv channels
+    if var.HiddenChannelMode == 'HiddenTelevision.js' and var.HiddenTelevisionJson == []:
+        notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Geen verborgen zenders.', notificationIcon, 2500, False)
+        return
+
+    #Check if there are hidden radio channels
+    if var.HiddenChannelMode == 'HiddenRadio.js' and var.HiddenRadioJson == []:
+        notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Geen verborgen zenders.', notificationIcon, 2500, False)
+        return
+
     #Show hidden channel overlay
     if var.guiHidden == None:
         var.guiHidden = Gui('schedule.xml', var.addonpath, 'default', '720p')
