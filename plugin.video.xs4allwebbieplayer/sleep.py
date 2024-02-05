@@ -45,13 +45,16 @@ def dialog_sleep():
 def thread_sleep_timer():
     threadLastTime = ''
     while var.thread_sleep_timer.Allowed():
-        threadCurrentTime = datetime.now().strftime('%H:%M')
-        if threadLastTime != threadCurrentTime:
-            threadLastTime = threadCurrentTime
-            var.SleepEndingMinutes -= 1
-            sleep_notification()
-        else:
-            var.thread_sleep_timer.Sleep(2000)
+        try:
+            threadCurrentTime = datetime.now().strftime('%H:%M')
+            if threadLastTime != threadCurrentTime:
+                threadLastTime = threadCurrentTime
+                var.SleepEndingMinutes -= 1
+                sleep_notification()
+            else:
+                var.thread_sleep_timer.Sleep(2000)
+        except:
+            pass
 
 def sleep_notification():
     #Check sleep times

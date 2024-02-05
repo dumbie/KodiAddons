@@ -153,9 +153,12 @@ def PlayerSeekOffsetEnd(setObject=None):
          return func.globalvar_set(varName, setObject)
 
 #Player gui variables
-PlayerGuiChannelDelay = datetime(1970,1,1)
-PlayerGuiInfoLastHide = datetime(1970,1,1)
-PlayerGuiInfoLastInteraction = datetime(1970,1,1)
+def PlayerGuiOpen(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
 
 #Api variables
 def ApiLoginFailCount(setObject=None):
@@ -194,13 +197,6 @@ def ApiLastLogin(setObject=None):
          return func.globalvar_set(varName, setObject)
 
 def ApiLoginCookie(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, '')
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def ApiLoginToken(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
          return func.globalvar_get(varName, '')

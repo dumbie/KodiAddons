@@ -147,8 +147,8 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma vanaf begin kijken':
-            ProgramTimeStartProp = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
-            ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartProp, '%Y-%m-%d %H:%M:%S')
+            ProgramTimeStart = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
+            ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
             ProgramTimeStartOffset = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
             streamplay.play_tv(listItemSelected, SeekOffsetEnd=ProgramTimeStartOffset)
         elif dialogResult == 'Programma in de TV Gids tonen':
@@ -391,19 +391,22 @@ class Gui(xbmcgui.WindowXML):
     def thread_update_television_program(self):
         threadLastTime = ''
         while var.thread_update_television_program.Allowed():
-            threadCurrentTime = datetime.now().strftime('%H:%M')
-            if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
-                threadLastTime = threadCurrentTime
-                forceUpdate = self.EpgForceUpdate
+            try:
+                threadCurrentTime = datetime.now().strftime('%H:%M')
+                if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
+                    threadLastTime = threadCurrentTime
+                    forceUpdate = self.EpgForceUpdate
 
-                #Reset update variables
-                self.EpgManualUpdate = False
-                self.EpgForceUpdate = False
+                    #Reset update variables
+                    self.EpgManualUpdate = False
+                    self.EpgForceUpdate = False
 
-                #Update program information
-                self.update_television_program(forceUpdate)
-            else:
-                var.thread_update_television_program.Sleep(1000)
+                    #Update program information
+                    self.update_television_program(forceUpdate)
+                else:
+                    var.thread_update_television_program.Sleep(1000)
+            except:
+                pass
 
     def update_television_program(self, forceUpdate=False):
         try:

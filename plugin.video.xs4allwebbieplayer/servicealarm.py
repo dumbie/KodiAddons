@@ -10,9 +10,7 @@ def alarm_notification():
     for alarm in var.AlarmDataJson:
         try:
             #Load alarm details
-            #ChannelId = alarm['channelid']
             ExternalId = alarm['externalid']
-            #ChannelName = alarm['channelname']
             ProgramName = alarm['programname']
             StartTime = alarm['starttime']
 
@@ -43,14 +41,17 @@ def alarm_notification():
 def thread_alarm_timer():
     threadLastTime = ''
     while var.thread_alarm_timer.Allowed(True):
-        threadCurrentTime = datetime.now().strftime('%H:%M')
-        if threadLastTime != threadCurrentTime:
-            threadLastTime = threadCurrentTime
-            alarm.alarm_json_load(True)
-            alarm_notification()
-            alarm.alarm_clean_expired(True)
-        else:
-            xbmc.sleep(2000)
+        try:
+            threadCurrentTime = datetime.now().strftime('%H:%M')
+            if threadLastTime != threadCurrentTime:
+                threadLastTime = threadCurrentTime
+                alarm.alarm_json_load(True)
+                alarm_notification()
+                alarm.alarm_clean_expired(True)
+            else:
+                xbmc.sleep(2000)
+        except:
+            pass
 
 def start_alarm_check():
     var.thread_alarm_timer.Start(thread_alarm_timer)

@@ -612,25 +612,31 @@ class Gui(xbmcgui.WindowXML):
     def thread_update_program_progress(self):
         threadLastTime = ''
         while var.thread_update_epg_program.Allowed():
-            threadCurrentTime = datetime.now().strftime('%H:%M')
-            if threadLastTime != threadCurrentTime or self.ProgramManualUpdate:
-                threadLastTime = threadCurrentTime
-                self.ProgramManualUpdate = False
+            try:
+                threadCurrentTime = datetime.now().strftime('%H:%M')
+                if threadLastTime != threadCurrentTime or self.ProgramManualUpdate:
+                    threadLastTime = threadCurrentTime
+                    self.ProgramManualUpdate = False
 
-                #Update program status
-                self.update_program_status()
-            else:
-                var.thread_update_epg_program.Sleep(1000)
+                    #Update program status
+                    self.update_program_status()
+                else:
+                    var.thread_update_epg_program.Sleep(1000)
+            except:
+                pass
 
     def thread_update_channel_progress(self):
         threadLastTime = ''
         while var.thread_update_epg_channel.Allowed():
-            threadCurrentTime = datetime.now().strftime('%H:%M')
-            if threadLastTime != threadCurrentTime or self.ChannelManualUpdate:
-                threadLastTime = threadCurrentTime
-                self.ChannelManualUpdate = False
+            try:
+                threadCurrentTime = datetime.now().strftime('%H:%M')
+                if threadLastTime != threadCurrentTime or self.ChannelManualUpdate:
+                    threadLastTime = threadCurrentTime
+                    self.ChannelManualUpdate = False
 
-                #Update channel status
-                self.update_channel_status()
-            else:
-                var.thread_update_epg_channel.Sleep(1000)
+                    #Update channel status
+                    self.update_channel_status()
+                else:
+                    var.thread_update_epg_channel.Sleep(1000)
+            except:
+                pass

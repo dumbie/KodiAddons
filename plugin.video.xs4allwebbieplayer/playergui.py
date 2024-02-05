@@ -16,7 +16,11 @@ import var
 import zap
 
 def switch_to_page():
-    if var.guiPlayer == None:
+    if var.guiPlayer == None and var.PlayerGuiOpen() == False:
+        #Update open variable
+        var.PlayerGuiOpen(True)
+
+        #Show player gui overlay
         var.guiPlayer = Gui('playergui.xml', var.addonpath, 'default', '720p')
         var.guiPlayer.show()
 
@@ -33,12 +37,14 @@ def close_the_page():
         var.guiPlayer = None
         xbmc.sleep(100)
 
-        #Check and close fullscreen players
-        func.close_window_id(var.WINDOW_VISUALISATION)
-        func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
+        #Update open variable
+        var.PlayerGuiOpen(False)
 
 class Gui(xbmcgui.WindowXMLDialog):
     EpgPauseUpdate = False
+    ChannelDelay = datetime(1970,1,1)
+    InfoLastHide = datetime(1970,1,1)
+    InfoLastInteraction = datetime(1970,1,1)
 
     def onInit(self):
         self.buttons_add_sidebar()
@@ -104,7 +110,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def onAction(self, action):
         #Update the last interaction time
-        var.PlayerGuiInfoLastInteraction = datetime.now()
+        self.InfoLastInteraction = datetime.now()
 
         #Check which action needs to execute
         actionId = action.getId()
@@ -143,7 +149,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif zap.check_remote_number(self, 1001, actionId, False, False):
             return
         elif playerFull == False:
-            lastHideSeconds = int((datetime.now() - var.PlayerGuiInfoLastHide).total_seconds())
+            lastHideSeconds = int((datetime.now() - self.InfoLastHide).total_seconds())
             if lastHideSeconds >= 1:
                 self.show_epg(False, False, True)
             return
@@ -179,49 +185,58 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def thread_update_playergui_info(self):
         while var.thread_update_playergui_info.Allowed():
-            playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
-            if playerSeek:
-                self.update_epg_information()
-            var.thread_update_playergui_info.Sleep(400)
+            try:
+                var.thread_update_playergui_info.Sleep(400)
+                playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
+                if playerSeek:
+                    self.update_epg_information()
+            except:
+                pass
 
     def thread_hide_playergui_info(self):
         while var.thread_hide_playergui_info.Allowed():
-            lastInteractSeconds = int((datetime.now() - var.PlayerGuiInfoLastInteraction).total_seconds())
-            if lastInteractSeconds >= int(var.addon.getSetting('PlayerInformationCloseTime')):
-                self.hide_epg()
-            else:
-                var.thread_hide_playergui_info.Sleep(1000)
+            try:
+                lastInteractSeconds = int((datetime.now() - self.InfoLastInteraction).total_seconds())
+                if lastInteractSeconds >= int(var.addon.getSetting('PlayerInformationCloseTime')):
+                    self.hide_epg()
+                else:
+                    var.thread_hide_playergui_info.Sleep(1000)
+            except:
+                pass
 
     def thread_channel_delay_timer(self):
         while var.thread_channel_delay_timer.Allowed():
-            xbmc.sleep(100)
-            interactSecond = 3
-            lastInteractSeconds = int((datetime.now() - var.PlayerGuiChannelDelay).total_seconds())
+            try:
+                xbmc.sleep(100)
+                interactSecond = 3
+                lastInteractSeconds = int((datetime.now() - self.ChannelDelay).total_seconds())
 
-            #Channel information
-            listContainer = self.getControl(1001)
-            listItemSelected = listContainer.getSelectedItem()
-            channelNameProp = listItemSelected.getProperty("ChannelName")
-            channelNumberProp = listItemSelected.getProperty("ChannelNumber")
+                #Channel information
+                listContainer = self.getControl(1001)
+                listItemSelected = listContainer.getSelectedItem()
+                channelName = listItemSelected.getProperty("ChannelName")
+                channelNumber = listItemSelected.getProperty("ChannelNumber")
 
-            #Countdown string
-            delayCountInt = interactSecond - lastInteractSeconds
-            delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR]'
-            delayChannelString = func.get_provider_color_string() + channelNumberProp + '[/COLOR] ' + channelNameProp
+                #Countdown string
+                delayCountInt = interactSecond - lastInteractSeconds
+                delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR]'
+                delayChannelString = func.get_provider_color_string() + channelNumber + '[/COLOR] ' + channelName
 
-            #Show remaining time
-            func.updateLabelText(self, 7001, delayCountString)
-            func.updateLabelText(self, 7002, delayChannelString)
-            self.setProperty('ZapVisible', 'true')
+                #Show remaining time
+                func.updateLabelText(self, 7001, delayCountString)
+                func.updateLabelText(self, 7002, delayChannelString)
+                self.setProperty('ZapVisible', 'true')
 
-            #Change the channel
-            if lastInteractSeconds >= interactSecond:
-                #Reset channel wait variables
-                var.thread_channel_delay_timer.Stop()
-                self.setProperty('ZapVisible', 'false')
+                #Change the channel
+                if lastInteractSeconds >= interactSecond:
+                    #Reset channel wait variables
+                    var.thread_channel_delay_timer.Stop()
+                    self.setProperty('ZapVisible', 'false')
 
-                #Switch to selected channel
-                streamplay.play_tv(listItemSelected, ShowInformation=True)
+                    #Switch to selected channel
+                    streamplay.play_tv(listItemSelected, ShowInformation=True)
+            except:
+                pass
 
     def buttons_add_sidebar(self):
         #Get and check the list container
@@ -450,7 +465,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)
 
     def switch_channel_nexttv(self):
-        var.PlayerGuiChannelDelay = datetime.now()
+        self.ChannelDelay = datetime.now()
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
@@ -461,7 +476,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def switch_channel_previoustv(self):
-        var.PlayerGuiChannelDelay = datetime.now()
+        self.ChannelDelay = datetime.now()
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
@@ -504,7 +519,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def hide_epg(self):
         #Update the last hide time
-        var.PlayerGuiInfoLastHide = datetime.now()
+        self.InfoLastHide = datetime.now()
 
         #Hide the epg interface
         self.setProperty('WebbiePlayerFull', 'false')
@@ -512,7 +527,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def show_epg(self, seekInterface=False, removeFocus=False, selectChannel=True):
         #Update the last interaction time
-        var.PlayerGuiInfoLastInteraction = datetime.now()
+        self.InfoLastInteraction = datetime.now()
 
         #Show the epg interface
         if seekInterface == False:
