@@ -85,7 +85,6 @@ def ApiFailVariableUpdate():
         var.ApiLoggedIn(False)
         var.ApiLastLogin(datetime(1970,1,1))
         var.ApiLoginCookie('')
-        var.ApiLoginToken('')
         newFailCount = var.ApiLoginFailCount() + 1
         var.ApiLoginFailCount(newFailCount)
         return True
@@ -191,16 +190,6 @@ def ApiLogin(loginNotification=False, forceLogin=False):
                 xbmcgui.Dialog().notification(var.addonname, 'Onjuiste gegevens: ' + resultMessage, notificationIcon, 5000, False)
                 ApiFailVariableUpdate()
                 return False
-
-        #Read and set the returned token
-        newApiLoginToken = hybrid.urllib_getheader(DownloadDataHttp, 'X-Xsrf-Token')
-        if func.string_isnullorempty(newApiLoginToken) == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Login token lezen mislukt.', notificationIcon, 2500, False)
-            ApiFailVariableUpdate()
-            return False
-        else:
-            var.ApiLoginToken(newApiLoginToken)
 
         #Filter and clone the cookie contents
         newApiLoginCookie = ''

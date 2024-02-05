@@ -21,7 +21,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         streamcheck.check_tv(listItem)
 
         #Get channel properties
-        NewAssetId = listItem.getProperty('AssetId')
+        NewStreamAssetId = listItem.getProperty('StreamAssetId')
         NewChannelId = listItem.getProperty('ChannelId')
 
         #Check channel properties
@@ -30,7 +30,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
             xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
             return
 
-        if func.string_isnullorempty(NewAssetId):
+        if func.string_isnullorempty(NewStreamAssetId):
             notificationIcon = path.resources('resources/skins/default/media/common/television.png')
             xbmcgui.Dialog().notification(var.addonname, 'Stream is niet speelbaar wegens rechten.', notificationIcon, 2500, False)
             return
@@ -42,11 +42,10 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         #Download the television stream url
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
+            "Cookie": var.ApiLoginCookie()
         }
 
-        RequestUrl = path.stream_url_tv(NewChannelId, NewAssetId) + StartString
+        RequestUrl = path.stream_url_tv(NewChannelId, NewStreamAssetId) + StartString
         DownloadRequest = hybrid.urllib_request(RequestUrl, headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
@@ -112,7 +111,7 @@ def play_radio(listItem, Windowed=True):
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_program(listItem, Windowed=False, SeekOffsetStart=120):
+def play_program(listItem, Windowed=False, SeekOffsetStart=180):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -132,8 +131,7 @@ def play_program(listItem, Windowed=False, SeekOffsetStart=120):
         #Download the program userdata
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
+            "Cookie": var.ApiLoginCookie()
         }
 
         DownloadRequest = hybrid.urllib_request(path.detail_program(ProgramId), headers=DownloadHeaders)
@@ -144,7 +142,7 @@ def play_program(listItem, Windowed=False, SeekOffsetStart=120):
         streamcheck.check_program(listItem, DownloadDataJson)
 
         #Get the stream asset id
-        StreamAssetId = listItem.getProperty('AssetId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
 
         #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):
@@ -155,8 +153,7 @@ def play_program(listItem, Windowed=False, SeekOffsetStart=120):
         #Download the program stream url
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
+            "Cookie": var.ApiLoginCookie()
         }
 
         DownloadRequest = hybrid.urllib_request(path.stream_url_program(ProgramId, StreamAssetId), headers=DownloadHeaders)
@@ -214,8 +211,7 @@ def play_vod(listItem, Windowed=False):
         #Download the program userdata
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
+            "Cookie": var.ApiLoginCookie()
         }
 
         DownloadRequest = hybrid.urllib_request(path.detail_vod(ProgramId), headers=DownloadHeaders)
@@ -226,7 +222,7 @@ def play_vod(listItem, Windowed=False):
         streamcheck.check_vod(listItem, DownloadDataJson)
 
         #Get the stream asset id
-        StreamAssetId = listItem.getProperty('AssetId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
 
         #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):
@@ -237,8 +233,7 @@ def play_vod(listItem, Windowed=False):
         #Download the program stream url
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
+            "Cookie": var.ApiLoginCookie()
         }
 
         DownloadRequest = hybrid.urllib_request(path.stream_url_vod(ProgramId, StreamAssetId), headers=DownloadHeaders)
@@ -276,7 +271,7 @@ def play_vod(listItem, Windowed=False):
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_recorded(listItem, Windowed=False, SeekOffsetStart=120):
+def play_recorded(listItem, Windowed=False, SeekOffsetStart=180):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -288,13 +283,13 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=120):
         streamcheck.check_recorded(listItem)
 
         #Get stream asset id
-        ProgramAssetId = listItem.getProperty('ProgramAssetId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
 
         #Get stream start delta time
-        ProgramStartDeltaTime = listItem.getProperty('ProgramStartDeltaTime')
-        if SeekOffsetStart == 120 and ProgramStartDeltaTime != '0':
-            SeekOffsetStart = func.ticks_to_seconds(ProgramStartDeltaTime)
+        ProgramDeltaTimeStart = listItem.getProperty('ProgramDeltaTimeStart')
+        if SeekOffsetStart == 180 and ProgramDeltaTimeStart != '0':
+            SeekOffsetStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
 
         #Check recorded properties
         if func.string_isnullorempty(ProgramRecordEventId):
@@ -302,7 +297,7 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=120):
             xbmcgui.Dialog().notification(var.addonname, 'Ongeldige opname informatie.', notificationIcon, 2500, False)
             return
 
-        if func.string_isnullorempty(ProgramAssetId):
+        if func.string_isnullorempty(StreamAssetId):
             notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
             xbmcgui.Dialog().notification(var.addonname, 'Stream is niet speelbaar wegens rechten.', notificationIcon, 2500, False)
             return
@@ -310,11 +305,10 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=120):
         #Download the program stream url
         DownloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken()
+            "Cookie": var.ApiLoginCookie()
         }
 
-        DownloadRequest = hybrid.urllib_request(path.stream_url_recording(ProgramRecordEventId, ProgramAssetId), headers=DownloadHeaders)
+        DownloadRequest = hybrid.urllib_request(path.stream_url_recording(ProgramRecordEventId, StreamAssetId), headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 

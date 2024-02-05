@@ -13,7 +13,6 @@ def request_download_gzip(urlPath, sendData=None, sendMethod=None):
         downloadHeaders = {
             "User-Agent": var.addon.getSetting('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie(),
-            "X-Xsrf-Token": var.ApiLoginToken(),
             'Content-Type': 'application/json',
             'Accept-Encoding': 'gzip'
         }
