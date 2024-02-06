@@ -88,7 +88,7 @@ def handle_launch_argument_source():
         elif var.LaunchArgument.startswith("?play_stream_recorded="):
             actionSplit = var.LaunchArgument.replace('?play_stream_recorded=', '').split(var.splitchar)
             offset = 120
-            if actionSplit.length() > 2:
+            if len(actionSplit) > 2:
                 offset = actionSplit[2]
             streamswitch.switch_recorded_id(actionSplit[0], actionSplit[1],
                                             False, offset)
