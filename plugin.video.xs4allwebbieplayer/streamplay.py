@@ -87,7 +87,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_radio(listItem, Windowed=True):
+def play_radio(listItem, Windowed=False):
     try:
         #Check channel properties
         streamcheck.check_radio(listItem)
@@ -288,7 +288,7 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=180):
 
         #Get stream start delta time
         ProgramDeltaTimeStart = listItem.getProperty('ProgramDeltaTimeStart')
-        if SeekOffsetStart == 180 and ProgramDeltaTimeStart != '0':
+        if func.string_isnullorempty(ProgramDeltaTimeStart) == False and ProgramDeltaTimeStart != '0' and SeekOffsetStart == 180:
             SeekOffsetStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
 
         #Check recorded properties

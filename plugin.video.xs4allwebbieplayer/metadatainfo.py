@@ -152,7 +152,11 @@ def programtitle_from_json_metadata(metaData, returnEmpty=False):
 #Get program startdelta from json metadata
 def programstartdeltatime_from_json_metadata(metaData):
     try:
-        return int(metaData['metadata']['startDeltaTime'])
+        if 'startDeltaTime' in metaData['metadata']:
+            return int(metaData['metadata']['startDeltaTime'])
+        if 'assetStartDeltaTime' in metaData['assets'][0]:
+            return int(metaData['assets'][0]['assetStartDeltaTime'])
+        return 0
     except:
         return 0
 
