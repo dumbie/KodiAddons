@@ -3,7 +3,6 @@ import xbmc
 import xbmcgui
 import alarm
 import lichanneltelevision
-import download
 import func
 import lifunc
 import path
@@ -37,6 +36,11 @@ def close_the_page():
         var.guiPlayer = None
         xbmc.sleep(100)
 
+        #Close fullscreen player window
+        func.close_window_id(var.WINDOW_VISUALISATION)
+        func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
+        xbmc.sleep(100)
+
         #Update open variable
         var.PlayerGuiOpen(False)
 
@@ -48,8 +52,6 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         self.buttons_add_sidebar()
-        self.load_recording_event(False)
-        self.load_recording_series(False)
         self.load_channels()
         self.start_threads()
 
@@ -486,14 +488,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Start the channel wait thread
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
-    def load_recording_event(self, forceUpdate=False):
-        downloadResult = download.download_recording_event(forceUpdate)
-        if downloadResult == False: return False
-
-    def load_recording_series(self, forceUpdate=False):
-        downloadResult = download.download_recording_series(forceUpdate)
-        if downloadResult == False: return False
-
     def load_channels(self, forceLoad=False):
         self.EpgPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
@@ -525,7 +519,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         self.setProperty('WebbiePlayerFull', 'false')
         self.setProperty('WebbiePlayerSeek', 'false')
 
-    def show_epg(self, seekInterface=False, removeFocus=False, selectChannel=True):
+    def show_epg(self, seekInterface=False, removeFocus=False, selectCurrentChannel=True):
         #Update the last interaction time
         self.InfoLastInteraction = datetime.now()
 
@@ -536,7 +530,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             self.setProperty('WebbiePlayerSeek', 'true')
 
         #Select the current channel
-        if selectChannel:
+        if selectCurrentChannel:
             currentChannelId = var.addon.getSetting('CurrentChannelId')
             lifunc.focus_on_channelid_in_list(self, 1001, 0, True, currentChannelId)
 

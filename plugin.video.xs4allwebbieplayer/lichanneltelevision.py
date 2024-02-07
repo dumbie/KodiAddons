@@ -11,9 +11,13 @@ import var
 
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
+        #Download recordings
+        downloadResultRecordingEvent = download.download_recording_event(forceUpdate)
+        downloadResultRecordingSeries = download.download_recording_series(forceUpdate)
+
         #Download channels
-        downloadResult = download.download_channels_tv(forceUpdate)
-        if downloadResult == False:
+        downloadResultChannels = download.download_channels_tv(forceUpdate)
+        if downloadResultRecordingEvent == False or downloadResultRecordingSeries == False or downloadResultChannels == False:
             notificationIcon = path.resources('resources/skins/default/media/common/television.png')
             xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False

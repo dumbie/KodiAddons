@@ -45,8 +45,6 @@ class Gui(xbmcgui.WindowXML):
 
     def onInit(self):
         self.buttons_add_navigation()
-        self.load_recording_event(False)
-        self.load_recording_series(False)
         self.load_channels(False, False)
         self.start_threads()
 
@@ -64,7 +62,7 @@ class Gui(xbmcgui.WindowXML):
                 if listItemAction == 'go_back':
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
-                    self.refresh_programs(True)
+                    self.load_channels(True, True)
                 elif listItemAction == 'hidden_channels':
                     hidden.switch_to_page()
                 elif listItemAction == "switch_all_favorites":
@@ -220,14 +218,6 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
 
-    def refresh_programs(self, forceUpdate=False):
-        try:
-            self.load_recording_event(forceUpdate)
-            self.load_recording_series(forceUpdate)
-            self.load_channels(True, forceUpdate)
-        except:
-            pass
-
     def hide_channel(self, listContainer, listItemSelected):
         self.EpgPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
@@ -300,14 +290,6 @@ class Gui(xbmcgui.WindowXML):
 
         #Reset search variable
         var.SearchChannelTerm = ''
-
-    def load_recording_event(self, forceUpdate=False):
-        downloadResult = download.download_recording_event(forceUpdate)
-        if downloadResult == False: return False
-
-    def load_recording_series(self, forceUpdate=False):
-        downloadResult = download.download_recording_series(forceUpdate)
-        if downloadResult == False: return False
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
         self.EpgPauseUpdate = True

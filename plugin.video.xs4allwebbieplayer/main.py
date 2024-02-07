@@ -88,15 +88,10 @@ class Gui(xbmcgui.WindowXML):
             func.updateLabelText(self, 1, "Aan het aanmelden.")
             apilogin.ApiLogin()
 
-        #Check if user is logged in
+        #Update current login status
         if var.ApiLoggedIn() == True:
-            #Update the current login status
             func.updateLabelText(self, 1, "Aangemeld, veel kijkplezier.")
-
-            #Update recording profile
-            download.download_recording_profile()
         else:
-            #Update the current login status
             func.updateLabelText(self, 1, "Aanmelden is mislukt.")
 
         #Add menu buttons to the page

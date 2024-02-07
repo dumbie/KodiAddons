@@ -116,7 +116,7 @@ def close_the_page():
     if var.guiHidden != None:
         #Refresh television channels on change
         if var.guiTelevision != None and var.HiddenChannelChanged == True:
-            var.guiTelevision.refresh_programs(False)
+            var.guiTelevision.load_channels(True)
             var.HiddenChannelChanged = False
 
         #Refresh radio channels on change
