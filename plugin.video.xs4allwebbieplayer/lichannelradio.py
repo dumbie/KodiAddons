@@ -43,9 +43,9 @@ def list_load_append(listContainer):
             if hidden.hidden_check(ChannelId, 'HiddenRadio.js'): continue
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch = func.search_filter_string(ChannelName)
-                searchResultFound = var.SearchChannelTerm in searchMatch
+                searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
             #Load channel details
@@ -54,7 +54,7 @@ def list_load_append(listContainer):
             #Check if channel is marked as favorite
             if favorite.favorite_check(ChannelId, 'FavoriteRadio.js'):
                 ChannelFavorite = 'true'
-            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm):
+            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
                 continue
             else:
                 ChannelFavorite = 'false'

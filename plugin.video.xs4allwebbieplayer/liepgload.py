@@ -20,7 +20,7 @@ def list_load_combined(listContainer, forceUpdate=False):
 
         #Add items to sort list
         listContainerSort = []
-        if func.string_isnullorempty(var.SearchChannelTerm):
+        if func.string_isnullorempty(var.SearchTermCurrent):
             #Load programs for current channel on set day
             channelEpgJson = metadatafunc.search_channelid_jsonepg(var.EpgCurrentDayDataJson, var.EpgCurrentChannelId)
             if channelEpgJson != None:
@@ -59,7 +59,7 @@ def list_load_append(listContainer, epgJson):
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch = func.search_filter_string(ProgramName)
                 searchResultFound = var.SearchCurrentTerm in searchMatch
                 if searchResultFound == False:

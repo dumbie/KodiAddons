@@ -360,9 +360,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchCurrentTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
         channelsLoaded = self.load_channels(True)
-        var.SearchCurrentTerm = ''
+        var.SearchTermCurrent = ''
         if channelsLoaded == True:
             self.set_channel_epg_variables()
             self.load_programs(False, True)
@@ -376,9 +376,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchCurrentTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
         self.load_programs(False, True, True)
-        var.SearchCurrentTerm = ''
+        var.SearchTermCurrent = ''
 
     def set_channel_epg_variables(self):
         #Set the currently selected channel
@@ -433,9 +433,9 @@ class Gui(xbmcgui.WindowXML):
 
             #Update status label text
             listContainer = self.getControl(1000)
-            if var.SearchCurrentTerm != '':
+            if var.SearchTermCurrent != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchCurrentTerm + " [COLOR gray]niet gevonden.[/COLOR]")
+                func.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden.[/COLOR]")
                 listContainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
@@ -565,19 +565,19 @@ class Gui(xbmcgui.WindowXML):
         #Update the label texts
         listContainer = self.getControl(1002)
         if listContainer.size() == 0:
-            if var.SearchCurrentTerm == '':
+            if var.SearchTermCurrent == '':
                 func.updateLabelText(self, 1, "Geen programma's")
                 func.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchCurrentTerm + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
+                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
         else:
-            if var.SearchCurrentTerm == '':
+            if var.SearchTermCurrent == '':
                 func.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
                 func.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 func.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchCurrentTerm + " [COLOR gray]op[/COLOR] " + loadDayString)
+                func.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]op[/COLOR] " + loadDayString)
 
     def thread_update_program_progress(self):
         threadLastTime = ''

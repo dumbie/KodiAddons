@@ -42,9 +42,9 @@ def list_load_vod(listContainer):
             TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchChannelTerm in searchMatch
+                searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
             #Check if content is pay to play
@@ -87,9 +87,9 @@ def list_load_program(listContainer):
             ProgramName = metadatainfo.episodetitle_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchChannelTerm in searchMatch
+                searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
             #Load program details

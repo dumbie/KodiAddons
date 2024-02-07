@@ -222,7 +222,7 @@ HiddenRadioJson = []
 
 #Search variables
 SearchSelectIndex = 0
-SearchChannelTerm = ''
+SearchTermCurrent = ''
 SearchDownloadSearchTerm = ''
 SearchProgramDataJson = []
 SearchHistorySearchJson = []

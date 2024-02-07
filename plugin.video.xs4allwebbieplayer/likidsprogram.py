@@ -39,9 +39,9 @@ def list_load_vod_append(listContainer):
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchChannelTerm in searchMatch
+                searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
             #Load program details
@@ -81,9 +81,9 @@ def list_load_program_append(listContainer):
             if lifunc.search_programname_listarray(tupleContainer, ProgramName) != None: continue
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchChannelTerm in searchMatch
+                searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
             #Check if program is serie or movie

@@ -283,13 +283,13 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
 
         #Load television channels
         self.load_channels(True, False)
 
         #Reset search variable
-        var.SearchChannelTerm = ''
+        var.SearchTermCurrent = ''
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
         self.EpgPauseUpdate = True
@@ -340,9 +340,9 @@ class Gui(xbmcgui.WindowXML):
         #Update status label text
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 func.updateLabelText(self, 1, str(listContainer.size()) + ' zenders gevonden')
-                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
             else:
                 func.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
                 if var.ApiHomeAccess() == True:
@@ -357,9 +357,9 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
                 listContainer.selectItem(2)
             else:
                 func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
