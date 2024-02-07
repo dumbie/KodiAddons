@@ -4,19 +4,21 @@ import files
 import path
 import var
 
-def favorite_television_json_load():
+def favorite_television_json_load(forceLoad=False):
     try:
-        if var.FavoriteTelevisionJson == [] and files.existFile('FavoriteTelevision.js') == True:
-            FavoriteJsonString = files.openFile('FavoriteTelevision.js')
-            var.FavoriteTelevisionJson = json.loads(FavoriteJsonString)
+        if var.FavoriteTelevisionJson == [] or forceLoad == True:
+            if files.existFile('FavoriteTelevision.js') == True:
+                FavoriteJsonString = files.openFile('FavoriteTelevision.js')
+                var.FavoriteTelevisionJson = json.loads(FavoriteJsonString)
     except:
         var.FavoriteTelevisionJson = []
 
-def favorite_radio_json_load():
+def favorite_radio_json_load(forceLoad=False):
     try:
-        if var.FavoriteRadioJson == [] and files.existFile('FavoriteRadio.js') == True:
-            FavoriteJsonString = files.openFile('FavoriteRadio.js')
-            var.FavoriteRadioJson = json.loads(FavoriteJsonString)
+        if var.FavoriteRadioJson == [] or forceLoad == True:
+            if files.existFile('FavoriteRadio.js') == True:
+                FavoriteJsonString = files.openFile('FavoriteRadio.js')
+                var.FavoriteRadioJson = json.loads(FavoriteJsonString)
     except:
         var.FavoriteRadioJson = []
 
