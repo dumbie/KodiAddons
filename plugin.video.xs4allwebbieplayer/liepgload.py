@@ -1,17 +1,34 @@
 from datetime import datetime, timedelta
+import download
 import func
 import lifunc
+import metadatafunc
 import metadatainfo
 import metadatacombine
 import xbmcgui
 import path
 import var
 
-def list_load_combined(listContainer, epgJson):
+def list_load_combined(listContainer, forceUpdate=False):
     try:
+        #Download epg day
+        var.EpgCurrentDayDataJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
+        if var.EpgCurrentDayDataJson == None:
+            notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
+            xbmcgui.Dialog().notification(var.addonname, "Tv Gids downloaden mislukt.", notificationIcon, 2500, False)
+            return False
+
         #Add items to sort list
         listContainerSort = []
-        list_load_append(listContainerSort, epgJson)
+        if func.string_isnullorempty(var.SearchCurrentTerm):
+            #Load programs for current channel on set day
+            channelEpgJson = metadatafunc.search_channelid_jsonepg(var.EpgCurrentDayDataJson, var.EpgCurrentChannelId)
+            if channelEpgJson != None:
+                list_load_append(listContainerSort, channelEpgJson)
+        else:
+            #Load programs for search term from all channels on set day
+            for channelEpgJson in var.EpgCurrentDayDataJson["resultObj"]["containers"]:
+                list_load_append(listContainerSort, channelEpgJson)
 
         #Sort list items
         listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
@@ -42,9 +59,9 @@ def list_load_append(listContainer, epgJson):
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchCurrentTerm != '':
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchChannelTerm in searchMatch
+                searchResultFound = var.SearchCurrentTerm in searchMatch
                 if searchResultFound == False:
                     continue
 
