@@ -45,7 +45,7 @@ class Gui(xbmcgui.WindowXML):
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')
                 if listItemAction == 'play_stream_radio':
-                    streamplay.play_radio(listItemSelected, True)
+                    streamplay.play_radio(listItemSelected)
             elif clickId == 1001:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('Action')
