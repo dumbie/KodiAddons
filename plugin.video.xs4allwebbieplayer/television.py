@@ -4,7 +4,6 @@ import xbmcgui
 import alarm
 import lichanneltelevision
 import dialog
-import download
 import epg
 import favorite
 import hidden
@@ -40,7 +39,6 @@ def close_the_page():
 
 class Gui(xbmcgui.WindowXML):
     EpgPauseUpdate = False
-    EpgForceUpdate = False
     EpgManualUpdate = False
 
     def onInit(self):
@@ -100,7 +98,6 @@ class Gui(xbmcgui.WindowXML):
     def start_threads(self):
         #Force manual epg update
         self.EpgManualUpdate = True
-        self.EpgForceUpdate = False
 
         #Start the epg update thread
         var.thread_update_television_program.Start(self.thread_update_television_program)
@@ -314,8 +311,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         func.updateLabelText(self, 1, 'Zenders laden')
+        func.updateLabelText(self, 3, "")
         if lichanneltelevision.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
+            func.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
@@ -328,7 +327,6 @@ class Gui(xbmcgui.WindowXML):
 
         #Force manual epg update
         self.EpgManualUpdate = True
-        self.EpgForceUpdate = forceUpdate
 
     #Update the status
     def count_channels(self, resetSelect=False):
@@ -375,31 +373,20 @@ class Gui(xbmcgui.WindowXML):
         while var.thread_update_television_program.Allowed():
             try:
                 threadCurrentTime = datetime.now().strftime('%H:%M')
-                if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
+                if threadLastTime != threadCurrentTime or self.EpgManualUpdate == True:
+                    #Update thread variables
                     threadLastTime = threadCurrentTime
-                    forceUpdate = self.EpgForceUpdate
-
-                    #Reset update variables
                     self.EpgManualUpdate = False
-                    self.EpgForceUpdate = False
 
                     #Update program information
-                    self.update_television_program(forceUpdate)
+                    self.update_television_program()
                 else:
                     var.thread_update_television_program.Sleep(1000)
             except:
                 pass
 
-    def update_television_program(self, forceUpdate=False):
+    def update_television_program(self):
         try:
-            if forceUpdate == True:
-                #Show tv guide refresh notification
-                notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-                xbmcgui.Dialog().notification(var.addonname, 'TV Gids wordt vernieuwd.', notificationIcon, 2500, False)
-
-                #Download epg information for today
-                download.download_epg_day(datetime.now(), True)
-
             #Get and check the list container
             listContainer = self.getControl(1000)
             listItemCount = listContainer.size()

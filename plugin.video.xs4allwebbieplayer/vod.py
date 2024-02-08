@@ -189,6 +189,7 @@ class Gui(xbmcgui.WindowXML):
         func.updateLabelText(self, 3, "")
         if livod.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
+            func.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)

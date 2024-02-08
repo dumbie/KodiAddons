@@ -145,8 +145,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         func.updateLabelText(self, 1, "Uitzendingen laden")
+        func.updateLabelText(self, 3, "")
         if lisport.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
+            func.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)

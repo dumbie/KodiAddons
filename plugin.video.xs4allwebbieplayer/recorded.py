@@ -152,8 +152,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         func.updateLabelText(self, 1, "Opnames laden")
+        func.updateLabelText(self, 3, "")
         if lirecorded.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
+            func.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
@@ -179,7 +181,7 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
             else:
                 func.updateLabelText(self, 1, str(listContainer.size()) + " opnames")
-                func.updateLabelText(self, 3, '')
+                func.updateLabelText(self, 3, "")
 
             if resetSelect == True:
                 self.setFocus(listContainer)
