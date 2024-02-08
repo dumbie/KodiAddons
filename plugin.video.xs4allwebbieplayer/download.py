@@ -345,13 +345,17 @@ def download_vod_series_season(parentId):
         xbmcgui.Dialog().notification(var.addonname, 'Serie download mislukt.', notificationIcon, 2500, False)
         return None
 
-def download_search_program(programName):
+def download_search_program(programName, forceUpdate=False):
     try:
+        #Check if data is already cached
+        if var.SearchProgramDataJson != [] and forceUpdate == False:
+            return True
+
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
             notificationIcon = path.resources('resources/skins/default/media/common/search.png')
             xbmcgui.Dialog().notification(var.addonname, 'Zoek download mislukt, niet aangemeld.', notificationIcon, 2500, False)
-            return None
+            return False
 
         #Download json data
         DownloadDataJson = request_download_gzip(path.search_program(programName))
@@ -364,13 +368,14 @@ def download_search_program(programName):
                 var.ApiLoggedIn(False)
                 notificationIcon = path.resources('resources/skins/default/media/common/search.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Zoek download mislukt: ' + resultMessage, notificationIcon, 2500, False)
-                return None
+                return False
 
-        return DownloadDataJson
+        var.SearchProgramDataJson = DownloadDataJson
+        return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/search.png')
         xbmcgui.Dialog().notification(var.addonname, 'Zoek download mislukt.', notificationIcon, 2500, False)
-        return None
+        return False
 
 def download_search_kids(forceUpdate=False):
     try:

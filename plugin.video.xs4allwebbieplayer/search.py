@@ -1,7 +1,6 @@
 import xbmc
 import xbmcgui
 import dialog
-import download
 import epg
 import func
 import lisearch
@@ -33,13 +32,14 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() == 0:
             if var.SearchProgramDataJson == []:
                 func.updateLabelText(self, 1, 'Geen zoek term')
+                func.updateLabelText(self, 3, "")
                 listContainer = self.getControl(1001)
                 self.setFocus(listContainer)
                 xbmc.sleep(100)
                 listContainer.selectItem(1)
                 xbmc.sleep(100)
             else:
-                self.search_list(var.SearchSelectIndex)
+                self.search_list(var.SearchSelectIndex, False)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -99,7 +99,7 @@ class Gui(xbmcgui.WindowXML):
 
             #Set search filter term
             var.SearchTermCurrent = func.search_filter_string(ProgramNameRaw)
-            self.search_list()
+            self.search_list(forceUpdate=False)
             var.SearchTermCurrent = ''
         elif dialogResult == 'Programma in de TV Gids tonen':
             listContainer = self.getControl(1000)
@@ -137,59 +137,55 @@ class Gui(xbmcgui.WindowXML):
             xbmcgui.Dialog().notification(var.addonname, 'Geen zoekresultaten.', notificationIcon, 2500, False)
             return
 
-        #Open the search dialog
+        #Open search dialog
         searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek in resultaat')
 
-        #Check the search term
+        #Check search term
         if searchDialogTerm.cancelled == True:
             return
 
         #Set search filter term
         var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
-        self.search_list()
+        self.search_list(forceUpdate=False)
         var.SearchTermCurrent = ''
 
     def search_program(self):
-        #Open the search dialog
+        #Open search dialog
         searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek programma')
 
-        #Check the search term
+        #Check search term
         if searchDialogTerm.cancelled == True:
-            return True
+            return
 
-        #Check the search term
+        #Check search term
         if func.string_isnullorempty(searchDialogTerm.string) == True:
             notificationIcon = path.resources('resources/skins/default/media/common/search.png')
             xbmcgui.Dialog().notification(var.addonname, 'Leeg zoek term', notificationIcon, 2500, False)
-            return True
+            return
 
-        #Download the search programs
-        func.updateLabelText(self, 1, "Zoek resultaat downloaden")
-        downloadResult = download.download_search_program(searchDialogTerm.string)
-        if downloadResult == None:
-            func.updateLabelText(self, 1, 'Zoeken mislukt')
-            listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(0)
-            xbmc.sleep(100)
-            return False
-
-        #Update search result
+        #Update search term
         var.SearchDownloadSearchTerm = searchDialogTerm.string
-        var.SearchProgramDataJson = downloadResult
 
         #List search results
         self.search_list()
 
-    def search_list(self, selectIndex=0):
+    def search_list(self, selectIndex=0, forceUpdate=True):
         #Get and check the list container
         listContainer = self.getControl(1000)
         listContainer.reset()
 
         #Add items to list container
         func.updateLabelText(self, 1, "Zoek resultaat laden")
-        lisearch.list_load_combined(listContainer)
+        func.updateLabelText(self, 3, "")
+        if lisearch.list_load_combined(listContainer, forceUpdate) == False:
+            func.updateLabelText(self, 1, 'Zoeken mislukt')
+            func.updateLabelText(self, 3, "")
+            listContainer = self.getControl(1001)
+            self.setFocus(listContainer)
+            xbmc.sleep(100)
+            listContainer.selectItem(0)
+            xbmc.sleep(100)
+            return False
 
         #Update the status
         self.count_program(True, selectIndex)
