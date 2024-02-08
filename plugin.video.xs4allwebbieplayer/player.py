@@ -15,8 +15,21 @@ class PlayerCustom(xbmc.Player):
         var.PlayerSeekOffsetEnd(SeekOffsetEnd)
         var.PlayerStreamType(StreamType)
 
+        #Set list item seek offset start
+        if SeekOffsetStart != 0:
+            listItem.setProperty('StartOffset', str(SeekOffsetStart))
+
         #Start playing list item media
         self.play(streamUrl, listItem, Windowed)
+
+    def ResetVariables(self):
+        #Reset video player variables
+        var.PlayerWindowed(False)
+        var.PlayerOpenOverlay(False)
+        var.PlayerShowInformation(False)
+        var.PlayerSeekOffsetStart(0)
+        var.PlayerSeekOffsetEnd(0)
+        var.PlayerStreamType('video')
 
     def Fullscreen(self, forceFullscreen=False, forceOverlay=False):
         xbmc.sleep(100)
@@ -46,9 +59,9 @@ class PlayerCustom(xbmc.Player):
                     xbmc.sleep(100)
 
                 #Show custom player information
-                if var.PlayerShowInformation() == True and var.guiPlayer != None:
-                    var.guiPlayer.show_epg(True, False, True)
-                    xbmc.sleep(100)
+                if var.PlayerShowInformation() == True:
+                    if var.guiPlayer != None:
+                        var.guiPlayer.show_epg(True, False, True)
 
     def onAVStarted(self):
         xbmc.sleep(100)
@@ -57,11 +70,6 @@ class PlayerCustom(xbmc.Player):
             self.Fullscreen()
 
         if xbmc.Player().isPlayingVideo() == True:
-            #Player seek stream from start
-            PlayerSeekOffsetStart = var.PlayerSeekOffsetStart()
-            if PlayerSeekOffsetStart != 0:
-                xbmc.executebuiltin('Seek(' + str(PlayerSeekOffsetStart) + ')')
-
             #Player seek stream from ending
             PlayerSeekOffsetEnd = var.PlayerSeekOffsetEnd()
             if PlayerSeekOffsetEnd != 0:
@@ -80,6 +88,9 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackStopped(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == False:
+            #Reset video player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
@@ -90,6 +101,9 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackEnded(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == False:
+            #Reset video player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
@@ -100,6 +114,9 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackError(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == False:
+            #Reset video player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
