@@ -12,7 +12,7 @@ def switch_tv_id(ChannelId, Windowed=False, OpenOverlay=True, ShowInformation=Fa
         return False
 
 #Switch radio by channel identifier
-def switch_radio_id(ChannelId, Windowed=True):
+def switch_radio_id(ChannelId, Windowed=False):
     try:
         listItem = xbmcgui.ListItem()
         listItem.setProperty('ChannelId', ChannelId)

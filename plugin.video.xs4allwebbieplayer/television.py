@@ -4,7 +4,6 @@ import xbmcgui
 import alarm
 import lichanneltelevision
 import dialog
-import download
 import epg
 import favorite
 import hidden
@@ -40,13 +39,10 @@ def close_the_page():
 
 class Gui(xbmcgui.WindowXML):
     EpgPauseUpdate = False
-    EpgForceUpdate = False
     EpgManualUpdate = False
 
     def onInit(self):
         self.buttons_add_navigation()
-        self.load_recording_event(False)
-        self.load_recording_series(False)
         self.load_channels(False, False)
         self.start_threads()
 
@@ -64,7 +60,7 @@ class Gui(xbmcgui.WindowXML):
                 if listItemAction == 'go_back':
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
-                    self.refresh_programs(True)
+                    self.load_channels(True, True)
                 elif listItemAction == 'hidden_channels':
                     hidden.switch_to_page()
                 elif listItemAction == "switch_all_favorites":
@@ -102,7 +98,6 @@ class Gui(xbmcgui.WindowXML):
     def start_threads(self):
         #Force manual epg update
         self.EpgManualUpdate = True
-        self.EpgForceUpdate = False
 
         #Start the epg update thread
         var.thread_update_television_program.Start(self.thread_update_television_program)
@@ -220,14 +215,6 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
 
-    def refresh_programs(self, forceUpdate=False):
-        try:
-            self.load_recording_event(forceUpdate)
-            self.load_recording_series(forceUpdate)
-            self.load_channels(True, forceUpdate)
-        except:
-            pass
-
     def hide_channel(self, listContainer, listItemSelected):
         self.EpgPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
@@ -293,21 +280,13 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
 
         #Load television channels
         self.load_channels(True, False)
 
         #Reset search variable
-        var.SearchChannelTerm = ''
-
-    def load_recording_event(self, forceUpdate=False):
-        downloadResult = download.download_recording_event(forceUpdate)
-        if downloadResult == False: return False
-
-    def load_recording_series(self, forceUpdate=False):
-        downloadResult = download.download_recording_series(forceUpdate)
-        if downloadResult == False: return False
+        var.SearchTermCurrent = ''
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
         self.EpgPauseUpdate = True
@@ -332,8 +311,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         func.updateLabelText(self, 1, 'Zenders laden')
+        func.updateLabelText(self, 3, "")
         if lichanneltelevision.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
+            func.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
@@ -346,7 +327,6 @@ class Gui(xbmcgui.WindowXML):
 
         #Force manual epg update
         self.EpgManualUpdate = True
-        self.EpgForceUpdate = forceUpdate
 
     #Update the status
     def count_channels(self, resetSelect=False):
@@ -358,9 +338,9 @@ class Gui(xbmcgui.WindowXML):
         #Update status label text
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 func.updateLabelText(self, 1, str(listContainer.size()) + ' zenders gevonden')
-                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
             else:
                 func.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
                 if var.ApiHomeAccess() == True:
@@ -375,9 +355,9 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
                 listContainer.selectItem(2)
             else:
                 func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
@@ -393,31 +373,20 @@ class Gui(xbmcgui.WindowXML):
         while var.thread_update_television_program.Allowed():
             try:
                 threadCurrentTime = datetime.now().strftime('%H:%M')
-                if threadLastTime != threadCurrentTime or self.EpgManualUpdate or self.EpgForceUpdate:
+                if threadLastTime != threadCurrentTime or self.EpgManualUpdate == True:
+                    #Update thread variables
                     threadLastTime = threadCurrentTime
-                    forceUpdate = self.EpgForceUpdate
-
-                    #Reset update variables
                     self.EpgManualUpdate = False
-                    self.EpgForceUpdate = False
 
                     #Update program information
-                    self.update_television_program(forceUpdate)
+                    self.update_television_program()
                 else:
                     var.thread_update_television_program.Sleep(1000)
             except:
                 pass
 
-    def update_television_program(self, forceUpdate=False):
+    def update_television_program(self):
         try:
-            if forceUpdate == True:
-                #Show tv guide refresh notification
-                notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-                xbmcgui.Dialog().notification(var.addonname, 'TV Gids wordt vernieuwd.', notificationIcon, 2500, False)
-
-                #Download epg information for today
-                download.download_epg_day(datetime.now(), True)
-
             #Get and check the list container
             listContainer = self.getControl(1000)
             listItemCount = listContainer.size()

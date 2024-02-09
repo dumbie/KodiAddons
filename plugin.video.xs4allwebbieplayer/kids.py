@@ -80,7 +80,7 @@ class Gui(xbmcgui.WindowXML):
                 close_the_page()
             elif listItemAction == 'search_program':
                 self.search_program()
-            elif listItemAction == 'refresh_program':
+            elif listItemAction == 'refresh_programs':
                 self.load_program(True, True)
         elif clickId == 1002:
             listItemSelected = clickedControl.getSelectedItem()
@@ -164,7 +164,7 @@ class Gui(xbmcgui.WindowXML):
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem("Vernieuwen")
-        listItem.setProperty('Action', 'refresh_program')
+        listItem.setProperty('Action', 'refresh_programs')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
 
@@ -177,9 +177,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchChannelTerm = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
         self.load_program(True, False)
-        var.SearchChannelTerm = ''
+        var.SearchTermCurrent = ''
 
     def load_episodes_vod(self, listItem, selectList=False, selectIndex=0):
         #Get the selected parentid
@@ -256,8 +256,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         func.updateLabelText(self, 1, "Programma's laden")
+        func.updateLabelText(self, 4, "")
         if likidsprogram.list_load_combined(listContainer, forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
+            func.updateLabelText(self, 4, "")
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
@@ -282,9 +284,9 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0:
             func.updateVisibility(self, 2, True)
             func.updateVisibility(self, 3002, True)
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 func.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+                func.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
             else:
                 func.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
                 func.updateLabelText(self, 4, "")
@@ -300,9 +302,9 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchChannelTerm)
+                func.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
                 listContainer.selectItem(1)
             else:
                 func.updateLabelText(self, 1, "Geen programma's")

@@ -24,6 +24,7 @@
   <category label="Afspelen">
     <setting id="PlayerSubtitlesOff" label="Ondertiteling bij begin van stream uitzetten" type="bool" default="true"/>
     <setting id="PlayerInformationCloseTime" label="Aantal seconden voordat informatie sluit in speler" type="slider" default="10" range="4,2,30" option="int"/>
+    <setting id="PlayerSeekOffsetStart" label="Seconden spoelen bij begin programma terugkijken" type="slider" default="5" range="0,1,8" option="int"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Opstarten">

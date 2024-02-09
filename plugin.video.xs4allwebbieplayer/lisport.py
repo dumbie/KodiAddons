@@ -40,10 +40,10 @@ def list_load_append(listContainer):
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch1 = func.search_filter_string(ProgramNameRaw)
                 searchMatch2 = func.search_filter_string(EpisodeTitle)
-                searchResultFound = var.SearchChannelTerm in searchMatch1 or var.SearchChannelTerm in searchMatch2
+                searchResultFound = var.SearchTermCurrent in searchMatch1 or var.SearchTermCurrent in searchMatch2
                 if searchResultFound == False: continue
 
             #Check if program has finished airing and processing

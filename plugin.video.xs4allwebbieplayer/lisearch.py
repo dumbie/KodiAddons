@@ -1,3 +1,4 @@
+import download
 import func
 import lifunc
 import metadatacombine
@@ -6,8 +7,15 @@ import xbmcgui
 import path
 import var
 
-def list_load_combined(listContainer=None):
+def list_load_combined(listContainer=None, forceUpdate=True):
     try:
+        #Download search programs
+        downloadResult = download.download_search_program(var.SearchDownloadSearchTerm, forceUpdate)
+        if downloadResult == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/search.png')
+            xbmcgui.Dialog().notification(var.addonname, "Zoek downloaden mislukt.", notificationIcon, 2500, False)
+            return False
+
         #Add items to sort list
         listContainerSort = []
         list_load_append(listContainerSort)
@@ -27,10 +35,10 @@ def list_load_append(listContainer):
             EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch1 = func.search_filter_string(ProgramName)
                 searchMatch2 = func.search_filter_string(EpisodeTitle)
-                searchResultFound = var.SearchChannelTerm in searchMatch1 or var.SearchChannelTerm in searchMatch2
+                searchResultFound = var.SearchTermCurrent in searchMatch1 or var.SearchTermCurrent in searchMatch2
                 if searchResultFound == False: continue
 
             #Load program details

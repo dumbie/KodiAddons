@@ -58,16 +58,20 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
         try:
             #Load program basics
             TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
+            ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
+            ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
 
             #Check if content is pay to play
             if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
+
+            #Check if episode is already added
+            tupleContainer = [x[1] for x in listContainer]
+            if lifunc.search_programepisodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramTitleRaw = metadatainfo.programtitle_from_json_metadata(program)
-            ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
-            ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
             ProgramAvailability = metadatainfo.available_time_vod(program)
 
             #Combine program description extended
@@ -100,19 +104,23 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
         try:
             #Load program basics
             ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
+            ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
+            ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
 
             #Check if program matches serie
             checkSerie1 = ProgramNameRaw.lower()
             checkSerie2 = selectedProgramName.lower()
             if checkSerie1 != checkSerie2: continue
 
+            #Check if episode is already added
+            tupleContainer = [x[1] for x in listContainer]
+            if lifunc.search_programepisodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
+
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-            ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
-            ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
             EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_program(program)
 

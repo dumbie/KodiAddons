@@ -7,27 +7,30 @@ import dialog
 import files
 import var
 
-def search_history_search_json_load():
+def search_history_search_json_load(forceLoad=False):
     try:
-        if var.SearchHistorySearchJson == [] and files.existFile('SearchHistorySearch.js') == True:
-            SearchHistoryJsonString = files.openFile('SearchHistorySearch.js')
-            var.SearchHistorySearchJson = json.loads(SearchHistoryJsonString)
+        if var.SearchHistorySearchJson == [] or forceLoad == True:
+            if files.existFile('SearchHistorySearch.js') == True:
+                SearchHistoryJsonString = files.openFile('SearchHistorySearch.js')
+                var.SearchHistorySearchJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistorySearchJson = []
 
-def search_history_channel_json_load():
+def search_history_channel_json_load(forceLoad=False):
     try:
-        if var.SearchHistoryChannelJson == [] and files.existFile('SearchHistoryChannel.js') == True:
-            SearchHistoryJsonString = files.openFile('SearchHistoryChannel.js')
-            var.SearchHistoryChannelJson = json.loads(SearchHistoryJsonString)
+        if var.SearchHistoryChannelJson == [] or forceLoad == True:
+            if files.existFile('SearchHistoryChannel.js') == True:
+                SearchHistoryJsonString = files.openFile('SearchHistoryChannel.js')
+                var.SearchHistoryChannelJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistoryChannelJson = []
 
-def search_history_radio_json_load():
+def search_history_radio_json_load(forceLoad=False):
     try:
-        if var.SearchHistoryRadioJson == [] and files.existFile('SearchHistoryRadio.js') == True:
-            SearchHistoryJsonString = files.openFile('SearchHistoryRadio.js')
-            var.SearchHistoryRadioJson = json.loads(SearchHistoryJsonString)
+        if var.SearchHistoryRadioJson == [] or forceLoad == True:
+            if files.existFile('SearchHistoryRadio.js') == True:
+                SearchHistoryJsonString = files.openFile('SearchHistoryRadio.js')
+                var.SearchHistoryRadioJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistoryRadioJson = []
 

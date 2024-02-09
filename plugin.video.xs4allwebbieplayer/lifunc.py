@@ -7,12 +7,18 @@ import var
 def auto_add_item(listItem, listContainer, dirUrl='', dirFolder=False):
     try:
         if listContainer == None:
-            xbmcplugin.addDirectoryItem(listitem=listItem,handle=var.LaunchHandle,url=dirUrl,isFolder=dirFolder)
+            if type(listItem) == tuple:
+                xbmcplugin.addDirectoryItem(handle=var.LaunchHandle,listitem=listItem[1],url=listItem[0],isFolder=listItem[2])
+            else:
+                xbmcplugin.addDirectoryItem(handle=var.LaunchHandle,listitem=listItem,url=dirUrl,isFolder=dirFolder)
         else:
             if type(listContainer) == list:
                 listContainer.append(listItem)
             else:
-                listContainer.addItem(listItem)
+                if type(listItem) == tuple:
+                    listContainer.addItem(listItem[1])
+                else:
+                    listContainer.addItem(listItem)
         return True
     except:
         return False
@@ -21,7 +27,7 @@ def auto_add_item(listItem, listContainer, dirUrl='', dirFolder=False):
 def auto_add_items(listItems, listContainer):
     try:
         if listContainer == None:
-            xbmcplugin.addDirectoryItems(items=listItems,handle=var.LaunchHandle)
+            xbmcplugin.addDirectoryItems(handle=var.LaunchHandle,items=listItems)
         else:
             if type(listContainer) == list:
                 listContainer.append(listItems)
@@ -50,6 +56,18 @@ def search_programname_listarray(listArray, searchProgramName):
             checkProgram1 = searchProgramName.lower()
             checkProgram2 = Program.getProperty('ProgramName').lower()
             if checkProgram1 == checkProgram2:
+                return Program
+        except:
+            continue
+    return None
+
+#Search for Program Episode and Season in list array
+def search_programepisodeseason_listarray(listArray, searchProgramEpisode, searchProgramSeason):
+    for Program in listArray:
+        try:
+            checkProgramSeason = Program.getProperty('ProgramSeasonInt')
+            checkProgramEpisode = Program.getProperty('ProgramEpisodeInt')
+            if searchProgramEpisode == checkProgramSeason and searchProgramSeason == checkProgramEpisode:
                 return Program
         except:
             continue
@@ -115,18 +133,24 @@ def search_label_listcontainer(listContainer, searchLabel):
             continue
     return None
 
-#Focus on channel in list
+#Focus on channel in list container
 def focus_on_channelid_in_list(_self, controlId, defaultNum, forceFocus, channelId):
+    #Check if list container has items
     listContainer = _self.getControl(controlId)
-    if forceFocus:
-        _self.setFocus(listContainer)
-        xbmc.sleep(100)
-    if func.string_isnullorempty(channelId) == False:
-        itemNum = search_channelid_listcontainer(listContainer, channelId)
-        if itemNum == None:
-            listContainer.selectItem(defaultNum)
+    listItemCount = listContainer.size()
+    if listItemCount > 0:
+        #Focus on list container 
+        if forceFocus:
+            _self.setFocus(listContainer)
+            xbmc.sleep(100)
+
+        #Select list item
+        if func.string_isnullorempty(channelId) == False:
+            itemNum = search_channelid_listcontainer(listContainer, channelId)
+            if itemNum == None:
+                listContainer.selectItem(defaultNum)
+            else:
+                listContainer.selectItem(itemNum)
         else:
-            listContainer.selectItem(itemNum)
-    else:
-        listContainer.selectItem(defaultNum)
-    xbmc.sleep(100)
+            listContainer.selectItem(defaultNum)
+        xbmc.sleep(100)

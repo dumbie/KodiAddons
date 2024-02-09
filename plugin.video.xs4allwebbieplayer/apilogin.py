@@ -1,7 +1,8 @@
+from datetime import datetime, timedelta
 import json
 import random
 import re
-from datetime import datetime, timedelta
+import download
 import xbmcgui
 import classes
 import default
@@ -27,15 +28,7 @@ def ApiGenerateDeviceId():
 
 def ApiSetEndpointAdresNumber():
     try:
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Content-Type": "application/json"
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.api_endpoint_number(), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
-
+        DownloadDataJson = download.request_download_gzip(path.api_endpoint_number())
         var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:
@@ -45,21 +38,13 @@ def ApiSetEndpointAdresNumber():
 
 def ApiSetEndpointAdresEmail():
     try:
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Content-Type": "application/json"
-        }
-
         apiEndpoint = classes.Class_ApiEndpoint()
         apiEndpoint.username = var.addon.getSetting('LoginEmail')
         apiEndpoint.password = var.addon.getSetting('LoginPasswordEmail')
         apiEndpoint = apiEndpoint.__dict__
 
-        DownloadData = json.dumps(apiEndpoint).encode('ascii')
-        DownloadRequest = hybrid.urllib_request(path.api_endpoint_email(), data=DownloadData, headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
-
+        DownloadDataSend = json.dumps(apiEndpoint).encode('ascii')
+        DownloadDataJson = download.request_download_gzip(path.api_endpoint_email(), DownloadDataSend)
         var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:

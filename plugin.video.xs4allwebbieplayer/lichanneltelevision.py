@@ -11,9 +11,13 @@ import var
 
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
+        #Download recordings
+        downloadResultRecordingEvent = download.download_recording_event(forceUpdate)
+        downloadResultRecordingSeries = download.download_recording_series(forceUpdate)
+
         #Download channels
-        downloadResult = download.download_channels_tv(forceUpdate)
-        if downloadResult == False:
+        downloadResultChannels = download.download_channels_tv(forceUpdate)
+        if downloadResultRecordingEvent == False or downloadResultRecordingSeries == False or downloadResultChannels == False:
             notificationIcon = path.resources('resources/skins/default/media/common/television.png')
             xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False
@@ -56,9 +60,9 @@ def list_load_append(listContainer):
             if var.addon.getSetting('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Check if there are search results
-            if var.SearchChannelTerm != '':
+            if var.SearchTermCurrent != '':
                 searchMatch = func.search_filter_string(ChannelName)
-                searchResultFound = var.SearchChannelTerm in searchMatch
+                searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
             #Check if channel is marked as favorite or epg navigate
@@ -68,7 +72,7 @@ def list_load_append(listContainer):
                 ChannelFavorite = 'false'
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
-            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchChannelTerm):
+            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
                 continue
             else:
                 ChannelFavorite = 'false'
