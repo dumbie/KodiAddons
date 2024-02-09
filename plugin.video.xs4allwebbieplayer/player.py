@@ -85,6 +85,14 @@ class PlayerCustom(xbmc.Player):
         if var.guiMain != None:
             var.guiMain.buttons_add_media(False)
 
+    def onPlayBackSeek(self, seekTime, seekOffset):
+        xbmc.sleep(100)
+        if xbmc.Player().isPlayingVideo() == True:
+            #Show custom player information
+            if var.PlayerStreamType() == 'video' and var.PlayerOpenOverlay() == True:
+                if var.guiPlayer != None:
+                    var.guiPlayer.show_epg(True, False, True)
+
     def onPlayBackStopped(self):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == False:
