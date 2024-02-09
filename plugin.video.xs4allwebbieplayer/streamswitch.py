@@ -42,7 +42,7 @@ def switch_vod_id(ProgramId, Windowed=False):
         return False
 
 #Switch recorded by identifier
-def switch_recorded_id(StreamAssetId, ProgramRecordEventId, Windowed=False, Offset=120):
+def switch_recorded_id(StreamAssetId, ProgramRecordEventId, Windowed=False, Offset=0):
     try:
         listItem = xbmcgui.ListItem()
         listItem.setProperty('StreamAssetId', StreamAssetId)
