@@ -1,9 +1,9 @@
-import json
 from datetime import datetime, timedelta
+import download
+import xbmc
 import xbmcgui
 import apilogin
 import func
-import hybrid
 import path
 import streamadjust
 import streamcheck
@@ -39,16 +39,8 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         DateTimeUtc = datetime.utcnow() - timedelta(minutes=400)
         StartString = '&time=' + str(func.datetime_to_ticks(DateTimeUtc))
 
-        #Download the television stream url
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie()
-        }
-
-        RequestUrl = path.stream_url_tv(NewChannelId, NewStreamAssetId) + StartString
-        DownloadRequest = hybrid.urllib_request(RequestUrl, headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download television stream url
+        DownloadDataJson = download.request_download_gzip(path.stream_url_tv(NewChannelId, NewStreamAssetId) + StartString)
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -65,8 +57,9 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         if CurrentChannelId != NewChannelId:
             var.addon.setSetting('LastChannelId', CurrentChannelId)
         var.addon.setSetting('CurrentChannelId', NewChannelId)
+        xbmc.sleep(100)
 
-        #Get the downloaded stream url
+        #Get downloaded stream url
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
 
         #Update stream url with bitrate setting
@@ -104,6 +97,7 @@ def play_radio(listItem, Windowed=False):
 
         #Update channel settings and variables
         var.addon.setSetting('CurrentRadioId', ChannelId)
+        xbmc.sleep(100)
 
         #Start playing the media
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, StreamType='audio')
@@ -111,7 +105,7 @@ def play_radio(listItem, Windowed=False):
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_program(listItem, Windowed=False, SeekOffsetStart=180):
+def play_program(listItem, Windowed=False, SeekOffsetStart=0):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -128,15 +122,8 @@ def play_program(listItem, Windowed=False, SeekOffsetStart=180):
             xbmcgui.Dialog().notification(var.addonname, 'Ongeldige programma informatie.', notificationIcon, 2500, False)
             return
 
-        #Download the program userdata
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.detail_program(ProgramId), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download program details
+        DownloadDataJson = download.request_download_gzip(path.detail_program(ProgramId))
 
         #Check program properties
         streamcheck.check_program(listItem, DownloadDataJson)
@@ -150,15 +137,8 @@ def play_program(listItem, Windowed=False, SeekOffsetStart=180):
             xbmcgui.Dialog().notification(var.addonname, 'Stream is niet speelbaar wegens rechten.', notificationIcon, 2500, False)
             return
 
-        #Download the program stream url
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.stream_url_program(ProgramId, StreamAssetId), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download program stream url
+        DownloadDataJson = download.request_download_gzip(path.stream_url_program(ProgramId, StreamAssetId))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -185,6 +165,10 @@ def play_program(listItem, Windowed=False, SeekOffsetStart=180):
         #Update listitem with input stream properties
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
+        #Get stream start offset time
+        if SeekOffsetStart == 0:
+            SeekOffsetStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
+
         #Start playing the media
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetStart=SeekOffsetStart)
     except:
@@ -208,15 +192,8 @@ def play_vod(listItem, Windowed=False):
             xbmcgui.Dialog().notification(var.addonname, 'Ongeldige vod informatie.', notificationIcon, 2500, False)
             return
 
-        #Download the program userdata
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.detail_vod(ProgramId), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        #Download program userdata
+        DownloadDataJson = download.request_download_gzip(path.detail_vod(ProgramId))
 
         #Check vod properties
         streamcheck.check_vod(listItem, DownloadDataJson)
@@ -231,14 +208,7 @@ def play_vod(listItem, Windowed=False):
             return
 
         #Download the program stream url
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.stream_url_vod(ProgramId, StreamAssetId), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        DownloadDataJson = download.request_download_gzip(path.stream_url_vod(ProgramId, StreamAssetId))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -271,7 +241,7 @@ def play_vod(listItem, Windowed=False):
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_recorded(listItem, Windowed=False, SeekOffsetStart=180):
+def play_recorded(listItem, Windowed=False, SeekOffsetStart=0):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -286,11 +256,6 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=180):
         StreamAssetId = listItem.getProperty('StreamAssetId')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
 
-        #Get stream start delta time
-        ProgramDeltaTimeStart = listItem.getProperty('ProgramDeltaTimeStart')
-        if func.string_isnullorempty(ProgramDeltaTimeStart) == False and ProgramDeltaTimeStart != '0' and SeekOffsetStart == 180:
-            SeekOffsetStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
-
         #Check recorded properties
         if func.string_isnullorempty(ProgramRecordEventId):
             notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
@@ -303,14 +268,7 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=180):
             return
 
         #Download the program stream url
-        DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
-            "Cookie": var.ApiLoginCookie()
-        }
-
-        DownloadRequest = hybrid.urllib_request(path.stream_url_recording(ProgramRecordEventId, StreamAssetId), headers=DownloadHeaders)
-        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
-        DownloadDataJson = json.load(DownloadDataHttp)
+        DownloadDataJson = download.request_download_gzip(path.stream_url_recording(ProgramRecordEventId, StreamAssetId))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -336,6 +294,13 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=180):
 
         #Update listitem with input stream properties
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
+
+        #Get stream start offset time
+        ProgramDeltaTimeStart = listItem.getProperty('ProgramDeltaTimeStart')
+        if func.string_isnullorempty(ProgramDeltaTimeStart) == False and ProgramDeltaTimeStart != '0' and SeekOffsetStart == 0:
+            SeekOffsetStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
+        if SeekOffsetStart == 0:
+            SeekOffsetStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
 
         #Start playing the media
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetStart=SeekOffsetStart)
