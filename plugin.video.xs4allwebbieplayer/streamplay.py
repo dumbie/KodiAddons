@@ -35,8 +35,9 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
             xbmcgui.Dialog().notification(var.addonname, 'Stream is niet speelbaar wegens rechten.', notificationIcon, 2500, False)
             return
 
-        #Allow longer back seeking
-        DateTimeUtc = datetime.utcnow() - timedelta(minutes=400)
+        #Allow longer backwards seeking
+        PlayerSeekBackMinutes = int(var.addon.getSetting('PlayerSeekBackMinutes'))
+        DateTimeUtc = datetime.utcnow() - timedelta(minutes=PlayerSeekBackMinutes)
         StartString = '&time=' + str(func.datetime_to_ticks(DateTimeUtc))
 
         #Download television stream url
@@ -166,7 +167,7 @@ def play_program(listItem, Windowed=False):
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
         #Get stream start offset time
-        SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
+        SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60
 
         #Start playing the media
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetSecStart=SeekOffsetSecStart)
@@ -300,7 +301,7 @@ def play_recorded(listItem, Windowed=False):
         if func.string_isnullorempty(ProgramDeltaTimeStart) == False and ProgramDeltaTimeStart != '0':
             SeekOffsetSecStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
         if SeekOffsetSecStart == 0:
-            SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
+            SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60
 
         #Start playing the media
         var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetSecStart=SeekOffsetSecStart)

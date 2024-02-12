@@ -145,7 +145,7 @@ class Gui(xbmcgui.WindowXML):
             ProgramTimeStart = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
             ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
             ProgramTimeStartOffset = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
-            streamplay.play_tv(listItemSelected, SeekOffsetEnd=ProgramTimeStartOffset)
+            streamplay.play_tv(listItemSelected, SeekOffsetSecEnd=ProgramTimeStartOffset)
         elif dialogResult == 'Programma in de TV Gids tonen':
             var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramNowId")
             var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")

@@ -16,7 +16,6 @@
     <setting id="TelevisionHideEarlierAired" label="Eerder uitgezonden programma's niet tonen" type="bool" default="false"/>
     <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="SearchFilterFuzzy" label="Vergelijkbare zoek resultaten tonen" type="bool" default="false"/>
-    <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
     <setting id="ResetUserdata" type="action" label="Verwijder userdatabestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
     <setting id="ResetThumbnails" type="action" label="Alle zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
@@ -24,11 +23,13 @@
   <category label="Afspelen">
     <setting id="PlayerSubtitlesOff" label="Ondertiteling bij begin van stream uitzetten" type="bool" default="true"/>
     <setting id="PlayerInformationCloseTime" label="Aantal seconden voordat informatie sluit in speler" type="slider" default="10" range="4,2,30" option="int"/>
-    <setting id="PlayerSeekOffsetStart" label="Seconden spoelen bij begin programma terugkijken" type="slider" default="5" range="0,1,8" option="int"/>
+    <setting id="PlayerSeekOffsetStartMinutes" label="Minuten spoelen bij begin programma terugkijken" type="slider" default="4" range="0,1,8" option="int"/>
+    <setting id="PlayerSeekBackMinutes" label="Minuten dat teruggespoeld kan worden tv stream" type="slider" default="240" range="30,30,1440" option="int"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Opstarten">
     <setting id="RunAddonOnKodiLaunch" label="Start Webbie Player bij het opstarten van Kodi" type="bool" default="false"/>
+    <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
     <setting id="StartWithLastChannel" label="Open laatstbekeken tv-zender bij het opstarten van add-on" type="bool" default="false"/>
     <setting id="StartWithTelevision" label="Open televisiepagina bij het opstarten van add-on" type="bool" default="false"/>
     <setting id="StartWithKids" label="Open kidspagina bij het opstarten van add-on" type="bool" default="false"/>
