@@ -117,6 +117,13 @@ thread_sleep_timer = threadclass.Class_ThreadSafe()
 
 #Player variables
 PlayerCustom = player.PlayerCustom()
+def PlayBackStartTriggered(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return func.globalvar_get(varName, False)
+    else:
+         return func.globalvar_set(varName, setObject)
+
 def PlayerWindowed(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
@@ -138,14 +145,14 @@ def PlayerShowInformation(setObject=None):
     else:
          return func.globalvar_set(varName, setObject)
 
-def PlayerSeekOffsetStart(setObject=None):
+def PlayerSeekOffsetSecStart(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
          return func.globalvar_get(varName, 0)
     else:
          return func.globalvar_set(varName, setObject)
 
-def PlayerSeekOffsetEnd(setObject=None):
+def PlayerSeekOffsetSecEnd(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
          return func.globalvar_get(varName, 0)

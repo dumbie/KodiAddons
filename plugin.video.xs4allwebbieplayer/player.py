@@ -6,29 +6,31 @@ import playergui
 import var
 
 class PlayerCustom(xbmc.Player):
-    def PlayCustom(self, streamUrl, listItem=None, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffsetStart=0, SeekOffsetEnd=0, StreamType='video'):
+    def PlayCustom(self, streamUrl, listItem=None, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffsetSecStart=0, SeekOffsetSecEnd=0, StreamType='video'):
         #Update video player variables
+        var.PlayBackStartTriggered(False)
         var.PlayerWindowed(Windowed)
         var.PlayerOpenOverlay(OpenOverlay)
         var.PlayerShowInformation(ShowInformation)
-        var.PlayerSeekOffsetStart(SeekOffsetStart)
-        var.PlayerSeekOffsetEnd(SeekOffsetEnd)
+        var.PlayerSeekOffsetSecStart(SeekOffsetSecStart)
+        var.PlayerSeekOffsetSecEnd(SeekOffsetSecEnd)
         var.PlayerStreamType(StreamType)
 
         #Set list item seek offset start
-        if SeekOffsetStart != 0:
-            listItem.setProperty('StartOffset', str(SeekOffsetStart))
+        if SeekOffsetSecStart != 0:
+            listItem.setProperty('StartOffset', str(SeekOffsetSecStart))
 
         #Start playing list item media
         self.play(streamUrl, listItem, Windowed)
 
     def ResetVariables(self):
         #Reset video player variables
+        var.PlayBackStartTriggered(False)
         var.PlayerWindowed(False)
         var.PlayerOpenOverlay(False)
         var.PlayerShowInformation(False)
-        var.PlayerSeekOffsetStart(0)
-        var.PlayerSeekOffsetEnd(0)
+        var.PlayerSeekOffsetSecStart(0)
+        var.PlayerSeekOffsetSecEnd(0)
         var.PlayerStreamType('video')
 
     def Fullscreen(self, forceFullscreen=False, forceOverlay=False):
@@ -65,15 +67,23 @@ class PlayerCustom(xbmc.Player):
 
     def onAVStarted(self):
         xbmc.sleep(100)
+
+        #Check if triggered twice
+        if var.PlayBackStartTriggered() == False:
+            var.PlayBackStartTriggered(True)
+        else:
+            return
+
+        #Switch to full screen player
         if xbmc.Player().isPlaying() == True:
-            #Switch to full screen player
             self.Fullscreen()
 
+        #Check if video is playing
         if xbmc.Player().isPlayingVideo() == True:
             #Player seek stream from ending
-            PlayerSeekOffsetEnd = var.PlayerSeekOffsetEnd()
-            if PlayerSeekOffsetEnd != 0:
-                xbmc.executebuiltin('Seek(-' + str(PlayerSeekOffsetEnd) + ')')
+            PlayerSeekOffsetSecEnd = var.PlayerSeekOffsetSecEnd()
+            if PlayerSeekOffsetSecEnd != 0:
+                xbmc.executebuiltin('Seek(-' + str(PlayerSeekOffsetSecEnd) + ')')
 
             #Enable or disable subtitles
             if var.addon.getSetting('PlayerSubtitlesOff') == 'true':
