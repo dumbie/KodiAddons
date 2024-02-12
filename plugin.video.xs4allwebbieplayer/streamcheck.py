@@ -143,6 +143,7 @@ def check_recorded(listItem, defaultGenre='Opname'):
         StreamAssetId = listItem.getProperty('StreamAssetId')
         ProgramName = listItem.getProperty('ProgramName')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
+        ProgramDeltaTimeStart = listItem.getProperty('ProgramDeltaTimeStart')
         ExternalId = listItem.getProperty('ExternalId')
         ItemLabel = listItem.getLabel()
         ItemArt = listItem.getArt('thumb')
@@ -163,6 +164,10 @@ def check_recorded(listItem, defaultGenre='Opname'):
 
         if func.string_isnullorempty(ItemLabel):
             listItem.setLabel(ProgramName)
+
+        if func.string_isnullorempty(ProgramDeltaTimeStart):
+            ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(programJson))
+            listItem.setProperty('ProgramDeltaTimeStart', ProgramDeltaTimeStart)
 
         if func.string_isnullorempty(ExternalId):
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(programJson)

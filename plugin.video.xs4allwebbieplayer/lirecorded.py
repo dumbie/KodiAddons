@@ -104,7 +104,7 @@ def list_load_append(listContainer):
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + StreamAssetId + var.splitchar + ProgramRecordEventId
+            dirUrl = var.LaunchUrl + '?' + listAction + '=' + StreamAssetId + var.splitchar + ProgramRecordEventId + var.splitchar + ProgramDeltaTimeStart
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

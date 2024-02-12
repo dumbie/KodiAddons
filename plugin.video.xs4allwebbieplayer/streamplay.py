@@ -9,7 +9,7 @@ import streamadjust
 import streamcheck
 import var
 
-def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, SeekOffsetEnd=0):
+def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, SeekOffsetSecEnd=0):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -75,7 +75,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson, True)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, OpenOverlay, ShowInformation, SeekOffsetEnd=SeekOffsetEnd)
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, OpenOverlay, ShowInformation, SeekOffsetSecEnd=SeekOffsetSecEnd)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
@@ -105,7 +105,7 @@ def play_radio(listItem, Windowed=False):
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_program(listItem, Windowed=False, SeekOffsetStart=0):
+def play_program(listItem, Windowed=False):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -166,11 +166,10 @@ def play_program(listItem, Windowed=False, SeekOffsetStart=0):
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
         #Get stream start offset time
-        if SeekOffsetStart == 0:
-            SeekOffsetStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
+        SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetStart=SeekOffsetStart)
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetSecStart=SeekOffsetSecStart)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
@@ -241,7 +240,7 @@ def play_vod(listItem, Windowed=False):
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
-def play_recorded(listItem, Windowed=False, SeekOffsetStart=0):
+def play_recorded(listItem, Windowed=False):
     try:
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -296,14 +295,15 @@ def play_recorded(listItem, Windowed=False, SeekOffsetStart=0):
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
         #Get stream start offset time
+        SeekOffsetSecStart = 0
         ProgramDeltaTimeStart = listItem.getProperty('ProgramDeltaTimeStart')
-        if func.string_isnullorempty(ProgramDeltaTimeStart) == False and ProgramDeltaTimeStart != '0' and SeekOffsetStart == 0:
-            SeekOffsetStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
-        if SeekOffsetStart == 0:
-            SeekOffsetStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
+        if func.string_isnullorempty(ProgramDeltaTimeStart) == False and ProgramDeltaTimeStart != '0':
+            SeekOffsetSecStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
+        if SeekOffsetSecStart == 0:
+            SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStart')) * 60
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetStart=SeekOffsetStart)
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetSecStart=SeekOffsetSecStart)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)

@@ -87,7 +87,7 @@ def handle_launch_argument_source():
             streamswitch.switch_vod_id(actionSplit[0])
         elif var.LaunchArgument.startswith("?play_stream_recorded="):
             actionSplit = var.LaunchArgument.replace('?play_stream_recorded=', '').split(var.splitchar)
-            streamswitch.switch_recorded_id(actionSplit[0], actionSplit[1])
+            streamswitch.switch_recorded_id(actionSplit[0], actionSplit[1], actionSplit[2])
         return True
     except:
         return True
