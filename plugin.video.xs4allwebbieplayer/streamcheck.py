@@ -11,6 +11,7 @@ def check_tv(listItem, defaultGenre='Televisie'):
         ChannelId = listItem.getProperty('ChannelId')
         ExternalId = listItem.getProperty('ExternalId')
         ChannelName = listItem.getProperty('ChannelName')
+        ChannelNumber = listItem.getProperty('ChannelNumber')
         ItemLabel = listItem.getLabel()
         ItemArt = listItem.getArt('thumb')
         ItemGenre = listItem.getVideoInfoTag().getGenre()
@@ -28,6 +29,10 @@ def check_tv(listItem, defaultGenre='Televisie'):
             ChannelName = metadatainfo.channelName_from_json_metadata(channelJson)
             listItem.setProperty('ChannelName', ChannelName)
 
+        if func.string_isnullorempty(ChannelNumber):
+            ChannelNumber = metadatainfo.orderId_from_json_metadata(channelJson)
+            listItem.setProperty('ChannelNumber', ChannelNumber)
+
         if func.string_isnullorempty(ItemLabel):
             listItem.setLabel(ChannelName)
 
@@ -39,7 +44,7 @@ def check_tv(listItem, defaultGenre='Televisie'):
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
 
         if func.string_isnullorempty(ItemGenre):
-            listItem.setInfo('video', {'Genre': defaultGenre})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': defaultGenre, 'Tagline': ChannelNumber, 'Title': ChannelName})
         return True
     except:
         return False
