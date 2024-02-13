@@ -4,6 +4,9 @@ import path
 import xbmcgui
 
 class ProxyRequestHandler(hybrid.proxyRequestHandler):
+    def do_HEAD(self):
+        return
+
     def do_GET(self):
         try:
             if "/redir/" in self.path:
