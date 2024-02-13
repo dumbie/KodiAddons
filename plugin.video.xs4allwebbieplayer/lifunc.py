@@ -61,13 +61,25 @@ def search_programname_listarray(listArray, searchProgramName):
             continue
     return None
 
-#Search for Program Episode and Season in list array
-def search_programepisodeseason_listarray(listArray, searchProgramEpisode, searchProgramSeason):
+#Search for Program by Episode and Season in list array
+def search_program_episodeseason_listarray(listArray, searchProgramEpisode, searchProgramSeason):
     for Program in listArray:
         try:
             checkProgramSeason = Program.getProperty('ProgramSeasonInt')
             checkProgramEpisode = Program.getProperty('ProgramEpisodeInt')
             if searchProgramEpisode == checkProgramSeason and searchProgramSeason == checkProgramEpisode:
+                return Program
+        except:
+            continue
+    return None
+
+#Search for Program by Name and Details in list array
+def search_program_namedetails_listarray(listArray, searchProgramName, searchProgramDetails):
+    for Program in listArray:
+        try:
+            checkProgramName = Program.getProperty('ProgramName')
+            checkProgramDetails = Program.getProperty('ProgramDetails')
+            if searchProgramName == checkProgramName and searchProgramDetails == checkProgramDetails:
                 return Program
         except:
             continue

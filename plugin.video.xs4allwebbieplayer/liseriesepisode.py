@@ -66,7 +66,7 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
 
             #Check if episode is already added
             tupleContainer = [x[1] for x in listContainer]
-            if lifunc.search_programepisodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
+            if lifunc.search_program_episodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
@@ -114,7 +114,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
 
             #Check if episode is already added
             tupleContainer = [x[1] for x in listContainer]
-            if lifunc.search_programepisodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
+            if lifunc.search_program_episodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
 
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)

@@ -39,7 +39,6 @@ def list_load_vod(listContainer):
         try:
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
-            TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
 
             #Check if there are search results
             if var.SearchTermCurrent != '':
@@ -48,7 +47,15 @@ def list_load_vod(listContainer):
                 if searchResultFound == False: continue
 
             #Check if content is pay to play
+            TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
             if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
+
+            #Combine program details
+            ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)
+
+            #Check if movie is already added
+            tupleContainer = [x[1] for x in listContainer]
+            if lifunc.search_program_namedetails_listarray(tupleContainer, ProgramName, ProgramDetails) != None: continue
 
             #Load program details
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
@@ -57,9 +64,6 @@ def list_load_vod(listContainer):
 
             #Combine program description extended
             ProgramDescription = metadatacombine.program_description_extended(program)
-
-            #Combine program details
-            ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)
 
             #Set item details
             listAction = 'play_stream_vod'
@@ -92,6 +96,13 @@ def list_load_program(listContainer):
                 searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
+            #Combine program details
+            ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)
+
+            #Check if movie is already added
+            tupleContainer = [x[1] for x in listContainer]
+            if lifunc.search_program_namedetails_listarray(tupleContainer, ProgramName, ProgramDetails) != None: continue
+
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
@@ -103,9 +114,6 @@ def list_load_program(listContainer):
 
             #Combine program description extended
             ProgramDescription = metadatacombine.program_description_extended(program)
-
-            #Combine program details
-            ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)
 
             #Set item details
             listAction = 'play_stream_program'
