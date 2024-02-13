@@ -89,6 +89,7 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             return False
 
         #Check if login is needed
+        #Fix: check if username/password changed
         lastLoginSeconds = int((datetime.now() - var.ApiLastLogin()).total_seconds())
         if forceLogin == False and var.ApiLoggedIn() == True and lastLoginSeconds < 890:
             return True

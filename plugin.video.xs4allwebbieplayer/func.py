@@ -62,7 +62,7 @@ def open_window_id(windowId):
 
 #Close a window by id
 def close_window_id(windowId):
-    #Improve: find way to directly close the window
+    #Fix: find way to directly close the window
     currentWindowId = xbmcgui.getCurrentWindowId()
     if currentWindowId == windowId:
         xbmc.executebuiltin('Action(Close)')

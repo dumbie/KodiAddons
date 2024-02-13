@@ -185,7 +185,7 @@ def ApiLoginFailCount(setObject=None):
 def ApiEndpointUrl(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, 'api.tv.kpn.com')
+         return func.globalvar_get(varName, 'api.tv.prod.itvavs.prod.aws.kpn.com')
     else:
          return func.globalvar_set(varName, setObject)
 

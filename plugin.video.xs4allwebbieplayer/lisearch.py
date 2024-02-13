@@ -35,7 +35,7 @@ def list_load_append(listContainer):
             EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
 
             #Check if there are search results
-            if var.SearchTermCurrent != '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 searchMatch1 = func.search_filter_string(ProgramName)
                 searchMatch2 = func.search_filter_string(EpisodeTitle)
                 searchResultFound = var.SearchTermCurrent in searchMatch1 or var.SearchTermCurrent in searchMatch2

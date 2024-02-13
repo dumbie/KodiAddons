@@ -41,7 +41,7 @@ def list_load_vod(listContainer):
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchTermCurrent != '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 searchMatch = func.search_filter_string(ProgramName)
                 searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
@@ -91,7 +91,7 @@ def list_load_program(listContainer):
             ProgramName = metadatainfo.episodetitle_from_json_metadata(program)
 
             #Check if there are search results
-            if var.SearchTermCurrent != '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 searchMatch = func.search_filter_string(ProgramName)
                 searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue

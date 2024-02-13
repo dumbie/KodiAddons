@@ -215,7 +215,7 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
-            if var.SearchTermCurrent != '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 listContainer.selectItem(2)
             else:
                 listContainer.selectItem(1)

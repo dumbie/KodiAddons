@@ -1,10 +1,11 @@
-import sys
 from datetime import datetime, timedelta
+import sys
 import xbmc
 import xbmcgui
 import argument
 import dialog
 import files
+import func
 import hybrid
 import main
 import path
@@ -97,9 +98,9 @@ def check_multi_launch():
 
 def check_login_settings():
     loginNotSet = False
-    if var.addon.getSetting('LoginUsername') == '' and var.addon.getSetting('LoginEmail') == '':
+    if func.string_isnullorempty(var.addon.getSetting('LoginUsername')) == True and func.string_isnullorempty(var.addon.getSetting('LoginEmail')) == True:
         loginNotSet = True
-    elif var.addon.getSetting('LoginPassword') == '' and var.addon.getSetting('LoginPasswordEmail') == '':
+    elif func.string_isnullorempty(var.addon.getSetting('LoginPassword')) == True and func.string_isnullorempty(var.addon.getSetting('LoginPasswordEmail')) == True:
         loginNotSet = True
 
     if loginNotSet == True:

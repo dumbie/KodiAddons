@@ -163,7 +163,7 @@ class Gui(xbmcgui.WindowXML):
     def count_program(self, resetSelect=False, selectIndex=0):
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            if var.SearchTermCurrent != '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 func.updateLabelText(self, 1, str(listContainer.size()) + " uitzendingen gevonden")
                 func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
             else:
@@ -179,7 +179,7 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)
             xbmc.sleep(100)
-            if var.SearchTermCurrent != '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 func.updateLabelText(self, 1, "Geen uitzendingen gevonden")
                 func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
                 listContainer.selectItem(1)

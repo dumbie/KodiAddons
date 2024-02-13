@@ -5,7 +5,6 @@ import alarm
 import apilogin
 import default
 import dialog
-import download
 import epg
 import func
 import lifunc

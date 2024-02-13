@@ -4,10 +4,8 @@ import xbmcgui
 import alarm
 import lichanneltelevision
 import dialog
-import download
 import func
 import lifunc
-import metadatafunc
 import path
 import recordingfunc
 import searchdialog
@@ -161,7 +159,7 @@ class Gui(xbmcgui.WindowXML):
         listContainer.addItem(listItem)
 
     def focus_on_channel_list(self, forceFocus=False):
-        if var.EpgCurrentChannelId == '':
+        if func.string_isnullorempty(var.EpgCurrentChannelId) == True:
             selectChannelId = var.addon.getSetting('CurrentChannelId')
         else:
             selectChannelId = var.EpgCurrentChannelId
@@ -433,7 +431,7 @@ class Gui(xbmcgui.WindowXML):
 
             #Update status label text
             listContainer = self.getControl(1000)
-            if var.SearchTermCurrent != '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 func.updateLabelText(self, 1, 'Geen zenders gevonden')
                 func.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden.[/COLOR]")
                 listContainer.selectItem(1)
@@ -565,14 +563,14 @@ class Gui(xbmcgui.WindowXML):
         #Update the label texts
         listContainer = self.getControl(1002)
         if listContainer.size() == 0:
-            if var.SearchTermCurrent == '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == True:
                 func.updateLabelText(self, 1, "Geen programma's")
                 func.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 func.updateLabelText(self, 1, "Geen programma's gevonden")
                 func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
         else:
-            if var.SearchTermCurrent == '':
+            if func.string_isnullorempty(var.SearchTermCurrent) == True:
                 func.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
                 func.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:

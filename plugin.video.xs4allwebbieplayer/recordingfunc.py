@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import xbmcgui
 import dialog
 import download
+import func
 import metadatainfo
 import metadatafunc
 import path
@@ -71,9 +72,9 @@ def record_event_epg(_self, listItemSelected, forceRecord=False):
     ProgramDeltaTimeStart = listItemSelected.getProperty('ProgramDeltaTimeStart')
 
     #Check if recording is already set
-    if ProgramRecordEventId == '' or forceRecord == True:
+    if func.string_isnullorempty(ProgramRecordEventId) == True or forceRecord == True:
         recordAdd = download.record_event_add(ProgramId)
-        if recordAdd != '':
+        if func.string_isnullorempty(recordAdd) == False:
             _self.update_channel_status()
             _self.update_program_status()
     else:
@@ -95,7 +96,7 @@ def record_event_now_television_playergui(listItemSelected):
             listItemSelected.setProperty("ProgramNowRecordEvent", 'false')
     else:
         recordAdd = download.record_event_add(ProgramNowId)
-        if recordAdd != '':
+        if func.string_isnullorempty(recordAdd) == False:
             listItemSelected.setProperty("ProgramNowRecordEvent", 'true')
 
 def record_event_next_television_playergui(listItemSelected):
@@ -111,7 +112,7 @@ def record_event_next_television_playergui(listItemSelected):
             listItemSelected.setProperty("ProgramNextRecordEvent", 'false')
     else:
         recordAdd = download.record_event_add(ProgramNextId)
-        if recordAdd != '':
+        if func.string_isnullorempty(recordAdd) == False:
             listItemSelected.setProperty("ProgramNextRecordEvent", 'true')
 
 def record_series_television_playergui(listItemSelected, forceRecord=False):
@@ -120,7 +121,7 @@ def record_series_television_playergui(listItemSelected, forceRecord=False):
     ProgramNowRecordSeriesId = listItemSelected.getProperty('ProgramNowRecordSeriesId')
     ProgramNextRecordSeriesId = listItemSelected.getProperty('ProgramNextRecordSeriesId')
 
-    if ProgramNowRecordSeriesId == '':
+    if func.string_isnullorempty(ProgramNowRecordSeriesId) == True:
         notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen kan niet worden opgenomen.', notificationIcon, 2500, False)
         return
@@ -170,7 +171,7 @@ def record_series_epg(_self, listItemSelected, forceRecord=False):
     ProgramRecordSeries = listItemSelected.getProperty('ProgramRecordSeries')
     ProgramRecordSeriesId = listItemSelected.getProperty('ProgramRecordSeriesId')
 
-    if ProgramRecordSeriesId == '':
+    if func.string_isnullorempty(ProgramRecordSeriesId) == True:
         notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen kan niet worden opgenomen.', notificationIcon, 2500, False)
         return
