@@ -122,9 +122,9 @@ def urllib_request(*args, **kwargs):
 #Urllib urlopen
 def urllib_urlopen(*args, **kwargs):
     if pythonversion < 3:
-        return urllib2.urlopen(*args, **kwargs)
+        return urllib2.urlopen(timeout=10, *args, **kwargs)
     else:
-        return urllib.request.urlopen(*args, **kwargs)
+        return urllib.request.urlopen(timeout=10, *args, **kwargs)
 
 #Urllib getheader
 def urllib_getheader(urlOpen, headerName):
