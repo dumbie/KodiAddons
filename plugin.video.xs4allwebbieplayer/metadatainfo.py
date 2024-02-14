@@ -448,6 +448,7 @@ def stream_assetid_from_assets_array(assetsArray):
                 if asset['videoType'] == 'SD_DASH_WV':
                     if 'rights' in asset and asset['rights'] != 'watch': continue
                     if 'programType' in asset and asset['programType'] != 'CUTV': continue
+                    if 'assetType' in asset and asset['assetType'] != 'MASTER': continue
                     return str(asset['assetId'])
             except:
                 continue
