@@ -78,7 +78,7 @@ def list_load_append(listContainer):
             listItem.setProperty("ProgramNameRaw", ProgramName)
             listItem.setProperty("ProgramDetails", ProgramTiming)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'Genre': 'Zoeken', 'Plot': ProgramDescription})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
             listContainer.append(listItem)
         except:

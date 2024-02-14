@@ -173,6 +173,5 @@ def list_update(listItem):
         listItem.setProperty("ProgramNextRecordEvent", ProgramNextRecordEvent)
         listItem.setProperty("ProgramNextRecordSeries", ProgramNextRecordSeries)
         listItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
-        listItem.setInfo('video', {'Plot': ProgramDescription})
     except:
         pass

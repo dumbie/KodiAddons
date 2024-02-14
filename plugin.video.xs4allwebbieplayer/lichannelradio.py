@@ -74,7 +74,7 @@ def list_load_append(listContainer):
             listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
             listItem.setProperty('ChannelFavorite', ChannelFavorite)
             listItem.setProperty('StreamUrl', ChannelStream)
-            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': 'Radio', 'Tagline': ChannelNumberString, 'Title': ChannelName})
+            listItem.setInfo('video', {'Genre': 'Radio'})
             listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
             dirIsfolder = False
             dirUrl = var.LaunchUrl + '?' + listAction + '=' + ChannelId

@@ -103,12 +103,12 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
     for program in var.SeriesProgramDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
-            ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
+            ProgramTitleRaw = metadatainfo.programtitle_from_json_metadata(program)
             ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
             ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
 
             #Check if program matches serie
-            checkSerie1 = ProgramNameRaw.lower()
+            checkSerie1 = ProgramTitleRaw.lower()
             checkSerie2 = selectedProgramName.lower()
             if checkSerie1 != checkSerie2: continue
 
@@ -144,7 +144,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setProperty("ProgramAvailability", ProgramAvailability)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': selectedProgramName, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription})
             listItem.setArt({'thumb': path.icon_epg(selectedPictureUrl), 'icon': path.icon_epg(selectedPictureUrl)})
             dirIsfolder = False
             dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramId

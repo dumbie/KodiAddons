@@ -122,7 +122,7 @@ def list_load_append(listContainer, epgJson):
             listItem.setProperty('ProgramDetails', ProgramDetails)
             listItem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
             listItem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
-            listItem.setInfo('video', {'Genre': 'TV Gids', 'Plot': ProgramDescriptionRaw})
+            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescriptionRaw})
             listItem.setArt({'thumb': path.icon_television(ChannelExternalId), 'icon': path.icon_television(ChannelExternalId)})
 
             #Check if program finished airing
