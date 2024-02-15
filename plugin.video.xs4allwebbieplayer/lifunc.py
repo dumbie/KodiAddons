@@ -1,7 +1,25 @@
 import xbmc
 import xbmcplugin
+import xbmcgui
 import func
 import var
+
+#Convert JsonItem to ListItem
+def jsonitem_to_listitem(jsonItem):
+    try:
+        listItem = xbmcgui.ListItem()
+        for name, value in jsonItem.items():
+            if name == 'ItemLabel':
+                listItem.setLabel(value)
+            elif name == 'ItemInfo':
+                listItem.setInfo('video', value)
+            elif name == 'ItemArt':
+                listItem.setArt(value)
+            else:
+                listItem.setProperty(name, value)
+        return listItem
+    except:
+        return None
 
 #Add item to container or directory
 def auto_add_item(listItem, listContainer, dirUrl='', dirFolder=False):

@@ -33,12 +33,12 @@ class Gui(xbmcgui.WindowXML):
         clickedControl = self.getControl(clickId)
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
-            listItemAction = listItemSelected.getProperty('Action')
+            listItemAction = listItemSelected.getProperty('ItemAction')
             if listItemAction == 'play_stream_program':
                 streamplay.play_program(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()
-            listItemAction = listItemSelected.getProperty('Action')
+            listItemAction = listItemSelected.getProperty('ItemAction')
             if listItemAction == 'go_back':
                 close_the_page()
             elif listItemAction == 'search_program':
@@ -104,17 +104,17 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0: return True
 
         listItem = xbmcgui.ListItem('Ga een stap terug')
-        listItem.setProperty('Action', 'go_back')
+        listItem.setProperty('ItemAction', 'go_back')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem("Zoek uitzending")
-        listItem.setProperty('Action', 'search_program')
+        listItem.setProperty('ItemAction', 'search_program')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem("Vernieuwen")
-        listItem.setProperty('Action', 'refresh_programs')
+        listItem.setProperty('ItemAction', 'refresh_programs')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
 

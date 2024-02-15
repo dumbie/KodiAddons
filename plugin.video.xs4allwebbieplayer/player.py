@@ -6,19 +6,14 @@ import playergui
 import var
 
 class PlayerCustom(xbmc.Player):
-    def PlayCustom(self, streamUrl, listItem=None, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffsetSecStart=0, SeekOffsetSecEnd=0, StreamType='video'):
+    def PlayCustom(self, streamUrl, listItem=None, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffsetSecEnd=0, StreamType='video'):
         #Update video player variables
         var.PlayBackStartTriggered(False)
         var.PlayerWindowed(Windowed)
         var.PlayerOpenOverlay(OpenOverlay)
         var.PlayerShowInformation(ShowInformation)
-        var.PlayerSeekOffsetSecStart(SeekOffsetSecStart)
         var.PlayerSeekOffsetSecEnd(SeekOffsetSecEnd)
         var.PlayerStreamType(StreamType)
-
-        #Set list item seek offset start
-        if SeekOffsetSecStart != 0:
-            listItem.setProperty('StartOffset', str(SeekOffsetSecStart))
 
         #Start playing list item media
         self.play(streamUrl, listItem, Windowed)
@@ -29,7 +24,6 @@ class PlayerCustom(xbmc.Player):
         var.PlayerWindowed(False)
         var.PlayerOpenOverlay(False)
         var.PlayerShowInformation(False)
-        var.PlayerSeekOffsetSecStart(0)
         var.PlayerSeekOffsetSecEnd(0)
         var.PlayerStreamType('video')
 

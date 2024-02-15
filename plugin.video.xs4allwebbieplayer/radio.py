@@ -43,12 +43,12 @@ class Gui(xbmcgui.WindowXML):
             clickedControl = self.getControl(clickId)
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()
-                listItemAction = listItemSelected.getProperty('Action')
+                listItemAction = listItemSelected.getProperty('ItemAction')
                 if listItemAction == 'play_stream_radio':
                     streamplay.play_radio(listItemSelected)
             elif clickId == 1001:
                 listItemSelected = clickedControl.getSelectedItem()
-                listItemAction = listItemSelected.getProperty('Action')
+                listItemAction = listItemSelected.getProperty('ItemAction')
                 if listItemAction == 'go_back':
                     close_the_page()
                 elif listItemAction == 'refresh_programs':
@@ -120,32 +120,32 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0: return True
 
         listItem = xbmcgui.ListItem('Ga een stap terug')
-        listItem.setProperty('Action', 'go_back')
+        listItem.setProperty('ItemAction', 'go_back')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Alle of favorieten')
-        listItem.setProperty('Action', 'switch_all_favorites')
+        listItem.setProperty('ItemAction', 'switch_all_favorites')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Zoek naar zender')
-        listItem.setProperty('Action', 'search_channelprogram')
+        listItem.setProperty('ItemAction', 'search_channelprogram')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Toon visualisatie')
-        listItem.setProperty('Action', 'show_visualisation')
+        listItem.setProperty('ItemAction', 'show_visualisation')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'), 'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Verborgen zenders')
-        listItem.setProperty('Action', 'hidden_channels')
+        listItem.setProperty('ItemAction', 'hidden_channels')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/vodno.png'), 'icon': path.resources('resources/skins/default/media/common/vodno.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Vernieuwen')
-        listItem.setProperty('Action', 'refresh_programs')
+        listItem.setProperty('ItemAction', 'refresh_programs')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
 

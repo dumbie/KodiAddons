@@ -73,6 +73,7 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
             EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramTitleRaw = metadatainfo.programtitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_vod(program)
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(program)
 
             #Combine program description extended
             ProgramDescription = metadatacombine.program_description_extended(program)
@@ -80,21 +81,27 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, True, False, False)
 
-            #Add vod program
-            listAction = 'play_stream_vod'
-            listItem = xbmcgui.ListItem(EpisodeTitleRaw)
-            listItem.setProperty('Action', listAction)
-            listItem.setProperty('ProgramId', ProgramId)
-            listItem.setProperty("ProgramName", EpisodeTitleRaw)
-            listItem.setProperty('ProgramDetails', ProgramDetails)
-            listItem.setProperty("ProgramSeasonInt", ProgramSeasonInt)
-            listItem.setProperty("ProgramEpisodeInt", ProgramEpisodeInt)
-            listItem.setProperty("ProgramAvailability", ProgramAvailability)
-            listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription})
-            listItem.setArt({'thumb': path.icon_vod(selectedPictureUrl), 'icon': path.icon_vod(selectedPictureUrl)})
+            #Set item icons
+            iconDefault = path.icon_vod(selectedPictureUrl)
+
+            #Set item details
+            jsonItem = {
+                'StreamAssetId': StreamAssetId,
+                'ProgramId': ProgramId,
+                "ProgramName": EpisodeTitleRaw,
+                'ProgramDetails': ProgramDetails,
+                "ProgramSeasonInt": ProgramSeasonInt,
+                "ProgramEpisodeInt": ProgramEpisodeInt,
+                "ProgramAvailability": ProgramAvailability,
+                'ProgramDescription': ProgramDescription,
+                'ItemLabel': EpisodeTitleRaw,
+                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'play_stream_vod'
+            }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramId
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
@@ -123,6 +130,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_program(program)
+            StartOffset = str(int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Combine program description extended
             ProgramDescription = metadatacombine.program_description_extended(program)
@@ -130,25 +138,30 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, True, False, False)
 
-            #Add vod program
-            listAction = 'play_stream_program'
-            listItem = xbmcgui.ListItem(EpisodeTitleRaw)
-            listItem.setProperty('Action', listAction)
-            listItem.setProperty('ChannelId', ChannelId)
-            listItem.setProperty('ProgramId', ProgramId)
-            listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
-            listItem.setProperty("ProgramName", EpisodeTitleRaw)
-            listItem.setProperty("ProgramSeasonInt", ProgramSeasonInt)
-            listItem.setProperty("ProgramEpisodeInt", ProgramEpisodeInt)
-            listItem.setProperty("ProgramWeek", 'true')
-            listItem.setProperty('ProgramDetails', ProgramDetails)
-            listItem.setProperty("ProgramAvailability", ProgramAvailability)
-            listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription})
-            listItem.setArt({'thumb': path.icon_epg(selectedPictureUrl), 'icon': path.icon_epg(selectedPictureUrl)})
+            #Set item icons
+            iconDefault = path.icon_epg(selectedPictureUrl)
+
+            #Set item details
+            jsonItem = {
+                'StartOffset': StartOffset,
+                'ChannelId': ChannelId,
+                'ProgramId': ProgramId,
+                "ProgramTimeStartDateTime": str(ProgramTimeStartDateTime),
+                "ProgramName": EpisodeTitleRaw,
+                "ProgramSeasonInt": ProgramSeasonInt,
+                "ProgramEpisodeInt": ProgramEpisodeInt,
+                "ProgramWeek": 'true',
+                'ProgramDetails': ProgramDetails,
+                "ProgramAvailability": ProgramAvailability,
+                'ProgramDescription': ProgramDescription,
+                'ItemLabel': EpisodeTitleRaw,
+                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'play_stream_program'
+            }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramId
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
-

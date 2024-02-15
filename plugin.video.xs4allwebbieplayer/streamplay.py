@@ -5,8 +5,8 @@ import xbmcgui
 import apilogin
 import func
 import path
+import metadatainfo
 import streamadjust
-import streamcheck
 import var
 
 def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, SeekOffsetSecEnd=0):
@@ -16,9 +16,6 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
             notificationIcon = path.resources('resources/skins/default/media/common/television.png')
             xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan stream niet openen.', notificationIcon, 2500, False)
             return
-
-        #Check channel properties
-        streamcheck.check_tv(listItem)
 
         #Get channel properties
         NewStreamAssetId = listItem.getProperty('StreamAssetId')
@@ -55,9 +52,10 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
 
         #Update channel settings and variables
         CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-        if CurrentChannelId != NewChannelId:
-            var.addon.setSetting('LastChannelId', CurrentChannelId)
         var.addon.setSetting('CurrentChannelId', NewChannelId)
+        if CurrentChannelId != NewChannelId:
+            var.TelevisionChannelListItemLast = var.TelevisionChannelListItemCurrent
+        var.TelevisionChannelListItemCurrent = listItem
         xbmc.sleep(100)
 
         #Get downloaded stream url
@@ -83,9 +81,6 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
 
 def play_radio(listItem, Windowed=False):
     try:
-        #Check channel properties
-        streamcheck.check_radio(listItem)
-
         #Get channel properties
         ChannelId = listItem.getProperty('ChannelId')
         StreamUrl = listItem.getProperty('StreamUrl')
@@ -126,11 +121,8 @@ def play_program(listItem, Windowed=False):
         #Download program details
         DownloadDataJson = download.request_download_gzip(path.detail_program(ProgramId))
 
-        #Check program properties
-        streamcheck.check_program(listItem, DownloadDataJson)
-
         #Get the stream asset id
-        StreamAssetId = listItem.getProperty('StreamAssetId')
+        StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson)
 
         #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):
@@ -166,11 +158,8 @@ def play_program(listItem, Windowed=False):
         #Update listitem with input stream properties
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
-        #Get stream start offset time
-        SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60
-
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetSecStart=SeekOffsetSecStart)
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
@@ -183,25 +172,16 @@ def play_vod(listItem, Windowed=False):
             xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan stream niet openen.', notificationIcon, 2500, False)
             return
 
-        #Get the program id
+        #Get program properties
         ProgramId = listItem.getProperty('ProgramId')
+        StreamAssetId = listItem.getProperty('StreamAssetId')
 
-        #Check vod properties
+        #Check program properties
         if func.string_isnullorempty(ProgramId):
             notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
             xbmcgui.Dialog().notification(var.addonname, 'Ongeldige vod informatie.', notificationIcon, 2500, False)
             return
 
-        #Download program userdata
-        DownloadDataJson = download.request_download_gzip(path.detail_vod(ProgramId))
-
-        #Check vod properties
-        streamcheck.check_vod(listItem, DownloadDataJson)
-
-        #Get the stream asset id
-        StreamAssetId = listItem.getProperty('StreamAssetId')
-
-        #Check the set stream asset id
         if func.string_isnullorempty(StreamAssetId):
             notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
             xbmcgui.Dialog().notification(var.addonname, 'Stream is niet speelbaar wegens rechten.', notificationIcon, 2500, False)
@@ -249,14 +229,11 @@ def play_recorded(listItem, Windowed=False):
             xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan stream niet openen.', notificationIcon, 2500, False)
             return
 
-        #Check recorded properties
-        streamcheck.check_recorded(listItem)
-
-        #Get stream asset id
+        #Get program properties
         StreamAssetId = listItem.getProperty('StreamAssetId')
         ProgramRecordEventId = listItem.getProperty('ProgramRecordEventId')
 
-        #Check recorded properties
+        #Check program properties
         if func.string_isnullorempty(ProgramRecordEventId):
             notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
             xbmcgui.Dialog().notification(var.addonname, 'Ongeldige opname informatie.', notificationIcon, 2500, False)
@@ -295,16 +272,8 @@ def play_recorded(listItem, Windowed=False):
         #Update listitem with input stream properties
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
-        #Get stream start offset time
-        SeekOffsetSecStart = 0
-        ProgramDeltaTimeStart = listItem.getProperty('ProgramDeltaTimeStart')
-        if func.string_isnullorempty(ProgramDeltaTimeStart) == False and ProgramDeltaTimeStart != '0':
-            SeekOffsetSecStart = func.ticks_to_seconds(ProgramDeltaTimeStart)
-        if SeekOffsetSecStart == 0:
-            SeekOffsetSecStart = int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60
-
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, SeekOffsetSecStart=SeekOffsetSecStart)
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)

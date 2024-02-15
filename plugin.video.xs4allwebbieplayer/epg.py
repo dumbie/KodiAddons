@@ -49,7 +49,7 @@ class Gui(xbmcgui.WindowXML):
             clickedControl = self.getControl(clickId)
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()
-                listItemAction = listItemSelected.getProperty('Action')
+                listItemAction = listItemSelected.getProperty('ItemAction')
                 if listItemAction == 'go_back':
                     close_the_page()
                 elif listItemAction == 'set_load_day':
@@ -129,32 +129,32 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0: return True
 
         listItem = xbmcgui.ListItem('Ga een stap terug')
-        listItem.setProperty('Action', 'go_back')
+        listItem.setProperty('ItemAction', 'go_back')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'),'icon': path.resources('resources/skins/default/media/common/back.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Zoek naar zender')
-        listItem.setProperty('Action', 'search_channel')
+        listItem.setProperty('ItemAction', 'search_channel')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Zoek programma')
-        listItem.setProperty('Action', 'search_program')
+        listItem.setProperty('ItemAction', 'search_program')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Selecteer dag')
-        listItem.setProperty('Action', 'set_load_day')
+        listItem.setProperty('ItemAction', 'set_load_day')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/calendar.png'),'icon': path.resources('resources/skins/default/media/common/calendar.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Alle of favorieten')
-        listItem.setProperty('Action', 'switch_all_favorites')
+        listItem.setProperty('ItemAction', 'switch_all_favorites')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Vernieuwen')
-        listItem.setProperty('Action', 'refresh_epg')
+        listItem.setProperty('ItemAction', 'refresh_epg')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
 
@@ -269,7 +269,7 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Live programma kijken':
             streamplay.play_tv(listItemSelected)
         elif dialogResult == 'Programma terug kijken':
-            streamplay.play_program(listItemSelected, False)
+            streamplay.play_program(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
 

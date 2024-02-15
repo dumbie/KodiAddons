@@ -4,6 +4,7 @@ import func
 import metadatacombine
 import metadatafunc
 import metadatainfo
+import var
 
 def list_update_channel(listItem):
     try:
@@ -96,17 +97,28 @@ def list_update_program(listItem):
         ProgramEpgList = ProgramTimeStartString + ' ' + ProgramTimingList
         ProgramDescriptionDesc = ProgramName + ' ' + ProgramTimingDescription + '\n\n' + ProgramDetails + '\n\n' + ProgramDescriptionRaw
 
-        #Check if program finished airing
-        if ProgramProgressPercent >= 100:
-            listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
-
         #Check if program is still to come
         if ProgramProgressPercent <= 0:
             listItem.setProperty('ProgramIsUpcoming', 'true')
 
+        #Check if program finished airing
+        if ProgramProgressPercent >= 100:
+            #Set program available status
+            listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
+
+            #Set program seek offset start
+            StartOffset = str(int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60)
+            listItem.setProperty('StartOffset', StartOffset)
+
         #Check if program is currently airing
         if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
+            #Set program airing status
             listItem.setProperty('ProgramIsAiring', 'true')
+
+            #Set channel stream asset identifier
+            channelJson = metadatafunc.search_channelid_jsontelevision(ChannelId)
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channelJson)
+            listItem.setProperty('StreamAssetId', StreamAssetId)
 
         #Update program list item
         listItem.setProperty('ProgramEpgList', ProgramEpgList)

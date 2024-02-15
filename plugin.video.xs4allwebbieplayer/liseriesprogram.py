@@ -51,20 +51,24 @@ def list_load_vod_append(listContainer):
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
 
-            #Add vod program
-            listAction = 'load_series_episodes_vod'
-            listItem = xbmcgui.ListItem(ProgramName)
-            listItem.setProperty('Action', listAction)
-            listItem.setProperty('PictureUrl', PictureUrl)
-            listItem.setProperty('ProgramId', ProgramId)
-            listItem.setProperty("ProgramName", ProgramName)
-            listItem.setProperty('ProgramDetails', ProgramDetails)
-            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails})
+            #Set item icons
+            iconDefault = path.icon_vod(PictureUrl)
             iconStreamType = path.icon_addon('vod')
-            iconProgram = path.icon_vod(PictureUrl)
-            listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType})
+
+            #Set item details
+            jsonItem = {
+                'PictureUrl': PictureUrl,
+                'ProgramId': ProgramId,
+                "ProgramName": ProgramName,
+                'ProgramDetails': ProgramDetails,
+                'ItemLabel': ProgramName,
+                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType},
+                'ItemAction': 'load_series_episodes_vod'
+            }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramId + var.splitchar + ProgramName + var.splitchar + PictureUrl
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
@@ -94,23 +98,27 @@ def list_load_program_append(listContainer):
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
 
-            #Add week program
-            listAction = 'load_series_episodes_program'
-            listItem = xbmcgui.ListItem(ProgramName)
-            listItem.setProperty('Action', listAction)
-            listItem.setProperty('PictureUrl', PictureUrl)
-            listItem.setProperty('SeriesId', SeriesId)
-            listItem.setProperty('ProgramId', ProgramId)
-            listItem.setProperty("ProgramName", ProgramName)
-            listItem.setProperty("ProgramWeek", 'true')
-            listItem.setProperty('ProgramDetails', ProgramDetails)
-            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails})
-            iconStreamType = path.icon_addon('calendarweek')
-            iconProgram = path.icon_epg(PictureUrl)
+            #Set item icons
+            iconDefault = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)
-            listItem.setArt({'thumb': iconProgram, 'icon': iconProgram, 'image1': iconStreamType, 'image2': iconChannel})
+            iconStreamType = path.icon_addon('calendarweek')
+
+            #Set item details
+            jsonItem = {
+                'PictureUrl': PictureUrl,
+                'SeriesId': SeriesId,
+                'ProgramId': ProgramId,
+                "ProgramName": ProgramName,
+                "ProgramWeek": 'true',
+                'ProgramDetails': ProgramDetails,
+                'ItemLabel': ProgramName,
+                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
+                'ItemAction': 'load_series_episodes_program'
+            }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ProgramId + var.splitchar + ProgramName + var.splitchar + PictureUrl
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

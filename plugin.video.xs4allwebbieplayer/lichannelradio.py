@@ -64,20 +64,25 @@ def list_load_append(listContainer):
             ChannelNumberString = str(ChannelNumberInt)
             ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
 
+            #Set item icons
+            iconDefault = path.icon_radio(ChannelId)
+
             #Set item details
-            listAction = 'play_stream_radio'
-            listItem = xbmcgui.ListItem(ChannelName)
-            listItem.setProperty('Action', listAction)
-            listItem.setProperty('ChannelId', ChannelId)
-            listItem.setProperty('ChannelName', ChannelName)
-            listItem.setProperty('ChannelNumber', ChannelNumberString)
-            listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
-            listItem.setProperty('ChannelFavorite', ChannelFavorite)
-            listItem.setProperty('StreamUrl', ChannelStream)
-            listItem.setInfo('video', {'Genre': 'Radio'})
-            listItem.setArt({'thumb': path.icon_radio(ChannelId), 'icon': path.icon_radio(ChannelId)})
+            jsonItem = {
+                'ChannelId': ChannelId,
+                'ChannelName': ChannelName,
+                'ChannelNumber': ChannelNumberString,
+                'ChannelNumberAccent': ChannelNumberAccent,
+                'ChannelFavorite': ChannelFavorite,
+                'StreamUrl': ChannelStream,
+                'ItemLabel': ChannelName,
+                'ItemInfo': {'Genre': 'Radio'},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'play_stream_radio'
+            }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ChannelId
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

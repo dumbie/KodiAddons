@@ -22,7 +22,6 @@ import search
 import series
 import sleep
 import sport
-import streamswitch
 import television
 import threadfunc
 import var
@@ -128,11 +127,6 @@ class Gui(xbmcgui.WindowXML):
 
         #Check if user is logged in
         if var.ApiLoggedIn() == True:
-            #Switch to last known television channel
-            if var.addon.getSetting('StartWithLastChannel') == 'true' and var.addon.getSetting('StartWithKids') == 'false':
-                CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-                streamswitch.switch_tv_id(CurrentChannelId, Windowed=True)
-
             #Go to the desired page on startup
             if var.addon.getSetting('StartWithTelevision') == 'true':
                 television.switch_to_page()
@@ -153,14 +147,14 @@ class Gui(xbmcgui.WindowXML):
             #Add stop button
             if listContainer.size() == 0:
                 listItem = xbmcgui.ListItem('Stop met afspelen')
-                listItem.setProperty('Action', 'media_stop')
+                listItem.setProperty('ItemAction', 'media_stop')
                 listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/stop.png'),'icon': path.resources('resources/skins/default/media/common/stop.png')})
                 listContainer.addItem(listItem)
 
             #Add mute button
             if listContainer.size() == 1:
                 listItem = xbmcgui.ListItem('On/demp het geluid')
-                listItem.setProperty('Action', 'media_togglemute')
+                listItem.setProperty('ItemAction', 'media_togglemute')
                 listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
                 listContainer.addItem(listItem)
 
@@ -168,24 +162,24 @@ class Gui(xbmcgui.WindowXML):
             if xbmc.Player().isPlayingVideo():
                 if listContainer.size() == 2:
                     listItem = xbmcgui.ListItem('Toon video speler')
-                    listItem.setProperty('Action', 'media_fullscreen')
+                    listItem.setProperty('ItemAction', 'media_fullscreen')
                     listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
                     listContainer.addItem(listItem)
                 elif listContainer.size() == 3:
                     updateItem = listContainer.getListItem(2)
                     updateItem.setLabel('Toon video speler')
-                    updateItem.setProperty('Action', 'media_fullscreen')
+                    updateItem.setProperty('ItemAction', 'media_fullscreen')
                     updateItem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
             elif xbmc.Player().isPlayingAudio():
                 if listContainer.size() == 2:
                     listItem = xbmcgui.ListItem('Toon visualisatie')
-                    listItem.setProperty('Action', 'show_visualisation')
+                    listItem.setProperty('ItemAction', 'show_visualisation')
                     listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'),'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
                     listContainer.addItem(listItem)
                 elif listContainer.size() == 3:
                     updateItem = listContainer.getListItem(2)
                     updateItem.setLabel('Toon visualisatie')
-                    updateItem.setProperty('Action', 'show_visualisation')
+                    updateItem.setProperty('ItemAction', 'show_visualisation')
                     updateItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'),'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
             elif listContainer.size() == 3:
                 listContainer.removeItem(2)
@@ -308,7 +302,7 @@ class Gui(xbmcgui.WindowXML):
         clickedControl = self.getControl(clickId)
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
-            listItemAction = listItemSelected.getProperty('Action')
+            listItemAction = listItemSelected.getProperty('ItemAction')
             if listItemAction == 'page_television':
                 television.switch_to_page()
             elif listItemAction == 'page_radio':
@@ -345,7 +339,7 @@ class Gui(xbmcgui.WindowXML):
                 dialog_close()
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()
-            listItemAction = listItemSelected.getProperty('Action')
+            listItemAction = listItemSelected.getProperty('ItemAction')
             if listItemAction == 'media_stop':
                 xbmc.executebuiltin('PlayerControl(Stop)')
             elif listItemAction == 'media_togglemute':

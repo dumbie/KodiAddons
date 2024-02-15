@@ -89,28 +89,33 @@ def list_load_append(listContainer):
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramProgressPercent = '100'
 
+            #Set item icons
+            iconDefault = path.icon_television(ExternalId)
+
             #Set item details
-            listAction = 'play_stream_tv'
-            listItem = xbmcgui.ListItem(ChannelName)
-            listItem.setProperty('Action', listAction)
-            listItem.setProperty('StreamAssetId', StreamAssetId)
-            listItem.setProperty('ChannelId', ChannelId)
-            listItem.setProperty('ChannelNumber', ChannelNumberString)
-            listItem.setProperty('ChannelNumberAccent', ChannelNumberAccent)
-            listItem.setProperty('ChannelFavorite', ChannelFavorite)
-            listItem.setProperty('ExternalId', ExternalId)
-            listItem.setProperty('ChannelName', ChannelName)
-            listItem.setProperty('ChannelRecordEvent', ChannelRecordEvent)
-            listItem.setProperty('ChannelRecordSeries', ChannelRecordSeries)
-            listItem.setProperty('ChannelAlarm', ChannelAlarm)
-            listItem.setProperty("ProgramNowName", ProgramNowName)
-            listItem.setProperty("ProgramNextName", ProgramNextName)
-            listItem.setProperty("ProgramDescription", ProgramDescription)
-            listItem.setProperty("ProgramProgressPercent", ProgramProgressPercent)
-            listItem.setInfo('video', {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName})
-            listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+            jsonItem = {
+                'StreamAssetId': StreamAssetId,
+                'ExternalId': ExternalId,
+                'ChannelId': ChannelId,
+                'ChannelNumber': ChannelNumberString,
+                'ChannelNumberAccent': ChannelNumberAccent,
+                'ChannelFavorite': ChannelFavorite,
+                'ChannelName': ChannelName,
+                'ChannelRecordEvent': ChannelRecordEvent,
+                'ChannelRecordSeries': ChannelRecordSeries,
+                'ChannelAlarm': ChannelAlarm,
+                "ProgramNowName": ProgramNowName,
+                "ProgramNextName": ProgramNextName,
+                "ProgramDescription": ProgramDescription,
+                "ProgramProgressPercent": ProgramProgressPercent,
+                'ItemLabel': ChannelName,
+                'ItemInfo': {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'play_stream_tv'
+            }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction + '=' + ChannelId
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

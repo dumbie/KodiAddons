@@ -69,7 +69,7 @@ def list_load_append(listContainer):
 
             #Add program
             listItem = xbmcgui.ListItem()
-            listItem.setProperty('Action', 'play_stream')
+            listItem.setProperty('ItemAction', 'play_stream')
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))

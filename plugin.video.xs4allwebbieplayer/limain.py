@@ -1,5 +1,6 @@
 import apilogin
 import download
+import func
 import lifunc
 import xbmcgui
 import path
@@ -33,158 +34,263 @@ def list_load_append(listContainer, remoteMode=False):
         RecordingAccess = var.RecordingAccess()
 
         if ApiLoggedIn == True:
-            listAction = 'page_television'
-            listItem = xbmcgui.ListItem('Televisie')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/television.png'),'icon': path.resources('resources/skins/default/media/common/television.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/television.png')
 
-        listAction = 'page_radio'
-        listItem = xbmcgui.ListItem('Radio')
-        listItem.setProperty('Action', listAction)
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/radio.png'), 'icon': path.resources('resources/skins/default/media/common/radio.png')})
-        dirIsFolder = True
-        dirUrl = var.LaunchUrl + '?' + listAction
-        listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Televisie',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_television'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
+
+
+        #Set item icons
+        iconDefault = path.resources('resources/skins/default/media/common/radio.png')
+
+        #Set item details
+        jsonItem = {
+            'ItemLabel': 'Radio',
+            'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+            'ItemAction': 'page_radio'
+        }
+        dirIsfolder = True
+        dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+        listItem = lifunc.jsonitem_to_listitem(jsonItem)
+        listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if ApiLoggedIn == True:
-            listAction = 'page_movies'
-            listItem = xbmcgui.ListItem('Films')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/movies.png'), 'icon': path.resources('resources/skins/default/media/common/movies.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/movies.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Films',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_movies'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if ApiLoggedIn == True:
-            listAction = 'page_series'
-            listItem = xbmcgui.ListItem('Series')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/series.png'), 'icon': path.resources('resources/skins/default/media/common/series.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/series.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Series',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_series'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False and ApiLoggedIn == True:
-            listAction = 'page_epg'
-            listItem = xbmcgui.ListItem('TV Gids')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/epg.png'), 'icon': path.resources('resources/skins/default/media/common/epg.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/epg.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'TV Gids',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_epg'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False and ApiLoggedIn == True:
-            listAction = 'page_search'
-            listItem = xbmcgui.ListItem('Terugzoeken')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/search.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Terugzoeken',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_search'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if ApiLoggedIn == True:
-            listAction = 'page_sport'
-            listItem = xbmcgui.ListItem('Sport Gemist')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/sport.png'), 'icon': path.resources('resources/skins/default/media/common/sport.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/sport.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Sport Gemist',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_sport'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if ApiLoggedIn == True:
-            listAction = 'page_vod'
-            listItem = xbmcgui.ListItem('Programma Gemist')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/vod.png'), 'icon': path.resources('resources/skins/default/media/common/vod.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/vod.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Programma Gemist',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_vod'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if ApiLoggedIn == True:
-            listAction = 'page_kids'
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/kids.png')
+
+            #Set item details
             if remoteMode == False and var.addon.getSetting('KidsPageLock') == 'true':
-                listItem = xbmcgui.ListItem('Kids met slot')
+                itemLabel = 'Kids met slot'
             else:
-                listItem = xbmcgui.ListItem('Kids')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/kids.png'), 'icon': path.resources('resources/skins/default/media/common/kids.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+                itemLabel = 'Kids'
+
+            jsonItem = {
+                'ItemLabel': itemLabel,
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_kids'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if ApiLoggedIn == True and RecordingAccess == True:
-            listAction = 'page_recorded'
-            listItem = xbmcgui.ListItem('Bekijk Opnames')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/recorddone.png'), 'icon': path.resources('resources/skins/default/media/common/recorddone.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/recorddone.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Bekijk Opnames',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_recorded'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True:
-            listAction = 'page_recording_event'
-            listItem = xbmcgui.ListItem('Geplande Opnames')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/record.png'), 'icon': path.resources('resources/skins/default/media/common/record.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/recordevent.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Geplande Opnames',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_recording_event'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True:
-            listAction = 'page_recording_series'
-            listItem = xbmcgui.ListItem('Geplande Series')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/recordseries.png'), 'icon': path.resources('resources/skins/default/media/common/recordseries.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/recordseries.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Geplande Series',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_recording_series'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False and ApiLoggedIn == True:
-            listAction = 'page_alarm'
-            listItem = xbmcgui.ListItem('Alarmen')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/alarm.png'), 'icon': path.resources('resources/skins/default/media/common/alarm.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/alarm.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Alarmen',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_alarm'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False:
-            listAction = 'page_sleep'
-            listItem = xbmcgui.ListItem('Slaap Timer')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/sleep.png'), 'icon': path.resources('resources/skins/default/media/common/sleep.png')})
-            dirIsFolder = True
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/sleep.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Slaap Timer',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_sleep'
+            }
+            dirIsfolder = True
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False:
-            listAction = 'addon_settings'
-            listItem = xbmcgui.ListItem('Instellingen')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settings.png'), 'icon': path.resources('resources/skins/default/media/common/settings.png')})
-            dirIsFolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/settings.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Instellingen',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'addon_settings'
+            }
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False:
-            listAction = 'page_help'
-            listItem = xbmcgui.ListItem('Help')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/help.png'), 'icon': path.resources('resources/skins/default/media/common/help.png')})
-            dirIsFolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/help.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Help',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'page_help'
+            }
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
         if remoteMode == False:
-            listAction = 'addon_shutdown'
-            listItem = xbmcgui.ListItem('Sluiten')
-            listItem.setProperty('Action', listAction)
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/shutdown.png'), 'icon': path.resources('resources/skins/default/media/common/shutdown.png')})
-            dirIsFolder = False
-            dirUrl = var.LaunchUrl + '?' + listAction
-            listContainer.append((dirUrl, listItem, dirIsFolder))
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/shutdown.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Sluiten',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemAction': 'addon_shutdown'
+            }
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
     except:
         pass

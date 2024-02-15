@@ -124,20 +124,6 @@ def list_load_append(listContainer, epgJson):
             listItem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescriptionRaw})
             listItem.setArt({'thumb': path.icon_television(ChannelExternalId), 'icon': path.icon_television(ChannelExternalId)})
-
-            #Check if program finished airing
-            if ProgramProgressPercent >= 100:
-                listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
-
-            #Check if program is still to come
-            if ProgramProgressPercent <= 0:
-                listItem.setProperty('ProgramIsUpcoming', 'true')
-
-            #Check if program is currently airing
-            if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
-                listItem.setProperty('ProgramIsAiring', 'true')
-
-            #Add generated listitem
             listContainer.append(listItem)
         except:
             continue
