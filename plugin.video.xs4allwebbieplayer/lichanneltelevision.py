@@ -114,7 +114,7 @@ def list_load_append(listContainer):
                 'ItemAction': 'play_stream_tv'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

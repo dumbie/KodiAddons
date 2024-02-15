@@ -44,6 +44,10 @@ def list_load_vod_append(listContainer):
                 searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
+            #Check if program is already added
+            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower())
+            if duplicateProgram == True: continue
+
             #Load program details
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
@@ -68,7 +72,7 @@ def list_load_vod_append(listContainer):
                 'ItemAction': 'load_kids_episodes_vod'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
@@ -80,15 +84,15 @@ def list_load_program_append(listContainer):
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
-            #Check if serie is already added
-            tupleContainer = [x[1] for x in listContainer]
-            if lifunc.search_programname_listarray(tupleContainer, ProgramName) != None: continue
-
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
                 searchMatch = func.search_filter_string(ProgramName)
                 searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
+
+            #Check if program is already added
+            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower())
+            if duplicateProgram == True: continue
 
             #Check if program is serie or movie
             ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
@@ -139,7 +143,7 @@ def list_load_program_append(listContainer):
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
                 'ItemAction': listAction
             }
-            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

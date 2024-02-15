@@ -1,4 +1,3 @@
-import json
 import os
 import platform
 from zipfile import ZipFile
@@ -17,7 +16,7 @@ def thread_check_requirements():
 def enable_inputstreamadaptive():
     failed = False
     try:
-        JSONRPC = {
+        jsonRpcDictionary = {
             'id': 1,
             'jsonrpc': '2.0',
             'method': 'Addons.SetAddonEnabled',
@@ -27,7 +26,7 @@ def enable_inputstreamadaptive():
                 'enabled': True
             }
         }
-        result = xbmc.executeJSONRPC(json.dumps(JSONRPC))
+        result = xbmc.executeJSONRPC(func.dictionary_to_jsonstring(jsonRpcDictionary))
         if 'error' in result:
             failed = True
     except:

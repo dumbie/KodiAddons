@@ -1,8 +1,9 @@
+from datetime import date, datetime, timedelta
+import base64
+import json
+import pickle
 import re
 import time
-import pickle
-import codecs
-from datetime import datetime, date, timedelta
 import xbmc
 import xbmcgui
 import dialog
@@ -155,11 +156,11 @@ def datetime_from_string(date_string, date_format):
 
 #Convert epoch ticks to seconds
 def ticks_to_seconds(ticks):
-    return int(ticks) / 100000 * 60
+    return float(ticks) / 100000 * 60
 
 #Convert epoch ticks to datetime
 def datetime_from_ticks(ticks):
-    return datetime.fromtimestamp(int(ticks) / 1000)
+    return datetime.fromtimestamp(float(ticks) / 1000)
 
 #Convert datetime to epoch ticks
 def datetime_to_ticks(dateTime, utcCorrection=False):
@@ -256,9 +257,23 @@ def globalvar_get(varName, defaultObject=None, varHead='Webbie'):
         return defaultObject
 
 #Convert object to pickle string
-def object_to_picklestring(object):
-    return codecs.encode(pickle.dumps(object), "base64").decode()
+def object_to_picklestring(object, useBase64=True):
+    if useBase64:
+        return base64.b64encode(pickle.dumps(object))
+    else:
+        return pickle.dumps(object)
 
 #Convert pickle string to object
-def picklestring_to_object(picklestring):
-    return pickle.loads(codecs.decode(picklestring.encode(), "base64"))
+def picklestring_to_object(picklestring, useBase64=True):
+    if useBase64:
+        return pickle.loads(base64.b64decode(picklestring))
+    else:
+        return pickle.loads(picklestring)
+
+#Convert dictionary to json string
+def dictionary_to_jsonstring(dictionary):
+    return json.dumps(dictionary, ensure_ascii=True)
+
+#Convert json string to dictionary
+def jsonstring_to_dictionary(jsonString):
+    return json.loads(jsonString)

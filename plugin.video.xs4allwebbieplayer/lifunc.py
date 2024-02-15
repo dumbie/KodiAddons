@@ -51,8 +51,8 @@ def auto_add_items(listItems, listContainer):
                 listContainer.append(listItems)
             else:
                 if type(listItems[0]) == tuple:
-                    listItemsTuple = [x[1] for x in listItems]
-                    listContainer.addItems(listItemsTuple)
+                    tupleContainer = [x[1] for x in listItems]
+                    listContainer.addItems(tupleContainer)
                 else:
                     listContainer.addItems(listItems)
         return True
@@ -67,54 +67,6 @@ def auto_end_items():
     except:
         return False
 
-#Search for ProgramName in list array
-def search_programname_listarray(listArray, searchProgramName):
-    for Program in listArray:
-        try:
-            checkProgram1 = searchProgramName.lower()
-            checkProgram2 = Program.getProperty('ProgramName').lower()
-            if checkProgram1 == checkProgram2:
-                return Program
-        except:
-            continue
-    return None
-
-#Search for Program by Episode and Season in list array
-def search_program_episodeseason_listarray(listArray, searchProgramEpisode, searchProgramSeason):
-    for Program in listArray:
-        try:
-            checkProgramSeason = Program.getProperty('ProgramSeasonInt')
-            checkProgramEpisode = Program.getProperty('ProgramEpisodeInt')
-            if searchProgramEpisode == checkProgramSeason and searchProgramSeason == checkProgramEpisode:
-                return Program
-        except:
-            continue
-    return None
-
-#Search for Program by Name and Details in list array
-def search_program_namedetails_listarray(listArray, searchProgramName, searchProgramDetails):
-    for Program in listArray:
-        try:
-            checkProgramName = Program.getProperty('ProgramName')
-            checkProgramDetails = Program.getProperty('ProgramDetails')
-            if searchProgramName == checkProgramName and searchProgramDetails == checkProgramDetails:
-                return Program
-        except:
-            continue
-    return None
-
-#Search for SeriesId in list array
-def search_seriesid_listarray(listArray, searchSeriesId):
-    for Program in listArray:
-        try:
-            checkProgram1 = searchSeriesId.lower()
-            checkProgram2 = Program.getProperty('SeriesId').lower()
-            if checkProgram1 == checkProgram2:
-                return Program
-        except:
-            continue
-    return None
-
 #Search for ChannelId in container
 def search_channelid_listcontainer(listContainer, searchChannelId):
     listItemCount = listContainer.size()
@@ -122,18 +74,6 @@ def search_channelid_listcontainer(listContainer, searchChannelId):
         try:
             ChannelId = listContainer.getListItem(itemNum).getProperty('ChannelId')
             if ChannelId == searchChannelId:
-                return itemNum
-        except:
-            continue
-    return None
-
-#Search for ChannelName in container
-def search_channelname_listcontainer(listContainer, searchChannelName):
-    listItemCount = listContainer.size()
-    for itemNum in range(0, listItemCount):
-        try:
-            ChannelName = listContainer.getListItem(itemNum).getProperty('ChannelName')
-            if ChannelName == searchChannelName:
                 return itemNum
         except:
             continue

@@ -45,7 +45,7 @@ def handle_launch_argument_source():
             limain.list_load_combined()
 
         #Decode pickle directory url
-        jsonItem = func.picklestring_to_object(var.LaunchArgument)
+        jsonItem = func.jsonstring_to_dictionary(var.LaunchArgument)
         listItem = lifunc.jsonitem_to_listitem(jsonItem)
         actionItem = jsonItem['ItemAction']
 

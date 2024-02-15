@@ -64,9 +64,9 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
             #Check if content is pay to play
             if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
 
-            #Check if episode is already added
-            tupleContainer = [x[1] for x in listContainer]
-            if lifunc.search_program_episodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
+            #Check if program is already added
+            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt)
+            if duplicateProgram == True: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
@@ -100,7 +100,7 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
@@ -119,9 +119,9 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             checkSerie2 = selectedProgramName.lower()
             if checkSerie1 != checkSerie2: continue
 
-            #Check if episode is already added
-            tupleContainer = [x[1] for x in listContainer]
-            if lifunc.search_program_episodeseason_listarray(tupleContainer, ProgramSeasonInt, ProgramEpisodeInt) != None: continue
+            #Check if program is already added
+            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt)
+            if duplicateProgram == True: continue
 
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
@@ -160,7 +160,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.object_to_picklestring(jsonItem)
+            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
