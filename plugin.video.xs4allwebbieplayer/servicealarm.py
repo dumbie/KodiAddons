@@ -48,10 +48,10 @@ def thread_alarm_timer():
                 alarm.alarm_json_load(True)
                 alarm_notification()
                 alarm.alarm_clean_expired(True)
-            else:
-                xbmc.sleep(2000)
         except:
             pass
+        finally:
+            var.thread_alarm_timer.Sleep(2000)
 
 def start_alarm_check():
     var.thread_alarm_timer.Start(thread_alarm_timer)

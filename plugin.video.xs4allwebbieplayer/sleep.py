@@ -51,10 +51,10 @@ def thread_sleep_timer():
                 threadLastTime = threadCurrentTime
                 var.SleepEndingMinutes -= 1
                 sleep_notification()
-            else:
-                var.thread_sleep_timer.Sleep(2000)
         except:
             pass
+        finally:
+            var.thread_sleep_timer.Sleep(2000)
 
 def sleep_notification():
     #Check sleep times

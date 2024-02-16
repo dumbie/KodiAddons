@@ -380,10 +380,10 @@ class Gui(xbmcgui.WindowXML):
 
                     #Update program information
                     self.update_television_program()
-                else:
-                    var.thread_update_television_program.Sleep(1000)
             except:
                 pass
+            finally:
+                var.thread_update_television_program.Sleep(1000)
 
     def update_television_program(self):
         try:

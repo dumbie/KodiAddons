@@ -180,12 +180,13 @@ class Gui(xbmcgui.WindowXMLDialog):
     def thread_update_playergui_info(self):
         while var.thread_update_playergui_info.Allowed():
             try:
-                var.thread_update_playergui_info.Sleep(400)
                 playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
                 if playerSeek:
                     self.update_epg_information()
             except:
                 pass
+            finally:
+                var.thread_update_playergui_info.Sleep(400)
 
     def thread_hide_playergui_info(self):
         while var.thread_hide_playergui_info.Allowed():
@@ -193,15 +194,14 @@ class Gui(xbmcgui.WindowXMLDialog):
                 lastInteractSeconds = int((datetime.now() - self.InfoLastInteraction).total_seconds())
                 if lastInteractSeconds >= int(func.setting_get('PlayerInformationCloseTime')):
                     self.hide_epg()
-                else:
-                    var.thread_hide_playergui_info.Sleep(1000)
             except:
                 pass
+            finally:
+                var.thread_hide_playergui_info.Sleep(1000)
 
     def thread_channel_delay_timer(self):
         while var.thread_channel_delay_timer.Allowed():
             try:
-                xbmc.sleep(100)
                 interactSecond = 3
                 lastInteractSeconds = int((datetime.now() - self.ChannelDelay).total_seconds())
 
@@ -231,6 +231,8 @@ class Gui(xbmcgui.WindowXMLDialog):
                     streamplay.play_tv(listItemSelected, ShowInformation=True)
             except:
                 pass
+            finally:
+                var.thread_channel_delay_timer.Sleep(100)
 
     def buttons_add_sidebar(self):
         #Get and check the list container

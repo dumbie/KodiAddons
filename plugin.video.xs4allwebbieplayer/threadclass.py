@@ -8,7 +8,7 @@ class Class_ThreadSafe:
     def __init__(self):
         self.allowed = False
         self.thread = None
-        self.eventSleep = threading.Event()
+        self.eventSleep = None
         self.threadName = ""
 
     #Start thread
@@ -26,6 +26,7 @@ class Class_ThreadSafe:
             #Set variables
             self.allowed = True
             self.threadName = str(threadTarget)
+            self.eventSleep = threading.Event()
             if threadArgs == None:
                 self.thread = threading.Thread(target=threadTarget)
             else:
@@ -60,8 +61,9 @@ class Class_ThreadSafe:
                 self.thread.join()
             xbmc.log("Thread has stopped: " + self.threadName, xbmc.LOGINFO)
 
-            #Set variables
+            #Reset variables
             self.thread = None
+            self.eventSleep = None
             self.threadName = ""
             return True
         except:
@@ -85,4 +87,4 @@ class Class_ThreadSafe:
 
     #Sleep thread until set or timeout
     def Sleep(self, duration):
-        self.eventSleep.wait(timeout=(duration / 1000))
+        self.eventSleep.wait(timeout=float(duration / 1000))

@@ -94,7 +94,6 @@ def zap_remote_number(_self):
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
     while var.thread_zap_wait_timer.Allowed():
         try:
-            xbmc.sleep(100)
             interactSecond = 3
             lastInteractSeconds = int((datetime.now() - var.ZapDelayDateTime).total_seconds())
             if var.ZapTimerForce or lastInteractSeconds >= interactSecond or len(var.ZapNumberString) == 4:
@@ -125,3 +124,5 @@ def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
                 _self.setProperty('ZapVisible', 'true')
         except:
             pass
+        finally:
+            var.thread_zap_wait_timer.Sleep(100)

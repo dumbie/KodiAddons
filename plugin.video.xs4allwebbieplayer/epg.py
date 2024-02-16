@@ -588,10 +588,10 @@ class Gui(xbmcgui.WindowXML):
 
                     #Update program status
                     self.update_program_status()
-                else:
-                    var.thread_update_epg_program.Sleep(1000)
             except:
                 pass
+            finally:
+                var.thread_update_epg_program.Sleep(1000)
 
     def thread_update_channel_progress(self):
         threadLastTime = ''
@@ -604,7 +604,7 @@ class Gui(xbmcgui.WindowXML):
 
                     #Update channel status
                     self.update_channel_status()
-                else:
-                    var.thread_update_epg_channel.Sleep(1000)
             except:
                 pass
+            finally:
+                var.thread_update_epg_channel.Sleep(1000)
