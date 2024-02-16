@@ -12,12 +12,16 @@ class Class_ThreadSafe:
         self.threadName = ""
 
     #Start thread
-    def Start(self, threadTarget, threadArgs=None):
+    def Start(self, threadTarget, threadArgs=None, threadForce=True):
         try:
             #Check variables
             if self.thread != None:
-                xbmc.log("Thread is running, stop it first: " + self.threadName, xbmc.LOGINFO)
-                return True
+                if threadForce == True:
+                    xbmc.log("Thread is running, restarting: " + self.threadName, xbmc.LOGINFO)
+                    self.Stop()
+                else:
+                    xbmc.log("Thread is running, stop it first: " + self.threadName, xbmc.LOGINFO)
+                    return True
 
             #Set variables
             self.allowed = True
