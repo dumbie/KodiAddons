@@ -40,7 +40,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Televisie',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_television'
             }
             dirIsfolder = True
@@ -55,7 +55,7 @@ def list_load_append(listContainer, remoteMode=False):
         #Set item details
         jsonItem = {
             'ItemLabel': 'Radio',
-            'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+            'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
             'ItemAction': 'page_radio'
         }
         dirIsfolder = True
@@ -70,7 +70,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Films',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_movies'
             }
             dirIsfolder = True
@@ -85,7 +85,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Series',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_series'
             }
             dirIsfolder = True
@@ -100,7 +100,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'TV Gids',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_epg'
             }
             dirIsfolder = True
@@ -115,7 +115,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Terugzoeken',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_search'
             }
             dirIsfolder = True
@@ -130,7 +130,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Sport Gemist',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_sport'
             }
             dirIsfolder = True
@@ -145,7 +145,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Programma Gemist',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_vod'
             }
             dirIsfolder = True
@@ -165,7 +165,7 @@ def list_load_append(listContainer, remoteMode=False):
 
             jsonItem = {
                 'ItemLabel': itemLabel,
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_kids'
             }
             dirIsfolder = True
@@ -180,7 +180,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Bekijk Opnames',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_recorded'
             }
             dirIsfolder = True
@@ -195,7 +195,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Geplande Opnames',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_recording_event'
             }
             dirIsfolder = True
@@ -210,7 +210,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Geplande Series',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_recording_series'
             }
             dirIsfolder = True
@@ -225,7 +225,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Alarmen',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_alarm'
             }
             dirIsfolder = True
@@ -240,7 +240,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Slaap Timer',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_sleep'
             }
             dirIsfolder = True
@@ -255,7 +255,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Instellingen',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'addon_settings'
             }
             dirIsfolder = False
@@ -270,7 +270,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Help',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'page_help'
             }
             dirIsfolder = False
@@ -285,7 +285,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Set item details
             jsonItem = {
                 'ItemLabel': 'Sluiten',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'addon_shutdown'
             }
             dirIsfolder = False

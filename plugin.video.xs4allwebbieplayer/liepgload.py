@@ -76,7 +76,6 @@ def list_load_append(listContainer, epgJson):
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
             ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False, True)
             ProgramDescriptionDesc = 'Programmabeschrijving wordt geladen.'
             ProgramEpgList = 'Programmaduur wordt geladen'
@@ -105,7 +104,10 @@ def list_load_append(listContainer, epgJson):
             else:
                 ProgramIsCatchup = 'false'
 
-            #Add program to the list container
+            #Set item icons
+            iconDefault = path.icon_television(ChannelExternalId)
+
+            #Set item details
             listItem = xbmcgui.ListItem()
             listItem.setProperty('ExternalId', ChannelExternalId)
             listItem.setProperty('ChannelId', ChannelId)
@@ -123,7 +125,7 @@ def list_load_append(listContainer, epgJson):
             listItem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
             listItem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescriptionRaw})
-            listItem.setArt({'thumb': path.icon_television(ChannelExternalId), 'icon': path.icon_television(ChannelExternalId)})
+            listItem.setArt({'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault})
             listContainer.append(listItem)
         except:
             continue

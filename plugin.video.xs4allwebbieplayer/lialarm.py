@@ -30,17 +30,19 @@ def list_load_append(listContainer):
             ExternalId = alarm['externalid']
             ProgramName = alarm['programname']
             ProgramTimeStart = alarm['starttime']
-            AlarmIcon = path.icon_television(ExternalId)
 
             ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
             ProgramDescription = 'Om ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' op ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
+
+            #Set item icons
+            iconDefault = path.icon_television(ExternalId)
 
             #Set item details
             listItem = xbmcgui.ListItem()
             listItem.setProperty('ProgramTimeStart', ProgramTimeStart)
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setArt({'thumb': AlarmIcon, 'icon': AlarmIcon})
+            listItem.setArt({'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault})
             listContainer.append(listItem)
         except:
             continue

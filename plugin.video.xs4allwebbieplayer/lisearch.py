@@ -67,7 +67,10 @@ def list_load_append(listContainer):
             #Update program availability
             ProgramNameDesc += '\n' + ProgramAvailability
 
-            #Add program
+            #Set item icons
+            iconDefault = path.icon_television(ExternalId)
+
+            #Set item details
             listItem = xbmcgui.ListItem()
             listItem.setProperty('ItemAction', 'play_stream')
             listItem.setProperty('ChannelId', ChannelId)
@@ -79,7 +82,7 @@ def list_load_append(listContainer):
             listItem.setProperty("ProgramDetails", ProgramTiming)
             listItem.setProperty('ProgramDescription', ProgramDescription)
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription})
-            listItem.setArt({'thumb': path.icon_television(ExternalId), 'icon': path.icon_television(ExternalId)})
+            listItem.setArt({'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault})
             listContainer.append(listItem)
         except:
             continue

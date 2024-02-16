@@ -77,7 +77,7 @@ def list_load_append(listContainer):
                 'StreamUrl': ChannelStream,
                 'ItemLabel': ChannelName,
                 'ItemInfo': {'Genre': 'Radio'},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_radio'
             }
             dirIsfolder = False

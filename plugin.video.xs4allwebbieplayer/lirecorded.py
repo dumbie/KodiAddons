@@ -111,7 +111,7 @@ def list_load_append(listContainer):
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramNameRaw,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_recorded'
             }
             dirIsfolder = False

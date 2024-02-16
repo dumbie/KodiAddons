@@ -80,7 +80,7 @@ def list_load_vod(listContainer):
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramName,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType},
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
@@ -140,7 +140,7 @@ def list_load_program(listContainer):
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramName,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False

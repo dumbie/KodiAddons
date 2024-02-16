@@ -68,7 +68,7 @@ def list_load_vod_append(listContainer):
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType},
                 'ItemAction': 'load_kids_episodes_vod'
             }
             dirIsfolder = True
@@ -140,7 +140,7 @@ def list_load_program_append(listContainer):
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramName,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
                 'ItemAction': listAction
             }
             dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)

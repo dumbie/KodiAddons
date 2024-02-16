@@ -67,7 +67,7 @@ def list_load_vod_append(listContainer):
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType},
                 'ItemAction': 'load_series_episodes_vod'
             }
             dirIsfolder = True
@@ -117,7 +117,7 @@ def list_load_program_append(listContainer):
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
                 'ItemAction': 'load_series_episodes_program'
             }
             dirIsfolder = True

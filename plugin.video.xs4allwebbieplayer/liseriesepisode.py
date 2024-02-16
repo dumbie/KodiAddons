@@ -96,7 +96,7 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': EpisodeTitleRaw,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
@@ -156,7 +156,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': EpisodeTitleRaw,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False

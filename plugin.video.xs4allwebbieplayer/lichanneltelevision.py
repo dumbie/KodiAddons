@@ -110,7 +110,7 @@ def list_load_append(listContainer):
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
                 'ItemInfo': {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_tv'
             }
             dirIsfolder = False

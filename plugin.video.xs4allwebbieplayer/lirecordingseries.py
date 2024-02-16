@@ -64,12 +64,12 @@ def list_load_append(listContainer):
                 ChannelName = metadatainfo.channelName_from_json_metadata(ChannelDetails)
                 ChannelIcon = path.icon_television(ExternalId)
 
-            #Add recording series to the list
+            #Set item details
             listItem = xbmcgui.ListItem()
             listItem.setProperty('SeriesId', ProgramSeriesId)
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramDescription', ChannelName)
-            listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon})
+            listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
             listContainer.append(listItem)
         except:
             continue

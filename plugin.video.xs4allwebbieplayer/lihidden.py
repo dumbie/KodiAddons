@@ -48,7 +48,7 @@ def list_load_append(listContainer, hiddenJsonFile):
                 listItem.setProperty('ChannelId', ChannelId)
                 listItem.setProperty('ProgramName', ChannelName)
                 listItem.setProperty('ProgramDescription', ChannelNumber)
-                listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon})
+                listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
                 listContainer.append(listItem)
             except:
                 continue
@@ -67,7 +67,7 @@ def list_load_append(listContainer, hiddenJsonFile):
                 listItem = xbmcgui.ListItem()
                 listItem.setProperty('ChannelId', ChannelId)
                 listItem.setProperty('ProgramName', ChannelName)
-                listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon})
+                listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
                 listContainer.append(listItem)
             except:
                 continue
