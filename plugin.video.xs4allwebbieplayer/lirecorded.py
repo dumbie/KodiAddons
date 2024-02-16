@@ -76,7 +76,7 @@ def list_load_append(listContainer):
             if ProgramDeltaTimeStart != '0':
                 StartOffset = str(func.ticks_to_seconds(ProgramDeltaTimeStart))
             else:
-                StartOffset = str(int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60)
+                StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Combine program timing
             ProgramTiming = metadatacombine.program_timing_vod(program)

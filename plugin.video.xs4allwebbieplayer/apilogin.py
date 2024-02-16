@@ -13,15 +13,15 @@ import var
 
 def ApiGenerateDeviceId():
     try:
-        if func.string_isnullorempty(var.addon.getSetting('LoginDeviceId120')) == True:
+        if func.string_isnullorempty(func.setting_get('LoginDeviceId120')) == True:
             DeviceId = ''
             CurrentTimeUtc = str(datetime.utcnow())
             random.seed(CurrentTimeUtc)
             for _ in range(64):
                 DeviceId += str(random.randint(0,9))
 
-            #Update the settings
-            var.addon.setSetting('LoginDeviceId120', DeviceId)
+            #Update settings
+            func.setting_set('LoginDeviceId120', DeviceId)
         return True
     except:
         return False
@@ -39,8 +39,8 @@ def ApiSetEndpointAdresNumber():
 def ApiSetEndpointAdresEmail():
     try:
         apiEndpoint = classes.Class_ApiEndpoint()
-        apiEndpoint.username = var.addon.getSetting('LoginEmail')
-        apiEndpoint.password = var.addon.getSetting('LoginPasswordEmail')
+        apiEndpoint.username = func.setting_get('LoginEmail')
+        apiEndpoint.password = func.setting_get('LoginPasswordEmail')
         apiEndpoint = apiEndpoint.__dict__
 
         DownloadDataSend = json.dumps(apiEndpoint).encode('ascii')
@@ -98,12 +98,12 @@ def ApiLogin(loginNotification=False, forceLogin=False):
         ApiGenerateDeviceId()
 
         #Check the login type
-        if var.addon.getSetting('LoginType') == 'Abonnementsnummer':
+        if func.setting_get('LoginType') == 'Abonnementsnummer':
             #Download and set api endpoint adres
             ApiSetEndpointAdresNumber()
 
             loginDevice = classes.Class_ApiLogin_deviceRegistrationData()
-            loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')
+            loginDevice.deviceId = func.setting_get('LoginDeviceId120')
             loginDevice.vendor = "Webbie Player"
             loginDevice.model = str(var.addonversion)
             loginDevice.deviceFirmVersion = "Kodi"
@@ -111,8 +111,8 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             loginDevice = loginDevice.__dict__
 
             loginAuth = classes.Class_ApiLogin_credentialsStdAuth()
-            loginAuth.username = var.addon.getSetting('LoginUsername')
-            loginAuth.password = var.addon.getSetting('LoginPassword')
+            loginAuth.username = func.setting_get('LoginUsername')
+            loginAuth.password = func.setting_get('LoginPassword')
             loginAuth.deviceRegistrationData = loginDevice
             loginAuth = loginAuth.__dict__
 
@@ -124,7 +124,7 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             ApiSetEndpointAdresEmail()
 
             loginDevice = classes.Class_ApiLogin_deviceInfo()
-            loginDevice.deviceId = var.addon.getSetting('LoginDeviceId120')
+            loginDevice.deviceId = func.setting_get('LoginDeviceId120')
             loginDevice.deviceVendor = "Webbie Player"
             loginDevice.deviceModel = str(var.addonversion)
             loginDevice.deviceFirmVersion = "Kodi"
@@ -132,8 +132,8 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             loginDevice = loginDevice.__dict__
 
             loginCredentials = classes.Class_ApiLogin_credentials()
-            loginCredentials.username = var.addon.getSetting('LoginEmail')
-            loginCredentials.password = var.addon.getSetting('LoginPasswordEmail')
+            loginCredentials.username = func.setting_get('LoginEmail')
+            loginCredentials.password = func.setting_get('LoginPasswordEmail')
             loginCredentials = loginCredentials.__dict__
 
             loginAuth = classes.Class_ApiLogin_credentialsExtAuth()
@@ -147,7 +147,7 @@ def ApiLogin(loginNotification=False, forceLogin=False):
 
         #Request login by sending data
         DownloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
+            "User-Agent": func.setting_get('CustomUserAgent'),
             "Content-Type": "application/json"
         }
 

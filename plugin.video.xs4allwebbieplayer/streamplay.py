@@ -33,7 +33,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
             return
 
         #Allow longer backwards seeking
-        PlayerSeekBackMinutes = int(var.addon.getSetting('PlayerSeekBackMinutes'))
+        PlayerSeekBackMinutes = int(func.setting_get('PlayerSeekBackMinutes'))
         DateTimeUtc = datetime.utcnow() - timedelta(minutes=PlayerSeekBackMinutes)
         StartString = '&time=' + str(func.datetime_to_ticks(DateTimeUtc))
 
@@ -51,8 +51,8 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
                 return
 
         #Update channel settings and variables
-        CurrentChannelId = var.addon.getSetting('CurrentChannelId')
-        var.addon.setSetting('CurrentChannelId', NewChannelId)
+        CurrentChannelId = func.setting_get('CurrentChannelId', True)
+        func.setting_set('CurrentChannelId', NewChannelId)
         if CurrentChannelId != NewChannelId:
             var.TelevisionChannelListItemLast = var.TelevisionChannelListItemCurrent
         var.TelevisionChannelListItemCurrent = listItem
@@ -92,11 +92,11 @@ def play_radio(listItem, Windowed=False):
             return
 
         #Update channel settings and variables
-        var.addon.setSetting('CurrentRadioId', ChannelId)
+        func.setting_set('CurrentRadioId', ChannelId)
         xbmc.sleep(100)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, StreamType='audio')
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)

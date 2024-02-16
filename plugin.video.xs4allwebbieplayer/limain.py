@@ -158,7 +158,7 @@ def list_load_append(listContainer, remoteMode=False):
             iconDefault = path.resources('resources/skins/default/media/common/kids.png')
 
             #Set item details
-            if remoteMode == False and var.addon.getSetting('KidsPageLock') == 'true':
+            if remoteMode == False and func.setting_get('KidsPageLock') == 'true':
                 itemLabel = 'Kids met slot'
             else:
                 itemLabel = 'Kids'

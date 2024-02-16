@@ -14,7 +14,7 @@ def dialog_sleep():
 
     dialogHeader = 'Slaap Timer'
 
-    if var.addon.getSetting('SleepTimerCloseKodi') == 'true':
+    if func.setting_get('SleepTimerCloseKodi') == 'true':
         dialogSummary = 'Selecteer hier hoe lang u nog wilt kijken of luisteren voordat Kodi zich zelf automatisch zal afsluiten*'
     else:
         dialogSummary = 'Selecteer hier hoe lang u nog wilt kijken of luisteren voordat uw apparaat zich automatisch zal uitschakelen*'
@@ -76,7 +76,7 @@ def sleep_close():
     sleep_timeroff(False)
 
     #Close Kodi or shutdown device
-    if var.addon.getSetting('SleepTimerCloseKodi') == 'true':
+    if func.setting_get('SleepTimerCloseKodi') == 'true':
         func.close_kodi_force()
     else:
         func.device_shutdown_force()

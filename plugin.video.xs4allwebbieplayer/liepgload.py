@@ -72,7 +72,7 @@ def list_load_append(listContainer, epgJson):
             ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(program)
 
             #Check if channel is filtered
-            if var.addon.getSetting('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
+            if func.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)

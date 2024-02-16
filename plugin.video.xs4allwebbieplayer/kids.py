@@ -33,13 +33,13 @@ def close_the_page():
         return True
 
 def lock_check_hidden():
-    if var.addon.getSetting('KidsHiddenLock') == 'true':
+    if func.setting_get('KidsHiddenLock') == 'true':
         return lock_check_dialog()
     else:
         return True
 
 def lock_check_page():
-    if var.addon.getSetting('KidsPageLock') == 'true':
+    if func.setting_get('KidsPageLock') == 'true':
         return lock_check_dialog()
     else:
         return True
@@ -52,7 +52,7 @@ def lock_check_dialog():
     keyboard.setHiddenInput(True)
     keyboard.doModal()
     if keyboard.isConfirmed() == True:
-        return str(var.addon.getSetting('KidsPincode')) == keyboard.getText()
+        return str(func.setting_get('KidsPincode')) == keyboard.getText()
     return False
 
 class Gui(xbmcgui.WindowXML):

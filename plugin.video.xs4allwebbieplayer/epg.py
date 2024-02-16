@@ -160,7 +160,7 @@ class Gui(xbmcgui.WindowXML):
 
     def focus_on_channel_list(self, forceFocus=False):
         if func.string_isnullorempty(var.EpgCurrentChannelId) == True:
-            selectChannelId = var.addon.getSetting('CurrentChannelId')
+            selectChannelId = func.setting_get('CurrentChannelId', True)
         else:
             selectChannelId = var.EpgCurrentChannelId
         lifunc.focus_on_channelid_in_list(self, 1001, 0, forceFocus, selectChannelId)
@@ -254,7 +254,7 @@ class Gui(xbmcgui.WindowXML):
                 dialogFooter = ''
 
         #Add switch favorite/all button
-        if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
+        if func.setting_get('LoadChannelFavoritesOnly') == 'true':
             dialogAnswers.append('Toon alle zenders')
         else:
             dialogAnswers.append('Toon favorieten zenders')
@@ -276,15 +276,15 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
-                var.addon.setSetting('LoadChannelFavoritesOnly', 'false')
+            if func.setting_get('LoadChannelFavoritesOnly') == 'true':
+                func.setting_set('LoadChannelFavoritesOnly', 'false')
             else:
                 #Check if there are favorites set
                 if var.FavoriteTelevisionJson == []:
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
-                var.addon.setSetting('LoadChannelFavoritesOnly', 'true')
+                func.setting_set('LoadChannelFavoritesOnly', 'true')
 
             channelsLoaded = self.load_channels(True)
             if channelsLoaded == True:
@@ -426,7 +426,7 @@ class Gui(xbmcgui.WindowXML):
         else:
             #Set channel type string
             channelTypeString = 'zenders'
-            if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
+            if func.setting_get('LoadChannelFavoritesOnly') == 'true':
                 channelTypeString = 'favorieten zenders'
 
             #Update status label text

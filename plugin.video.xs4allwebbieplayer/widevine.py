@@ -50,7 +50,7 @@ def enable_widevine_support(forceUpdate=False):
 
     #Set the download headers
     DownloadHeaders = {
-        "User-Agent": var.addon.getSetting('CustomUserAgent')
+        "User-Agent": func.setting_get('CustomUserAgent')
     }
 
     #Check if newer Widevine version is available
@@ -58,8 +58,8 @@ def enable_widevine_support(forceUpdate=False):
     DownloadRequest = hybrid.urllib_request(RequestUrl, headers=DownloadHeaders)
     DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
     DownloadDataString = DownloadDataHttp.read().decode()
-    if DownloadDataString != var.addon.getSetting('WidevineVersion'):
-        var.addon.setSetting('WidevineVersion', DownloadDataString)
+    if DownloadDataString != func.setting_get('WidevineVersion'):
+        func.setting_set('WidevineVersion', DownloadDataString)
         forceUpdate = True
 
     #Check if Widevine support is installed

@@ -123,13 +123,6 @@ def PlayBackStartTriggered(setObject=None):
     else:
          return func.globalvar_set(varName, setObject)
 
-def PlayerWindowed(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
 def PlayerOpenOverlay(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
@@ -148,13 +141,6 @@ def PlayerSeekOffsetSecEnd(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
          return func.globalvar_get(varName, 0)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerStreamType(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, 'video')
     else:
          return func.globalvar_set(varName, setObject)
 

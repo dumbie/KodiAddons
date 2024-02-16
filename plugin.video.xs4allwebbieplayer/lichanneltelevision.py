@@ -57,7 +57,7 @@ def list_load_append(listContainer):
             var.TelevisionChannelIdsPlayable.append(ChannelId)
 
             #Check if channel is filtered
-            if var.addon.getSetting('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
+            if func.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
@@ -68,11 +68,11 @@ def list_load_append(listContainer):
             #Check if channel is marked as favorite or epg navigate
             if favorite.favorite_check(ChannelId, 'FavoriteTelevision.js'):
                 ChannelFavorite = 'true'
-            elif ChannelId == var.addon.getSetting('CurrentChannelId') and xbmc.Player().isPlayingVideo():
+            elif ChannelId == func.setting_get('CurrentChannelId') and xbmc.Player().isPlayingVideo():
                 ChannelFavorite = 'false'
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
-            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
+            elif func.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
                 continue
             else:
                 ChannelFavorite = 'false'

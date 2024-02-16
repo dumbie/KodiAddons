@@ -1,8 +1,8 @@
 import re
-import metadatainfo
-import hybrid
-import var
 import xbmc
+import func
+import hybrid
+import metadatainfo
 
 #Update stream url with bitrate setting
 def adjust_streamurl_bitrate(streamUrl):
@@ -18,7 +18,7 @@ def adjust_streamurl_bitrate(streamUrl):
 
 #Update stream url with localhost proxy
 def adjust_streamurl_proxy(streamUrl):
-    if xbmc.getCondVisibility('System.Platform.Android') or var.addon.getSetting('UseLocalhostProxy') == 'true':
+    if xbmc.getCondVisibility('System.Platform.Android') or func.setting_get('UseLocalhostProxy') == 'true':
         return 'http://127.0.0.1:4444/redir/' + str(streamUrl)
     else:
         return streamUrl
@@ -36,7 +36,7 @@ def adjust_listitem_inputstream(listItem, downloadDataJson, liveStream=False):
     try:
         #Set stream headers dictionary
         StreamHeadersDict = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent')
+            "User-Agent": func.setting_get('CustomUserAgent')
         }
 
         #Set stream headers string

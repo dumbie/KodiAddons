@@ -54,7 +54,7 @@ def list_load_append(listContainer):
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_program(program)
-            StartOffset = str(int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60)
+            StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)

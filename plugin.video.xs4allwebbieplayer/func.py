@@ -5,6 +5,7 @@ import pickle
 import re
 import time
 import xbmc
+import xbmcaddon
 import xbmcgui
 import dialog
 import hybrid
@@ -12,13 +13,13 @@ import var
 
 #Run this add-on
 def run_addon(forceLaunch=False):
-    if var.addon.getSetting('RunAddonOnKodiLaunch') == 'true' or forceLaunch:
+    if setting_get('RunAddonOnKodiLaunch') == 'true' or forceLaunch:
         xbmcgui.Dialog().notification(var.addonname, 'Webbie Player wordt gestart.', var.addonicon, 2500, False)
         xbmc.executebuiltin('RunScript(plugin.video.xs4allwebbieplayer)')
 
 #Get provider color string
 def get_provider_color_string():
-    currentProvider = var.addon.getSetting('AddonAccent').lower()
+    currentProvider = setting_get('AddonAccent').lower()
     if currentProvider == 'geel':
         return '[COLOR FFF5AF00]'
     elif currentProvider == 'blauw':
@@ -239,6 +240,23 @@ def device_reboot_dialog():
     if dialogResult == 'Ja':
         xbmc.executebuiltin('Reboot')
 
+#Set addon setting
+def setting_set(setName, setObject):
+    try:
+        var.addon.setSetting(setName, setObject)
+        return True
+    except:
+        return False
+
+#Get addon setting
+def setting_get(setName, reloadSettings=False):
+    try:
+        if reloadSettings == True:
+            var.addon = xbmcaddon.Addon()
+        return var.addon.getSetting(setName)
+    except:
+        return ''
+
 #Set global variable
 def globalvar_set(varName, varObject, varHead='Webbie'):
     try:
@@ -272,7 +290,7 @@ def picklestring_to_object(picklestring, useBase64=True):
 
 #Convert dictionary to json string
 def dictionary_to_jsonstring(dictionary):
-    return json.dumps(dictionary, ensure_ascii=True)
+    return json.dumps(dictionary)
 
 #Convert json string to dictionary
 def jsonstring_to_dictionary(jsonString):

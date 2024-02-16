@@ -138,7 +138,7 @@ def list_update(listItem):
         ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
 
         #Get earlier programs information
-        if var.addon.getSetting('TelevisionHideEarlierAired') == 'false':
+        if func.setting_get('TelevisionHideEarlierAired') == 'false':
             ProgramEarlier = metadatacombine.program_earlier_list(channelEpg['containers'], programIndex)
         else:
             ProgramEarlier = ''

@@ -102,7 +102,7 @@ class Gui(xbmcgui.WindowXML):
             dialogAnswers.append('Zender markeren als favoriet')
 
         #Add switch favorite/all button
-        if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
+        if func.setting_get('LoadChannelFavoritesOnly') == 'true':
             dialogAnswers.append('Toon alle zenders')
         else:
             dialogAnswers.append('Toon favorieten zenders')
@@ -164,7 +164,7 @@ class Gui(xbmcgui.WindowXML):
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
         favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteRadio.js')
-        if favoriteResult == 'Removed' and var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
+        if favoriteResult == 'Removed' and func.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
             removeListItemId = listContainer.getSelectedPosition()
             listContainer.removeItem(removeListItemId)
@@ -178,15 +178,15 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
-                var.addon.setSetting('LoadChannelFavoritesOnly', 'false')
+            if func.setting_get('LoadChannelFavoritesOnly') == 'true':
+                func.setting_set('LoadChannelFavoritesOnly', 'false')
             else:
                 #Check if there are favorites set
                 if var.FavoriteRadioJson == []:
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
-                var.addon.setSetting('LoadChannelFavoritesOnly', 'true')
+                func.setting_set('LoadChannelFavoritesOnly', 'true')
 
             self.load_channels(True, False)
         except:
@@ -235,7 +235,7 @@ class Gui(xbmcgui.WindowXML):
     def count_channels(self, resetSelect=False):
         #Set channel type string
         channelTypeString = 'zenders'
-        if var.addon.getSetting('LoadChannelFavoritesOnly') == 'true':
+        if func.setting_get('LoadChannelFavoritesOnly') == 'true':
             channelTypeString = 'favorieten zenders'
 
         #Update status label text
@@ -247,7 +247,8 @@ class Gui(xbmcgui.WindowXML):
                 func.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
 
             if resetSelect == True:
-                lifunc.focus_on_channelid_in_list(self, 1000, 0, True, var.addon.getSetting('CurrentRadioId'))
+                currentChannelId = func.setting_get('CurrentRadioId', True)
+                lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
         else:
             listContainer = self.getControl(1001)
             self.setFocus(listContainer)

@@ -1,17 +1,18 @@
 import gzip
 import json
-import metadatainfo
 import xbmcgui
 import apilogin
 import classes
+import func
 import hybrid
+import metadatainfo
 import path
 import var
 
 def request_download_gzip(urlPath, sendData=None, sendMethod=None):
     try:
         downloadHeaders = {
-            "User-Agent": var.addon.getSetting('CustomUserAgent'),
+            "User-Agent": func.setting_get('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie(),
             'Content-Type': 'application/json',
             'Accept-Encoding': 'gzip'

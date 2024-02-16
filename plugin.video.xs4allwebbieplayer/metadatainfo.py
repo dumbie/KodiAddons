@@ -474,7 +474,7 @@ def stream_targetprofile(playReadyStream=False):
 #Get stream target bitrate
 def stream_targetbitrate():
     try:
-        streamResolutionSetting = var.addon.getSetting('StreamResolution')
+        streamResolutionSetting = func.setting_get('StreamResolution')
         if streamResolutionSetting == '2160p' or streamResolutionSetting == '1080pBest':
             return '100000000'
         elif streamResolutionSetting == '1080pHigh':

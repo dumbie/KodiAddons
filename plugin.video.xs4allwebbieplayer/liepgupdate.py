@@ -107,7 +107,7 @@ def list_update_program(listItem):
             listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
 
             #Set program seek offset start
-            StartOffset = str(int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60)
+            StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
             listItem.setProperty('StartOffset', StartOffset)
 
         #Check if program is currently airing

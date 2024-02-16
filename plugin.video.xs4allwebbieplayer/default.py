@@ -98,9 +98,9 @@ def check_multi_launch():
 
 def check_login_settings():
     loginNotSet = False
-    if func.string_isnullorempty(var.addon.getSetting('LoginUsername')) == True and func.string_isnullorempty(var.addon.getSetting('LoginEmail')) == True:
+    if func.string_isnullorempty(func.setting_get('LoginUsername')) == True and func.string_isnullorempty(func.setting_get('LoginEmail')) == True:
         loginNotSet = True
-    elif func.string_isnullorempty(var.addon.getSetting('LoginPassword')) == True and func.string_isnullorempty(var.addon.getSetting('LoginPasswordEmail')) == True:
+    elif func.string_isnullorempty(func.setting_get('LoginPassword')) == True and func.string_isnullorempty(func.setting_get('LoginPasswordEmail')) == True:
         loginNotSet = True
 
     if loginNotSet == True:
@@ -127,7 +127,7 @@ def change_addon_accent():
     scrollbar800 = path.resources("resources/skins/default/media/common/scrollbar_accent_800.png")
 
     #Copy add-on accent images
-    currentProvider = var.addon.getSetting('AddonAccent').lower()
+    currentProvider = func.setting_get('AddonAccent').lower()
     if currentProvider == 'geel':
         files.removeFile(backgroundAddon)
         files.copyFile(path.resources('resources/skins/default/media/common/background_addon_yellow.png'), backgroundAddon)

@@ -130,7 +130,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_program(program)
-            StartOffset = str(int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60)
+            StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Combine program description extended
             ProgramDescription = metadatacombine.program_description_extended(program)

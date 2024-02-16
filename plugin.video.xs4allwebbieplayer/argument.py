@@ -79,7 +79,7 @@ def handle_launch_argument_source():
 
         #Play streams
         elif actionItem == "play_stream_tv":
-            streamplay.play_tv(listItem)
+            streamplay.play_tv(listItem, ShowInformation=True)
         elif actionItem == "play_stream_radio":
             streamplay.play_radio(listItem)
         elif actionItem == "play_stream_program":

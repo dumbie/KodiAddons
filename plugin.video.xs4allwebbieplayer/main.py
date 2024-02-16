@@ -49,7 +49,7 @@ def close_the_page():
         var.guiMain.close()
 
 def dialog_close():
-    if var.addon.getSetting('AfsluitschermOverslaan') == 'true':
+    if func.setting_get('AfsluitschermOverslaan') == 'true':
         close_the_page()
     else:
         dialogAnswers = ['Webbie Player afsluiten', 'Apparaat uitschakelen', 'Apparaat herstarten', 'Kodi afsluiten']
@@ -128,9 +128,9 @@ class Gui(xbmcgui.WindowXML):
         #Check if user is logged in
         if var.ApiLoggedIn() == True:
             #Go to the desired page on startup
-            if var.addon.getSetting('StartWithTelevision') == 'true':
+            if func.setting_get('StartWithTelevision') == 'true':
                 television.switch_to_page()
-            elif var.addon.getSetting('StartWithKids') == 'true':
+            elif func.setting_get('StartWithKids') == 'true':
                 kids.switch_to_page()
 
     def buttons_add_media(self, resetButtons):
@@ -267,7 +267,7 @@ class Gui(xbmcgui.WindowXML):
         try:
             #Set the download headers
             DownloadHeaders = {
-                "User-Agent": var.addon.getSetting('CustomUserAgent')
+                "User-Agent": func.setting_get('CustomUserAgent')
             }
 
             #Download notification message

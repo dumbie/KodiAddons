@@ -54,7 +54,7 @@ def list_load_append(listContainer):
             #Check if channel is marked as favorite
             if favorite.favorite_check(ChannelId, 'FavoriteRadio.js'):
                 ChannelFavorite = 'true'
-            elif var.addon.getSetting('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
+            elif func.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
                 continue
             else:
                 ChannelFavorite = 'false'

@@ -103,7 +103,7 @@ def list_load_program_append(listContainer):
                 ProgramDuration = True
                 ProgramDescription = metadatacombine.program_description_extended(program)
                 ProgramAvailability = metadatainfo.available_time_program(program)
-                StartOffset = str(int(var.addon.getSetting('PlayerSeekOffsetStartMinutes')) * 60)
+                StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
             else:
                 listAction = 'load_kids_episodes_program'
                 dirIsfolder = True
