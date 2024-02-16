@@ -151,8 +151,8 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             "Content-Type": "application/json"
         }
 
-        DownloadData = json.dumps(loginData).encode('ascii')
-        DownloadRequest = hybrid.urllib_request(path.api_login(), data=DownloadData, headers=DownloadHeaders)
+        DownloadDataSend = json.dumps(loginData).encode('ascii')
+        DownloadRequest = hybrid.urllib_request(path.api_login(), data=DownloadDataSend, headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadDataJson = json.load(DownloadDataHttp)
 

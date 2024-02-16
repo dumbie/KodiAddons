@@ -84,8 +84,6 @@ class Gui(xbmcgui.WindowXMLDialog):
                     self.media_volume_down()
                 elif listItemAction == 'media_togglemute':
                     xbmc.executebuiltin('Action(Mute)')
-                elif listItemAction == 'media_subtitlesonoff':
-                    self.switch_subtitles()
                 elif listItemAction == 'media_seekback':
                     self.seek_back(False)
                 elif listItemAction == 'media_seekforward':
@@ -102,6 +100,8 @@ class Gui(xbmcgui.WindowXMLDialog):
                     close_the_page()
                 elif listItemAction == 'media_fullscreen':
                     xbmc.executebuiltin('Action(togglefullscreen)')
+                elif listItemAction == 'settings_subtitle':
+                    func.open_window_id(var.WINDOW_DIALOG_SUBTITLE_OSD_SETTINGS)
                 elif listItemAction == 'settings_audio':
                     func.open_window_id(var.WINDOW_DIALOG_AUDIO_OSD_SETTINGS)
                 elif listItemAction == 'settings_video':
@@ -176,13 +176,6 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Start hide information thread
         var.thread_hide_playergui_info.Start(self.thread_hide_playergui_info)
-
-    def switch_subtitles(self):
-        if xbmc.getCondVisibility("VideoPlayer.HasSubtitles"):
-            xbmc.executebuiltin('Action(ShowSubtitles)')
-        else:
-            notificationIcon = path.resources('resources/skins/default/media/common/subtitles.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Ondertiteling niet beschikbaar.', notificationIcon, 2500, False)
 
     def thread_update_playergui_info(self):
         while var.thread_update_playergui_info.Allowed():
@@ -326,9 +319,9 @@ class Gui(xbmcgui.WindowXMLDialog):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Ondertiteling aan of uit')
-        listItem.setProperty('ItemAction', 'media_subtitlesonoff')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/subtitles.png'),'icon': path.resources('resources/skins/default/media/common/subtitles.png')})
+        listItem = xbmcgui.ListItem('Ondertiteling instellingen')
+        listItem.setProperty('ItemAction', 'settings_subtitle')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingssubtitles.png'),'icon': path.resources('resources/skins/default/media/common/settingssubtitles.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Geluids instellingen')
