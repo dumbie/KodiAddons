@@ -46,7 +46,7 @@ class Gui(xbmcgui.WindowXML):
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
             listItemAction = listItemSelected.getProperty('ItemAction')
-            if listItemAction == 'play_stream':
+            if listItemAction == 'play_stream_program':
                 streamplay.play_program(listItemSelected, False)
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()

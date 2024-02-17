@@ -71,12 +71,7 @@ def list_load_append(listContainer):
             #Load program timing
             ProgramTimeStart = str(metadatainfo.programstarttime_from_json_metadata(program))
             ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
-
-            #Set stream start offset
-            if ProgramDeltaTimeStart != '0':
-                StartOffset = str(func.ticks_to_seconds(ProgramDeltaTimeStart))
-            else:
-                StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
+            StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Combine program timing
             ProgramTiming = metadatacombine.program_timing_vod(program)

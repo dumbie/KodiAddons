@@ -50,6 +50,7 @@ def list_load_append(listContainer):
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
+            StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Combine program timing
             ProgramTiming = metadatacombine.program_timing_vod(program)
@@ -72,7 +73,8 @@ def list_load_append(listContainer):
 
             #Set item details
             listItem = xbmcgui.ListItem()
-            listItem.setProperty('ItemAction', 'play_stream')
+            listItem.setProperty('StartOffset', StartOffset)
+            listItem.setProperty('ItemAction', 'play_stream_program')
             listItem.setProperty('ChannelId', ChannelId)
             listItem.setProperty('ProgramId', ProgramId)
             listItem.setProperty("ProgramTimeStartDateTime", str(ProgramTimeStartDateTime))
