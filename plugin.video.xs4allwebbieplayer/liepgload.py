@@ -76,6 +76,7 @@ def list_load_append(listContainer, epgJson):
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
+            ProgramProgressPercent = int(((dateTimeNow - ProgramTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramTimeEndDateTime - ProgramTimeStartDateTime).total_seconds() / 60))
             ProgramDurationString = metadatainfo.programdurationstring_from_json_metadata(program, False, False, True)
             ProgramDescriptionDesc = 'Programmabeschrijving wordt geladen.'
             ProgramEpgList = 'Programmaduur wordt geladen'
@@ -126,6 +127,20 @@ def list_load_append(listContainer, epgJson):
             listItem.setProperty('ProgramTimeEnd', str(ProgramTimeEndDateTime))
             listItem.setInfo('video', {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescriptionRaw})
             listItem.setArt({'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault})
+
+            #Check if program finished airing
+            if ProgramProgressPercent >= 100:
+                listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
+
+            #Check if program is still to come
+            if ProgramProgressPercent <= 0:
+                listItem.setProperty('ProgramIsUpcoming', 'true')
+
+            #Check if program is currently airing
+            if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
+                listItem.setProperty('ProgramIsAiring', 'true')
+
+            #Add generated listitem
             listContainer.append(listItem)
         except:
             continue
