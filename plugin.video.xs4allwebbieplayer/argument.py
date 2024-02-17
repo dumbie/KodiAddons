@@ -23,7 +23,7 @@ def set_launch_argument_source():
     try:
         var.LaunchUrl = str(sys.argv[0])
         var.LaunchHandle = int(sys.argv[1])
-        var.LaunchArgument = hybrid.urllib_unquote(str(sys.argv[2]))[1:]
+        var.LaunchArgument = hybrid.urllib_unquote(str(sys.argv[2])).lstrip("?").strip("\"")
         return True
     except:
         return False
