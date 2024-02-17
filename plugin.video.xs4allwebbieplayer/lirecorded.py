@@ -33,14 +33,10 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         return False
 
 def list_load_append(listContainer):
-    #Set the current player play time
-    dateTimeNow = datetime.now()
-
     for program in var.RecordingEventDataJson['resultObj']['containers']:
         try:
             #Load program basics
             ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
-            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
@@ -48,17 +44,14 @@ def list_load_append(listContainer):
                 searchResultFound = var.SearchTermCurrent in searchMatch
                 if searchResultFound == False: continue
 
-            #Check if program has finished airing and processing
-            if dateTimeNow < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
-
-            #Check if program is available for streaming
-            AssetsLength = len(program['assets'])
-            if AssetsLength > 0:
-                AssetsStatus = str(program['assets'][0]['status'])
-                if AssetsStatus == 'RecordFailed':
+            #Load and check recording status
+            assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
+            if assetsArray != []:
+                assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
+                if assetStatus == 'ScheduleSuccess' or assetStatus == 'RescheduleSuccess':
+                    continue
+                elif assetStatus == 'RecordFailed':
                     ProgramNameRaw = '(Opname mislukt) ' + ProgramNameRaw
-                elif AssetsStatus == 'ScheduleSuccess':
-                    ProgramNameRaw = '(Geplande opname) ' + ProgramNameRaw    
             else:
                 ProgramNameRaw = '(Niet speelbaar) ' + ProgramNameRaw
 

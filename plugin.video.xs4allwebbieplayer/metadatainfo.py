@@ -456,11 +456,31 @@ def stream_assetid_from_assets_array(assetsArray):
     except:
         return ''
 
+#Get stream asset status from assets array
+def stream_assetstatus_from_assets_array(assetsArray):
+    try:
+        for asset in assetsArray:
+            try:
+                return str(asset['status'])
+            except:
+                continue
+        return ''
+    except:
+        return ''
+
 #Get stream asset id from json metadata
 def stream_assetid_from_json_metadata(metaData):
     try:
         assetsArray = stream_assets_array_from_json_metadata(metaData)
         return stream_assetid_from_assets_array(assetsArray)
+    except:
+        return ''
+
+#Get stream asset status from json metadata
+def stream_assetstatus_from_json_metadata(metaData):
+    try:
+        assetsArray = stream_assets_array_from_json_metadata(metaData)
+        return stream_assetstatus_from_assets_array(assetsArray)
     except:
         return ''
 

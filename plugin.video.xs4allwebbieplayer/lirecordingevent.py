@@ -31,16 +31,16 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         return False
 
 def list_load_append(listContainer):
-    #Set the current player play time
-    dateTimeNow = datetime.now()
-
     for program in var.RecordingEventDataJson["resultObj"]["containers"]:
         try:
-            #Load program basics
-            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
-
-            #Check if recording is planned or already recorded
-            if ProgramTimeEndDateTime < dateTimeNow: continue
+            #Load and check recording status
+            assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
+            if assetsArray != []:
+                assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
+                if assetStatus == 'RecordFailed' or assetStatus == 'RecordSuccess':
+                    continue
+            else:
+                continue
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
@@ -49,6 +49,7 @@ def list_load_append(listContainer):
             ProgramTimeStart = str(metadatainfo.programstarttime_from_json_metadata(program))
             ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
+            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
             ProgramDescription = 'Van ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' tot ' + ProgramTimeEndDateTime.strftime('%H:%M') + ' op ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
 
             #Combine program details

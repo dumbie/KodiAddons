@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 import xbmcgui
 import dialog
 import download
@@ -9,45 +8,63 @@ import path
 import var
 
 def count_recording_events():
-    #Download the recording programs
-    downloadResult = download.download_recording_event(False)
-    if downloadResult == False: return '?'
+    try:
+        #Download the recording programs
+        downloadResult = download.download_recording_event(False)
+        if downloadResult == False: return '?'
 
-    #Count planned recording
-    recordingCount = 0
-    for program in var.RecordingEventDataJson["resultObj"]["containers"]:
-        try:
-            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
-            #Check if recording is planned or already recorded
-            if ProgramTimeEndDateTime > datetime.now():
+        #Count planned recording
+        recordingCount = 0
+        for program in var.RecordingEventDataJson["resultObj"]["containers"]:
+            try:
+                #Load and check recording status
+                assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
+                if assetsArray != []:
+                    assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
+                    if assetStatus == 'RecordFailed' or assetStatus == 'RecordSuccess':
+                        continue
+                else:
+                    continue
                 recordingCount += 1
-        except:
-            continue
-    return recordingCount
+            except:
+                continue
+        return recordingCount
+    except:
+        return '?'
 
 def count_recorded_events():
-    #Download the recording programs
-    downloadResult = download.download_recording_event(False)
-    if downloadResult == False: return '?'
+    try:
+        #Download the recording programs
+        downloadResult = download.download_recording_event(False)
+        if downloadResult == False: return '?'
 
-    #Count finished recordings
-    recordingCount = 0
-    for program in var.RecordingEventDataJson["resultObj"]["containers"]:
-        try:
-            ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
-            if datetime.now() < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
-            recordingCount += 1
-        except:
-            continue
-    return recordingCount
+        #Count finished recordings
+        recordingCount = 0
+        for program in var.RecordingEventDataJson["resultObj"]["containers"]:
+            try:
+                #Load and check recording status
+                assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
+                if assetsArray != []:
+                    assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
+                    if assetStatus == 'ScheduleSuccess' or assetStatus == 'RescheduleSuccess':
+                        continue
+                recordingCount += 1
+            except:
+                continue
+        return recordingCount
+    except:
+        return '?'
 
 def count_recording_series():
-    #Download the recording programs
-    downloadResult = download.download_recording_series(False)
-    if downloadResult == False: return '?'
+    try:
+        #Download the recording programs
+        downloadResult = download.download_recording_series(False)
+        if downloadResult == False: return '?'
 
-    #Count planned recording
-    return len(var.RecordingSeriesDataJson["resultObj"]["containers"])
+        #Count planned recording
+        return len(var.RecordingSeriesDataJson["resultObj"]["containers"])
+    except:
+        return '?'
 
 def count_recorded_series_id(seriesId):
     try:
