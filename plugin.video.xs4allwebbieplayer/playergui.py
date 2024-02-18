@@ -35,7 +35,9 @@ def close_the_page():
         var.guiPlayer = None
         xbmc.sleep(100)
 
-        #Close fullscreen player window
+        #Close media player windows
+        func.close_window_id(var.WINDOW_HOME)
+        func.close_window_id(var.WINDOW_SLIDESHOW)
         func.close_window_id(var.WINDOW_VISUALISATION)
         func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
         xbmc.sleep(100)

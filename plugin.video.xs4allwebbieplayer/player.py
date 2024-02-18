@@ -31,6 +31,12 @@ class PlayerCustom(xbmc.Player):
         xbmc.sleep(100)
         if xbmc.Player().isPlaying() == True:
             if var.PlayerStreamType() == 'audio':
+                #Close media player windows
+                func.close_window_id(var.WINDOW_HOME)
+                func.close_window_id(var.WINDOW_SLIDESHOW)
+                func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
+                xbmc.sleep(100)
+
                 #Close custom player overlay
                 playergui.close_the_page()
                 xbmc.sleep(100)
@@ -40,6 +46,12 @@ class PlayerCustom(xbmc.Player):
                     func.open_window_id(var.WINDOW_VISUALISATION)
                     xbmc.sleep(100)
             elif var.PlayerStreamType() == 'video':
+                #Close media player windows
+                func.close_window_id(var.WINDOW_HOME)
+                func.close_window_id(var.WINDOW_SLIDESHOW)
+                func.close_window_id(var.WINDOW_VISUALISATION)
+                xbmc.sleep(100)
+
                 #Open fullscreen player interface
                 if forceFullscreen == True or var.PlayerWindowed() == False:
                     func.open_window_id(var.WINDOW_FULLSCREEN_VIDEO)
@@ -82,9 +94,9 @@ class PlayerCustom(xbmc.Player):
 
             #Enable or disable subtitles
             if func.setting_get('PlayerSubtitlesOff') == 'true':
-                self.showSubtitles(False)
+                xbmc.Player().showSubtitles(False)
             else:
-                self.showSubtitles(True)
+                xbmc.Player().showSubtitles(True)
 
         #Refresh the main page media buttons
         if var.guiMain != None:
