@@ -14,10 +14,7 @@ import var
 import zap
 
 def switch_to_page():
-    if var.guiPlayer == None and var.PlayerGuiOpen() == False:
-        #Update open variable
-        var.PlayerGuiOpen(True)
-
+    if var.guiPlayer == None:
         #Show player gui overlay
         var.guiPlayer = Gui('playergui.xml', var.addonpath, 'default', '720p')
         var.guiPlayer.show()
@@ -41,9 +38,6 @@ def close_the_page():
         func.close_window_id(var.WINDOW_VISUALISATION)
         func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
         xbmc.sleep(100)
-
-        #Update open variable
-        var.PlayerGuiOpen(False)
 
 class Gui(xbmcgui.WindowXMLDialog):
     EpgPauseUpdate = False

@@ -174,6 +174,8 @@ def change_addon_accent():
 if __name__ == '__main__':
     launchType = get_launch_type()
     if launchType == 'Script':
+        var.VariablesName = 'WebbiePlayerScript'
         launch_script()
     else:
+        var.VariablesName = 'WebbiePlayerSource'
         launch_source()

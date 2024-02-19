@@ -100,6 +100,7 @@ kodiversion = xbmc.getInfoLabel('System.BuildVersion').split(' ')[0].split('-')[
 LaunchUrl = ''
 LaunchHandle = 0
 LaunchArgument = ''
+VariablesName = ''
 
 #Dialog variables
 DialogResult = None
@@ -118,55 +119,6 @@ thread_sleep_timer = threadclass.Class_ThreadSafe()
 
 #Player variables
 PlayerCustom = player.PlayerCustom()
-def PlayBackStartTriggered(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerWindowed(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerOpenOverlay(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerShowInformation(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerSeekOffsetSecEnd(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, 0)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerStreamType(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, 'video')
-    else:
-         return func.globalvar_set(varName, setObject)
-
-#Player gui variables
-def PlayerGuiOpen(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
 
 #Api variables
 def ApiLoginFailCount(setObject=None):
