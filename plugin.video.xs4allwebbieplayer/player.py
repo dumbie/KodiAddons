@@ -6,33 +6,31 @@ import playergui
 import var
 
 class PlayerCustom(xbmc.Player):
-    PlayerWindowed = False
-    PlayerOpenOverlay = False
-    PlayerShowInformation = False
-    PlayerSeekOffsetSecEnd = 0
-    PlayerStreamType = 'video'
-
     def PlayCustom(self, streamUrl, listItem, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffsetSecEnd=0, StreamType='video'):
         #Update custom player variables
-        self.PlayerWindowed = Windowed
-        self.PlayerOpenOverlay = OpenOverlay
-        self.PlayerShowInformation = ShowInformation
-        self.PlayerSeekOffsetSecEnd = SeekOffsetSecEnd
-        self.PlayerStreamType = StreamType
+        var.PlayerWindowed(Windowed)
+        var.PlayerOpenOverlay(OpenOverlay)
+        var.PlayerShowInformation(ShowInformation)
+        var.PlayerSeekOffsetSecEnd(SeekOffsetSecEnd)
+        var.PlayerStreamType(StreamType)
 
         #Start playing list item media
         self.play(streamUrl, listItem, True)
 
+    def ResetVariables(self):
+        #Reset custom player variables
+        var.PlayerWindowed(False)
+        var.PlayerOpenOverlay(False)
+        var.PlayerShowInformation(False)
+        var.PlayerSeekOffsetSecEnd(0)
+        var.PlayerStreamType('video')
+
     def Fullscreen(self, forceFullscreen=False, forceOpenOverlay=False, forceShowInformation=False):
         xbmc.sleep(100)
 
-        #Check variables instance name
-        if var.VariablesName != 'WebbiePlayerScript':
-            return
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == True:
-            if self.PlayerStreamType == 'audio':
+            if var.PlayerStreamType() == 'audio':
                 #Close media player windows
                 func.close_window_id(var.WINDOW_HOME)
                 func.close_window_id(var.WINDOW_SLIDESHOW)
@@ -44,10 +42,10 @@ class PlayerCustom(xbmc.Player):
                 xbmc.sleep(100)
 
                 #Open fullscreen player interface
-                if forceFullscreen == True or self.PlayerWindowed == False:
+                if forceFullscreen == True or var.PlayerWindowed() == False:
                     func.open_window_id(var.WINDOW_VISUALISATION)
                     xbmc.sleep(100)
-            elif self.PlayerStreamType == 'video':
+            elif var.PlayerStreamType() == 'video':
                 #Close media player windows
                 func.close_window_id(var.WINDOW_HOME)
                 func.close_window_id(var.WINDOW_SLIDESHOW)
@@ -55,11 +53,11 @@ class PlayerCustom(xbmc.Player):
                 xbmc.sleep(100)
 
                 #Open fullscreen player interface
-                if forceFullscreen == True or self.PlayerWindowed == False:
+                if forceFullscreen == True or var.PlayerWindowed() == False:
                     func.open_window_id(var.WINDOW_FULLSCREEN_VIDEO)
                     xbmc.sleep(100)
 
-                if forceOpenOverlay == True or self.PlayerOpenOverlay == True:
+                if forceOpenOverlay == True or var.PlayerOpenOverlay() == True:
                     #Open custom player overlay
                     playergui.switch_to_page()
                     xbmc.sleep(100)
@@ -69,16 +67,12 @@ class PlayerCustom(xbmc.Player):
                     xbmc.sleep(100)
 
                 #Show custom player information
-                if forceShowInformation == True or self.PlayerShowInformation == True:
+                if forceShowInformation == True or var.PlayerShowInformation() == True:
                     if var.guiPlayer != None:
                         var.guiPlayer.show_epg(True, False, True)
 
     def onAVStarted(self):
         xbmc.sleep(100)
-
-        #Check variables instance name
-        if var.VariablesName != 'WebbiePlayerScript':
-            return
 
         #Check if player is playing
         if xbmc.Player().isPlaying() == True:
@@ -86,10 +80,11 @@ class PlayerCustom(xbmc.Player):
             self.Fullscreen()
 
         #Check if video is playing
-        if self.PlayerStreamType == 'video':
+        if var.PlayerStreamType() == 'video':
             #Player seek stream from ending
-            if self.PlayerSeekOffsetSecEnd != 0:
-                xbmc.executebuiltin('Seek(-' + str(self.PlayerSeekOffsetSecEnd) + ')')
+            PlayerSeekOffsetSecEnd = var.PlayerSeekOffsetSecEnd()
+            if PlayerSeekOffsetSecEnd != 0:
+                xbmc.executebuiltin('Seek(-' + str(PlayerSeekOffsetSecEnd) + ')')
 
             #Enable or disable subtitles
             if func.setting_get('PlayerSubtitlesOff') == 'true':
@@ -104,12 +99,8 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackSeek(self, seekTime, seekOffset):
         xbmc.sleep(100)
 
-        #Check variables instance name
-        if var.VariablesName != 'WebbiePlayerScript':
-            return
-
         #Check current stream type
-        if self.PlayerStreamType == 'video':
+        if var.PlayerStreamType() == 'video':
             #Show custom player information
             if var.guiPlayer != None:
                 var.guiPlayer.show_epg(True, False, True)
@@ -117,12 +108,11 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackStopped(self):
         xbmc.sleep(100)
 
-        #Check variables instance name
-        if var.VariablesName != 'WebbiePlayerScript':
-            return
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == False:
+            #Reset custom player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
@@ -133,12 +123,11 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackEnded(self):
         xbmc.sleep(100)
 
-        #Check variables instance name
-        if var.VariablesName != 'WebbiePlayerScript':
-            return
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == False:
+            #Reset custom player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 
@@ -149,12 +138,11 @@ class PlayerCustom(xbmc.Player):
     def onPlayBackError(self):
         xbmc.sleep(100)
 
-        #Check variables instance name
-        if var.VariablesName != 'WebbiePlayerScript':
-            return
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == False:
+            #Reset custom player variables
+            self.ResetVariables()
+
             #Close the gui video player window
             playergui.close_the_page()
 

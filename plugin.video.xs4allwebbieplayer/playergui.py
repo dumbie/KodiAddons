@@ -15,6 +15,14 @@ import zap
 
 def switch_to_page():
     if var.guiPlayer == None:
+        #Check variables instance name
+        if var.VariablesName != 'WebbiePlayerScript':
+            return
+
+        #Check player interface setting
+        if func.setting_get('PlayerInformationInterface') == 'false':
+            return
+
         #Show player gui overlay
         var.guiPlayer = Gui('playergui.xml', var.addonpath, 'default', '720p')
         var.guiPlayer.show()
@@ -112,7 +120,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Check which action needs to execute
         actionId = action.getId()
         playerFull = self.getProperty('WebbiePlayerFull') == 'true'
-        playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
+        playerSeek = self.getProperty('WebbiePlayerSeek') == 'true'
         playerOpen = playerFull or playerSeek
         if (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE) and playerOpen == False:
             close_the_page()
@@ -120,10 +128,10 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE) and playerOpen == True:
             self.hide_epg()
             return
-        elif actionId == var.ACTION_MOVE_UP and playerFull == False:
+        elif actionId == var.ACTION_MOVE_UP and playerOpen == False:
             self.media_volume_up()
             return
-        elif actionId == var.ACTION_MOVE_DOWN and playerFull == False:
+        elif actionId == var.ACTION_MOVE_DOWN and playerOpen == False:
             self.media_volume_down()
             return
         elif actionId == var.ACTION_MOVE_LEFT and playerFull == False:
@@ -176,8 +184,7 @@ class Gui(xbmcgui.WindowXMLDialog):
     def thread_update_playergui_info(self):
         while var.thread_update_playergui_info.Allowed():
             try:
-                playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
-                if playerSeek:
+                if self.getProperty('WebbiePlayerFull') == 'true' or self.getProperty('WebbiePlayerSeek') == 'true':
                     self.update_epg_information()
             except:
                 pass
@@ -461,7 +468,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmc.sleep(100)
         listContainer.selectItem(listContainer.getSelectedPosition() + 1)
         xbmc.sleep(100)
-        self.show_epg(False, False, False)
         #Start the channel wait thread
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
@@ -472,7 +478,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmc.sleep(100)
         listContainer.selectItem(listContainer.getSelectedPosition() - 1)
         xbmc.sleep(100)
-        self.show_epg(False, False, False)
         #Start the channel wait thread
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 

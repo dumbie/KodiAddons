@@ -22,6 +22,7 @@
   </category>
   <category label="Afspelen">
     <setting id="PlayerSubtitlesOff" label="Ondertiteling bij begin van stream uitzetten" type="bool" default="true"/>
+    <setting id="PlayerInformationInterface" label="Toon scherm met zender en programma info in speler" type="bool" default="true"/>
     <setting id="PlayerInformationCloseTime" label="Aantal seconden voordat informatie sluit in speler" type="slider" default="10" range="4,2,30" option="int"/>
     <setting id="PlayerSeekOffsetStartMinutes" label="Minuten spoelen bij begin programma terugkijken" type="slider" default="5" range="0,1,8" option="int"/>
     <setting id="PlayerSeekBackMinutes" label="Minuten dat teruggespoeld kan worden tv stream" type="slider" default="240" range="30,30,1440" option="int"/>
