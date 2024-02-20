@@ -11,13 +11,9 @@ import var
 
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
-        #Download recordings
-        downloadResultRecordingEvent = download.download_recording_event(forceUpdate)
-        downloadResultRecordingSeries = download.download_recording_series(forceUpdate)
-
         #Download channels
         downloadResultChannels = download.download_channels_tv(forceUpdate)
-        if downloadResultRecordingEvent == False or downloadResultRecordingSeries == False or downloadResultChannels == False:
+        if downloadResultChannels == False:
             notificationIcon = path.resources('resources/skins/default/media/common/television.png')
             xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False
@@ -109,7 +105,7 @@ def list_load_append(listContainer):
                 "ProgramDescription": ProgramDescription,
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
-                'ItemInfo': {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_tv'
             }

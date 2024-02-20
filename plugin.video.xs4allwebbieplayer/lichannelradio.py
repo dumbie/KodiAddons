@@ -76,7 +76,7 @@ def list_load_append(listContainer):
                 'ChannelFavorite': ChannelFavorite,
                 'StreamUrl': ChannelStream,
                 'ItemLabel': ChannelName,
-                'ItemInfo': {'Genre': 'Radio'},
+                'ItemInfoMusic': {'Genre': 'Radio', 'Size': ChannelNumberInt},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_radio'
             }

@@ -67,7 +67,7 @@ def list_load_vod_append(listContainer):
                 "ProgramName": ProgramName,
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
-                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType},
                 'ItemAction': 'load_kids_episodes_vod'
             }
@@ -139,7 +139,7 @@ def list_load_program_append(listContainer):
                 "ProgramAvailability": ProgramAvailability,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramName,
-                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
                 'ItemAction': listAction
             }

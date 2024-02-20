@@ -97,7 +97,7 @@ def list_load_append(listContainer):
                 "ProgramDetails": ProgramTiming,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramNameRaw,
-                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_recorded'
             }

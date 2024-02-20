@@ -11,8 +11,10 @@ def jsonitem_to_listitem(jsonItem):
         for name, value in jsonItem.items():
             if name == 'ItemLabel':
                 listItem.setLabel(value)
-            elif name == 'ItemInfo':
+            elif name == 'ItemInfoVideo':
                 listItem.setInfo('video', value)
+            elif name == 'ItemInfoMusic':
+                listItem.setInfo('music', value)
             elif name == 'ItemArt':
                 listItem.setArt(value)
             else:

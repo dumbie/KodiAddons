@@ -95,7 +95,7 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
                 "ProgramAvailability": ProgramAvailability,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': EpisodeTitleRaw,
-                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_vod'
             }
@@ -155,7 +155,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
                 "ProgramAvailability": ProgramAvailability,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': EpisodeTitleRaw,
-                'ItemInfo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramTitleRaw, 'Tagline': ProgramDetails, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_program'
             }
