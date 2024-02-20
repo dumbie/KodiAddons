@@ -29,6 +29,11 @@ def get_provider_color_string():
     elif currentProvider == 'grijs':
         return '[COLOR FF888888]'
 
+#Stop currently playing media
+def stop_playing_media():
+    if xbmc.Player().isPlaying():
+        xbmc.executebuiltin('PlayerControl(Stop)')
+
 #Search filter string
 def search_filter_string(searchString):
     searchFilterTerm = searchString.lower()
@@ -60,14 +65,20 @@ def check_addon_running():
 
 #Open a window by id
 def open_window_id(windowId):
-    xbmc.executebuiltin('ActivateWindow(' + str(windowId) + ')')
+    try:
+        xbmc.executebuiltin('ActivateWindow(' + str(windowId) + ')')
+    except:
+        pass
 
 #Close a window by id
 def close_window_id(windowId):
     #Fix: find way to directly close the window
-    currentWindowId = xbmcgui.getCurrentWindowId()
-    if currentWindowId == windowId:
-        xbmc.executebuiltin('Action(Close)')
+    try:
+        currentWindowId = xbmcgui.getCurrentWindowId()
+        if currentWindowId == windowId:
+            xbmc.executebuiltin('Action(Close)')
+    except:
+        pass
 
 #String replace regex
 def string_replace_regex(regex, new, text):

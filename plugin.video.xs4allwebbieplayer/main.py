@@ -36,8 +36,8 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiMain != None:
-        #Stop the playing media
-        default.stop_playing_media()
+        #Stop currently playing media
+        func.stop_playing_media()
 
         #Stop and reset all threads
         threadfunc.stop_reset_threads()

@@ -96,7 +96,7 @@ def play_radio(listItem, Windowed=False):
         xbmc.sleep(100)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, StreamType='audio')
+        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)

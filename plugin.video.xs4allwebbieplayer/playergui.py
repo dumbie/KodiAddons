@@ -14,36 +14,32 @@ import var
 import zap
 
 def switch_to_page():
+    #Check variables instance name
+    if var.VariablesName != 'WebbiePlayerScript':
+        return
+
+    #Check player interface setting
+    if func.setting_get('PlayerInformationInterface') == 'false':
+        return
+
     if var.guiPlayer == None:
-        #Check variables instance name
-        if var.VariablesName != 'WebbiePlayerScript':
-            return
-
-        #Check player interface setting
-        if func.setting_get('PlayerInformationInterface') == 'false':
-            return
-
-        #Show player gui overlay
+        #Show custom video player overlay
         var.guiPlayer = Gui('playergui.xml', var.addonpath, 'default', '720p')
         var.guiPlayer.show()
 
 def close_the_page():
     if var.guiPlayer != None:
-        #Stop update information thread
+        #Stop player overlay update threads
         var.thread_update_playergui_info.Stop()
-
-        #Stop hide information thread
         var.thread_hide_playergui_info.Stop()
+        xbmc.sleep(100)
 
-        #Close custom video player window
+        #Close custom video player overlay
         var.guiPlayer.close()
         var.guiPlayer = None
         xbmc.sleep(100)
 
-        #Close media player windows
-        func.close_window_id(var.WINDOW_HOME)
-        func.close_window_id(var.WINDOW_SLIDESHOW)
-        func.close_window_id(var.WINDOW_VISUALISATION)
+        #Close fullscreen video player window
         func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
         xbmc.sleep(100)
 
@@ -175,10 +171,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         return False
 
     def start_threads(self):
-        #Start update information thread
         var.thread_update_playergui_info.Start(self.thread_update_playergui_info)
-
-        #Start hide information thread
         var.thread_hide_playergui_info.Start(self.thread_hide_playergui_info)
 
     def thread_update_playergui_info(self):

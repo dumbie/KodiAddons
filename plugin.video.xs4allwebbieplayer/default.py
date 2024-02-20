@@ -27,8 +27,8 @@ def launch_source():
 
 def launch_script():
     if check_multi_launch():
+        func.stop_playing_media()
         reset_home_variables()
-        stop_playing_media()
         check_login_settings()
         change_addon_accent()
         main.switch_to_page()
@@ -76,10 +76,6 @@ def reset_userdata():
             xbmcgui.Dialog().notification(var.addonname, 'User data bestanden zijn verwijderd.', var.addonicon, 2500, False)
     except:
         pass
-
-def stop_playing_media():
-    if xbmc.Player().isPlaying():
-        xbmc.executebuiltin('PlayerControl(Stop)')
 
 def check_multi_launch():
     if var.windowHome.getProperty('WebbiePlayerRunning'):

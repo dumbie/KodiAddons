@@ -6,13 +6,13 @@ import playergui
 import var
 
 class PlayerCustom(xbmc.Player):
-    def PlayCustom(self, streamUrl, listItem, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffsetSecEnd=0, StreamType='video'):
+    def PlayCustom(self, streamUrl, listItem, Windowed=False, OpenOverlay=False, ShowInformation=False, SeekOffsetSecEnd=0):
         #Update custom player variables
         var.PlayerWindowed(Windowed)
         var.PlayerOpenOverlay(OpenOverlay)
         var.PlayerShowInformation(ShowInformation)
         var.PlayerSeekOffsetSecEnd(SeekOffsetSecEnd)
-        var.PlayerStreamType(StreamType)
+        xbmc.sleep(100)
 
         #Start playing list item media
         self.play(streamUrl, listItem, True)
@@ -23,64 +23,47 @@ class PlayerCustom(xbmc.Player):
         var.PlayerOpenOverlay(False)
         var.PlayerShowInformation(False)
         var.PlayerSeekOffsetSecEnd(0)
-        var.PlayerStreamType('video')
 
     def Fullscreen(self, forceFullscreen=False, forceOpenOverlay=False, forceShowInformation=False):
-        xbmc.sleep(100)
-
         #Check if player is playing
-        if xbmc.Player().isPlaying() == True:
-            if var.PlayerStreamType() == 'audio':
-                #Close media player windows
-                func.close_window_id(var.WINDOW_HOME)
-                func.close_window_id(var.WINDOW_SLIDESHOW)
-                func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
+        if self.isPlayingVideo() == True:
+            #Open fullscreen player interface
+            if forceFullscreen == True or var.PlayerWindowed() == False:
+                func.open_window_id(var.WINDOW_FULLSCREEN_VIDEO)
                 xbmc.sleep(100)
 
-                #Close custom player overlay
+            #Open or close custom player overlay
+            if forceOpenOverlay == True or var.PlayerOpenOverlay() == True:
+                playergui.switch_to_page()
+                xbmc.sleep(100)
+            else:
                 playergui.close_the_page()
                 xbmc.sleep(100)
 
-                #Open fullscreen player interface
-                if forceFullscreen == True or var.PlayerWindowed() == False:
-                    func.open_window_id(var.WINDOW_VISUALISATION)
-                    xbmc.sleep(100)
-            elif var.PlayerStreamType() == 'video':
-                #Close media player windows
-                func.close_window_id(var.WINDOW_HOME)
-                func.close_window_id(var.WINDOW_SLIDESHOW)
-                func.close_window_id(var.WINDOW_VISUALISATION)
+            #Show custom player information
+            if forceShowInformation == True or var.PlayerShowInformation() == True:
+                if var.guiPlayer != None:
+                    var.guiPlayer.show_epg(True, False, True)
+        elif self.isPlayingAudio() == True:
+            #Close custom player overlay
+            playergui.close_the_page()
+            xbmc.sleep(100)
+
+            #Open fullscreen player interface
+            if forceFullscreen == True or var.PlayerWindowed() == False:
+                func.open_window_id(var.WINDOW_VISUALISATION)
                 xbmc.sleep(100)
-
-                #Open fullscreen player interface
-                if forceFullscreen == True or var.PlayerWindowed() == False:
-                    func.open_window_id(var.WINDOW_FULLSCREEN_VIDEO)
-                    xbmc.sleep(100)
-
-                if forceOpenOverlay == True or var.PlayerOpenOverlay() == True:
-                    #Open custom player overlay
-                    playergui.switch_to_page()
-                    xbmc.sleep(100)
-                else:
-                    #Close custom player overlay
-                    playergui.close_the_page()
-                    xbmc.sleep(100)
-
-                #Show custom player information
-                if forceShowInformation == True or var.PlayerShowInformation() == True:
-                    if var.guiPlayer != None:
-                        var.guiPlayer.show_epg(True, False, True)
 
     def onAVStarted(self):
         xbmc.sleep(100)
 
         #Check if player is playing
-        if xbmc.Player().isPlaying() == True:
+        if self.isPlaying() == True:
             #Switch to full screen player
             self.Fullscreen()
 
         #Check if video is playing
-        if var.PlayerStreamType() == 'video':
+        if self.isPlayingVideo() == True:
             #Player seek stream from ending
             PlayerSeekOffsetSecEnd = var.PlayerSeekOffsetSecEnd()
             if PlayerSeekOffsetSecEnd != 0:
@@ -88,9 +71,9 @@ class PlayerCustom(xbmc.Player):
 
             #Enable or disable subtitles
             if func.setting_get('PlayerSubtitlesOff') == 'true':
-                xbmc.Player().showSubtitles(False)
+                self.showSubtitles(False)
             else:
-                xbmc.Player().showSubtitles(True)
+                self.showSubtitles(True)
 
         #Refresh the main page media buttons
         if var.guiMain != None:
@@ -100,7 +83,7 @@ class PlayerCustom(xbmc.Player):
         xbmc.sleep(100)
 
         #Check current stream type
-        if var.PlayerStreamType() == 'video':
+        if self.isPlayingVideo() == True:
             #Show custom player information
             if var.guiPlayer != None:
                 var.guiPlayer.show_epg(True, False, True)
@@ -109,7 +92,7 @@ class PlayerCustom(xbmc.Player):
         xbmc.sleep(100)
 
         #Check if player is playing
-        if xbmc.Player().isPlaying() == False:
+        if self.isPlaying() == False:
             #Reset custom player variables
             self.ResetVariables()
 
@@ -124,7 +107,7 @@ class PlayerCustom(xbmc.Player):
         xbmc.sleep(100)
 
         #Check if player is playing
-        if xbmc.Player().isPlaying() == False:
+        if self.isPlaying() == False:
             #Reset custom player variables
             self.ResetVariables()
 
@@ -139,7 +122,7 @@ class PlayerCustom(xbmc.Player):
         xbmc.sleep(100)
 
         #Check if player is playing
-        if xbmc.Player().isPlaying() == False:
+        if self.isPlaying() == False:
             #Reset custom player variables
             self.ResetVariables()
 

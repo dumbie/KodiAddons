@@ -82,7 +82,6 @@ WINDOW_DIALOG_AUDIO_OSD_SETTINGS = 10124
 WINDOW_DIALOG_SUBTITLE_OSD_SETTINGS = 10159
 WINDOW_FULLSCREEN_VIDEO = 12005
 WINDOW_VISUALISATION = 12006
-WINDOW_SLIDESHOW = 12007
 WINDOW_ADDON = 13000
 
 #Add-on variables
@@ -144,13 +143,6 @@ def PlayerSeekOffsetSecEnd(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
          return func.globalvar_get(varName, 0)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerStreamType(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, 'video')
     else:
          return func.globalvar_set(varName, setObject)
 
