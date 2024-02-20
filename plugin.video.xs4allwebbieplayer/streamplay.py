@@ -91,6 +91,11 @@ def play_radio(listItem, Windowed=False):
             xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
             return
 
+        if func.string_isnullorempty(StreamUrl):
+            notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Ongeldige stream informatie.', notificationIcon, 2500, False)
+            return
+
         #Update channel settings and variables
         func.setting_set('CurrentRadioId', ChannelId)
         xbmc.sleep(100)
@@ -109,7 +114,7 @@ def play_program(listItem, Windowed=False):
             xbmcgui.Dialog().notification(var.addonname, 'Niet aangemeld, kan stream niet openen.', notificationIcon, 2500, False)
             return
 
-        #Get the program id
+        #Get program properties
         ProgramId = listItem.getProperty('ProgramId')
 
         #Check program properties
