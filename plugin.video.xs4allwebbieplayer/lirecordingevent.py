@@ -20,7 +20,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         list_load_append(listContainerSort)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: int(x.getProperty('ProgramTimeStart')))
+        listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -45,7 +45,6 @@ def list_load_append(listContainer):
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramTimeStart = str(metadatainfo.programstarttime_from_json_metadata(program))
             ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
@@ -63,7 +62,7 @@ def list_load_append(listContainer):
             #Set item details
             listItem = xbmcgui.ListItem()
             listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
-            listItem.setProperty('ProgramTimeStart', ProgramTimeStart)
+            listItem.setProperty('ProgramTimeStart', str(ProgramTimeStartDateTime))
             listItem.setProperty('ProgramDeltaTimeStart', ProgramDeltaTimeStart)
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramDescription', ProgramDescription)

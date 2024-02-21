@@ -4,7 +4,6 @@ import func
 import metadatacombine
 import metadatafunc
 import metadatainfo
-import var
 
 def list_update_channel(listItem):
     try:

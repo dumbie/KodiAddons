@@ -128,10 +128,10 @@ class Gui(xbmcgui.WindowXML):
         #Check if user is logged in
         if var.ApiLoggedIn() == True:
             #Go to the desired page on startup
-            if func.setting_get('StartWithTelevision') == 'true':
-                television.switch_to_page()
-            elif func.setting_get('StartWithKids') == 'true':
+            if func.setting_get('StartWithKids') == 'true':
                 kids.switch_to_page()
+            elif func.setting_get('StartWithTelevision') == 'true':
+                television.switch_to_page()
 
     def buttons_add_media(self, resetButtons):
         #Get and check the media control list container

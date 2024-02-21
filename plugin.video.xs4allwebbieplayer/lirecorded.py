@@ -10,9 +10,8 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download recordings
-        downloadResultProfile = download.download_recording_profile(forceUpdate)
-        downloadResultEvent = download.download_recording_event(forceUpdate)
-        if downloadResultProfile == False or downloadResultEvent == False:
+        downloadResult = download.download_recording_event(forceUpdate)
+        if downloadResult == False:
             notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
             xbmcgui.Dialog().notification(var.addonname, "Opnames downloaden mislukt.", notificationIcon, 2500, False)
             return False
@@ -22,7 +21,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         list_load_append(listContainerSort)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: int(x[1].getProperty('ProgramTimeStart')), reverse=True)
+        listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramTimeStart'), reverse=True)
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -61,7 +60,10 @@ def list_load_append(listContainer):
             ProgramAvailability = metadatainfo.available_time_recording(program)
 
             #Load program timing
-            ProgramTimeStart = str(metadatainfo.programstarttime_from_json_metadata(program))
+            ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
+            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
+            ProgramTimeStartMinutes = (ProgramTimeStartDateTime.hour * 60) + ProgramTimeStartDateTime.minute
+            ProgramDurationMinutes = metadatainfo.programdurationstring_from_json_metadata(program, False, False, False)
             ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
             StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
@@ -89,7 +91,7 @@ def list_load_append(listContainer):
                 'StartOffset': StartOffset,
                 'StreamAssetId': StreamAssetId,
                 'ProgramRecordEventId': ProgramRecordEventId,
-                'ProgramTimeStart': ProgramTimeStart,
+                'ProgramTimeStart': str(ProgramTimeStartDateTime),
                 'ProgramDeltaTimeStart': ProgramDeltaTimeStart,
                 "ProgramName": ProgramNameList,
                 "ProgramNameDesc": ProgramNameDesc,
@@ -97,7 +99,7 @@ def list_load_append(listContainer):
                 "ProgramDetails": ProgramTiming,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramNameRaw,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription, 'Size': ProgramDurationMinutes, 'Duration': ProgramTimeStartMinutes},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_recorded'
             }
