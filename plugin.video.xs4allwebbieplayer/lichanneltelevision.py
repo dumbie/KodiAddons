@@ -9,7 +9,7 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=False):
     try:
         #Download channels
         downloadResultChannels = download.download_channels_tv(forceUpdate)
@@ -17,6 +17,15 @@ def list_load_combined(listContainer=None, forceUpdate=False):
             notificationIcon = path.resources('resources/skins/default/media/common/television.png')
             xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False
+
+        #Download recordings
+        if downloadRecordings == True:
+            downloadResultRecordingEvent = download.download_recording_event(forceUpdate)
+            downloadResultRecordingSeries = download.download_recording_series(forceUpdate)
+            if downloadResultRecordingEvent == False or downloadResultRecordingSeries == False:
+                notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+                xbmcgui.Dialog().notification(var.addonname, "Opnames downloaden mislukt.", notificationIcon, 2500, False)
+                return False
 
         #Load favorite and hidden channels
         favorite.favorite_television_json_load()
