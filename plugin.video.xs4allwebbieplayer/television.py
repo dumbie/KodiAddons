@@ -312,7 +312,7 @@ class Gui(xbmcgui.WindowXML):
         #Add items to list container
         func.updateLabelText(self, 1, 'Zenders laden')
         func.updateLabelText(self, 3, "")
-        if lichanneltelevision.list_load_combined(listContainer, forceUpdate) == False:
+        if lichanneltelevision.list_load_combined(listContainer, forceUpdate=forceUpdate) == False:
             func.updateLabelText(self, 1, 'Niet beschikbaar')
             func.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)

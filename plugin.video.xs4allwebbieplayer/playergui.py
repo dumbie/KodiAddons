@@ -27,7 +27,7 @@ def switch_to_page():
         var.guiPlayer = Gui('playergui.xml', var.addonpath, 'default', '720p')
         var.guiPlayer.show()
 
-def close_the_page():
+def close_the_page(closeFullscreen=True):
     if var.guiPlayer != None:
         #Stop player overlay update threads
         var.thread_update_playergui_info.Stop()
@@ -40,8 +40,9 @@ def close_the_page():
         xbmc.sleep(100)
 
         #Close fullscreen video player window
-        func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
-        xbmc.sleep(100)
+        if closeFullscreen == True:
+            func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
+            xbmc.sleep(100)
 
 class Gui(xbmcgui.WindowXMLDialog):
     EpgPauseUpdate = False

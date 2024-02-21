@@ -37,7 +37,7 @@ class PlayerCustom(xbmc.Player):
                 playergui.switch_to_page()
                 xbmc.sleep(100)
             else:
-                playergui.close_the_page()
+                playergui.close_the_page(False)
                 xbmc.sleep(100)
 
             #Show custom player information
