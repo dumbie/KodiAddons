@@ -286,7 +286,7 @@
                     </control>
                     <control type="image">
                         <right>8</right>
-                        <top>44</top>
+                        <top>24</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -304,15 +304,21 @@
                     </control>
                     <control type="image">
                         <left>2</left>
-                        <top>44</top>
+                        <top>24</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/recordseries.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ChannelRecordSeries), true)</visible>
                     </control>
+                    <control type="image">
+                        <top>45</top>
+                        <width>65</width>
+                        <height>20</height>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                    </control>
                     <control type="label">
-                        <top>38</top>
+                        <top>41</top>
                         <width>65</width>
                         <height>30</height>
                         <align>center</align>
@@ -346,7 +352,7 @@
                     </control>
                     <control type="image">
                         <right>8</right>
-                        <top>44</top>
+                        <top>24</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -364,15 +370,21 @@
                     </control>
                     <control type="image">
                         <left>2</left>
-                        <top>44</top>
+                        <top>24</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/recordseries.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ChannelRecordSeries), true)</visible>
                     </control>
+                    <control type="image">
+                        <top>45</top>
+                        <width>65</width>
+                        <height>20</height>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    </control>
                     <control type="label">
-                        <top>38</top>
+                        <top>41</top>
                         <width>65</width>
                         <height>30</height>
                         <align>center</align>
@@ -413,7 +425,7 @@
                         <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="image">
-                        <top>3</top>
+                        <top>8</top>
                         <left>3</left>
                         <width>50</width>
                         <height>50</height>
@@ -530,7 +542,7 @@
                         <texture colordiffuse="A0888888">common/background_accent.png</texture>
                     </control>
                     <control type="image">
-                        <top>3</top>
+                        <top>8</top>
                         <left>3</left>
                         <width>50</width>
                         <height>50</height>

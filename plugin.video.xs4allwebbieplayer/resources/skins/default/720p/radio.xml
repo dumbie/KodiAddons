@@ -249,9 +249,15 @@
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
                     </control>
+                    <control type="image">
+                        <top>38</top>
+                        <width>56</width>
+                        <height>20</height>
+                        <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+                    </control>
                     <control type="label">
-                        <top>30</top>
-                        <width>50</width>
+                        <top>34</top>
+                        <width>56</width>
                         <height>30</height>
                         <align>center</align>
                         <textcolor>FF888888</textcolor>
@@ -291,9 +297,15 @@
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
                     </control>
+                    <control type="image">
+                        <top>38</top>
+                        <width>56</width>
+                        <height>20</height>
+                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    </control>
                     <control type="label">
-                        <top>30</top>
-                        <width>50</width>
+                        <top>34</top>
+                        <width>56</width>
                         <height>30</height>
                         <align>center</align>
                         <textcolor>FF888888</textcolor>
