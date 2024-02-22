@@ -12,7 +12,7 @@ class Class_ThreadSafe:
         self.threadName = ""
 
     #Start thread
-    def Start(self, threadTarget, threadArgs=None, threadForce=True):
+    def Start(self, threadTarget, threadArgs=None, threadForce=False):
         try:
             #Check variables
             if self.thread != None:

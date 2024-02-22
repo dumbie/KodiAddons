@@ -4,7 +4,6 @@ import var
 def stop_reset_threads():
     var.thread_check_requirements.Stop()
     var.thread_zap_wait_timer.Stop()
-    var.thread_channel_delay_timer.Stop()
     var.thread_update_television_program.Stop()
     var.thread_update_epg_program.Stop()
     var.thread_update_epg_channel.Stop()

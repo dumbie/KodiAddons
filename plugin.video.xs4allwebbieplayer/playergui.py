@@ -198,41 +198,6 @@ class Gui(xbmcgui.WindowXMLDialog):
             finally:
                 var.thread_hide_playergui_info.Sleep(1000)
 
-    def thread_channel_delay_timer(self):
-        while var.thread_channel_delay_timer.Allowed():
-            try:
-                interactSecond = 3
-                lastInteractSeconds = int((datetime.now() - self.ChannelDelay).total_seconds())
-
-                #Channel information
-                listContainer = self.getControl(1001)
-                listItemSelected = listContainer.getSelectedItem()
-                channelName = listItemSelected.getProperty("ChannelName")
-                channelNumber = listItemSelected.getProperty("ChannelNumber")
-
-                #Countdown string
-                delayCountInt = interactSecond - lastInteractSeconds
-                delayCountString = '[COLOR gray]' + str(delayCountInt) + '[/COLOR]'
-                delayChannelString = func.get_provider_color_string() + channelNumber + '[/COLOR] ' + channelName
-
-                #Show remaining time
-                func.updateLabelText(self, 7001, delayCountString)
-                func.updateLabelText(self, 7002, delayChannelString)
-                self.setProperty('ZapVisible', 'true')
-
-                #Change the channel
-                if lastInteractSeconds >= interactSecond:
-                    #Reset channel wait variables
-                    var.thread_channel_delay_timer.Stop()
-                    self.setProperty('ZapVisible', 'false')
-
-                    #Switch to selected channel
-                    streamplay.play_tv(listItemSelected, ShowInformation=True)
-            except:
-                pass
-            finally:
-                var.thread_channel_delay_timer.Sleep(100)
-
     def buttons_add_sidebar(self):
         #Get and check the list container
         listContainer = self.getControl(1002)
@@ -390,7 +355,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmc.executebuiltin('Action(StepForward)')
 
         #Show epg and select channel
-        if showEpg:
+        if showEpg == True:
             self.show_epg(True, True, True, False)
             return
 
@@ -402,7 +367,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmc.executebuiltin('Action(StepBack)')
 
         #Show the epg and select channel
-        if showEpg:
+        if showEpg == True:
             self.show_epg(True, True, True, False)
             return
 
@@ -459,24 +424,20 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)
 
     def switch_channel_nexttv(self):
+        self.show_epg(False, False, False, False)
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
         listContainer.selectItem(listContainer.getSelectedPosition() + 1)
         xbmc.sleep(100)
-        #Start the channel wait thread
-        self.ChannelDelay = datetime.now()
-        var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def switch_channel_previoustv(self):
+        self.show_epg(False, False, False, False)
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
         listContainer.selectItem(listContainer.getSelectedPosition() - 1)
         xbmc.sleep(100)
-        #Start the channel wait thread
-        self.ChannelDelay = datetime.now()
-        var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def load_channels(self, forceLoad=False):
         self.EpgPauseUpdate = True
@@ -527,12 +488,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmc.sleep(100)
 
         #Select current channel in list container
-        if selectCurrentChannel:
+        if selectCurrentChannel == True:
             currentChannelId = func.setting_get('CurrentChannelId', True)
             lifunc.focus_on_channelid_in_list(self, 1001, 0, focusCurrentChannel, currentChannelId)
 
         #Remove focus from the interface
-        if removeFocus:
+        if removeFocus == True:
             listControl = self.getControl(4000)
             self.setFocus(listControl)
             xbmc.sleep(100)
