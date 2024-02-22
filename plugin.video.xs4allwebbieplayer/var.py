@@ -3,7 +3,6 @@ import sys
 from datetime import datetime, timedelta
 import func
 import hybrid
-import player
 import threadclass
 import xbmc
 import xbmcaddon
@@ -17,11 +16,13 @@ ACTION_MOVE_UP = 3
 ACTION_MOVE_DOWN = 4
 ACTION_SELECT_ITEM = 7
 ACTION_PREVIOUS_MENU = 10
+ACTION_SHOW_INFO = 11
 ACTION_PAUSE = 12
 ACTION_NEXT_ITEM = 14
 ACTION_PREV_ITEM = 15
 ACTION_STEP_FORWARD = 20
 ACTION_STEP_BACK = 21
+ACTION_SHOW_OSD = 24
 ACTION_PLAYER_FORWARD = 77
 ACTION_PLAYER_REWIND = 78
 ACTION_PLAYER_PLAY = 79
@@ -99,7 +100,6 @@ kodiversion = xbmc.getInfoLabel('System.BuildVersion').split(' ')[0].split('-')[
 LaunchUrl = ''
 LaunchHandle = 0
 LaunchArgument = ''
-VariablesName = 'Kodi'
 
 #Dialog variables
 DialogResult = None
@@ -108,43 +108,12 @@ DialogResult = None
 thread_notification = threadclass.Class_ThreadSafe()
 thread_check_requirements = threadclass.Class_ThreadSafe()
 thread_zap_wait_timer = threadclass.Class_ThreadSafe()
-thread_channel_delay_timer = threadclass.Class_ThreadSafe()
 thread_update_television_program = threadclass.Class_ThreadSafe()
 thread_update_epg_program = threadclass.Class_ThreadSafe()
 thread_update_epg_channel = threadclass.Class_ThreadSafe()
 thread_update_playergui_info = threadclass.Class_ThreadSafe()
 thread_hide_playergui_info = threadclass.Class_ThreadSafe()
 thread_sleep_timer = threadclass.Class_ThreadSafe()
-
-#Player variables
-PlayerCustom = player.PlayerCustom()
-def PlayerWindowed(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerOpenOverlay(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerShowInformation(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, False)
-    else:
-         return func.globalvar_set(varName, setObject)
-
-def PlayerSeekOffsetSecEnd(setObject=None):
-    varName = str(sys._getframe().f_code.co_name)
-    if setObject == None:
-         return func.globalvar_get(varName, 0)
-    else:
-         return func.globalvar_set(varName, setObject)
 
 #Api variables
 def ApiLoginFailCount(setObject=None):

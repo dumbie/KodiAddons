@@ -1,4 +1,3 @@
-import kids
 import xbmc
 import xbmcgui
 import alarm
@@ -7,17 +6,19 @@ import default
 import dialog
 import epg
 import func
-import lifunc
-import limain
 import helpx
 import hybrid
+import kids
+import lifunc
+import limain
 import movies
 import path
+import player
 import radio
 import recorded
 import recordingevent
-import recordingseries
 import recordingfunc
+import recordingseries
 import search
 import series
 import sleep
@@ -25,8 +26,8 @@ import sport
 import television
 import threadfunc
 import var
-import widevine
 import vod
+import widevine
 
 def switch_to_page():
     if var.guiMain == None:
@@ -75,7 +76,7 @@ def dialog_close():
         elif dialogResult == 'Kodi afsluiten':
             func.close_kodi_dialog()
         elif dialogResult == 'Toon video speler':
-            var.PlayerCustom.Fullscreen(True)
+            player.Fullscreen(True)
         else:
             var.guiMain.check_focus()
 
@@ -345,7 +346,7 @@ class Gui(xbmcgui.WindowXML):
             elif listItemAction == 'media_togglemute':
                 xbmc.executebuiltin('Action(Mute)')
             elif listItemAction == 'media_fullscreen':
-                var.PlayerCustom.Fullscreen(True)
+                player.Fullscreen(True)
             elif listItemAction == 'show_visualisation':
                 radio.show_visualisation()
         elif clickId == 3001:

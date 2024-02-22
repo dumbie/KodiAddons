@@ -2,15 +2,16 @@ from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
 import alarm
-import lichanneltelevision
 import dialog
 import epg
 import favorite
-import hidden
 import func
+import hidden
+import lichanneltelevision
 import lifunc
-import path
 import litelevision
+import path
+import player
 import recordingfunc
 import searchdialog
 import streamplay
@@ -69,7 +70,7 @@ class Gui(xbmcgui.WindowXML):
                     self.search_channel()
             elif clickId == 9000:
                 if xbmc.Player().isPlayingVideo():
-                    var.PlayerCustom.Fullscreen(True)
+                    player.Fullscreen(True)
                 else:
                     listContainer = self.getControl(1001)
                     self.setFocus(listContainer)

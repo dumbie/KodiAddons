@@ -4,9 +4,10 @@ import dialog
 import epg
 import files
 import func
-import path
 import likidsepisode
 import likidsprogram
+import path
+import player
 import searchdialog
 import streamplay
 import var
@@ -91,7 +92,7 @@ class Gui(xbmcgui.WindowXML):
                 streamplay.play_program(listItemSelected, False)
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
-                var.PlayerCustom.Fullscreen(True)
+                player.Fullscreen(True)
             else:
                 listContainer = self.getControl(1001)
                 self.setFocus(listContainer)

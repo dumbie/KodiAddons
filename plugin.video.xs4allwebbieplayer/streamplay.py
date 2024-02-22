@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
-import download
 import xbmc
 import xbmcgui
 import apilogin
+import download
 import func
-import path
 import metadatainfo
+import path
+import player
 import streamadjust
 import var
 
@@ -74,7 +75,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson, True)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed, OpenOverlay, ShowInformation, SeekOffsetSecEnd=SeekOffsetSecEnd)
+        player.PlayCustom(StreamUrl, listItem, Windowed, OpenOverlay, ShowInformation, SeekOffsetSecEnd=SeekOffsetSecEnd)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/television.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
@@ -101,7 +102,7 @@ def play_radio(listItem, Windowed=False):
         xbmc.sleep(100)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
+        player.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
@@ -164,7 +165,7 @@ def play_program(listItem, Windowed=False):
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
+        player.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
@@ -221,7 +222,7 @@ def play_vod(listItem, Windowed=False):
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
+        player.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
@@ -278,7 +279,7 @@ def play_recorded(listItem, Windowed=False):
         streamadjust.adjust_listitem_inputstream(listItem, DownloadDataJson)
 
         #Start playing the media
-        var.PlayerCustom.PlayCustom(StreamUrl, listItem, Windowed)
+        player.PlayCustom(StreamUrl, listItem, Windowed)
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)

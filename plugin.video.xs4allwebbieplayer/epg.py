@@ -2,16 +2,17 @@ from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
 import alarm
-import lichanneltelevision
 import dialog
 import func
+import lichanneltelevision
+import liepgload
+import liepgupdate
 import lifunc
 import path
+import player
 import recordingfunc
 import searchdialog
 import streamplay
-import liepgload
-import liepgupdate
 import var
 import zap
 
@@ -69,7 +70,7 @@ class Gui(xbmcgui.WindowXML):
                 self.open_context_menu(clickedControl)
             elif clickId == 9000:
                 if xbmc.Player().isPlayingVideo():
-                    var.PlayerCustom.Fullscreen(True)
+                    player.Fullscreen(True)
                 else:
                     listContainer = self.getControl(1000)
                     self.setFocus(listContainer)

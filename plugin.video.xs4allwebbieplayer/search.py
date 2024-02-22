@@ -5,6 +5,7 @@ import epg
 import func
 import lisearch
 import path
+import player
 import searchdialog
 import streamplay
 import var
@@ -59,7 +60,7 @@ class Gui(xbmcgui.WindowXML):
                 self.search_result()
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
-                var.PlayerCustom.Fullscreen(True)
+                player.Fullscreen(True)
             else:
                 listContainer = self.getControl(1001)
                 self.setFocus(listContainer)

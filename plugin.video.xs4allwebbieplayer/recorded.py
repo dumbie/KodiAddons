@@ -3,8 +3,9 @@ import xbmcgui
 import dialog
 import download
 import func
-import path
 import lirecorded
+import path
+import player
 import searchdialog
 import streamplay
 import var
@@ -47,7 +48,7 @@ class Gui(xbmcgui.WindowXML):
                 self.load_program(True, True)
         elif clickId == 9000:
             if xbmc.Player().isPlayingVideo():
-                var.PlayerCustom.Fullscreen(True)
+                player.Fullscreen(True)
             else:
                 listContainer = self.getControl(1001)
                 self.setFocus(listContainer)
