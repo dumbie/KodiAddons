@@ -14,10 +14,6 @@ import var
 import zap
 
 def switch_to_page():
-    #Check variables instance name
-    if var.VariablesName != 'WebbiePlayerScript':
-        return
-
     #Check player interface setting
     if func.setting_get('PlayerInformationInterface') == 'false':
         return
@@ -146,6 +142,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif actionId == var.ACTION_PREV_ITEM:
             self.switch_channel_previoustv()
             return
+        elif actionId == var.ACTION_SHOW_INFO:
+            self.show_epg(True, False, True, True)
+            return
+        elif actionId == var.ACTION_SHOW_OSD:
+            self.show_epg(False, False, True, True)
+            return
         elif self.block_input(actionId):
             return
         elif zap.check_remote_number(self, 1001, actionId, False, False):
@@ -153,7 +155,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif playerFull == False:
             lastHideSeconds = int((datetime.now() - self.InfoLastHide).total_seconds())
             if lastHideSeconds >= 1:
-                self.show_epg(False, False, True)
+                self.show_epg(False, False, True, True)
             return
 
     def block_input(self, actionId):
@@ -387,12 +389,12 @@ class Gui(xbmcgui.WindowXMLDialog):
     def seek_forward(self, showEpg=False):
         xbmc.executebuiltin('Action(StepForward)')
 
-        #Show the epg and select channel
+        #Show epg and select channel
         if showEpg:
-            self.show_epg(True, True, True)
+            self.show_epg(True, True, True, False)
             return
 
-        #Select channel in list container
+        #Select current channel in list container
         CurrentChannelId = func.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
@@ -401,20 +403,25 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Show the epg and select channel
         if showEpg:
-            self.show_epg(True, True, True)
+            self.show_epg(True, True, True, False)
             return
 
-        #Select channel in list container
+        #Select current channel in list container
         CurrentChannelId = func.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
     def seek_begin_program(self):
+        #Select current channel in list container
+        CurrentChannelId = func.setting_get('CurrentChannelId', True)
+        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
+
         #Get and check the list container
         listContainer = self.getControl(1001)
         selectedItem = listContainer.getSelectedItem()
-        ProgramNowTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
 
         #Check the program start time
+        ProgramNowTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+        ProgramNowTimeStartDateTime = func.datetime_remove_seconds(ProgramNowTimeStartDateTime)
         if ProgramNowTimeStartDateTime != datetime(1970,1,1):
             playingSeconds = int((datetime.now() - ProgramNowTimeStartDateTime).total_seconds())
             totalSeconds = int(xbmc.Player().getTotalTime())
@@ -424,10 +431,6 @@ class Gui(xbmcgui.WindowXMLDialog):
                 xbmc.Player().seekTime(seekSeconds)
                 notificationIcon = path.resources('resources/skins/default/media/common/rerun.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Naar programma begin gespoeld.', notificationIcon, 2500, False)
-
-                #Select channel in list container
-                CurrentChannelId = func.setting_get('CurrentChannelId', True)
-                lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
             else:
                 notificationIcon = path.resources('resources/skins/default/media/common/rerun.png')
                 xbmcgui.Dialog().notification(var.addonname, 'Programma begin niet beschikbaar.', notificationIcon, 2500, False)
@@ -442,7 +445,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         notificationIcon = path.resources('resources/skins/default/media/common/seeklive.png')
         xbmcgui.Dialog().notification(var.addonname, 'De stream is nu live.', notificationIcon, 2500, False)
 
-        #Select channel in list container
+        #Select current channel in list container
         CurrentChannelId = func.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
@@ -456,23 +459,23 @@ class Gui(xbmcgui.WindowXMLDialog):
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)
 
     def switch_channel_nexttv(self):
-        self.ChannelDelay = datetime.now()
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
         listContainer.selectItem(listContainer.getSelectedPosition() + 1)
         xbmc.sleep(100)
         #Start the channel wait thread
+        self.ChannelDelay = datetime.now()
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def switch_channel_previoustv(self):
-        self.ChannelDelay = datetime.now()
         listContainer = self.getControl(1001)
         self.setFocus(listContainer)
         xbmc.sleep(100)
         listContainer.selectItem(listContainer.getSelectedPosition() - 1)
         xbmc.sleep(100)
         #Start the channel wait thread
+        self.ChannelDelay = datetime.now()
         var.thread_channel_delay_timer.Start(self.thread_channel_delay_timer)
 
     def load_channels(self, forceLoad=False):
@@ -505,8 +508,14 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Hide the epg interface
         self.setProperty('WebbiePlayerFull', 'false')
         self.setProperty('WebbiePlayerSeek', 'false')
+        xbmc.sleep(100)
 
-    def show_epg(self, seekInterface=False, removeFocus=False, selectCurrentChannel=True):
+        #Remove focus from the interface
+        listControl = self.getControl(4000)
+        self.setFocus(listControl)
+        xbmc.sleep(100)
+
+    def show_epg(self, seekInterface=False, removeFocus=False, selectCurrentChannel=True, focusCurrentChannel=True):
         #Update the last interaction time
         self.InfoLastInteraction = datetime.now()
 
@@ -515,11 +524,12 @@ class Gui(xbmcgui.WindowXMLDialog):
             self.setProperty('WebbiePlayerFull', 'true')
         else:
             self.setProperty('WebbiePlayerSeek', 'true')
+        xbmc.sleep(100)
 
-        #Select the current channel
+        #Select current channel in list container
         if selectCurrentChannel:
             currentChannelId = func.setting_get('CurrentChannelId', True)
-            lifunc.focus_on_channelid_in_list(self, 1001, 0, True, currentChannelId)
+            lifunc.focus_on_channelid_in_list(self, 1001, 0, focusCurrentChannel, currentChannelId)
 
         #Remove focus from the interface
         if removeFocus:
