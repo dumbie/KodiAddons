@@ -132,7 +132,7 @@ def record_event_next_television_playergui(listItemSelected):
         if func.string_isnullorempty(recordAdd) == False:
             listItemSelected.setProperty("ProgramNextRecordEvent", 'true')
 
-def record_series_television_playergui(listItemSelected, forceRecord=False):
+def record_series_now_television_playergui(listItemSelected, forceRecord=False):
     ChannelId = listItemSelected.getProperty('ChannelId')
     ProgramNowRecordSeries = listItemSelected.getProperty('ProgramNowRecordSeries')
     ProgramNowRecordSeriesId = listItemSelected.getProperty('ProgramNowRecordSeriesId')

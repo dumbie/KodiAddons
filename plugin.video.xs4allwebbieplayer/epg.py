@@ -40,9 +40,9 @@ class Gui(xbmcgui.WindowXML):
 
     def onInit(self):
         self.buttons_add_navigation()
+        self.check_channel_epg_variables()
         channelsLoaded = self.load_channels()
         if channelsLoaded == True:
-            self.set_channel_epg_variables()
             self.load_programs()
             self.start_threads()
 
@@ -65,7 +65,6 @@ class Gui(xbmcgui.WindowXML):
                 elif listItemAction == "refresh_epg":
                     self.load_programs(True)
             elif clickId == 1001:
-                self.set_channel_epg_variables()
                 self.load_programs(False, True)
             elif clickId == 1002:
                 self.open_context_menu(clickedControl)
@@ -88,13 +87,11 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
             guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() + 1)
-            self.set_channel_epg_variables()
             self.load_programs()
         elif actionId == var.ACTION_PREV_ITEM:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
             guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() - 1)
-            self.set_channel_epg_variables()
             self.load_programs()
         elif actionId == var.ACTION_PLAYER_PLAY:
             self.dialog_set_day()
@@ -155,12 +152,9 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
         listContainer.addItem(listItem)
 
-    def focus_on_channel_list(self, forceFocus=False):
+    def check_channel_epg_variables(self):
         if func.string_isnullorempty(var.EpgCurrentChannelId) == True:
-            selectChannelId = func.setting_get('CurrentChannelId', True)
-        else:
-            selectChannelId = var.EpgCurrentChannelId
-        lifunc.focus_on_channelid_in_list(self, 1001, 0, forceFocus, selectChannelId)
+            var.EpgCurrentChannelId = func.setting_get('CurrentChannelId', True)
 
     def focus_on_item_list(self):
         #Get and check channel list container
@@ -283,7 +277,6 @@ class Gui(xbmcgui.WindowXML):
 
             channelsLoaded = self.load_channels(True)
             if channelsLoaded == True:
-                self.set_channel_epg_variables()
                 self.load_programs(False, True)
         except:
             pass
@@ -357,7 +350,6 @@ class Gui(xbmcgui.WindowXML):
         channelsLoaded = self.load_channels(True)
         var.SearchTermCurrent = ''
         if channelsLoaded == True:
-            self.set_channel_epg_variables()
             self.load_programs(False, True)
 
     def search_program(self):
@@ -373,18 +365,6 @@ class Gui(xbmcgui.WindowXML):
         self.load_programs(False, True, True)
         var.SearchTermCurrent = ''
 
-    def set_channel_epg_variables(self):
-        #Set the currently selected channel
-        listContainer = self.getControl(1001)
-        listItemSelected = listContainer.getSelectedItem()
-        if listItemSelected == None:
-            guifunc.updateLabelText(self, 1, 'Selecteer zender')
-            guifunc.updateLabelText(self, 2, "[COLOR gray]Selecteer de gewenste televisie zender.[/COLOR]")
-            return
-
-        var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
-        var.EpgCurrentChannelName = listItemSelected.getProperty('ChannelName')
-
     def load_channels(self, forceLoad=False):
         self.ChannelPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
@@ -397,7 +377,7 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1001)
         if forceLoad == False:
             if listContainer.size() > 0:
-                self.focus_on_channel_list(False)
+                lifunc.focus_on_channelid_in_list(self, 1001, 0, False, var.EpgCurrentChannelId)
                 return True
         else:
             guifunc.listReset(listContainer)
@@ -415,7 +395,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Focus on the list container
         if listContainer.size() > 0:
-            self.focus_on_channel_list(True)
+            lifunc.focus_on_channelid_in_list(self, 1001, 0, True, var.EpgCurrentChannelId)
         else:
             #Set channel type string
             channelTypeString = 'zenders'
@@ -433,7 +413,7 @@ class Gui(xbmcgui.WindowXML):
                 guifunc.updateLabelText(self, 2, "[COLOR gray]Geen beschikbare " + channelTypeString + ".[/COLOR]")
                 guifunc.listSelectItem(listContainer, 0)
 
-            #Focus on channel list
+            #Focus on navigation menu list
             guifunc.controlFocus(self, listContainer)
 
             #Reset the program list
@@ -452,6 +432,17 @@ class Gui(xbmcgui.WindowXML):
         self.ProgramPauseUpdate = False
 
     def load_programs_code(self, forceUpdate=False, forceLoad=False, forceFocus=False):
+        #Set currently selected channel
+        listContainer = self.getControl(1001)
+        listItemSelected = listContainer.getSelectedItem()
+        if listItemSelected == None:
+            guifunc.updateLabelText(self, 1, 'Selecteer zender')
+            guifunc.updateLabelText(self, 2, "[COLOR gray]Selecteer de gewenste televisie zender.[/COLOR]")
+            return
+        else:
+            var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
+            var.EpgCurrentChannelName = listItemSelected.getProperty('ChannelName')
+
         #Get and check the list container
         listContainer = self.getControl(1002)
         listItemCount = listContainer.size()
@@ -485,7 +476,7 @@ class Gui(xbmcgui.WindowXML):
         self.epg_selectindex_program(forceFocus)
 
         #Update the status
-        self.count_epg(var.EpgCurrentChannelName)
+        self.count_epg()
 
         #Force manual epg update
         self.ProgramManualUpdate = True
@@ -543,7 +534,7 @@ class Gui(xbmcgui.WindowXML):
         var.EpgNavigateProgramId = ''
 
     #Update the status
-    def count_epg(self, ChannelName):
+    def count_epg(self):
         #Set loading day string
         loadDayString = func.day_string_from_datetime(var.EpgCurrentLoadDateTime)
 
@@ -552,14 +543,14 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() == 0:
             if func.string_isnullorempty(var.SearchTermCurrent) == True:
                 guifunc.updateLabelText(self, 1, "Geen programma's")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
                 guifunc.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
         else:
             if func.string_isnullorempty(var.SearchTermCurrent) == True:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
                 guifunc.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]op[/COLOR] " + loadDayString)
