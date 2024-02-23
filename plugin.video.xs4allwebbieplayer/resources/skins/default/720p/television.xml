@@ -171,7 +171,7 @@
             <top>245</top>
             <width>35</width>
             <height>475</height>
-            <visible>Player.HasVideo + !VideoPlayer.IsFullscreen + !SlideShow.IsActive</visible>
+            <visible>Player.Playing</visible>
             <control type="button" id="9000">
                 <width>35</width>
                 <height>475</height>
@@ -185,6 +185,16 @@
                 <height>25</height>
                 <aspectratio>keep</aspectratio>
                 <texture>common/fullscreen.png</texture>
+                <visible>Player.HasVideo</visible>
+            </control>
+            <control type="image">
+                <top>5</top>
+                <left>5</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/visualisation.png</texture>
+                <visible>Player.HasAudio</visible>
             </control>
         </control>
         <!-- Navigation Buttons -->

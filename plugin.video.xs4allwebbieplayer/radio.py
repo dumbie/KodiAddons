@@ -8,6 +8,7 @@ import hidden
 import lichannelradio
 import lifunc
 import path
+import player
 import searchdialog
 import streamplay
 import var
@@ -23,16 +24,6 @@ def close_the_page():
         #Close the shown window
         var.guiRadio.close()
         var.guiRadio = None
-
-def show_visualisation():
-    try:
-        if xbmc.Player().isPlayingAudio():
-            func.open_window_id(var.WINDOW_VISUALISATION)
-        else:
-            notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Radio speelt niet.', notificationIcon, 2500, False)
-    except:
-        pass
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
@@ -60,8 +51,12 @@ class Gui(xbmcgui.WindowXML):
                     self.switch_all_favorites()
                 elif listItemAction == "search_channelprogram":
                     self.search_channelprogram()
-                elif listItemAction == "show_visualisation":
-                    show_visualisation()
+            elif clickId == 9000:
+                if xbmc.Player().isPlaying():
+                    player.Fullscreen(True)
+                else:
+                    listContainer = self.getControl(1001)
+                    guifunc.controlFocus(self, listContainer)
             elif clickId == 3001:
                 close_the_page()
 
@@ -133,11 +128,6 @@ class Gui(xbmcgui.WindowXML):
         listItem = xbmcgui.ListItem('Zoek naar zender')
         listItem.setProperty('ItemAction', 'search_channelprogram')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
-        listContainer.addItem(listItem)
-
-        listItem = xbmcgui.ListItem('Toon visualisatie')
-        listItem.setProperty('ItemAction', 'show_visualisation')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'), 'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Verborgen zenders')

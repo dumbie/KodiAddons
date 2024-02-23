@@ -70,7 +70,7 @@ class Gui(xbmcgui.WindowXML):
                 elif listItemAction == "search_channel":
                     self.search_channel()
             elif clickId == 9000:
-                if xbmc.Player().isPlayingVideo():
+                if xbmc.Player().isPlaying():
                     player.Fullscreen(True)
                 else:
                     listContainer = self.getControl(1001)

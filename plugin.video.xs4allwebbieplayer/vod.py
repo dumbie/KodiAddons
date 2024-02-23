@@ -50,7 +50,7 @@ class Gui(xbmcgui.WindowXML):
             elif listItemAction == 'refresh_programs':
                 self.load_program(True, True, False)
         elif clickId == 9000:
-            if xbmc.Player().isPlayingVideo():
+            if xbmc.Player().isPlaying():
                 player.Fullscreen(True)
             else:
                 listContainer = self.getControl(1001)

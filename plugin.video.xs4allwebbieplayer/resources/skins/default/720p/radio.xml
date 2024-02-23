@@ -164,6 +164,38 @@
             <label>$INFO[System.Date(DDD)], $INFO[System.Date(d mmm)]</label>
             <textcolor>FF888888</textcolor>
         </control>
+        <!-- Fullscreen Button -->
+        <control type="group">
+            <left>10</left>
+            <top>245</top>
+            <width>35</width>
+            <height>475</height>
+            <visible>Player.Playing</visible>
+            <control type="button" id="9000">
+                <width>35</width>
+                <height>475</height>
+                <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
+                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+            </control>
+            <control type="image">
+                <top>5</top>
+                <left>5</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/fullscreen.png</texture>
+                <visible>Player.HasVideo</visible>
+            </control>
+            <control type="image">
+                <top>5</top>
+                <left>5</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/visualisation.png</texture>
+                <visible>Player.HasAudio</visible>
+            </control>
+        </control>
         <!-- Navigation Buttons -->
         <control type="panel" id="1001">
             <left>50</left>
@@ -231,7 +263,7 @@
             <height>475</height>
             <control type="panel" id="1000">
                 <onup>1001</onup>
-                <onleft>1001</onleft>
+                <onleft>SendClick(9000)</onleft>
                 <onright>2001</onright>
                 <pagecontrol>2001</pagecontrol>
                 <orientation>vertical</orientation>
