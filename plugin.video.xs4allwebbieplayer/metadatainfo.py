@@ -76,7 +76,7 @@ def orderId_from_json_metadata(metaData):
     try:
         return str(metaData['metadata']['orderId'])
     except:
-        return '9000'
+        return '?'
 
 #Get external id from json metadata
 def externalId_from_json_metadata(metaData):

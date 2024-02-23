@@ -114,7 +114,7 @@ def list_load_append(listContainer):
                 "ProgramDescription": ProgramDescription,
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName, 'TrackNumber': ChannelNumberString},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_tv'
             }
