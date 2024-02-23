@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import xbmc
 import func
+import guifunc
 import lifunc
 import streamplay
 import var
@@ -75,10 +76,9 @@ def select_remote_number(_self, clickOnSelection):
     if itemNum == None:
         return
 
-    _self.setFocus(listContainer)
-    xbmc.sleep(100)
-    listContainer.selectItem(itemNum)
-    xbmc.sleep(100)
+    guifunc.controlFocus(_self, listContainer)
+    guifunc.listSelectItem(listContainer, itemNum)
+
     if clickOnSelection:
         xbmc.executebuiltin('Action(Select)')
 
@@ -105,7 +105,7 @@ def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
 
                 #Hide remote number popup
                 _self.setProperty('ZapVisible', 'false')
-                func.updateLabelText(_self, 7001, '')
+                guifunc.updateLabelText(_self, 7001, '')
 
                 #Reset remote variables
                 var.ZapControlId = 0
@@ -119,8 +119,8 @@ def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
                 zapCountString = '[COLOR gray]' + str(zapCountInt) + '[/COLOR]'
 
                 #Show remote number popup
-                func.updateLabelText(_self, 7001, zapCountString)
-                func.updateLabelText(_self, 7002, var.ZapHintString)
+                guifunc.updateLabelText(_self, 7001, zapCountString)
+                guifunc.updateLabelText(_self, 7002, var.ZapHintString)
                 _self.setProperty('ZapVisible', 'true')
         except:
             pass

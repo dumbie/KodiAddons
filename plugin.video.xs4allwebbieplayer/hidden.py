@@ -1,10 +1,10 @@
 import json
-import kids
-import lihidden
 import xbmc
 import xbmcgui
 import files
-import func
+import guifunc
+import kids
+import lihidden
 import path
 import var
 
@@ -131,8 +131,8 @@ def close_the_page():
 class Gui(xbmcgui.WindowXMLDialog):
     def onInit(self):
         #Set the schedule window text
-        func.updateLabelText(self, 3000, 'Verborgen Zenders')
-        func.updateVisibility(self, 4001, False)
+        guifunc.updateLabelText(self, 3000, 'Verborgen Zenders')
+        guifunc.updateVisibility(self, 4001, False)
 
         #Update the schedule panel height
         dialogControl = self.getControl(8000)
@@ -151,10 +151,8 @@ class Gui(xbmcgui.WindowXMLDialog):
             if hiddenRemoved == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()
-                clickedControl.removeItem(removeListItemId)
-                xbmc.sleep(100)
-                clickedControl.selectItem(removeListItemId)
-                xbmc.sleep(100)
+                guifunc.listRemoveItem(clickedControl, removeListItemId)
+                guifunc.listSelectItem(clickedControl, removeListItemId)
 
                 #Update changed variable
                 var.HiddenChannelChanged = True
@@ -172,7 +170,7 @@ class Gui(xbmcgui.WindowXMLDialog):
     def load_hidden_channels(self):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        listContainer.reset()
+        guifunc.listReset(listContainer)
 
         #Add items to list container
         lihidden.list_load_combined(listContainer, var.HiddenChannelMode)
@@ -188,16 +186,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         else:
             channelcount = len(var.HiddenRadioJson)
         if channelcount > 0:
-            func.updateLabelText(self, 3000, 'Verborgen Zenders (' + str(channelcount) + ')')
-            func.updateLabelText(self, 3001, 'Huidige verborgen zenders, u kunt een zender weer laten verschijnen in de zenderlijst door er op te klikken.')
+            guifunc.updateLabelText(self, 3000, 'Verborgen Zenders (' + str(channelcount) + ')')
+            guifunc.updateLabelText(self, 3001, 'Huidige verborgen zenders, u kunt een zender weer laten verschijnen in de zenderlijst door er op te klikken.')
             if resetSelect == True:
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
-                listContainer.selectItem(0)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
+                guifunc.listSelectItem(listContainer, 0)
         else:
-            func.updateLabelText(self, 3000, 'Verborgen Zenders (0)')
-            func.updateLabelText(self, 3001, 'Er zijn geen verborgen zenders, u kunt een zender verbergen in de zenderlijst.')
+            guifunc.updateLabelText(self, 3000, 'Verborgen Zenders (0)')
+            guifunc.updateLabelText(self, 3001, 'Er zijn geen verborgen zenders, u kunt een zender verbergen in de zenderlijst.')
             closeButton = self.getControl(4000)
-            self.setFocus(closeButton)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, closeButton)

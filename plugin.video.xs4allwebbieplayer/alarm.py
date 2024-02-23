@@ -1,11 +1,12 @@
 import json
 from datetime import datetime, timedelta
-import lialarm
 import xbmc
 import xbmcgui
 import dialog
 import files
 import func
+import guifunc
+import lialarm
 import path
 import var
 
@@ -191,10 +192,10 @@ def alarm_remove_all():
 class Gui(xbmcgui.WindowXMLDialog):
     def onInit(self):
         #Set the schedule window text
-        func.updateLabelText(self, 3000, 'Geplande Alarmen')
-        func.updateLabelText(self, 4001, 'Alle alarmen annuleren')
-        func.updateLabelText(self, 3002, '* Programma alarm werkt alleen als Kodi geopend is.')
-        func.updateVisibility(self, 4001, True)
+        guifunc.updateLabelText(self, 3000, 'Geplande Alarmen')
+        guifunc.updateLabelText(self, 4001, 'Alle alarmen annuleren')
+        guifunc.updateLabelText(self, 3002, '* Programma alarm werkt alleen als Kodi geopend is.')
+        guifunc.updateVisibility(self, 4001, True)
 
         #Update the schedule panel height
         dialogControl = self.getControl(8000)
@@ -217,10 +218,8 @@ class Gui(xbmcgui.WindowXMLDialog):
             if alarmRemoved == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()
-                clickedControl.removeItem(removeListItemId)
-                xbmc.sleep(100)
-                clickedControl.selectItem(removeListItemId)
-                xbmc.sleep(100)
+                guifunc.listRemoveItem(clickedControl, removeListItemId)
+                guifunc.listSelectItem(clickedControl, removeListItemId)
         elif clickId == 4000:
             close_the_page()
         elif clickId == 4001:
@@ -235,7 +234,7 @@ class Gui(xbmcgui.WindowXMLDialog):
     def load_alarm(self):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        listContainer.reset()
+        guifunc.listReset(listContainer)
 
         #Add items to list container
         lialarm.list_load_combined(listContainer)
@@ -248,16 +247,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         listContainer = self.getControl(1000)
         alarmCount = len(var.AlarmDataJson)
         if alarmCount > 0:
-            func.updateLabelText(self, 3000, 'Geplande Alarmen (' + str(alarmCount) + ')')
-            func.updateLabelText(self, 3001, 'Huidig geplande programma alarmen, u kunt een alarm annuleren door er op te klikken.')
+            guifunc.updateLabelText(self, 3000, 'Geplande Alarmen (' + str(alarmCount) + ')')
+            guifunc.updateLabelText(self, 3001, 'Huidig geplande programma alarmen, u kunt een alarm annuleren door er op te klikken.')
             if resetSelect == True:
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
-                listContainer.selectItem(0)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
+                guifunc.listSelectItem(listContainer, 0)
         else:
-            func.updateLabelText(self, 3000, 'Geplande Alarmen (0)')
-            func.updateLabelText(self, 3001, 'Er zijn geen programma alarmen gezet, u kunt een nieuw alarm zetten in de tv gids, op de televisie pagina of tijdens het tv kijken.')
+            guifunc.updateLabelText(self, 3000, 'Geplande Alarmen (0)')
+            guifunc.updateLabelText(self, 3001, 'Er zijn geen programma alarmen gezet, u kunt een nieuw alarm zetten in de tv gids, op de televisie pagina of tijdens het tv kijken.')
             closeButton = self.getControl(4000)
-            self.setFocus(closeButton)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, closeButton)

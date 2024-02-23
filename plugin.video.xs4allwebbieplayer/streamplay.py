@@ -57,7 +57,6 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         if CurrentChannelId != NewChannelId:
             var.TelevisionChannelListItemLast = var.TelevisionChannelListItemCurrent
         var.TelevisionChannelListItemCurrent = listItem
-        xbmc.sleep(100)
 
         #Get downloaded stream url
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
@@ -99,7 +98,6 @@ def play_radio(listItem, Windowed=False):
 
         #Update channel settings and variables
         func.setting_set('CurrentRadioId', ChannelId)
-        xbmc.sleep(100)
 
         #Start playing the media
         player.PlayCustom(StreamUrl, listItem, Windowed)

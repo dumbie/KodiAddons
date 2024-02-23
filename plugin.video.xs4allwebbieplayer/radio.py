@@ -1,11 +1,12 @@
 import xbmc
 import xbmcgui
-import lichannelradio
 import dialog
 import favorite
 import func
-import lifunc
+import guifunc
 import hidden
+import lichannelradio
+import lifunc
 import path
 import searchdialog
 import streamplay
@@ -154,10 +155,8 @@ class Gui(xbmcgui.WindowXML):
         if hiddenResult == True:
             #Remove item from the list
             removeListItemId = listContainer.getSelectedPosition()
-            listContainer.removeItem(removeListItemId)
-            xbmc.sleep(100)
-            listContainer.selectItem(removeListItemId)
-            xbmc.sleep(100)
+            guifunc.listRemoveItem(listContainer, removeListItemId)
+            guifunc.listSelectItem(listContainer, removeListItemId)
 
             #Update the status
             self.count_channels(False)
@@ -167,10 +166,8 @@ class Gui(xbmcgui.WindowXML):
         if favoriteResult == 'Removed' and func.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
             removeListItemId = listContainer.getSelectedPosition()
-            listContainer.removeItem(removeListItemId)
-            xbmc.sleep(100)
-            listContainer.selectItem(removeListItemId)
-            xbmc.sleep(100)
+            guifunc.listRemoveItem(listContainer, removeListItemId)
+            guifunc.listSelectItem(listContainer, removeListItemId)
 
             #Update the status
             self.count_channels(False)
@@ -215,17 +212,15 @@ class Gui(xbmcgui.WindowXML):
         if forceLoad == False and forceUpdate == False:
             if listContainer.size() > 0: return True
         else:
-            listContainer.reset()
+            guifunc.listReset(listContainer)
 
         #Add items to list container
-        func.updateLabelText(self, 1, 'Zenders laden')
+        guifunc.updateLabelText(self, 1, 'Zenders laden')
         if lichannelradio.list_load_combined(listContainer, forceUpdate) == False:
-            func.updateLabelText(self, 1, 'Niet beschikbaar')
+            guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(0)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
+            guifunc.listSelectItem(listContainer, 0)
             return False
 
         #Update the status
@@ -242,21 +237,19 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
-                func.updateLabelText(self, 1, str(listContainer.size()) + ' zenders gevonden')
+                guifunc.updateLabelText(self, 1, str(listContainer.size()) + ' zenders gevonden')
             else:
-                func.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
+                guifunc.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
 
             if resetSelect == True:
                 currentChannelId = func.setting_get('CurrentRadioId', True)
                 lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
         else:
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
-                func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                listContainer.selectItem(1)
+                guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
+                guifunc.listSelectItem(listContainer, 1)
             else:
-                func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
-                listContainer.selectItem(0)
-            xbmc.sleep(100)
+                guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)
+                guifunc.listSelectItem(listContainer, 0)

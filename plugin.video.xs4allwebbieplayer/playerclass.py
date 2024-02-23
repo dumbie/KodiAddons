@@ -8,8 +8,6 @@ import var
 
 class Class_PlayerCustom(xbmc.Player):
     def onAVStarted(self):
-        xbmc.sleep(100)
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == True:
             #Switch to full screen player
@@ -33,8 +31,6 @@ class Class_PlayerCustom(xbmc.Player):
             var.guiMain.buttons_add_media(False)
 
     def onPlayBackSeek(self, seekTime, seekOffset):
-        xbmc.sleep(100)
-
         #Check current stream type
         if xbmc.Player().isPlayingVideo() == True:
             #Show custom player information
@@ -42,8 +38,6 @@ class Class_PlayerCustom(xbmc.Player):
                 var.guiPlayer.show_epg(True, False, True, False)
 
     def onPlayBackStopped(self):
-        xbmc.sleep(100)
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == False:
             #Reset custom player variables
@@ -57,8 +51,6 @@ class Class_PlayerCustom(xbmc.Player):
                 var.guiMain.buttons_add_media(True)
 
     def onPlayBackEnded(self):
-        xbmc.sleep(100)
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == False:
             #Reset custom player variables
@@ -72,8 +64,6 @@ class Class_PlayerCustom(xbmc.Player):
                 var.guiMain.buttons_add_media(True)
 
     def onPlayBackError(self):
-        xbmc.sleep(100)
-
         #Check if player is playing
         if xbmc.Player().isPlaying() == False:
             #Reset custom player variables

@@ -3,6 +3,7 @@ import xbmcgui
 import dialog
 import epg
 import func
+import guifunc
 import lisearch
 import path
 import player
@@ -27,18 +28,16 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         #Prepare the search page
-        func.updateLabelText(self, 2, "Terugzoeken")
+        guifunc.updateLabelText(self, 2, "Terugzoeken")
         self.buttons_add_navigation()
         listContainer = self.getControl(1000)
         if listContainer.size() == 0:
             if var.SearchProgramDataJson == []:
-                func.updateLabelText(self, 1, 'Geen zoek term')
-                func.updateLabelText(self, 3, "")
+                guifunc.updateLabelText(self, 1, 'Geen zoek term')
+                guifunc.updateLabelText(self, 3, "")
                 listContainer = self.getControl(1001)
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
-                listContainer.selectItem(1)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
+                guifunc.listSelectItem(listContainer, 1)
             else:
                 self.search_list(var.SearchSelectIndex, False)
 
@@ -63,8 +62,7 @@ class Gui(xbmcgui.WindowXML):
                 player.Fullscreen(True)
             else:
                 listContainer = self.getControl(1001)
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
         elif clickId == 3001:
             close_the_page()
 
@@ -109,7 +107,6 @@ class Gui(xbmcgui.WindowXML):
             var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
             var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
             close_the_page()
-            xbmc.sleep(100)
             epg.switch_to_page()
 
     def buttons_add_navigation(self):
@@ -173,19 +170,17 @@ class Gui(xbmcgui.WindowXML):
     def search_list(self, selectIndex=0, forceUpdate=True):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        listContainer.reset()
+        guifunc.listReset(listContainer)
 
         #Add items to list container
-        func.updateLabelText(self, 1, "Zoek resultaat laden")
-        func.updateLabelText(self, 3, "")
+        guifunc.updateLabelText(self, 1, "Zoek resultaat laden")
+        guifunc.updateLabelText(self, 3, "")
         if lisearch.list_load_combined(listContainer, forceUpdate) == False:
-            func.updateLabelText(self, 1, 'Zoeken mislukt')
-            func.updateLabelText(self, 3, "")
+            guifunc.updateLabelText(self, 1, 'Zoeken mislukt')
+            guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(0)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
+            guifunc.listSelectItem(listContainer, 0)
             return False
 
         #Update the status
@@ -195,29 +190,25 @@ class Gui(xbmcgui.WindowXML):
     def count_program(self, resetSelect=False, selectIndex=0):
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            func.updateLabelText(self, 1, str(listContainer.size()) + " zoekresultaten")
+            guifunc.updateLabelText(self, 1, str(listContainer.size()) + " zoekresultaten")
             if func.string_isnullorempty(var.SearchTermCurrent):
-                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchDownloadSearchTerm)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchDownloadSearchTerm)
             else:
-                func.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]in[/COLOR] " + var.SearchDownloadSearchTerm)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]in[/COLOR] " + var.SearchDownloadSearchTerm)
             if resetSelect == True:
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
-                listContainer.selectItem(selectIndex)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
+                guifunc.listSelectItem(listContainer, selectIndex)
         else:
-            func.updateLabelText(self, 1, "Geen zoekresultaten")
+            guifunc.updateLabelText(self, 1, "Geen zoekresultaten")
             if func.string_isnullorempty(var.SearchTermCurrent):
-                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchDownloadSearchTerm)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchDownloadSearchTerm)
             else:
-                func.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]in[/COLOR] " + var.SearchDownloadSearchTerm)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]in[/COLOR] " + var.SearchDownloadSearchTerm)
 
             #Focus on menu
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
-                listContainer.selectItem(2)
+                guifunc.listSelectItem(listContainer, 2)
             else:
-                listContainer.selectItem(1)
-            xbmc.sleep(100)
+                guifunc.listSelectItem(listContainer, 1)

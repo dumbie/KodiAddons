@@ -2,6 +2,7 @@ import xbmc
 import xbmcplugin
 import xbmcgui
 import func
+import guifunc
 import var
 
 #Convert JsonItem to ListItem
@@ -113,16 +114,14 @@ def focus_on_channelid_in_list(_self, controlId, defaultNum, forceFocus, channel
     if listItemCount > 0:
         #Focus on list container 
         if forceFocus:
-            _self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(_self, listContainer)
 
         #Select list item
         if func.string_isnullorempty(channelId) == False:
             itemNum = search_channelid_listcontainer(listContainer, channelId)
             if itemNum == None:
-                listContainer.selectItem(defaultNum)
+                guifunc.listSelectItem(listContainer, defaultNum)
             else:
-                listContainer.selectItem(itemNum)
+                guifunc.listSelectItem(listContainer, itemNum)
         else:
-            listContainer.selectItem(defaultNum)
-        xbmc.sleep(100)
+            guifunc.listSelectItem(listContainer, defaultNum)

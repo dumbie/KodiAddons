@@ -4,6 +4,7 @@ import xbmcgui
 import alarm
 import dialog
 import func
+import guifunc
 import lichanneltelevision
 import liepgload
 import liepgupdate
@@ -73,8 +74,7 @@ class Gui(xbmcgui.WindowXML):
                     player.Fullscreen(True)
                 else:
                     listContainer = self.getControl(1000)
-                    self.setFocus(listContainer)
-                    xbmc.sleep(100)
+                    guifunc.controlFocus(self, listContainer)
             elif clickId == 9001:
                 self.focus_on_item_list()
             elif clickId == 3001:
@@ -86,18 +86,14 @@ class Gui(xbmcgui.WindowXML):
             close_the_page()
         elif actionId == var.ACTION_NEXT_ITEM:
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(listContainer.getSelectedPosition() + 1)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
+            guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() + 1)
             self.set_channel_epg_variables()
             self.load_programs()
         elif actionId == var.ACTION_PREV_ITEM:
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(listContainer.getSelectedPosition() - 1)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
+            guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() - 1)
             self.set_channel_epg_variables()
             self.load_programs()
         elif actionId == var.ACTION_PLAYER_PLAY:
@@ -170,15 +166,13 @@ class Gui(xbmcgui.WindowXML):
         #Get and check channel list container
         listContainer = self.getControl(1001)
         if listContainer.size() > 0:
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
             return
 
         #Get and check program list container
         listContainer = self.getControl(1002)
         if listContainer.size() > 0:
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
             return
 
     def dialog_set_day(self):
@@ -384,8 +378,8 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1001)
         listItemSelected = listContainer.getSelectedItem()
         if listItemSelected == None:
-            func.updateLabelText(self, 1, 'Selecteer zender')
-            func.updateLabelText(self, 2, "[COLOR gray]Selecteer de gewenste televisie zender.[/COLOR]")
+            guifunc.updateLabelText(self, 1, 'Selecteer zender')
+            guifunc.updateLabelText(self, 2, "[COLOR gray]Selecteer de gewenste televisie zender.[/COLOR]")
             return
 
         var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
@@ -406,19 +400,17 @@ class Gui(xbmcgui.WindowXML):
                 self.focus_on_channel_list(False)
                 return True
         else:
-            listContainer.reset()
+            guifunc.listReset(listContainer)
 
         #Add items to list container
-        func.updateLabelText(self, 1, 'Zenders laden')
-        func.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
+        guifunc.updateLabelText(self, 1, 'Zenders laden')
+        guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
         if lichanneltelevision.list_load_combined(listContainer) == False:
-            func.updateLabelText(self, 1, 'Niet beschikbaar')
-            func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
+            guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
+            guifunc.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(0)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
+            guifunc.listSelectItem(listContainer, 0)
             return False
 
         #Focus on the list container
@@ -433,22 +425,20 @@ class Gui(xbmcgui.WindowXML):
             #Update status label text
             listContainer = self.getControl(1000)
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
-                func.updateLabelText(self, 1, 'Geen zenders gevonden')
-                func.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden.[/COLOR]")
-                listContainer.selectItem(1)
+                guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden.[/COLOR]")
+                guifunc.listSelectItem(listContainer, 1)
             else:
-                func.updateLabelText(self, 1, 'Geen ' + channelTypeString)
-                func.updateLabelText(self, 2, "[COLOR gray]Geen beschikbare " + channelTypeString + ".[/COLOR]")
-                listContainer.selectItem(0)
-            xbmc.sleep(100)
+                guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Geen beschikbare " + channelTypeString + ".[/COLOR]")
+                guifunc.listSelectItem(listContainer, 0)
 
             #Focus on channel list
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
 
             #Reset the program list
             listContainer = self.getControl(1002)
-            listContainer.reset()
+            guifunc.listReset(listContainer)
             return False
 
         #Force manual epg update
@@ -475,22 +465,20 @@ class Gui(xbmcgui.WindowXML):
         #Check if update is needed
         if forceLoad or forceUpdate or epgChannelChanged or epgDayTimeChanged or listItemCount == 0:
             #Clear current epg items
-            listContainer.reset()
+            guifunc.listReset(listContainer)
         else:
             #Keep current epg items
             return
 
         #Add items to list container
-        func.updateLabelText(self, 1, 'TV Gids laden')
-        func.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt geladen, nog even geduld...[/COLOR]')
+        guifunc.updateLabelText(self, 1, 'TV Gids laden')
+        guifunc.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt geladen, nog even geduld...[/COLOR]')
         if liepgload.list_load_combined(listContainer, forceUpdate) == False:
-            func.updateLabelText(self, 1, 'Niet beschikbaar')
-            func.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
+            guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
+            guifunc.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(0)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
+            guifunc.listSelectItem(listContainer, 0)
             return
 
         #Select program index
@@ -539,19 +527,17 @@ class Gui(xbmcgui.WindowXML):
         #Select program list item
         if programSelectIndexNavigate != 0:
             forceFocus = True
-            listContainer.selectItem(programSelectIndexNavigate)
+            guifunc.listSelectItem(listContainer, programSelectIndexNavigate)
         elif programSelectIndexAiring != 0:
-            listContainer.selectItem(programSelectIndexAiring)
+            guifunc.listSelectItem(listContainer, programSelectIndexAiring)
         elif programSelectIndexUpcoming != 0:
-            listContainer.selectItem(programSelectIndexUpcoming)
+            guifunc.listSelectItem(listContainer, programSelectIndexUpcoming)
         else:
-            listContainer.selectItem(0)
-        xbmc.sleep(100)
+            guifunc.listSelectItem(listContainer, 0)
 
         #Focus on program list
-        if forceFocus:
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+        if forceFocus == True:
+            guifunc.controlFocus(self, listContainer)
 
         #Reset navigate variable
         var.EpgNavigateProgramId = ''
@@ -565,18 +551,18 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1002)
         if listContainer.size() == 0:
             if func.string_isnullorempty(var.SearchTermCurrent) == True:
-                func.updateLabelText(self, 1, "Geen programma's")
-                func.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 1, "Geen programma's")
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
-                func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
         else:
             if func.string_isnullorempty(var.SearchTermCurrent) == True:
-                func.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
-                func.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + ChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
-                func.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]op[/COLOR] " + loadDayString)
 
     def thread_update_program_progress(self):
         threadLastTime = ''

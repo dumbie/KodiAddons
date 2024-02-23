@@ -6,6 +6,7 @@ import default
 import dialog
 import epg
 import func
+import guifunc
 import helpx
 import hybrid
 import kids
@@ -84,14 +85,14 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         #Check if logged in on launch
         if var.ApiLoggedIn() == False:
-            func.updateLabelText(self, 1, "Aan het aanmelden.")
+            guifunc.updateLabelText(self, 1, "Aan het aanmelden.")
             apilogin.ApiLogin()
 
         #Update current login status
         if var.ApiLoggedIn() == True:
-            func.updateLabelText(self, 1, "Aangemeld, veel kijkplezier.")
+            guifunc.updateLabelText(self, 1, "Aangemeld, veel kijkplezier.")
         else:
-            func.updateLabelText(self, 1, "Aanmelden is mislukt.")
+            guifunc.updateLabelText(self, 1, "Aanmelden is mislukt.")
 
         #Add menu buttons to the page
         menuButtons = self.buttons_add_menu()
@@ -101,8 +102,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Focus on the menu buttons
         listContainer = self.getControl(1000)
-        self.setFocus(listContainer)
-        xbmc.sleep(100)
+        guifunc.controlFocus(self, listContainer)
 
         #Update the active alarms count
         self.count_alarm(True)
@@ -138,10 +138,9 @@ class Gui(xbmcgui.WindowXML):
         #Get and check the media control list container
         listContainer = self.getControl(1001)
         if resetButtons:
-            listContainer.reset()
+            guifunc.listReset(listContainer)
             listContainer = self.getControl(1000)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
             return
 
         if xbmc.Player().isPlaying():
@@ -183,13 +182,11 @@ class Gui(xbmcgui.WindowXML):
                     updateItem.setProperty('ItemAction', 'show_visualisation')
                     updateItem.setArt({'thumb': path.resources('resources/skins/default/media/common/visualisation.png'),'icon': path.resources('resources/skins/default/media/common/visualisation.png')})
             elif listContainer.size() == 3:
-                listContainer.removeItem(2)
-                xbmc.sleep(100)
+                guifunc.listRemoveItem(listContainer, 2)
         else:
-            listContainer.reset()
+            guifunc.listReset(listContainer)
             listContainer = self.getControl(1000)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
 
     def buttons_add_menu(self):
         #Get and check the main list container
@@ -278,21 +275,19 @@ class Gui(xbmcgui.WindowXML):
             DownloadDataString = DownloadDataHttp.read().decode()
 
             #Set notification message
-            func.updateLabelText(self, 2, DownloadDataString)
+            guifunc.updateLabelText(self, 2, DownloadDataString)
         except:
             pass
 
     def check_focus(self):
-        focusNavigation = xbmc.getCondVisibility('Control.HasFocus(1001)')
         focusMain = xbmc.getCondVisibility('Control.HasFocus(1000)')
-        if focusNavigation:
+        focusNavigation = xbmc.getCondVisibility('Control.HasFocus(1001)')
+        if focusNavigation == True:
             focusControl = self.getControl(1001)
-            self.setFocus(focusControl)
-            xbmc.sleep(100)
-        elif focusMain:
+            guifunc.controlFocus(self, focusControl)
+        elif focusMain == True:
             focusControl = self.getControl(1000)
-            self.setFocus(focusControl)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, focusControl)
 
     def onAction(self, action):
         actionId = action.getId()

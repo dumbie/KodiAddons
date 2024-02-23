@@ -1,7 +1,7 @@
-import func
-import var
 import xbmc
 import xbmcgui
+import guifunc
+import var
 
 def switch_to_page():
     if var.guiHelp == None:
@@ -67,9 +67,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         helpText += '\n\nAdd-on is gemaakt door Arnold Vink'
         helpText += '\n[COLOR gray]Versie: v' + var.addonversion + '[/COLOR]'
 
-        func.updateTextBoxText(self, 3000, helpText)
+        guifunc.updateTextBoxText(self, 3000, helpText)
 
         #Focus on the close button
         closeButton = self.getControl(4000)
-        self.setFocus(closeButton)
-        xbmc.sleep(100)
+        guifunc.controlFocus(self, closeButton)

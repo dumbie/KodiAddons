@@ -1,7 +1,7 @@
 import xbmc
 import xbmcgui
 import download
-import func
+import guifunc
 import lirecordingevent
 import var
 
@@ -19,9 +19,9 @@ def close_the_page():
 class Gui(xbmcgui.WindowXMLDialog):
     def onInit(self):
         #Set the schedule window text
-        func.updateLabelText(self, 3000, 'Geplande Opnames')
-        func.updateLabelText(self, 4001, 'Opnames vernieuwen')
-        func.updateVisibility(self, 4001, True)
+        guifunc.updateLabelText(self, 3000, 'Geplande Opnames')
+        guifunc.updateLabelText(self, 4001, 'Opnames vernieuwen')
+        guifunc.updateVisibility(self, 4001, True)
 
         #Load all current set recording
         self.load_recording(False)
@@ -36,10 +36,8 @@ class Gui(xbmcgui.WindowXMLDialog):
             if recordRemove == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()
-                clickedControl.removeItem(removeListItemId)
-                xbmc.sleep(100)
-                clickedControl.selectItem(removeListItemId)
-                xbmc.sleep(100)
+                guifunc.listRemoveItem(clickedControl, removeListItemId)
+                guifunc.listSelectItem(clickedControl, removeListItemId)
 
                 #Update the status
                 self.count_recording(False)
@@ -56,15 +54,14 @@ class Gui(xbmcgui.WindowXMLDialog):
     def load_recording(self, forceUpdate=False):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        listContainer.reset()
+        guifunc.listReset(listContainer)
 
         #Add items to list container
-        func.updateLabelText(self, 3001, "Geplande opnames worden geladen.")
+        guifunc.updateLabelText(self, 3001, "Geplande opnames worden geladen.")
         if lirecordingevent.list_load_combined(listContainer, forceUpdate) == False:
-            func.updateLabelText(self, 3001, 'Geplande opnames zijn niet beschikbaar')
+            guifunc.updateLabelText(self, 3001, 'Geplande opnames zijn niet beschikbaar')
             closeButton = self.getControl(4000)
-            self.setFocus(closeButton)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, closeButton)
             return False
 
         #Update the status
@@ -79,16 +76,13 @@ class Gui(xbmcgui.WindowXMLDialog):
     def count_recording(self, resetSelect=False):
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            func.updateLabelText(self, 3000, 'Geplande Opnames (' + str(listContainer.size()) + ')')
-            func.updateLabelText(self, 3001, 'Huidig geplande programma opnames, u kunt een opname annuleren door er op te klikken.')
+            guifunc.updateLabelText(self, 3000, 'Geplande Opnames (' + str(listContainer.size()) + ')')
+            guifunc.updateLabelText(self, 3001, 'Huidig geplande programma opnames, u kunt een opname annuleren door er op te klikken.')
             if resetSelect == True:
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
-                listContainer.selectItem(0)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
+                guifunc.listSelectItem(listContainer, 0)
         else:
-            func.updateLabelText(self, 3000, 'Geplande Opnames (0)')
-            func.updateLabelText(self, 3001, 'Er zijn geen programma opnames gepland, u kunt een nieuwe opname plannen in de TV Gids of op de Televisie pagina.')
+            guifunc.updateLabelText(self, 3000, 'Geplande Opnames (0)')
+            guifunc.updateLabelText(self, 3001, 'Er zijn geen programma opnames gepland, u kunt een nieuwe opname plannen in de TV Gids of op de Televisie pagina.')
             closeButton = self.getControl(4000)
-            self.setFocus(closeButton)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, closeButton)

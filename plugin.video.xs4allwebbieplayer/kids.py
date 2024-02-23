@@ -4,6 +4,7 @@ import dialog
 import epg
 import files
 import func
+import guifunc
 import likidsepisode
 import likidsprogram
 import path
@@ -58,7 +59,7 @@ def lock_check_dialog():
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
-        func.updateLabelText(self, 3, "Kids")
+        guifunc.updateLabelText(self, 3, "Kids")
         self.update_kids_background()
         self.buttons_add_navigation()
         self.load_program(False, False, var.KidsProgramSelectIndex, var.KidsEpisodeSelectIndex)
@@ -95,8 +96,7 @@ class Gui(xbmcgui.WindowXML):
                 player.Fullscreen(True)
             else:
                 listContainer = self.getControl(1001)
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
         elif clickId == 3001:
             close_the_page()
 
@@ -109,8 +109,7 @@ class Gui(xbmcgui.WindowXML):
                 close_the_page()
             else:
                 listContainer = self.getControl(1000)
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
         elif actionId == var.ACTION_NEXT_ITEM:
             xbmc.executebuiltin('Action(PageDown)')
         elif actionId == var.ACTION_PREV_ITEM:
@@ -143,12 +142,11 @@ class Gui(xbmcgui.WindowXML):
                 var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
                 var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
                 if close_the_page() == True:
-                    xbmc.sleep(100)
                     epg.switch_to_page()
 
     def update_kids_background(self):
         if files.existFile(path.addonstorage("background.png")) == False:
-            func.updateImage(self, 8000, 'common/background_addon_kids.png')
+            guifunc.updateImage(self, 8000, 'common/background_addon_kids.png')
 
     def buttons_add_navigation(self):
         listContainer = self.getControl(1001)
@@ -182,7 +180,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, False)
         var.SearchTermCurrent = ''
 
-    def load_episodes_vod(self, listItem, selectList=False, selectIndex=0):
+    def load_episodes_vod(self, listItem, focusList=False, selectIndex=0):
         #Get the selected parentid
         selectedProgramId = listItem.getProperty('ProgramId')
         selectedProgramName = listItem.getProperty('ProgramName')
@@ -190,58 +188,54 @@ class Gui(xbmcgui.WindowXML):
 
         #Get and check the list container
         listContainer = self.getControl(1002)
-        listContainer.reset()
+        guifunc.listReset(listContainer)
 
         #Update the episodes status
-        func.updateLabelText(self, 2, 'Afleveringen laden')
+        guifunc.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Add items to sort list
         if likidsepisode.list_load_vod_combined(selectedProgramId, selectedPictureUrl, listContainer) == False:
-            func.updateLabelText(self, 2, 'Afleveringen niet beschikbaar')
+            guifunc.updateLabelText(self, 2, 'Afleveringen niet beschikbaar')
             return False
 
         #Update the episodes status
-        func.updateLabelText(self, 2, selectedProgramName + ' (' + str(listContainer.size()) + ' afleveringen)')
+        guifunc.updateLabelText(self, 2, selectedProgramName + ' (' + str(listContainer.size()) + ' afleveringen)')
 
         if listContainer.size() > 0:
             #Focus list container
-            if selectList == True:
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
+            if focusList == True:
+                guifunc.controlFocus(self, listContainer)
 
             #Select list item
-            listContainer.selectItem(selectIndex)
-            xbmc.sleep(100)
+            guifunc.listSelectItem(listContainer, selectIndex)
 
-    def load_episodes_program(self, listItem, selectList=False, selectIndex=0):
+    def load_episodes_program(self, listItem, focusList=False, selectIndex=0):
         #Get the selected parentid
         selectedProgramName = listItem.getProperty('ProgramName')
         selectedPictureUrl = listItem.getProperty('PictureUrl')
 
         #Get and check the list container
         listContainer = self.getControl(1002)
-        listContainer.reset()
+        guifunc.listReset(listContainer)
 
         #Update the episodes status
-        func.updateLabelText(self, 2, 'Afleveringen laden')
+        guifunc.updateLabelText(self, 2, 'Afleveringen laden')
 
         #Add items to sort list
         if likidsepisode.list_load_program_combined(selectedProgramName, selectedPictureUrl, listContainer) == False:
-            func.updateLabelText(self, 2, 'Afleveringen niet beschikbaar')
+            guifunc.updateLabelText(self, 2, 'Afleveringen niet beschikbaar')
             return False
 
         #Update the episodes status
-        func.updateLabelText(self, 2, selectedProgramName + ' (' + str(listContainer.size()) + ' afleveringen)')
+        guifunc.updateLabelText(self, 2, selectedProgramName + ' (' + str(listContainer.size()) + ' afleveringen)')
 
         if listContainer.size() > 0:
             #Focus list container
-            if selectList == True:
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
+            if focusList == True:
+                guifunc.controlFocus(self, listContainer)
 
             #Select list item
-            listContainer.selectItem(selectIndex)
-            xbmc.sleep(100)
+            guifunc.listSelectItem(listContainer, selectIndex)
 
     def load_program(self, forceLoad=False, forceUpdate=False, programSelectIndex=0, episodeSelectIndex=0):
         if forceUpdate == True:
@@ -253,19 +247,17 @@ class Gui(xbmcgui.WindowXML):
         if forceLoad == False and forceUpdate == False:
             if listContainer.size() > 0: return True
         else:
-            listContainer.reset()
+            guifunc.listReset(listContainer)
 
         #Add items to list container
-        func.updateLabelText(self, 1, "Programma's laden")
-        func.updateLabelText(self, 4, "")
+        guifunc.updateLabelText(self, 1, "Programma's laden")
+        guifunc.updateLabelText(self, 4, "")
         if likidsprogram.list_load_combined(listContainer, forceUpdate) == False:
-            func.updateLabelText(self, 1, 'Niet beschikbaar')
-            func.updateLabelText(self, 4, "")
+            guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
+            guifunc.updateLabelText(self, 4, "")
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
-            listContainer.selectItem(0)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
+            guifunc.listSelectItem(listContainer, 0)
             return False
 
         #Update the status
@@ -283,32 +275,28 @@ class Gui(xbmcgui.WindowXML):
     def count_program(self, resetSelect=False, selectIndex=0):
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            func.updateVisibility(self, 2, True)
-            func.updateVisibility(self, 3002, True)
+            guifunc.updateVisibility(self, 2, True)
+            guifunc.updateVisibility(self, 3002, True)
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
-                func.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
-                func.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
+                guifunc.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
             else:
-                func.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
-                func.updateLabelText(self, 4, "")
+                guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
+                guifunc.updateLabelText(self, 4, "")
 
             if resetSelect == True:
-                self.setFocus(listContainer)
-                xbmc.sleep(100)
-                listContainer.selectItem(selectIndex)
-                xbmc.sleep(100)
+                guifunc.controlFocus(self, listContainer)
+                guifunc.listSelectItem(listContainer, selectIndex)
         else:
-            func.updateVisibility(self, 2, False)
-            func.updateVisibility(self, 3002, False)
+            guifunc.updateVisibility(self, 2, False)
+            guifunc.updateVisibility(self, 3002, False)
             listContainer = self.getControl(1001)
-            self.setFocus(listContainer)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
-                func.updateLabelText(self, 1, "Geen programma's gevonden")
-                func.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
-                listContainer.selectItem(1)
+                guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
+                guifunc.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.listSelectItem(listContainer, 1)
             else:
-                func.updateLabelText(self, 1, "Geen programma's")
-                func.updateLabelText(self, 4, "")
-                listContainer.selectItem(0)
-            xbmc.sleep(100)
+                guifunc.updateLabelText(self, 1, "Geen programma's")
+                guifunc.updateLabelText(self, 4, "")
+                guifunc.listSelectItem(listContainer, 0)

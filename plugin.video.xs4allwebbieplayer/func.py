@@ -40,18 +40,6 @@ def search_filter_string(searchString):
     searchFilterTerm = hybrid.string_remove_accents(searchFilterTerm)
     return searchFilterTerm
 
-#Update controls
-def updateImage(_self, controlId, ImagePath):
-    _self.getControl(controlId).setImage(ImagePath)
-def updateVisibility(_self, controlId, visible):
-    _self.getControl(controlId).setVisible(visible)
-def updateLabelText(_self, controlId, string):
-    _self.getControl(controlId).setLabel(string)
-def updateTextBoxText(_self, controlId, string):
-    _self.getControl(controlId).setText(string)
-def updateProgressbarPercent(_self, controlId, percent):
-    _self.getControl(controlId).setPercent(float(percent))
-
 #Check if an addon is running
 def check_addon_running():
     try:

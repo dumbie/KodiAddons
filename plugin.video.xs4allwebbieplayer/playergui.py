@@ -2,11 +2,12 @@ from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
 import alarm
-import lichanneltelevision
 import func
+import guifunc
+import lichanneltelevision
 import lifunc
-import path
 import liplayergui
+import path
 import recordingfunc
 import sleep
 import streamplay
@@ -28,17 +29,14 @@ def close_the_page(closeFullscreen=True):
         #Stop player overlay update threads
         var.thread_update_playergui_info.Stop()
         var.thread_hide_playergui_info.Stop()
-        xbmc.sleep(100)
 
         #Close custom video player overlay
         var.guiPlayer.close()
         var.guiPlayer = None
-        xbmc.sleep(100)
 
         #Close fullscreen video player window
         if closeFullscreen == True:
             func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
-            xbmc.sleep(100)
 
 class Gui(xbmcgui.WindowXMLDialog):
     EpgPauseUpdate = False
@@ -74,7 +72,7 @@ class Gui(xbmcgui.WindowXMLDialog):
                 elif listItemAction == 'media_record_series':
                     listContainer = self.getControl(1001)
                     listItemSelectedChannel = listContainer.getSelectedItem()
-                    recordingfunc.record_series_television_playergui(listItemSelectedChannel)
+                    recordingfunc.record_series_now_television_playergui(listItemSelectedChannel)
                 elif listItemAction == 'media_volumeup':
                     self.media_volume_up()
                 elif listItemAction == 'media_volumedown':
@@ -300,13 +298,9 @@ class Gui(xbmcgui.WindowXMLDialog):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingsvideo.png'),'icon': path.resources('resources/skins/default/media/common/settingsvideo.png')})
         listContainer.addItem(listItem)
 
-        #Focus on the list
-        self.setFocus(listContainer)
-        xbmc.sleep(100)
-
-        #Select list item
-        listContainer.selectItem(0)
-        xbmc.sleep(100)
+        #Focus and select list item
+        guifunc.controlFocus(self, listContainer)
+        guifunc.listSelectItem(listContainer, 0)
 
     def set_alarm_next(self):
         #Get and check the list container
@@ -426,18 +420,14 @@ class Gui(xbmcgui.WindowXMLDialog):
     def switch_channel_nexttv(self):
         self.show_epg(False, False, False, False)
         listContainer = self.getControl(1001)
-        self.setFocus(listContainer)
-        xbmc.sleep(100)
-        listContainer.selectItem(listContainer.getSelectedPosition() + 1)
-        xbmc.sleep(100)
+        guifunc.controlFocus(self, listContainer)
+        guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() + 1)
 
     def switch_channel_previoustv(self):
         self.show_epg(False, False, False, False)
         listContainer = self.getControl(1001)
-        self.setFocus(listContainer)
-        xbmc.sleep(100)
-        listContainer.selectItem(listContainer.getSelectedPosition() - 1)
-        xbmc.sleep(100)
+        guifunc.controlFocus(self, listContainer)
+        guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() - 1)
 
     def load_channels(self, forceLoad=False):
         self.EpgPauseUpdate = True
@@ -452,7 +442,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             if listContainer.size() > 0:
                 return True
         else:
-            listContainer.reset()
+            guifunc.listReset(listContainer)
 
         #Add items to list container
         if lichanneltelevision.list_load_combined(listContainer) == False:
@@ -469,12 +459,11 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Hide the epg interface
         self.setProperty('WebbiePlayerFull', 'false')
         self.setProperty('WebbiePlayerSeek', 'false')
-        xbmc.sleep(100)
+        xbmc.sleep(guifunc.InterfaceUpdateDelay)
 
         #Remove focus from the interface
         listControl = self.getControl(4000)
-        self.setFocus(listControl)
-        xbmc.sleep(100)
+        guifunc.controlFocus(self, listControl)
 
     def show_epg(self, seekInterface=False, removeFocus=False, selectCurrentChannel=True, focusCurrentChannel=True):
         #Update the last interaction time
@@ -485,7 +474,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             self.setProperty('WebbiePlayerFull', 'true')
         else:
             self.setProperty('WebbiePlayerSeek', 'true')
-        xbmc.sleep(100)
+        xbmc.sleep(guifunc.InterfaceUpdateDelay)
 
         #Select current channel in list container
         if selectCurrentChannel == True:
@@ -495,8 +484,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Remove focus from the interface
         if removeFocus == True:
             listControl = self.getControl(4000)
-            self.setFocus(listControl)
-            xbmc.sleep(100)
+            guifunc.controlFocus(self, listControl)
 
     def update_epg_information(self):
         try:

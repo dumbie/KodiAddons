@@ -1,7 +1,8 @@
-import func
-import var
 import xbmc
 import xbmcgui
+import func
+import guifunc
+import var
 
 def show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, selectIndex=0):
     if var.guiDialog == None:
@@ -65,13 +66,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         dialogControl.setHeight(dialogHeight + 3)
 
     def update_dialogHeader(self, dialogHeader):
-        func.updateLabelText(self, 3000, dialogHeader)
+        guifunc.updateLabelText(self, 3000, dialogHeader)
 
     def update_dialogSummary(self, dialogSummary):
-        func.updateTextBoxText(self, 3001, dialogSummary)
+        guifunc.updateTextBoxText(self, 3001, dialogSummary)
 
     def update_dialogFooter(self, dialogFooter):
-        func.updateLabelText(self, 3002, dialogFooter)
+        guifunc.updateLabelText(self, 3002, dialogFooter)
 
     def update_dialogAnswers(self, dialogAnswers, selectIndex=0):
         #Get and check the button list container
@@ -83,10 +84,8 @@ class Gui(xbmcgui.WindowXMLDialog):
             listContainer.addItem(listItem)
 
         #Focus on the list
-        self.setFocus(listContainer)
-        xbmc.sleep(100)
-        listContainer.selectItem(selectIndex)
-        xbmc.sleep(100)
+        guifunc.controlFocus(self, listContainer)
+        guifunc.listSelectItem(listContainer, selectIndex)
 
     def onAction(self, action):
         actionId = action.getId()

@@ -59,15 +59,12 @@ def Fullscreen(forceFullscreen=False, forceOpenOverlay=False, forceShowInformati
         #Open fullscreen player interface
         if forceFullscreen == True or PlayerWindowed() == False:
             func.open_window_id(var.WINDOW_FULLSCREEN_VIDEO)
-            xbmc.sleep(100)
 
         #Open or close custom player overlay
         if forceOpenOverlay == True or PlayerOpenOverlay() == True:
             playergui.switch_to_page()
-            xbmc.sleep(100)
         else:
             playergui.close_the_page(False)
-            xbmc.sleep(100)
 
         #Show custom player information
         if forceShowInformation == True or PlayerShowInformation() == True:
@@ -76,9 +73,7 @@ def Fullscreen(forceFullscreen=False, forceOpenOverlay=False, forceShowInformati
     elif xbmc.Player().isPlayingAudio() == True:
         #Close custom player overlay
         playergui.close_the_page()
-        xbmc.sleep(100)
 
         #Open fullscreen player interface
         if forceFullscreen == True or PlayerWindowed() == False:
             func.open_window_id(var.WINDOW_VISUALISATION)
-            xbmc.sleep(100)
