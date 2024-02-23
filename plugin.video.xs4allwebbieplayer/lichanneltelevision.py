@@ -55,11 +55,11 @@ def list_load_append(listContainer):
             #Check if channel is streamable
             if func.string_isnullorempty(StreamAssetId): continue
 
-            #Check if channel is hidden
-            if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
-
             #Add channelId to playable id list
             var.TelevisionChannelIdsPlayable.append(ChannelId)
+
+            #Check if channel is hidden
+            if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
 
             #Check if channel is filtered
             if func.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
