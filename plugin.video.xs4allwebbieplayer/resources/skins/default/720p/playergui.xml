@@ -378,7 +378,7 @@
                 <height>25</height>
                 <aspectratio>keep</aspectratio>
                 <texture>common/sleep.png</texture>
-                <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
+                <visible>String.IsEqual(Window(13000).Property(WebbiePlayerSleepTimer), true)</visible>
             </control>
             <!-- Program Alarm -->
             <control type="image">
@@ -419,6 +419,16 @@
                 <aspectratio>keep</aspectratio>
                 <texture>common/rerun.png</texture>
                 <visible>String.IsEqual(Container(1001).ListItem.Property(ProgramNowRerun), true)</visible>
+            </control>
+            <!-- Roaming -->
+            <control type="image">
+                <top>28</top>
+                <left>215</left>
+                <width>25</width>
+                <height>25</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/roaming.png</texture>
+                <visible>String.IsEqual(Window(10000).Property(WebbiePlayerHomeAccess), false)</visible>
             </control>
             <!-- Channel name -->
             <control type="label">

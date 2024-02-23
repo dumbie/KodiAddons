@@ -257,18 +257,18 @@ def setting_get(setName, reloadSettings=False):
         return ''
 
 #Set global variable
-def globalvar_set(varName, varObject, varHead='Webbie'):
+def globalvar_set(varName, varObject):
     try:
         pickleString = object_to_picklestring(varObject)
-        var.windowHome.setProperty(varHead + varName, pickleString)
+        var.windowHome.setProperty('WebbiePlayer' + varName, pickleString)
         return True
     except:
         return False
 
 #Get global variable
-def globalvar_get(varName, defaultObject=None, varHead='Webbie'):
+def globalvar_get(varName, defaultObject=None):
     try:
-        pickleString = var.windowHome.getProperty(varHead + varName)
+        pickleString = var.windowHome.getProperty('WebbiePlayer' + varName)
         return picklestring_to_object(pickleString)
     except:
         return defaultObject

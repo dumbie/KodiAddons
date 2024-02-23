@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 import sys
 import xbmc
 import xbmcgui
@@ -9,6 +8,7 @@ import func
 import hybrid
 import main
 import path
+import status
 import var
 
 def get_launch_type():
@@ -26,9 +26,8 @@ def launch_source():
     argument.handle_launch_argument_source()
 
 def launch_script():
-    if check_multi_launch():
+    if status.status_check_running() == False:
         func.stop_playing_media()
-        reset_home_variables()
         check_login_settings()
         change_addon_accent()
         main.switch_to_page()
@@ -44,7 +43,6 @@ def reset_thumbnails():
         if dialogResult == "Alle zender logo's vernieuwen":
             textureFolder = hybrid.string_decode_utf8(hybrid.xbmc_translate_path('special://home/userdata/Thumbnails'))
             files.removeDirectory(textureFolder)
-            xbmc.sleep(100)
             files.createDirectory(textureFolder)
             xbmcgui.Dialog().notification(var.addonname, "Zender logo's zijn verwijderd.", var.addonicon, 2500, False)
     except:
@@ -77,21 +75,6 @@ def reset_userdata():
     except:
         pass
 
-def check_multi_launch():
-    if var.windowHome.getProperty('WebbiePlayerRunning'):
-        lastrunSeconds = float(var.windowHome.getProperty('WebbiePlayerRunning'))
-        currentSeconds = float((datetime.now() - datetime(1970,1,1)).total_seconds())
-        if (currentSeconds - lastrunSeconds) <= 10:
-            xbmcgui.Dialog().notification(var.addonname, 'Webbie Player is recent geopend.', var.addonicon, 2500, False)
-            return False
-        else:
-            var.windowHome.setProperty('WebbiePlayerRunning', str(currentSeconds))
-            return True
-    else:
-        currentSeconds = str((datetime.now() - datetime(1970,1,1)).total_seconds())
-        var.windowHome.setProperty('WebbiePlayerRunning', currentSeconds)
-        return True
-
 def check_login_settings():
     loginNotSet = False
     if func.string_isnullorempty(func.setting_get('LoginUsername')) == True and func.string_isnullorempty(func.setting_get('LoginEmail')) == True:
@@ -106,13 +89,6 @@ def check_login_settings():
         return False
     else:
         return True
-
-def reset_home_variables():
-    var.windowHome.clearProperty('WebbiePlayerSleepTimer')
-
-def clear_home_variables():
-    var.windowHome.clearProperty('WebbiePlayerRunning')
-    var.windowHome.clearProperty('WebbiePlayerSleepTimer')
 
 #Change add-on accent images
 def change_addon_accent():

@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
-import alarm
-import xbmc
 import xbmcgui
+import alarm
 import func
 import path
 import var

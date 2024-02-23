@@ -3,6 +3,7 @@ import xbmcgui
 import dialog
 import func
 import path
+import status
 import var
 
 def dialog_sleep():
@@ -84,7 +85,8 @@ def sleep_close():
 def sleep_timeroff(showDialog):
     var.SleepEndingMinutes = 9999
     var.thread_sleep_timer.Stop()
-    var.windowHome.clearProperty('WebbiePlayerSleepTimer')
+    status.status_set('SleepTimer', 'False')
+
     if showDialog:
         notificationIcon = path.resources('resources/skins/default/media/common/sleep.png')
         xbmcgui.Dialog().notification(var.addonname, 'Slaap timer is uitgezet.', notificationIcon, 2500, False)
@@ -92,7 +94,7 @@ def sleep_timeroff(showDialog):
 def sleep_timerset(minutes):
     var.SleepEndingMinutes = minutes
     var.thread_sleep_timer.Start(thread_sleep_timer)
-    var.windowHome.setProperty('WebbiePlayerSleepTimer', 'True')
+    status.status_set('SleepTimer', 'True')
 
     notificationIcon = path.resources('resources/skins/default/media/common/sleep.png')
     xbmcgui.Dialog().notification(var.addonname, 'Slaap timer voor ' + str(minutes) + ' min is gezet.', notificationIcon, 2500, False)

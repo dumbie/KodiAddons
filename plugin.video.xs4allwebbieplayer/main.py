@@ -2,7 +2,6 @@ import xbmc
 import xbmcgui
 import alarm
 import apilogin
-import default
 import dialog
 import epg
 import func
@@ -33,6 +32,7 @@ import widevine
 def switch_to_page():
     if var.guiMain == None:
         var.guiMain = Gui('main.xml', var.addonpath, 'default', '720p')
+        var.guiMain.setProperty('WebbiePlayerStatus', 'Running')
         var.guiMain.doModal()
         var.guiMain = None
 
@@ -43,9 +43,6 @@ def close_the_page():
 
         #Stop and reset all threads
         threadfunc.stop_reset_threads()
-
-        #Clear used global variables
-        default.clear_home_variables()
 
         #Close the shown window
         var.guiMain.close()
