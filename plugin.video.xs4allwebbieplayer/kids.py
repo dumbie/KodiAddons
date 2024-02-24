@@ -4,6 +4,7 @@ import dialog
 import epg
 import files
 import func
+import getset
 import guifunc
 import likidsepisode
 import likidsprogram
@@ -35,13 +36,13 @@ def close_the_page():
         return True
 
 def lock_check_hidden():
-    if func.setting_get('KidsHiddenLock') == 'true':
+    if getset.setting_get('KidsHiddenLock') == 'true':
         return lock_check_dialog()
     else:
         return True
 
 def lock_check_page():
-    if func.setting_get('KidsPageLock') == 'true':
+    if getset.setting_get('KidsPageLock') == 'true':
         return lock_check_dialog()
     else:
         return True
@@ -54,7 +55,7 @@ def lock_check_dialog():
     keyboard.setHiddenInput(True)
     keyboard.doModal()
     if keyboard.isConfirmed() == True:
-        return str(func.setting_get('KidsPincode')) == keyboard.getText()
+        return str(getset.setting_get('KidsPincode')) == keyboard.getText()
     return False
 
 class Gui(xbmcgui.WindowXML):

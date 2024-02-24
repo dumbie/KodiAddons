@@ -6,6 +6,7 @@ import dialog
 import epg
 import favorite
 import func
+import getset
 import guifunc
 import hidden
 import lichanneltelevision
@@ -21,7 +22,7 @@ import zap
 
 def switch_to_page():
     if var.guiTelevision == None:
-        channelView = func.setting_get('TelevisionChannelView').lower()
+        channelView = getset.setting_get('TelevisionChannelView').lower()
         if channelView == 'lijst':
             var.guiTelevision = Gui('television.xml', var.addonpath, 'default', '720p')
         elif channelView == 'blokken':
@@ -136,7 +137,7 @@ class Gui(xbmcgui.WindowXML):
             dialogAnswers.append('Zender markeren als favoriet')
 
         #Add switch favorite/all button
-        if func.setting_get('LoadChannelFavoritesOnly') == 'true':
+        if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             dialogAnswers.append('Toon alle zenders')
         else:
             dialogAnswers.append('Toon favorieten zenders')
@@ -240,7 +241,7 @@ class Gui(xbmcgui.WindowXML):
 
     def switch_favorite_channel_code(self, listContainer, listItemSelected):
         favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteTelevision.js')
-        if favoriteResult == 'Removed' and func.setting_get('LoadChannelFavoritesOnly') == 'true':
+        if favoriteResult == 'Removed' and getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
             removeListItemId = listContainer.getSelectedPosition()
             guifunc.listRemoveItem(listContainer, removeListItemId)
@@ -252,15 +253,15 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if func.setting_get('LoadChannelFavoritesOnly') == 'true':
-                func.setting_set('LoadChannelFavoritesOnly', 'false')
+            if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
+                getset.setting_set('LoadChannelFavoritesOnly', 'false')
             else:
                 #Check if there are favorites set
                 if var.FavoriteTelevisionJson == []:
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
-                func.setting_set('LoadChannelFavoritesOnly', 'true')
+                getset.setting_set('LoadChannelFavoritesOnly', 'true')
 
             #Load television channels
             self.load_channels(True, False)
@@ -299,7 +300,7 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1000)
         if forceLoad == False and forceUpdate == False:
             if listContainer.size() > 0:
-                currentChannelId = func.setting_get('CurrentChannelId', True)
+                currentChannelId = getset.setting_get('CurrentChannelId', True)
                 lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
                 return True
         else:
@@ -326,7 +327,7 @@ class Gui(xbmcgui.WindowXML):
     def count_channels(self, resetSelect=False):
         #Set channel type string
         channelTypeString = 'zenders'
-        if func.setting_get('LoadChannelFavoritesOnly') == 'true':
+        if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             channelTypeString = 'favorieten zenders'
 
         #Update status label text
@@ -343,7 +344,7 @@ class Gui(xbmcgui.WindowXML):
                     guifunc.updateLabelText(self, 3, "Buitenshuis zijn er minder zenders beschikbaar.")
 
             if resetSelect == True:
-                currentChannelId = func.setting_get('CurrentChannelId', True)
+                currentChannelId = getset.setting_get('CurrentChannelId', True)
                 lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
         else:
             listContainer = self.getControl(1001)

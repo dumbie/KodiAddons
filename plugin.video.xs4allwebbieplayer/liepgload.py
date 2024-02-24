@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
+import xbmcgui
 import download
 import func
+import getset
 import lifunc
+import metadatacombine
 import metadatafunc
 import metadatainfo
-import metadatacombine
-import xbmcgui
 import path
 import var
 
@@ -72,7 +73,7 @@ def list_load_append(listContainer, epgJson):
             ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(program)
 
             #Check if channel is filtered
-            if func.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
+            if getset.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)

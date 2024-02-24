@@ -1,9 +1,10 @@
+import xbmcgui
 import download
 import func
+import getset
 import lifunc
 import metadatacombine
 import metadatainfo
-import xbmcgui
 import path
 import var
 
@@ -117,7 +118,7 @@ def list_load_program(listContainer):
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             ProgramAvailability = metadatainfo.available_time_program(program)
-            StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
+            StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Combine program description extended
             ProgramDescription = metadatacombine.program_description_extended(program)

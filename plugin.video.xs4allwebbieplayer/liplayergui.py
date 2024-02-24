@@ -1,18 +1,19 @@
 from datetime import datetime, timedelta
+import xbmc
 import alarm
 import download
 import func
+import getset
 import metadatacombine
-import metadatainfo
 import metadatafunc
+import metadatainfo
 import var
-import xbmc
 
 def list_update(listItem):
     try:
         #Get channel information from item
         channelId = listItem.getProperty('ChannelId')
-        currentChannelId = func.setting_get('CurrentChannelId')
+        currentChannelId = getset.setting_get('CurrentChannelId')
 
         #Set the current player play time
         streamDelaySeconds = 15
@@ -156,7 +157,7 @@ def list_update(listItem):
         ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
 
         #Get earlier programs information
-        if func.setting_get('TelevisionHideEarlierAired') == 'false':
+        if getset.setting_get('TelevisionHideEarlierAired') == 'false':
             ProgramEarlier = metadatacombine.program_earlier_list(channelEpg['containers'], programIndex)
         else:
             ProgramEarlier = ''

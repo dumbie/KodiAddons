@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
-import hybrid
-import metadatainfo
 import os
 import func
+import getset
+import hybrid
+import metadatainfo
 import var
 
 def resources(fileName):
@@ -48,7 +49,7 @@ def api_url_120(arguments):
     return 'https://' + var.ApiEndpointUrl() + '/101/1.2.0/A/nld/pctv/kpn/' + arguments
 
 def api_endpoint_number():
-    return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott&tan=' + func.setting_get('LoginUsername')
+    return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott&tan=' + getset.setting_get('LoginUsername')
 
 def api_endpoint_email():
     return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott'
@@ -57,16 +58,16 @@ def api_login():
     return api_url_120('USER/SESSIONS/')
 
 def stream_url_tv(channelId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + func.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_120('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_recording(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + func.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_120('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_vod(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + func.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_120('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_program(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + func.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_120('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def detail_vod(programId):
     return api_url_120('CONTENT/DETAIL/VOD/' + programId)
@@ -110,7 +111,7 @@ def vod_day(dayDateTime):
     downloadPath += '&filter_endTime=' + str(endTimeEpoch)
     downloadPath += '&filter_startTime=' + str(startTimeEpoch)
 
-    if func.setting_get('TelevisionChannelNoErotic') == 'true':
+    if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
@@ -118,7 +119,7 @@ def vod_day(dayDateTime):
 
 def vod_movies():
     downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentSubtype=VOD&dfilter_packageType=SVOD&from=0&to=9999')
-    if func.setting_get('TelevisionChannelNoErotic') == 'true':
+    if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
@@ -126,7 +127,7 @@ def vod_movies():
 
 def vod_series():
     downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999')
-    if func.setting_get('TelevisionChannelNoErotic') == 'true':
+    if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
@@ -155,7 +156,7 @@ def search_movies():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_programType=film')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
-    if func.setting_get('TelevisionChannelNoErotic') == 'true':
+    if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
@@ -165,7 +166,7 @@ def search_series():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_programType=serie')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
-    if func.setting_get('TelevisionChannelNoErotic') == 'true':
+    if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=kinderen,kids,erotiek&filter_excludedGenres=kinderen,kids,erotiek'
     else:
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
@@ -177,10 +178,10 @@ def search_program(programName):
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
 
-    if func.setting_get('SearchFilterFuzzy') == 'true':
+    if getset.setting_get('SearchFilterFuzzy') == 'true':
         downloadPath += '&filter_fuzzy=true'
 
-    if func.setting_get('TelevisionChannelNoErotic') == 'true':
+    if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_excludedGenre=erotiek'
 
     return downloadPath

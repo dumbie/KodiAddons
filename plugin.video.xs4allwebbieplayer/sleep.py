@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 import xbmcgui
 import dialog
 import func
+import getset
 import path
-import status
 import var
 
 def dialog_sleep():
@@ -15,7 +15,7 @@ def dialog_sleep():
 
     dialogHeader = 'Slaap Timer'
 
-    if func.setting_get('SleepTimerCloseKodi') == 'true':
+    if getset.setting_get('SleepTimerCloseKodi') == 'true':
         dialogSummary = 'Selecteer hier hoe lang u nog wilt kijken of luisteren voordat Kodi zich zelf automatisch zal afsluiten*'
     else:
         dialogSummary = 'Selecteer hier hoe lang u nog wilt kijken of luisteren voordat uw apparaat zich automatisch zal uitschakelen*'
@@ -77,7 +77,7 @@ def sleep_close():
     sleep_timeroff(False)
 
     #Close Kodi or shutdown device
-    if func.setting_get('SleepTimerCloseKodi') == 'true':
+    if getset.setting_get('SleepTimerCloseKodi') == 'true':
         func.close_kodi_force()
     else:
         func.device_shutdown_force()
@@ -85,7 +85,7 @@ def sleep_close():
 def sleep_timeroff(showDialog):
     var.SleepEndingMinutes = 9999
     var.thread_sleep_timer.Stop()
-    status.status_set('SleepTimer', 'False')
+    getset.global_set('SleepTimer', 'False')
 
     if showDialog:
         notificationIcon = path.resources('resources/skins/default/media/common/sleep.png')
@@ -94,7 +94,7 @@ def sleep_timeroff(showDialog):
 def sleep_timerset(minutes):
     var.SleepEndingMinutes = minutes
     var.thread_sleep_timer.Start(thread_sleep_timer)
-    status.status_set('SleepTimer', 'True')
+    getset.global_set('SleepTimer', 'True')
 
     notificationIcon = path.resources('resources/skins/default/media/common/sleep.png')
     xbmcgui.Dialog().notification(var.addonname, 'Slaap timer voor ' + str(minutes) + ' min is gezet.', notificationIcon, 2500, False)

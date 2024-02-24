@@ -5,6 +5,7 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 import func
+import getset
 import hybrid
 import path
 import var
@@ -50,7 +51,7 @@ def enable_widevine_support(forceUpdate=False):
 
     #Set the download headers
     DownloadHeaders = {
-        "User-Agent": func.setting_get('CustomUserAgent')
+        "User-Agent": getset.setting_get('CustomUserAgent')
     }
 
     #Check if newer Widevine version is available
@@ -58,8 +59,8 @@ def enable_widevine_support(forceUpdate=False):
     DownloadRequest = hybrid.urllib_request(RequestUrl, headers=DownloadHeaders)
     DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
     DownloadDataString = DownloadDataHttp.read().decode()
-    if DownloadDataString != func.setting_get('WidevineVersion'):
-        func.setting_set('WidevineVersion', DownloadDataString)
+    if DownloadDataString != getset.setting_get('WidevineVersion'):
+        getset.setting_set('WidevineVersion', DownloadDataString)
         forceUpdate = True
 
     #Check if Widevine support is installed

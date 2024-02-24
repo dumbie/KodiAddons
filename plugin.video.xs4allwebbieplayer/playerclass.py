@@ -1,6 +1,6 @@
 import xbmc
 import xbmcgui
-import func
+import getset
 import path
 import player
 import playergui
@@ -21,7 +21,7 @@ class Class_PlayerCustom(xbmc.Player):
                 xbmc.executebuiltin('Seek(-' + str(PlayerSeekOffsetSecEnd) + ')')
 
             #Enable or disable subtitles
-            if func.setting_get('PlayerSubtitlesOff') == 'true':
+            if getset.setting_get('PlayerSubtitlesOff') == 'true':
                 xbmc.Player().showSubtitles(False)
             else:
                 xbmc.Player().showSubtitles(True)

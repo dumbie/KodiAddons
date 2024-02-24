@@ -1,9 +1,10 @@
+import xbmcgui
 import download
 import func
+import getset
 import lifunc
 import metadatacombine
 import metadatainfo
-import xbmcgui
 import path
 import var
 
@@ -103,7 +104,7 @@ def list_load_program_append(listContainer):
                 ProgramDuration = True
                 ProgramDescription = metadatacombine.program_description_extended(program)
                 ProgramAvailability = metadatainfo.available_time_program(program)
-                StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
+                StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
             else:
                 listAction = 'load_kids_episodes_program'
                 dirIsfolder = True

@@ -7,13 +7,14 @@ import classes
 import default
 import download
 import func
+import getset
 import hybrid
 import path
 import var
 
 def ApiGenerateDeviceId():
     try:
-        if func.string_isnullorempty(func.setting_get('LoginDeviceId120')) == True:
+        if func.string_isnullorempty(getset.setting_get('LoginDeviceId120')) == True:
             DeviceId = ''
             CurrentTimeUtc = str(datetime.utcnow())
             random.seed(CurrentTimeUtc)
@@ -21,7 +22,7 @@ def ApiGenerateDeviceId():
                 DeviceId += str(random.randint(0,9))
 
             #Update settings
-            func.setting_set('LoginDeviceId120', DeviceId)
+            getset.setting_set('LoginDeviceId120', DeviceId)
         return True
     except:
         return False
@@ -39,8 +40,8 @@ def ApiSetEndpointAdresNumber():
 def ApiSetEndpointAdresEmail():
     try:
         apiEndpoint = classes.Class_ApiEndpoint()
-        apiEndpoint.username = func.setting_get('LoginEmail')
-        apiEndpoint.password = func.setting_get('LoginPasswordEmail')
+        apiEndpoint.username = getset.setting_get('LoginEmail')
+        apiEndpoint.password = getset.setting_get('LoginPasswordEmail')
         apiEndpoint = apiEndpoint.__dict__
 
         DownloadDataSend = json.dumps(apiEndpoint).encode('ascii')
@@ -98,12 +99,12 @@ def ApiLogin(loginNotification=False, forceLogin=False):
         ApiGenerateDeviceId()
 
         #Check the login type
-        if func.setting_get('LoginType') == 'Abonnementsnummer':
+        if getset.setting_get('LoginType') == 'Abonnementsnummer':
             #Download and set api endpoint adres
             ApiSetEndpointAdresNumber()
 
             loginDevice = classes.Class_ApiLogin_deviceRegistrationData()
-            loginDevice.deviceId = func.setting_get('LoginDeviceId120')
+            loginDevice.deviceId = getset.setting_get('LoginDeviceId120')
             loginDevice.vendor = "Webbie Player"
             loginDevice.model = str(var.addonversion)
             loginDevice.deviceFirmVersion = "Kodi"
@@ -111,8 +112,8 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             loginDevice = loginDevice.__dict__
 
             loginAuth = classes.Class_ApiLogin_credentialsStdAuth()
-            loginAuth.username = func.setting_get('LoginUsername')
-            loginAuth.password = func.setting_get('LoginPassword')
+            loginAuth.username = getset.setting_get('LoginUsername')
+            loginAuth.password = getset.setting_get('LoginPassword')
             loginAuth.deviceRegistrationData = loginDevice
             loginAuth = loginAuth.__dict__
 
@@ -124,7 +125,7 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             ApiSetEndpointAdresEmail()
 
             loginDevice = classes.Class_ApiLogin_deviceInfo()
-            loginDevice.deviceId = func.setting_get('LoginDeviceId120')
+            loginDevice.deviceId = getset.setting_get('LoginDeviceId120')
             loginDevice.deviceVendor = "Webbie Player"
             loginDevice.deviceModel = str(var.addonversion)
             loginDevice.deviceFirmVersion = "Kodi"
@@ -132,8 +133,8 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             loginDevice = loginDevice.__dict__
 
             loginCredentials = classes.Class_ApiLogin_credentials()
-            loginCredentials.username = func.setting_get('LoginEmail')
-            loginCredentials.password = func.setting_get('LoginPasswordEmail')
+            loginCredentials.username = getset.setting_get('LoginEmail')
+            loginCredentials.password = getset.setting_get('LoginPasswordEmail')
             loginCredentials = loginCredentials.__dict__
 
             loginAuth = classes.Class_ApiLogin_credentialsExtAuth()
@@ -147,7 +148,7 @@ def ApiLogin(loginNotification=False, forceLogin=False):
 
         #Request login by sending data
         DownloadHeaders = {
-            "User-Agent": func.setting_get('CustomUserAgent'),
+            "User-Agent": getset.setting_get('CustomUserAgent'),
             "Content-Type": "application/json"
         }
 

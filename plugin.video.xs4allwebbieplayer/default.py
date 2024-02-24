@@ -1,5 +1,4 @@
 import sys
-import xbmc
 import xbmcgui
 import argument
 import dialog
@@ -8,7 +7,7 @@ import func
 import hybrid
 import main
 import path
-import status
+import getset
 import var
 
 def get_launch_type():
@@ -26,11 +25,18 @@ def launch_source():
     argument.handle_launch_argument_source()
 
 def launch_script():
-    if status.status_check_running() == False:
+    if getset.check_addon_running() == False:
         func.stop_playing_media()
+        reset_global_variables()
         check_login_settings()
         change_addon_accent()
         main.switch_to_page()
+
+def reset_global_variables():
+    try:
+        getset.global_clear('SleepTimer')
+    except:
+        pass
 
 def reset_thumbnails():
     try:
@@ -77,9 +83,9 @@ def reset_userdata():
 
 def check_login_settings():
     loginNotSet = False
-    if func.string_isnullorempty(func.setting_get('LoginUsername')) == True and func.string_isnullorempty(func.setting_get('LoginEmail')) == True:
+    if func.string_isnullorempty(getset.setting_get('LoginUsername')) == True and func.string_isnullorempty(getset.setting_get('LoginEmail')) == True:
         loginNotSet = True
-    elif func.string_isnullorempty(func.setting_get('LoginPassword')) == True and func.string_isnullorempty(func.setting_get('LoginPasswordEmail')) == True:
+    elif func.string_isnullorempty(getset.setting_get('LoginPassword')) == True and func.string_isnullorempty(getset.setting_get('LoginPasswordEmail')) == True:
         loginNotSet = True
 
     if loginNotSet == True:
@@ -99,7 +105,7 @@ def change_addon_accent():
     scrollbar800 = path.resources("resources/skins/default/media/common/scrollbar_accent_800.png")
 
     #Copy add-on accent images
-    currentProvider = func.setting_get('AddonAccent').lower()
+    currentProvider = getset.setting_get('AddonAccent').lower()
     if currentProvider == 'geel':
         files.removeFile(backgroundAddon)
         files.copyFile(path.resources('resources/skins/default/media/common/background_addon_yellow.png'), backgroundAddon)

@@ -3,6 +3,7 @@ import xbmc
 import xbmcgui
 import alarm
 import func
+import getset
 import guifunc
 import lichanneltelevision
 import lifunc
@@ -16,7 +17,7 @@ import zap
 
 def switch_to_page():
     #Check player interface setting
-    if func.setting_get('PlayerInformationInterface') == 'false':
+    if getset.setting_get('PlayerInformationInterface') == 'false':
         return
 
     if var.guiPlayer == None:
@@ -189,7 +190,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         while var.thread_hide_playergui_info.Allowed():
             try:
                 lastInteractSeconds = int((datetime.now() - self.InfoLastInteraction).total_seconds())
-                if lastInteractSeconds >= int(func.setting_get('PlayerInformationCloseTime')):
+                if lastInteractSeconds >= int(getset.setting_get('PlayerInformationCloseTime')):
                     self.hide_epg()
             except:
                 pass
@@ -354,7 +355,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             return
 
         #Select current channel in list container
-        CurrentChannelId = func.setting_get('CurrentChannelId', True)
+        CurrentChannelId = getset.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
     def seek_back(self, showEpg=False):
@@ -366,12 +367,12 @@ class Gui(xbmcgui.WindowXMLDialog):
             return
 
         #Select current channel in list container
-        CurrentChannelId = func.setting_get('CurrentChannelId', True)
+        CurrentChannelId = getset.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
     def seek_begin_program(self):
         #Select current channel in list container
-        CurrentChannelId = func.setting_get('CurrentChannelId', True)
+        CurrentChannelId = getset.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
         #Get and check the list container
@@ -405,7 +406,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmcgui.Dialog().notification(var.addonname, 'De stream is nu live.', notificationIcon, 2500, False)
 
         #Select current channel in list container
-        CurrentChannelId = func.setting_get('CurrentChannelId', True)
+        CurrentChannelId = getset.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
 
     def switch_channel_lasttv(self):
@@ -449,7 +450,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             return False
 
         #Select channel in list container
-        currentChannelId = func.setting_get('CurrentChannelId', True)
+        currentChannelId = getset.setting_get('CurrentChannelId', True)
         lifunc.focus_on_channelid_in_list(self, 1001, 0, False, currentChannelId)
 
     def hide_epg(self):
@@ -478,7 +479,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select current channel in list container
         if selectCurrentChannel == True:
-            currentChannelId = func.setting_get('CurrentChannelId', True)
+            currentChannelId = getset.setting_get('CurrentChannelId', True)
             lifunc.focus_on_channelid_in_list(self, 1001, 0, focusCurrentChannel, currentChannelId)
 
         #Remove focus from the interface

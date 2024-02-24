@@ -1,12 +1,12 @@
+from datetime import datetime, timedelta
 import os
 import sys
-from datetime import datetime, timedelta
-import func
-import hybrid
-import threadclass
 import xbmc
 import xbmcaddon
 import xbmcgui
+import getset
+import hybrid
+import threadclass
 
 #Action variables
 ACTION_NONE = 0
@@ -119,44 +119,44 @@ thread_sleep_timer = threadclass.Class_ThreadSafe()
 def ApiLoginFailCount(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, 0)
+         return getset.global_pickle_get(varName, 0)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def ApiEndpointUrl(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, 'api.tv.prod.itvavs.prod.aws.kpn.com')
+         return getset.global_pickle_get(varName, 'api.tv.prod.itvavs.prod.aws.kpn.com')
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def ApiLoggedIn(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, False)
+         return getset.global_pickle_get(varName, False)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def ApiHomeAccess(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, True)
+         return getset.global_pickle_get(varName, True)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def ApiLastLogin(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, datetime(1970,1,1))
+         return getset.global_pickle_get(varName, datetime(1970,1,1))
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def ApiLoginCookie(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, '')
+         return getset.global_pickle_get(varName, '')
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 #Favorite variables
 FavoriteTelevisionJson = []
@@ -222,23 +222,23 @@ RecordingSeriesDataJson = []
 def RecordingProfileLoaded(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, False)
+         return getset.global_pickle_get(varName, False)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def RecordingAccess(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, False)
+         return getset.global_pickle_get(varName, False)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def RecordingAvailableSpace(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, "Onbekende ruimte beschikbaar")
+         return getset.global_pickle_get(varName, "Onbekende ruimte beschikbaar")
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 #Epg variables
 EpgCurrentLoadDateTime = datetime.now()

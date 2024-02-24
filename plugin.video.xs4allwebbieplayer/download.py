@@ -3,7 +3,7 @@ import json
 import xbmcgui
 import apilogin
 import classes
-import func
+import getset
 import hybrid
 import metadatainfo
 import path
@@ -12,7 +12,7 @@ import var
 def request_download_gzip(urlPath, sendData=None, sendMethod=None):
     try:
         downloadHeaders = {
-            "User-Agent": func.setting_get('CustomUserAgent'),
+            "User-Agent": getset.setting_get('CustomUserAgent'),
             "Cookie": var.ApiLoginCookie(),
             'Content-Type': 'application/json',
             'Accept-Encoding': 'gzip'

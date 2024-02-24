@@ -2,8 +2,9 @@ import xbmc
 import xbmcgui
 import download
 import favorite
-import hidden
 import func
+import getset
+import hidden
 import lifunc
 import metadatainfo
 import path
@@ -62,7 +63,7 @@ def list_load_append(listContainer):
             if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
 
             #Check if channel is filtered
-            if func.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
+            if getset.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
@@ -73,11 +74,11 @@ def list_load_append(listContainer):
             #Check if channel is marked as favorite or epg navigate
             if favorite.favorite_check(ChannelId, 'FavoriteTelevision.js'):
                 ChannelFavorite = 'true'
-            elif ChannelId == func.setting_get('CurrentChannelId') and xbmc.Player().isPlayingVideo():
+            elif ChannelId == getset.setting_get('CurrentChannelId') and xbmc.Player().isPlayingVideo():
                 ChannelFavorite = 'false'
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
-            elif func.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
+            elif getset.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
                 continue
             else:
                 ChannelFavorite = 'false'

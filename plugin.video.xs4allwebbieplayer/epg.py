@@ -4,6 +4,7 @@ import xbmcgui
 import alarm
 import dialog
 import func
+import getset
 import guifunc
 import lichanneltelevision
 import liepgload
@@ -154,7 +155,7 @@ class Gui(xbmcgui.WindowXML):
 
     def check_channel_epg_variables(self):
         if func.string_isnullorempty(var.EpgCurrentChannelId) == True:
-            var.EpgCurrentChannelId = func.setting_get('CurrentChannelId', True)
+            var.EpgCurrentChannelId = getset.setting_get('CurrentChannelId', True)
 
     def focus_on_item_list(self):
         #Get and check channel list container
@@ -243,7 +244,7 @@ class Gui(xbmcgui.WindowXML):
                 dialogFooter = ''
 
         #Add switch favorite/all button
-        if func.setting_get('LoadChannelFavoritesOnly') == 'true':
+        if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             dialogAnswers.append('Toon alle zenders')
         else:
             dialogAnswers.append('Toon favorieten zenders')
@@ -265,15 +266,15 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if func.setting_get('LoadChannelFavoritesOnly') == 'true':
-                func.setting_set('LoadChannelFavoritesOnly', 'false')
+            if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
+                getset.setting_set('LoadChannelFavoritesOnly', 'false')
             else:
                 #Check if there are favorites set
                 if var.FavoriteTelevisionJson == []:
                     notificationIcon = path.resources('resources/skins/default/media/common/star.png')
                     xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
                     return
-                func.setting_set('LoadChannelFavoritesOnly', 'true')
+                getset.setting_set('LoadChannelFavoritesOnly', 'true')
 
             channelsLoaded = self.load_channels(True)
             if channelsLoaded == True:
@@ -399,7 +400,7 @@ class Gui(xbmcgui.WindowXML):
         else:
             #Set channel type string
             channelTypeString = 'zenders'
-            if func.setting_get('LoadChannelFavoritesOnly') == 'true':
+            if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
                 channelTypeString = 'favorieten zenders'
 
             #Update status label text

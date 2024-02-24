@@ -1,6 +1,6 @@
 import re
 import xbmc
-import func
+import getset
 import hybrid
 import metadatainfo
 
@@ -18,7 +18,7 @@ def adjust_streamurl_bitrate(streamUrl):
 
 #Update stream url with localhost proxy
 def adjust_streamurl_proxy(streamUrl):
-    if xbmc.getCondVisibility('System.Platform.Android') or func.setting_get('UseLocalhostProxy') == 'true':
+    if xbmc.getCondVisibility('System.Platform.Android') or getset.setting_get('UseLocalhostProxy') == 'true':
         return 'http://127.0.0.1:4444/redir/' + str(streamUrl)
     else:
         return streamUrl
@@ -36,7 +36,7 @@ def adjust_listitem_inputstream(listItem, downloadDataJson, liveStream=False):
     try:
         #Set stream headers dictionary
         StreamHeadersDict = {
-            "User-Agent": func.setting_get('CustomUserAgent')
+            "User-Agent": getset.setting_get('CustomUserAgent')
         }
 
         #Set stream headers string

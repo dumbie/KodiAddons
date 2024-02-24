@@ -5,21 +5,21 @@ import pickle
 import re
 import time
 import xbmc
-import xbmcaddon
 import xbmcgui
 import dialog
 import hybrid
+import getset
 import var
 
 #Run this add-on
 def run_addon(forceLaunch=False):
-    if setting_get('RunAddonOnKodiLaunch') == 'true' or forceLaunch:
+    if getset.setting_get('RunAddonOnKodiLaunch') == 'true' or forceLaunch:
         xbmcgui.Dialog().notification(var.addonname, 'Webbie Player wordt gestart.', var.addonicon, 2500, False)
         xbmc.executebuiltin('RunScript(plugin.video.xs4allwebbieplayer)')
 
 #Get provider color string
 def get_provider_color_string():
-    currentProvider = setting_get('AddonAccent').lower()
+    currentProvider = getset.setting_get('AddonAccent').lower()
     if currentProvider == 'geel':
         return '[COLOR FFF5AF00]'
     elif currentProvider == 'blauw':
@@ -39,17 +39,6 @@ def search_filter_string(searchString):
     searchFilterTerm = searchString.lower()
     searchFilterTerm = hybrid.string_remove_accents(searchFilterTerm)
     return searchFilterTerm
-
-#Check if an addon is running
-def check_addon_running():
-    try:
-        currentWindowId = xbmcgui.getCurrentWindowId()
-        if str(currentWindowId).startswith('130') or currentWindowId == var.WINDOW_FULLSCREEN_VIDEO or currentWindowId == var.WINDOW_VISUALISATION:
-            return True
-        else:
-            return False
-    except:
-        return False
 
 #Open a window by id
 def open_window_id(windowId):
@@ -238,40 +227,6 @@ def device_reboot_dialog():
     dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
     if dialogResult == 'Ja':
         xbmc.executebuiltin('Reboot')
-
-#Set addon setting
-def setting_set(setName, setObject):
-    try:
-        var.addon.setSetting(setName, setObject)
-        return True
-    except:
-        return False
-
-#Get addon setting
-def setting_get(setName, reloadSettings=False):
-    try:
-        if reloadSettings == True:
-            var.addon = xbmcaddon.Addon()
-        return var.addon.getSetting(setName)
-    except:
-        return ''
-
-#Set global variable
-def globalvar_set(varName, varObject):
-    try:
-        pickleString = object_to_picklestring(varObject)
-        var.windowHome.setProperty('WebbiePlayer' + varName, pickleString)
-        return True
-    except:
-        return False
-
-#Get global variable
-def globalvar_get(varName, defaultObject=None):
-    try:
-        pickleString = var.windowHome.getProperty('WebbiePlayer' + varName)
-        return picklestring_to_object(pickleString)
-    except:
-        return defaultObject
 
 #Convert object to pickle string
 def object_to_picklestring(object, useBase64=True):

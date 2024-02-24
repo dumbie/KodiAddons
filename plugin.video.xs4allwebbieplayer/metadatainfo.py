@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import func
+import getset
 import hybrid
 import var
 
@@ -494,7 +495,7 @@ def stream_targetprofile(playReadyStream=False):
 #Get stream target bitrate
 def stream_targetbitrate():
     try:
-        streamResolutionSetting = func.setting_get('StreamResolution')
+        streamResolutionSetting = getset.setting_get('StreamResolution')
         if streamResolutionSetting == '2160p' or streamResolutionSetting == '1080pBest':
             return '100000000'
         elif streamResolutionSetting == '1080pHigh':

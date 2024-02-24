@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import alarm
 import func
+import getset
 import metadatacombine
 import metadatafunc
 import metadatainfo
@@ -106,7 +107,7 @@ def list_update_program(listItem):
             listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
 
             #Set program seek offset start
-            StartOffset = str(int(func.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
+            StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
             listItem.setProperty('StartOffset', StartOffset)
 
         #Check if program is currently airing

@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
-import xbmc
 import xbmcgui
 import apilogin
 import download
 import func
+import getset
 import metadatainfo
 import path
 import player
@@ -34,7 +34,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
             return
 
         #Allow longer backwards seeking
-        PlayerSeekBackMinutes = int(func.setting_get('PlayerSeekBackMinutes'))
+        PlayerSeekBackMinutes = int(getset.setting_get('PlayerSeekBackMinutes'))
         DateTimeUtc = datetime.utcnow() - timedelta(minutes=PlayerSeekBackMinutes)
         StartString = '&time=' + str(func.datetime_to_ticks(DateTimeUtc))
 
@@ -52,8 +52,8 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
                 return
 
         #Update channel settings and variables
-        CurrentChannelId = func.setting_get('CurrentChannelId', True)
-        func.setting_set('CurrentChannelId', NewChannelId)
+        CurrentChannelId = getset.setting_get('CurrentChannelId', True)
+        getset.setting_set('CurrentChannelId', NewChannelId)
         if CurrentChannelId != NewChannelId:
             var.TelevisionChannelListItemLast = var.TelevisionChannelListItemCurrent
         var.TelevisionChannelListItemCurrent = listItem
@@ -97,7 +97,7 @@ def play_radio(listItem, Windowed=False):
             return
 
         #Update channel settings and variables
-        func.setting_set('CurrentRadioId', ChannelId)
+        getset.setting_set('CurrentRadioId', ChannelId)
 
         #Start playing the media
         player.PlayCustom(StreamUrl, listItem, Windowed)

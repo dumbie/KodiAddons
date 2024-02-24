@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import alarm
 import download
 import func
+import getset
 import metadatacombine
 import metadatafunc
 import metadatainfo
@@ -138,7 +139,7 @@ def list_update(listItem):
         ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
 
         #Get earlier programs information
-        if func.setting_get('TelevisionHideEarlierAired') == 'false':
+        if getset.setting_get('TelevisionHideEarlierAired') == 'false':
             ProgramEarlier = metadatacombine.program_earlier_list(channelEpg['containers'], programIndex)
         else:
             ProgramEarlier = ''

@@ -378,7 +378,7 @@
                 <height>25</height>
                 <aspectratio>keep</aspectratio>
                 <texture>common/sleep.png</texture>
-                <visible>String.IsEqual(Window(13000).Property(WebbiePlayerSleepTimer), true)</visible>
+                <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
             </control>
             <!-- Program Alarm -->
             <control type="image">

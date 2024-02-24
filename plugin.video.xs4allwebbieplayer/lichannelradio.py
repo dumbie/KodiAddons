@@ -1,8 +1,9 @@
-import download
 import xbmcgui
+import download
 import favorite
-import hidden
 import func
+import getset
+import hidden
 import lifunc
 import path
 import var
@@ -54,7 +55,7 @@ def list_load_append(listContainer):
             #Check if channel is marked as favorite
             if favorite.favorite_check(ChannelId, 'FavoriteRadio.js'):
                 ChannelFavorite = 'true'
-            elif func.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
+            elif getset.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
                 continue
             else:
                 ChannelFavorite = 'false'

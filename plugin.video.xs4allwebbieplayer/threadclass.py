@@ -1,7 +1,7 @@
 import threading
-import func
-import var
 import xbmc
+import getset
+import var
 
 class Class_ThreadSafe:
     #Initialize thread
@@ -83,7 +83,7 @@ class Class_ThreadSafe:
         if serviceThread:
             return self.allowed and var.addonmonitor.abortRequested() == False
         else:
-            return self.allowed and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True
+            return self.allowed and var.addonmonitor.abortRequested() == False and getset.check_addon_running() == True
 
     #Sleep thread until set or timeout
     def Sleep(self, duration):

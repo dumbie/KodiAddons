@@ -5,6 +5,7 @@ import apilogin
 import dialog
 import epg
 import func
+import getset
 import guifunc
 import helpx
 import hybrid
@@ -32,7 +33,7 @@ import widevine
 def switch_to_page():
     if var.guiMain == None:
         var.guiMain = Gui('main.xml', var.addonpath, 'default', '720p')
-        var.guiMain.setProperty('WebbiePlayerStatus', 'Running')
+        getset.addon_set('Status', 'Running')
         var.guiMain.doModal()
         var.guiMain = None
 
@@ -48,7 +49,7 @@ def close_the_page():
         var.guiMain.close()
 
 def dialog_close():
-    if func.setting_get('AfsluitschermOverslaan') == 'true':
+    if getset.setting_get('AfsluitschermOverslaan') == 'true':
         close_the_page()
     else:
         dialogAnswers = ['Webbie Player afsluiten', 'Apparaat uitschakelen', 'Apparaat herstarten', 'Kodi afsluiten']
@@ -126,9 +127,9 @@ class Gui(xbmcgui.WindowXML):
         #Check if user is logged in
         if var.ApiLoggedIn() == True:
             #Go to the desired page on startup
-            if func.setting_get('StartWithKids') == 'true':
+            if getset.setting_get('StartWithKids') == 'true':
                 kids.switch_to_page()
-            elif func.setting_get('StartWithTelevision') == 'true':
+            elif getset.setting_get('StartWithTelevision') == 'true':
                 television.switch_to_page()
 
     def buttons_add_media(self, resetButtons):
@@ -262,7 +263,7 @@ class Gui(xbmcgui.WindowXML):
         try:
             #Set the download headers
             DownloadHeaders = {
-                "User-Agent": func.setting_get('CustomUserAgent')
+                "User-Agent": getset.setting_get('CustomUserAgent')
             }
 
             #Download notification message

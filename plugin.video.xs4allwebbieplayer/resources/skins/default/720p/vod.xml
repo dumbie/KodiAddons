@@ -110,7 +110,7 @@
             <height>30</height>
             <aspectratio>keep</aspectratio>
             <texture>common/sleep.png</texture>
-            <visible>String.IsEqual(Window(13000).Property(WebbiePlayerSleepTimer), true)</visible>
+            <visible>String.IsEqual(Window(10000).Property(WebbiePlayerSleepTimer), true)</visible>
         </control>
         <!-- Roaming -->
         <control type="image">

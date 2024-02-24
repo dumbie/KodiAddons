@@ -1,6 +1,7 @@
 import sys
 import xbmc
 import func
+import getset
 import playerclass
 import playergui
 import var
@@ -11,30 +12,30 @@ PlayerCustom = playerclass.Class_PlayerCustom()
 def PlayerWindowed(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, False)
+         return getset.global_pickle_get(varName, False)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def PlayerOpenOverlay(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, False)
+         return getset.global_pickle_get(varName, False)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def PlayerShowInformation(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, False)
+         return getset.global_pickle_get(varName, False)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def PlayerSeekOffsetSecEnd(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return func.globalvar_get(varName, 0)
+         return getset.global_pickle_get(varName, 0)
     else:
-         return func.globalvar_set(varName, setObject)
+         return getset.global_pickle_set(varName, setObject)
 
 def ResetVariables():
     PlayerWindowed(False)
