@@ -49,8 +49,12 @@ def handle_launch_argument_source():
         listItem = lifunc.jsonitem_to_listitem(jsonItem)
         actionItem = jsonItem['ItemAction']
 
+        #List actions
+        if actionItem == "addon_launch":
+            func.run_addon(True)
+
         #List pages
-        if actionItem == "page_television":
+        elif actionItem == "page_television":
             lichanneltelevision.list_load_combined(downloadRecordings=False)
         elif actionItem == "page_radio":
             lichannelradio.list_load_combined()

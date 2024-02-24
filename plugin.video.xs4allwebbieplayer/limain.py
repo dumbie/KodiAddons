@@ -1,8 +1,8 @@
 import apilogin
 import download
 import func
+import getset
 import lifunc
-import xbmcgui
 import path
 import var
 
@@ -47,7 +47,6 @@ def list_load_append(listContainer, remoteMode=False):
             dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
-
 
         #Set item icons
         iconDefault = path.resources('resources/skins/default/media/common/radio.png')
@@ -158,7 +157,7 @@ def list_load_append(listContainer, remoteMode=False):
             iconDefault = path.resources('resources/skins/default/media/common/kids.png')
 
             #Set item details
-            if remoteMode == False and func.setting_get('KidsPageLock') == 'true':
+            if remoteMode == False and getset.setting_get('KidsPageLock') == 'true':
                 itemLabel = 'Kids met slot'
             else:
                 itemLabel = 'Kids'
@@ -287,6 +286,21 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemLabel': 'Sluiten',
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'addon_shutdown'
+            }
+            dirIsfolder = False
+            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
+
+        if remoteMode == True and getset.check_addon_running() == False:
+            #Set item icons
+            iconDefault = path.resources('resources/icon.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Toon Webbie Player',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemAction': 'addon_launch'
             }
             dirIsfolder = False
             dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
