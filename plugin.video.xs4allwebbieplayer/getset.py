@@ -41,14 +41,14 @@ def addon_clear(propName):
 
 def addon_set(propName, propValue):
     try:
-        var.guiMain.setProperty('WebbiePlayer' + propName, str(propValue))
+        var.guiMain.setProperty('WebbiePlayer' + propName, propValue)
         return True
     except:
         return False
 
 def addon_get(propName):
     try:
-        return str(var.guiMain.getProperty('WebbiePlayer' + propName))
+        return var.guiMain.getProperty('WebbiePlayer' + propName)
     except:
         return ''
 
@@ -62,14 +62,14 @@ def global_clear(propName):
 
 def global_set(propName, propValue):
     try:
-        var.windowHome.setProperty('WebbiePlayer' + propName, str(propValue))
+        var.windowHome.setProperty('WebbiePlayer' + propName, propValue)
         return True
     except:
         return False
 
 def global_get(propName):
     try:
-        return str(var.windowHome.getProperty('WebbiePlayer' + propName))
+        return var.windowHome.getProperty('WebbiePlayer' + propName)
     except:
         return ''
 

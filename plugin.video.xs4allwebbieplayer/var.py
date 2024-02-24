@@ -144,7 +144,14 @@ def ApiHomeAccess(setObject=None):
     else:
          return getset.global_pickle_set(varName, setObject)
 
-def ApiLastLogin(setObject=None):
+def ApiLoginLastUsername(setObject=None):
+    varName = str(sys._getframe().f_code.co_name)
+    if setObject == None:
+         return getset.global_pickle_get(varName, '')
+    else:
+         return getset.global_pickle_set(varName, setObject)
+
+def ApiLoginLastDateTime(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
          return getset.global_pickle_get(varName, datetime(1970,1,1))

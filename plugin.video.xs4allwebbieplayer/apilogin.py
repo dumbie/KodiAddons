@@ -69,7 +69,8 @@ def ApiCheckHomeAccess(DownloadDataJson):
 def ApiFailVariableUpdate():
     try:
         var.ApiLoggedIn(False)
-        var.ApiLastLogin(datetime(1970,1,1))
+        var.ApiLoginLastDateTime(datetime(1970,1,1))
+        var.ApiLoginLastUsername('')
         var.ApiLoginCookie('')
         newFailCount = var.ApiLoginFailCount() + 1
         var.ApiLoginFailCount(newFailCount)
@@ -89,10 +90,19 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             xbmcgui.Dialog().notification(var.addonname, 'Aanmeld poging limiet bereikt, herstart Kodi.', notificationIcon, 2500, False)
             return False
 
+        #Check if login cookie has expired
+        loginCookieExpired = int((datetime.now() - var.ApiLoginLastDateTime()).total_seconds()) > 890
+
+        #Check if login username changed
+        if getset.setting_get('LoginType') == 'Abonnementsnummer':
+            loginUsername = getset.setting_get('LoginUsername')
+            loginUsernameChanged = loginUsername != var.ApiLoginLastUsername()
+        else:
+            loginUsername = getset.setting_get('LoginEmail')
+            loginUsernameChanged = loginUsername != var.ApiLoginLastUsername()
+
         #Check if login is needed
-        #Fix: check if username/password changed
-        lastLoginSeconds = int((datetime.now() - var.ApiLastLogin()).total_seconds())
-        if forceLogin == False and var.ApiLoggedIn() == True and lastLoginSeconds < 890:
+        if forceLogin == False and var.ApiLoggedIn() == True and loginCookieExpired == False and loginUsernameChanged == False:
             return True
 
         #Generate the device id
@@ -112,7 +122,7 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             loginDevice = loginDevice.__dict__
 
             loginAuth = classes.Class_ApiLogin_credentialsStdAuth()
-            loginAuth.username = getset.setting_get('LoginUsername')
+            loginAuth.username = loginUsername
             loginAuth.password = getset.setting_get('LoginPassword')
             loginAuth.deviceRegistrationData = loginDevice
             loginAuth = loginAuth.__dict__
@@ -133,7 +143,7 @@ def ApiLogin(loginNotification=False, forceLogin=False):
             loginDevice = loginDevice.__dict__
 
             loginCredentials = classes.Class_ApiLogin_credentials()
-            loginCredentials.username = getset.setting_get('LoginEmail')
+            loginCredentials.username = loginUsername
             loginCredentials.password = getset.setting_get('LoginPasswordEmail')
             loginCredentials = loginCredentials.__dict__
 
@@ -202,7 +212,8 @@ def ApiLogin(loginNotification=False, forceLogin=False):
 
         #Update api login variables
         var.ApiLoggedIn(True)
-        var.ApiLastLogin(datetime.now())
+        var.ApiLoginLastDateTime(datetime.now())
+        var.ApiLoginLastUsername(loginUsername)
         var.ApiLoginFailCount(0)
 
         #Show the login notification
