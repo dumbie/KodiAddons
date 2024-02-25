@@ -35,6 +35,7 @@ def thread_proxy_server():
 def start_proxy_server():
     try:
         if var.ProxyServer == None:
+            hybrid.proxyServer.allow_reuse_address = True
             var.ProxyServer = ProxyRequestThreading(('127.0.0.1', 4444), ProxyRequestHandler)
             var.thread_proxy_server.Start(thread_proxy_server)
     except:
