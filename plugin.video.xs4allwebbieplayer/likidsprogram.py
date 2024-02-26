@@ -68,7 +68,7 @@ def list_load_vod_append(listContainer):
                 "ProgramName": ProgramName,
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemInfoVideo': {'MediaType': 'tvshow', 'Genre': ProgramDetails},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType},
                 'ItemAction': 'load_kids_episodes_vod'
             }
@@ -98,18 +98,20 @@ def list_load_program_append(listContainer):
             #Check if program is serie or movie
             ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
             if ContentSubtype == "VOD":
-                listAction = 'play_stream_program'
+                ProgramDetails = metadatacombine.program_details(program, True, True, True, False, False, False, True)
+                ItemAction = 'play_stream_program'
+                ItemInfoVideo = {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails}
                 dirIsfolder = False
                 iconProgramType = path.icon_addon('movies')
-                ProgramDuration = True
                 ProgramDescription = metadatacombine.program_description_extended(program)
                 ProgramAvailability = metadatainfo.available_time_program(program)
                 StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
             else:
-                listAction = 'load_kids_episodes_program'
+                ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
+                ItemAction = 'load_kids_episodes_program'
+                ItemInfoVideo = {'MediaType': 'tvshow', 'Genre': ProgramDetails}
                 dirIsfolder = True
                 iconProgramType = path.icon_addon('series')
-                ProgramDuration = False
                 ProgramDescription = ""
                 ProgramAvailability = ""
                 StartOffset = ""
@@ -119,9 +121,6 @@ def list_load_program_append(listContainer):
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
             SeriesId = metadatainfo.seriesId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-
-            #Combine program details
-            ProgramDetails = metadatacombine.program_details(program, True, ProgramDuration, True, False, False, False, True)
 
             #Set item icons
             iconDefault = path.icon_epg(PictureUrl)
@@ -140,9 +139,9 @@ def list_load_program_append(listContainer):
                 "ProgramAvailability": ProgramAvailability,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemInfoVideo': ItemInfoVideo,
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
-                'ItemAction': listAction
+                'ItemAction': ItemAction
             }
             dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
             listItem = lifunc.jsonitem_to_listitem(jsonItem)

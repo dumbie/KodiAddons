@@ -96,10 +96,9 @@ def ApiLogin(loginNotification=False, forceLogin=False):
         #Check if login username changed
         if getset.setting_get('LoginType') == 'Abonnementsnummer':
             loginUsername = getset.setting_get('LoginUsername')
-            loginUsernameChanged = loginUsername != var.ApiLoginLastUsername()
         else:
             loginUsername = getset.setting_get('LoginEmail')
-            loginUsernameChanged = loginUsername != var.ApiLoginLastUsername()
+        loginUsernameChanged = loginUsername != var.ApiLoginLastUsername()
 
         #Check if login is needed
         if forceLogin == False and var.ApiLoggedIn() == True and loginCookieExpired == False and loginUsernameChanged == False:

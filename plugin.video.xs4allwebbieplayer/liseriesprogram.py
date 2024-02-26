@@ -66,7 +66,7 @@ def list_load_vod_append(listContainer):
                 "ProgramName": ProgramName,
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemInfoVideo': {'MediaType': 'tvshow', 'Genre': ProgramDetails},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType},
                 'ItemAction': 'load_series_episodes_vod'
             }
@@ -116,7 +116,7 @@ def list_load_program_append(listContainer):
                 "ProgramWeek": 'true',
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails},
+                'ItemInfoVideo': {'MediaType': 'tvshow', 'Genre': ProgramDetails},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
                 'ItemAction': 'load_series_episodes_program'
             }
