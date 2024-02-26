@@ -170,7 +170,7 @@
             <top>245</top>
             <width>35</width>
             <height>475</height>
-            <visible>Player.Playing</visible>
+            <visible>Player.HasMedia</visible>
             <control type="button" id="9000">
                 <width>35</width>
                 <height>475</height>

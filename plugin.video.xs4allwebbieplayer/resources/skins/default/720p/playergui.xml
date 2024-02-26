@@ -32,7 +32,7 @@
         <control type="group">
             <width>880</width>
             <height>50</height>
-            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
+            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Paused | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
             <!-- Background -->
@@ -328,7 +328,7 @@
             <right>0</right>
             <width>400</width>
             <height>720</height>
-            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
+            <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Paused | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
             <!-- Background -->
@@ -508,6 +508,7 @@
                     <wrapmultiline>true</wrapmultiline>
                     <textcolor>FFFFFFFF</textcolor>
                     <info>Container(1001).ListItem.Property(ProgramDescription)</info>
+                    <autoscroll delay="4000" time="2500" repeat="4000">String.IsEqual(Window().Property(WebbiePlayerFull), false) + Player.Paused</autoscroll>
                     <pagecontrol>2004</pagecontrol>
                 </control>
                 <control type="scrollbar" id="2004">

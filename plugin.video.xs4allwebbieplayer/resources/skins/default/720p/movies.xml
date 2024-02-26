@@ -140,7 +140,7 @@
             <top>245</top>
             <width>35</width>
             <height>475</height>
-            <visible>Player.Playing</visible>
+            <visible>Player.HasMedia</visible>
             <control type="button" id="9000">
                 <width>35</width>
                 <height>475</height>
@@ -383,7 +383,7 @@
                 <wrapmultiline>true</wrapmultiline>
                 <textcolor>FFFFFFFF</textcolor>
                 <label>$INFO[Container(1000).ListItem().Property(ProgramName)][CR]$INFO[Container(1000).ListItem().Property(ProgramDetails)][CR]$INFO[Container(1000).ListItem().Property(ProgramAvailability)][CR][CR]$INFO[Container(1000).ListItem().Property(ProgramDescription)]</label>
-                <autoscroll delay="4000" time="2500" repeat="5000"/>
+                <autoscroll delay="4000" time="2500" repeat="4000"/>
                 <pagecontrol>2000</pagecontrol>
             </control>
             <control type="scrollbar" id="2000">

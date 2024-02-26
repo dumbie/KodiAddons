@@ -41,7 +41,6 @@ def close_the_page(closeFullscreen=True):
 
 class Gui(xbmcgui.WindowXMLDialog):
     EpgPauseUpdate = False
-    ChannelDelay = datetime(1970,1,1)
     InfoLastHide = datetime(1970,1,1)
     InfoLastInteraction = datetime(1970,1,1)
 
@@ -112,9 +111,10 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Check which action needs to execute
         actionId = action.getId()
         playerFull = self.getProperty('WebbiePlayerFull') == 'true'
-        playerSeek = self.getProperty('WebbiePlayerSeek') == 'true'
+        playerSeek = xbmc.getCondVisibility('Control.IsVisible(5000)')
+        playerForced = xbmc.getCondVisibility('Player.Paused') == True
         playerOpen = playerFull or playerSeek
-        if (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE) and playerOpen == False:
+        if (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE) and (playerOpen == False or playerForced == True):
             close_the_page()
             return
         elif (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE) and playerOpen == True:
@@ -179,8 +179,7 @@ class Gui(xbmcgui.WindowXMLDialog):
     def thread_update_playergui_info(self):
         while var.thread_update_playergui_info.Allowed():
             try:
-                if self.getProperty('WebbiePlayerFull') == 'true' or self.getProperty('WebbiePlayerSeek') == 'true':
-                    self.update_epg_information()
+                self.update_epg_information()
             except:
                 pass
             finally:
@@ -460,7 +459,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Hide the epg interface
         self.setProperty('WebbiePlayerFull', 'false')
         self.setProperty('WebbiePlayerSeek', 'false')
-        xbmc.sleep(guifunc.InterfaceUpdateDelay)
 
         #Remove focus from the interface
         listControl = self.getControl(4000)
@@ -475,7 +473,6 @@ class Gui(xbmcgui.WindowXMLDialog):
             self.setProperty('WebbiePlayerFull', 'true')
         else:
             self.setProperty('WebbiePlayerSeek', 'true')
-        xbmc.sleep(guifunc.InterfaceUpdateDelay)
 
         #Select current channel in list container
         if selectCurrentChannel == True:
@@ -491,6 +488,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         try:
             #Check if epg is allowed to update
             if self.EpgPauseUpdate: return
+
+            #Check if player currently has media
+            if xbmc.getCondVisibility("Player.HasMedia") == False: return
+
+            #Check if epg interface is visible
+            if xbmc.getCondVisibility('Control.IsVisible(5000)') == False: return
 
             #Get and check the list container
             listContainer = self.getControl(1001)
