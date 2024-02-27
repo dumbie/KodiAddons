@@ -1,11 +1,30 @@
-import xbmcgui
 import dialog
 import download
 import func
-import metadatainfo
 import metadatafunc
-import path
+import metadatainfo
 import var
+
+def get_status(program):
+    assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
+    if assetsArray != []:
+        return metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
+    else:
+        return 'NoAssets'
+
+def check_status_recorded(program):
+    recordingStatus = get_status(program)
+    if recordingStatus == 'RecordFailed' or recordingStatus == 'RecordSuccess' or recordingStatus == 'NoAssets':
+        return True
+    else:
+        return False
+
+def check_status_scheduled(program):
+    recordingStatus = get_status(program)
+    if recordingStatus == 'ScheduleSuccess' or recordingStatus == 'RescheduleSuccess':
+        return True
+    else:
+        return False
 
 def count_recording_events():
     try:
@@ -13,19 +32,12 @@ def count_recording_events():
         downloadResult = download.download_recording_event(False)
         if downloadResult == False: return '?'
 
-        #Count planned recording
+        #Count planned recordings
         recordingCount = 0
         for program in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
-                #Load and check recording status
-                assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
-                if assetsArray != []:
-                    assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
-                    if assetStatus == 'RecordFailed' or assetStatus == 'RecordSuccess':
-                        continue
-                else:
-                    continue
-                recordingCount += 1
+                if check_status_scheduled(program) == True:
+                    recordingCount += 1
             except:
                 continue
         return recordingCount
@@ -42,13 +54,8 @@ def count_recorded_events():
         recordingCount = 0
         for program in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
-                #Load and check recording status
-                assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
-                if assetsArray != []:
-                    assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
-                    if assetStatus == 'ScheduleSuccess' or assetStatus == 'RescheduleSuccess':
-                        continue
-                recordingCount += 1
+                if check_status_recorded(program) == True:
+                    recordingCount += 1
             except:
                 continue
         return recordingCount
@@ -66,7 +73,7 @@ def count_recording_series():
     except:
         return '?'
 
-def count_recorded_series_id(seriesId):
+def count_recorded_series_id(targetSeriesId):
     try:
         if var.RecordingEventDataJson == []: return ''
 
@@ -74,8 +81,7 @@ def count_recorded_series_id(seriesId):
         recordedCount = 0
         for program in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
-                recordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
-                if recordSeriesId == seriesId:
+                if metadatainfo.seriesId_from_json_metadata(program) == targetSeriesId:
                     recordedCount += 1
             except:
                 continue
@@ -83,27 +89,28 @@ def count_recorded_series_id(seriesId):
     except:
         return ''
 
-def record_event_epg(_self, listItemSelected, forceRecord=False):
+def record_event_epg(_self, listItemSelected):
     ProgramId = listItemSelected.getProperty('ProgramId')
-    ProgramRecordEventId = listItemSelected.getProperty('ProgramRecordEventId')
-    ProgramDeltaTimeStart = listItemSelected.getProperty('ProgramDeltaTimeStart')
 
-    #Check if recording is already set
-    if func.string_isnullorempty(ProgramRecordEventId) == True or forceRecord == True:
-        recordAdd = download.record_event_add(ProgramId)
-        if func.string_isnullorempty(recordAdd) == False:
+    #Check program recording state
+    recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramId)
+    if recordProgramEvent:
+        ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
+        ProgramDeltaTimeStart = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
+        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
+        if recordRemove == True:
             _self.update_channel_status()
             _self.update_program_status()
     else:
-        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
-        if recordRemove == True:
+        recordAdd = download.record_event_add(ProgramId)
+        if func.string_isnullorempty(recordAdd) == False:
             _self.update_channel_status()
             _self.update_program_status()
 
 def record_event_now_television_playergui(listItemSelected):
     ProgramNowId = listItemSelected.getProperty('ProgramNowId')
 
-    #Check the program recording state
+    #Check program recording state
     recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramNowId)
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
@@ -119,7 +126,7 @@ def record_event_now_television_playergui(listItemSelected):
 def record_event_next_television_playergui(listItemSelected):
     ProgramNextId = listItemSelected.getProperty('ProgramNextId')
 
-    #Check the program recording state
+    #Check program recording state
     recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramNextId)
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
@@ -132,82 +139,73 @@ def record_event_next_television_playergui(listItemSelected):
         if func.string_isnullorempty(recordAdd) == False:
             listItemSelected.setProperty("ProgramNextRecordEvent", 'true')
 
-def record_series_now_television_playergui(listItemSelected, forceRecord=False):
+def record_series_now_television_playergui(listItemSelected):
     ChannelId = listItemSelected.getProperty('ChannelId')
-    ProgramNowRecordSeries = listItemSelected.getProperty('ProgramNowRecordSeries')
-    ProgramNowRecordSeriesId = listItemSelected.getProperty('ProgramNowRecordSeriesId')
-    ProgramNextRecordSeriesId = listItemSelected.getProperty('ProgramNextRecordSeriesId')
+    ProgramNowSeriesId = listItemSelected.getProperty('ProgramNowSeriesId')
+    ProgramNextSeriesId = listItemSelected.getProperty('ProgramNextSeriesId')
 
-    if func.string_isnullorempty(ProgramNowRecordSeriesId) == True:
-        notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen kan niet worden opgenomen.', notificationIcon, 2500, False)
-        return
-
-    if ProgramNowRecordSeries == 'false' or forceRecord == True:
-        seriesAdd = download.record_series_add(ChannelId, ProgramNowRecordSeriesId)
-        if seriesAdd == True:
-            listItemSelected.setProperty('ProgramNowRecordEvent', 'true')
-            listItemSelected.setProperty('ProgramNowRecordSeries', 'true')
-            if ProgramNextRecordSeriesId == ProgramNowRecordSeriesId:
-                listItemSelected.setProperty('ProgramNextRecordEvent', 'true')
-                listItemSelected.setProperty('ProgramNextRecordSeries', 'true')
-    else:
-        #Get the removal series id
-        recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId)
-        if recordProgramSeries:
-            ProgramRecordSeriesIdLive = metadatainfo.seriesId_from_json_metadata(recordProgramSeries)
-        else:
-            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt.', notificationIcon, 2500, False)
-            return
-
-        #Ask user to remove recordings
-        dialogAnswers = ['Opnames verwijderen', 'Opnames houden']
-        dialogHeader = 'Serie opnames verwijderen'
-        dialogSummary = 'Wilt u ook alle opnames van deze serie seizoen verwijderen?'
-        dialogFooter = ''
-        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-        if dialogResult == 'Opnames verwijderen':
-            KeepRecording = False
-        elif dialogResult == 'Opnames houden': 
-            KeepRecording = True
-        else:
-            return
-
+    #Check series recording state
+    recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramNowSeriesId)
+    if recordProgramSeries:
         #Remove record series
-        seriesRemove = download.record_series_remove(ProgramRecordSeriesIdLive, KeepRecording)
-        if seriesRemove == True:
+        if record_series_remove_dialog(ProgramNowSeriesId) == True:
             listItemSelected.setProperty('ProgramNowRecordEvent', 'false')
             listItemSelected.setProperty('ProgramNowRecordSeries', 'false')
-            if ProgramNextRecordSeriesId == ProgramNowRecordSeriesId:
+            if ProgramNextSeriesId == ProgramNowSeriesId:
                 listItemSelected.setProperty('ProgramNextRecordEvent', 'false')
                 listItemSelected.setProperty('ProgramNextRecordSeries', 'false')
+    else:
+        #Add record series
+        if download.record_series_add(ChannelId, ProgramNowSeriesId) == True:
+            listItemSelected.setProperty('ProgramNowRecordEvent', 'true')
+            listItemSelected.setProperty('ProgramNowRecordSeries', 'true')
+            if ProgramNextSeriesId == ProgramNowSeriesId:
+                listItemSelected.setProperty('ProgramNextRecordEvent', 'true')
+                listItemSelected.setProperty('ProgramNextRecordSeries', 'true')
+
+def record_series_next_television_playergui(listItemSelected):
+    ChannelId = listItemSelected.getProperty('ChannelId')
+    ProgramNowSeriesId = listItemSelected.getProperty('ProgramNowSeriesId')
+    ProgramNextSeriesId = listItemSelected.getProperty('ProgramNextSeriesId')
+
+    #Check series recording state
+    recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramNextSeriesId)
+    if recordProgramSeries:
+        #Remove record series
+        if record_series_remove_dialog(ProgramNextSeriesId) == True:
+            listItemSelected.setProperty('ProgramNextRecordEvent', 'false')
+            listItemSelected.setProperty('ProgramNextRecordSeries', 'false')
+            if ProgramNextSeriesId == ProgramNowSeriesId:
+                listItemSelected.setProperty('ProgramNowRecordEvent', 'false')
+                listItemSelected.setProperty('ProgramNowRecordSeries', 'false')
+    else:
+        #Add record series
+        if download.record_series_add(ChannelId, ProgramNextSeriesId) == True:
+            listItemSelected.setProperty('ProgramNextRecordEvent', 'true')
+            listItemSelected.setProperty('ProgramNextRecordSeries', 'true')
+            if ProgramNextSeriesId == ProgramNowSeriesId:
+                listItemSelected.setProperty('ProgramNowRecordEvent', 'true')
+                listItemSelected.setProperty('ProgramNowRecordSeries', 'true')
 
 def record_series_epg(_self, listItemSelected, forceRecord=False):
     ChannelId = listItemSelected.getProperty('ChannelId')
-    ProgramRecordSeries = listItemSelected.getProperty('ProgramRecordSeries')
-    ProgramRecordSeriesId = listItemSelected.getProperty('ProgramRecordSeriesId')
+    ProgramSeriesId = listItemSelected.getProperty('ProgramSeriesId')
 
-    if func.string_isnullorempty(ProgramRecordSeriesId) == True:
-        notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen kan niet worden opgenomen.', notificationIcon, 2500, False)
-        return
-
-    if ProgramRecordSeries == 'false' or forceRecord == True:
-        seriesAdd = download.record_series_add(ChannelId, ProgramRecordSeriesId)
-        if seriesAdd == True:
+    #Check series recording state
+    recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramSeriesId)
+    if recordProgramSeries:
+        #Remove record series
+        if record_series_remove_dialog(ProgramSeriesId) == True:
             _self.update_channel_status()
             _self.update_program_status()
     else:
-        #Get the removal series id
-        recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
-        if recordProgramSeries:
-            ProgramRecordSeriesIdLive = metadatainfo.seriesId_from_json_metadata(recordProgramSeries)
-        else:
-            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt.', notificationIcon, 2500, False)
-            return
+        #Add record series
+        if download.record_series_add(ChannelId, ProgramSeriesId) == True:
+            _self.update_channel_status()
+            _self.update_program_status()
 
+def record_series_remove_dialog(seriesId):
+    try:
         #Ask user to remove recordings
         dialogAnswers = ['Opnames verwijderen', 'Opnames houden']
         dialogHeader = 'Serie opnames verwijderen'
@@ -215,14 +213,13 @@ def record_series_epg(_self, listItemSelected, forceRecord=False):
         dialogFooter = ''
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Opnames verwijderen':
-            KeepRecording = False
+            keepRecording = False
         elif dialogResult == 'Opnames houden': 
-            KeepRecording = True
+            keepRecording = True
         else:
-            return
+            return False
 
         #Remove record series
-        seriesRemove = download.record_series_remove(ProgramRecordSeriesIdLive, KeepRecording)
-        if seriesRemove == True:
-            _self.update_channel_status()
-            _self.update_program_status()
+        return download.record_series_remove(seriesId, keepRecording)
+    except:
+        return False

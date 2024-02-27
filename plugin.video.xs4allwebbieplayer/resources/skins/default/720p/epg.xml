@@ -458,19 +458,10 @@
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/record.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventPlanned), true)</visible>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEvent), true)</visible>
                     </control>
                     <control type="image">
                         <right>55</right>
-                        <bottom>13</bottom>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/recorddone.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventDone), true)</visible>
-                    </control>
-                    <control type="image">
-                        <right>75</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -479,7 +470,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordSeries), true)</visible>
                     </control>
                     <control type="image">
-                        <right>95</right>
+                        <right>75</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -488,7 +479,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRerun), true)</visible>
                     </control>
                     <control type="image">
-                        <right>115</right>
+                        <right>95</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -497,7 +488,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), false)</visible>
                     </control>
                     <control type="image">
-                        <right>115</right>
+                        <right>95</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -575,19 +566,10 @@
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/record.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventPlanned), true)</visible>
+                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEvent), true)</visible>
                     </control>
                     <control type="image">
                         <right>55</right>
-                        <bottom>13</bottom>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/recorddone.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramRecordEventDone), true)</visible>
-                    </control>
-                    <control type="image">
-                        <right>75</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -596,7 +578,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRecordSeries), true)</visible>
                     </control>
                     <control type="image">
-                        <right>95</right>
+                        <right>75</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -605,7 +587,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramRerun), true)</visible>
                     </control>
                     <control type="image">
-                        <right>115</right>
+                        <right>95</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>
@@ -614,7 +596,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), false)</visible>
                     </control>
                     <control type="image">
-                        <right>115</right>
+                        <right>95</right>
                         <bottom>13</bottom>
                         <width>18</width>
                         <height>18</height>

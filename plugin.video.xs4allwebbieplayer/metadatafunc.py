@@ -1,5 +1,5 @@
-from datetime import datetime
 import metadatainfo
+import recordingfunc
 import var
 
 #Search for ChannelId in json epg
@@ -35,15 +35,15 @@ def search_programindex_airingtime_jsonepg(jsonEpg, targetTime):
         return None
 
 #Search for ChannelId in json recording event
-def search_channelid_jsonrecording_event(searchChannelId, filterTime=False):
+def search_channelid_jsonrecording_event(searchChannelId, scheduledOnly=False):
     try:
         if var.RecordingEventDataJson == []: return None
         for Record in var.RecordingEventDataJson["resultObj"]["containers"]:
             try:
-                if filterTime == True:
-                    ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(Record)
-                    if datetime.now() > ProgramTimeEndDateTime: continue
-                if metadatainfo.channelId_from_json_metadata(Record) == searchChannelId:
+                if metadatainfo.channelId_from_json_metadata(Record) != searchChannelId: continue
+                if scheduledOnly == True and recordingfunc.check_status_scheduled(Record) == False:
+                    return None
+                else:
                     return Record
             except:
                 continue

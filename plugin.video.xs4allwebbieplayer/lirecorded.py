@@ -6,6 +6,7 @@ import lifunc
 import metadatacombine
 import metadatainfo
 import path
+import recordingfunc
 import var
 
 def list_load_combined(listContainer=None, forceUpdate=False):
@@ -36,6 +37,7 @@ def list_load_append(listContainer):
         try:
             #Load program basics
             ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
+            ProgramName = ProgramNameRaw
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermCurrent) == False:
@@ -44,15 +46,13 @@ def list_load_append(listContainer):
                 if searchResultFound == False: continue
 
             #Load and check recording status
-            assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
-            if assetsArray != []:
-                assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
-                if assetStatus == 'ScheduleSuccess' or assetStatus == 'RescheduleSuccess':
-                    continue
-                elif assetStatus == 'RecordFailed':
-                    ProgramNameRaw = '(Opname mislukt) ' + ProgramNameRaw
-            else:
-                ProgramNameRaw = '(Niet speelbaar) ' + ProgramNameRaw
+            recordingStatus = recordingfunc.get_status(program)
+            if recordingStatus == 'ScheduleSuccess' or recordingStatus == 'RescheduleSuccess':
+                continue
+            elif recordingStatus == 'RecordFailed':
+                ProgramName = '(Opname mislukt) ' + ProgramName
+            elif recordingStatus == 'NoAssets':
+                ProgramName = '(Niet speelbaar) ' + ProgramName
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
@@ -78,8 +78,8 @@ def list_load_append(listContainer):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, False, True)
 
             #Update program name string
-            ProgramNameList = ProgramNameRaw + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
-            ProgramNameDesc = ProgramNameRaw + '\n' + ProgramDetails
+            ProgramNameList = ProgramName + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramNameDesc = ProgramName + '\n' + ProgramDetails
 
             #Update program availability
             ProgramNameDesc += '\n' + ProgramAvailability
@@ -99,8 +99,8 @@ def list_load_append(listContainer):
                 "ProgramNameRaw": ProgramNameRaw,
                 "ProgramDetails": ProgramTiming,
                 'ProgramDescription': ProgramDescription,
-                'ItemLabel': ProgramNameRaw,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription, 'Size': ProgramDurationMinutes, 'Duration': ProgramTimeStartMinutes},
+                'ItemLabel': ProgramName,
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription, 'Size': ProgramDurationMinutes, 'Duration': ProgramTimeStartMinutes},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_recorded'
             }

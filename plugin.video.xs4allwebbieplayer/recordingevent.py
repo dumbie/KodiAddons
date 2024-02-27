@@ -1,4 +1,3 @@
-import xbmc
 import xbmcgui
 import download
 import guifunc
@@ -29,6 +28,7 @@ class Gui(xbmcgui.WindowXMLDialog):
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
         if clickId == 1000:
+            #Remove record event
             listItemSelected = clickedControl.getSelectedItem()
             ProgramRecordEventId = listItemSelected.getProperty("ProgramRecordEventId")
             ProgramDeltaTimeStart = listItemSelected.getProperty("ProgramDeltaTimeStart")

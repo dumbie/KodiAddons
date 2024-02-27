@@ -96,8 +96,8 @@ def list_load_program_append(listContainer):
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
-            SeriesId = metadatainfo.seriesId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
+            ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
@@ -110,8 +110,8 @@ def list_load_program_append(listContainer):
             #Set item details
             jsonItem = {
                 'PictureUrl': PictureUrl,
-                'SeriesId': SeriesId,
                 'ProgramId': ProgramId,
+                'ProgramSeriesId': ProgramSeriesId,
                 "ProgramName": ProgramName,
                 "ProgramWeek": 'true',
                 'ProgramDetails': ProgramDetails,

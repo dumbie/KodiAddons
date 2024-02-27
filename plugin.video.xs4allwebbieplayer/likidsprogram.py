@@ -119,8 +119,8 @@ def list_load_program_append(listContainer):
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
-            SeriesId = metadatainfo.seriesId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
+            ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
             #Set item icons
             iconDefault = path.icon_epg(PictureUrl)
@@ -131,8 +131,8 @@ def list_load_program_append(listContainer):
             jsonItem = {
                 'StartOffset': StartOffset,
                 'PictureUrl': PictureUrl,
-                'SeriesId': SeriesId,
                 'ProgramId': ProgramId,
+                'ProgramSeriesId': ProgramSeriesId,
                 "ProgramName": ProgramName,
                 "ProgramWeek": 'true',
                 'ProgramDetails': ProgramDetails,

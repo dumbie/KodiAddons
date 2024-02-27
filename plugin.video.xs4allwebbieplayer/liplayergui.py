@@ -81,16 +81,16 @@ def list_update(listItem):
                 ProgramNowRecordEvent = 'false'
 
             #Check if the program is part of series
-            ProgramNowRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
+            ProgramNowSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
             #Check if program is recording series
-            if metadatafunc.search_seriesid_jsonrecording_series(ProgramNowRecordSeriesId):
+            if metadatafunc.search_seriesid_jsonrecording_series(ProgramNowSeriesId):
                 ProgramNowRecordSeries = 'true'
             else:
                 ProgramNowRecordSeries = 'false'
         except:
             ProgramNowId = ''
-            ProgramNowRecordSeriesId = ''
+            ProgramNowSeriesId = ''
             ProgramNowName = 'Onbekend programma'
             ProgramNowTiming = '[COLOR gray]onbekend programmaduur[/COLOR]'
             ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
@@ -134,16 +134,16 @@ def list_update(listItem):
                 ProgramNextRecordEvent = 'false'
 
             #Check if the program is part of series
-            ProgramNextRecordSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
+            ProgramNextSeriesId = metadatainfo.seriesId_from_json_metadata(metaData)
 
             #Check if program is recording series
-            if metadatafunc.search_seriesid_jsonrecording_series(ProgramNextRecordSeriesId):
+            if metadatafunc.search_seriesid_jsonrecording_series(ProgramNextSeriesId):
                 ProgramNextRecordSeries = 'true'
             else:
                 ProgramNextRecordSeries = 'false'
         except:
             ProgramNextId = ''
-            ProgramNextRecordSeriesId = ''
+            ProgramNextSeriesId = ''
             ProgramNextName = '[COLOR gray]Onbekend programma[/COLOR]'
             ProgramNextNameRaw = 'Onbekend programma'
             ProgramNextTimeStartDateTime = datetime(1970,1,1)
@@ -175,12 +175,12 @@ def list_update(listItem):
 
         #Update the information in list item
         listItem.setProperty("ProgramNowId", ProgramNowId)
-        listItem.setProperty("ProgramNowRecordSeriesId", ProgramNowRecordSeriesId)
+        listItem.setProperty("ProgramNowSeriesId", ProgramNowSeriesId)
         listItem.setProperty("ProgramNowName", ProgramNowName)
         listItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
         listItem.setProperty("ProgramDescription", ProgramDescription)
         listItem.setProperty("ProgramNextId", ProgramNextId)
-        listItem.setProperty("ProgramNextRecordSeriesId", ProgramNextRecordSeriesId)
+        listItem.setProperty("ProgramNextSeriesId", ProgramNextSeriesId)
         listItem.setProperty("ProgramNextName", ProgramNextName)
         listItem.setProperty("ProgramNextNameRaw", ProgramNextNameRaw)
         listItem.setProperty("ProgramNextTimeStartDateTime", str(ProgramNextTimeStartDateTime))

@@ -1,9 +1,7 @@
-import xbmc
 import xbmcgui
-import dialog
-import download
 import guifunc
 import lirecordingseries
+import recordingfunc
 import var
 
 def switch_to_page():
@@ -30,25 +28,10 @@ class Gui(xbmcgui.WindowXMLDialog):
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
         if clickId == 1000:
-            listItemSelected = clickedControl.getSelectedItem()
-            SeriesId = listItemSelected.getProperty('SeriesId')
-
-            #Ask user to remove recordings
-            dialogAnswers = ['Opnames verwijderen', 'Opnames houden']
-            dialogHeader = 'Serie opnames verwijderen'
-            dialogSummary = 'Wilt u ook alle opnames van deze serie seizoen verwijderen?'
-            dialogFooter = ''
-            dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-            if dialogResult == 'Opnames verwijderen':
-                KeepRecording = False
-            elif dialogResult == 'Opnames houden': 
-                KeepRecording = True
-            else:
-                return
-
             #Remove record series
-            recordingRemoved = download.record_series_remove(SeriesId, KeepRecording)
-            if recordingRemoved == True:
+            listItemSelected = clickedControl.getSelectedItem()
+            ProgramSeriesId = listItemSelected.getProperty('ProgramSeriesId')
+            if recordingfunc.record_series_remove_dialog(ProgramSeriesId) == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()
                 guifunc.listRemoveItem(clickedControl, removeListItemId)

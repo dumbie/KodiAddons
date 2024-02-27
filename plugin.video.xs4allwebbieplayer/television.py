@@ -121,11 +121,12 @@ class Gui(xbmcgui.WindowXML):
         #Add record program
         if var.RecordingAccess() == True:
             dialogAnswers.append('Huidig programma opnemen of annuleren')
-            dialogAnswers.append('Volgend programma opnemen of annuleren')
             dialogAnswers.append('Huidig serie seizoen opnemen of annuleren')
+            dialogAnswers.append('Volgend programma opnemen of annuleren')
+            dialogAnswers.append('Volgend serie seizoen opnemen of annuleren')
 
         #Add set alarm for next program
-        dialogAnswers.append('Alarm volgend programma zetten of annuleren')
+        dialogAnswers.append('Volgend programma alarm zetten of annuleren')
 
         #Add hide channel
         dialogAnswers.append('Zender verbergen in zenderlijst')
@@ -160,11 +161,13 @@ class Gui(xbmcgui.WindowXML):
             self.switch_favorite_channel(listContainer, listItemSelected)
         elif dialogResult == 'Huidig programma opnemen of annuleren':
             recordingfunc.record_event_now_television_playergui(listItemSelected)
-        elif dialogResult == 'Volgend programma opnemen of annuleren':
-            recordingfunc.record_event_next_television_playergui(listItemSelected)
         elif dialogResult == 'Huidig serie seizoen opnemen of annuleren':
             recordingfunc.record_series_now_television_playergui(listItemSelected)
-        elif dialogResult == 'Alarm volgend programma zetten of annuleren':
+        elif dialogResult == 'Volgend programma opnemen of annuleren':
+            recordingfunc.record_event_next_television_playergui(listItemSelected)
+        elif dialogResult == 'Volgend serie seizoen opnemen of annuleren':
+            recordingfunc.record_series_next_television_playergui(listItemSelected)
+        elif dialogResult == 'Volgend programma alarm zetten of annuleren':
             self.set_program_alarm_next(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()

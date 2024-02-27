@@ -36,8 +36,8 @@ def list_load_append(listContainer):
     for program in var.RecordingSeriesDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
-            ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
+            ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
             #Check recorded episodes count
             ProgramEpisodeCount = recordingfunc.count_recorded_series_id(ProgramSeriesId)
@@ -66,7 +66,7 @@ def list_load_append(listContainer):
 
             #Set item details
             listItem = xbmcgui.ListItem()
-            listItem.setProperty('SeriesId', ProgramSeriesId)
+            listItem.setProperty('ProgramSeriesId', ProgramSeriesId)
             listItem.setProperty('ProgramName', ProgramName)
             listItem.setProperty('ProgramDescription', ChannelName)
             listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})

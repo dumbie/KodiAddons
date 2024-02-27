@@ -3,6 +3,7 @@ import json
 import xbmcgui
 import apilogin
 import classes
+import func
 import getset
 import hybrid
 import metadatainfo
@@ -506,8 +507,20 @@ def download_search_series(forceUpdate=False):
         xbmcgui.Dialog().notification(var.addonname, 'Week series download mislukt.', notificationIcon, 2500, False)
         return False
 
-def record_series_add(ChannelId, liveSeriesId):
+def record_series_add(channelId, seriesId):
     try:
+        #Check channel identifier
+        if func.string_isnullorempty(channelId) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen planning mislukt, onbekende zender.', notificationIcon, 2500, False)
+            return False
+
+        #Check record identifier
+        if func.string_isnullorempty(seriesId) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen planning mislukt, geen of onbekende serie.', notificationIcon, 2500, False)
+            return False
+
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
             notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
@@ -515,7 +528,7 @@ def record_series_add(ChannelId, liveSeriesId):
             return False
 
         #Download json data
-        DownloadDataSend = json.dumps({"channelId":ChannelId,"seriesId":liveSeriesId,"isAutoDeletionEnabled":True,"episodeScope":"ALL","isChannelBoundEnabled":True}).encode('ascii')
+        DownloadDataSend = json.dumps({"channelId":channelId,"seriesId":seriesId,"isAutoDeletionEnabled":True,"episodeScope":"ALL","isChannelBoundEnabled":True}).encode('ascii')
         DownloadDataJson = request_download_gzip(path.recording_series_add_remove(), DownloadDataSend)
 
         #Check if connection is successful
@@ -548,8 +561,14 @@ def record_series_add(ChannelId, liveSeriesId):
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen planning mislukt.', notificationIcon, 2500, False)
         return False
 
-def record_series_remove(SeriesId, KeepRecordings=True):
+def record_series_remove(seriesId, keepRecordings=True):
     try:
+        #Check record identifier
+        if func.string_isnullorempty(seriesId) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt, geen of onbekende serie.', notificationIcon, 2500, False)
+            return False
+
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
             notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
@@ -557,7 +576,7 @@ def record_series_remove(SeriesId, KeepRecordings=True):
             return False
 
         #Download json data
-        DownloadDataSend = json.dumps({"seriesIds":[int(SeriesId)],"isKeepRecordingsEnabled":KeepRecordings}).encode('ascii')
+        DownloadDataSend = json.dumps({"seriesIds":[int(seriesId)],"isKeepRecordingsEnabled":keepRecordings}).encode('ascii')
         DownloadDataJson = request_download_gzip(path.recording_series_add_remove(), DownloadDataSend, 'DELETE')
 
         #Check if connection is successful
@@ -590,8 +609,14 @@ def record_series_remove(SeriesId, KeepRecordings=True):
         xbmcgui.Dialog().notification(var.addonname, 'Serie seizoen annulering mislukt.', notificationIcon, 2500, False)
         return False
 
-def record_event_add(ProgramId):
+def record_event_add(programId):
     try:
+        #Check record identifier
+        if func.string_isnullorempty(programId) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Opname planning mislukt, onbekende programma.', notificationIcon, 2500, False)
+            return False
+
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
             notificationIcon = path.resources('resources/skins/default/media/common/record.png')
@@ -599,7 +624,7 @@ def record_event_add(ProgramId):
             return ''
 
         #Download json data
-        DownloadDataSend = json.dumps({"externalContentId":ProgramId,"isAutoDeletionEnabled":True}).encode('ascii')
+        DownloadDataSend = json.dumps({"externalContentId":programId,"isAutoDeletionEnabled":True}).encode('ascii')
         DownloadDataJson = request_download_gzip(path.recording_event_add_remove(), DownloadDataSend)
 
         #Check if connection is successful
@@ -630,8 +655,14 @@ def record_event_add(ProgramId):
         xbmcgui.Dialog().notification(var.addonname, 'Opname planning mislukt.', notificationIcon, 2500, False)
         return ''
 
-def record_event_remove(RecordId, StartDeltaTime=0):
+def record_event_remove(recordEventId, startDeltaTime=0):
     try:
+        #Check record identifier
+        if func.string_isnullorempty(recordEventId) == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Opname annulering mislukt, onbekende programma.', notificationIcon, 2500, False)
+            return False
+
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
             notificationIcon = path.resources('resources/skins/default/media/common/record.png')
@@ -639,7 +670,7 @@ def record_event_remove(RecordId, StartDeltaTime=0):
             return False
 
         #Download json data
-        DownloadDataSend = json.dumps([{"recordId":int(RecordId),"startDeltaTime":int(StartDeltaTime)}]).encode('ascii')
+        DownloadDataSend = json.dumps([{"recordId":int(recordEventId),"startDeltaTime":int(startDeltaTime)}]).encode('ascii')
         DownloadDataJson = request_download_gzip(path.recording_event_add_remove(), DownloadDataSend, 'DELETE')
 
         #Check if connection is successful

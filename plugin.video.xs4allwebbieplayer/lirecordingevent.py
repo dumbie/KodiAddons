@@ -1,9 +1,10 @@
+import xbmcgui
 import download
 import lifunc
 import metadatacombine
 import metadatainfo
-import xbmcgui
 import path
+import recordingfunc
 import var
 
 def list_load_combined(listContainer=None, forceUpdate=False):
@@ -33,12 +34,7 @@ def list_load_append(listContainer):
     for program in var.RecordingEventDataJson["resultObj"]["containers"]:
         try:
             #Load and check recording status
-            assetsArray = metadatainfo.stream_assets_array_from_json_metadata(program)
-            if assetsArray != []:
-                assetStatus = metadatainfo.stream_assetstatus_from_assets_array(assetsArray)
-                if assetStatus == 'RecordFailed' or assetStatus == 'RecordSuccess':
-                    continue
-            else:
+            if recordingfunc.check_status_scheduled(program) == False:
                 continue
 
             #Load program details

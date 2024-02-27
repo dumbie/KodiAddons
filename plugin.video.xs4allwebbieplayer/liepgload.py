@@ -89,7 +89,7 @@ def list_load_append(listContainer, epgJson):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Check if the program is part of series
-            ProgramRecordSeriesId = metadatainfo.seriesId_from_json_metadata(program)
+            ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
             #Check if current program is a rerun
             programRerunName = any(substring for substring in var.ProgramRerunSearchTerm if substring in ProgramName.lower())
@@ -119,7 +119,7 @@ def list_load_append(listContainer, epgJson):
             listItem.setProperty('ProgramRerun', ProgramRerun)
             listItem.setProperty('ProgramIsCatchup', ProgramIsCatchup)
             listItem.setProperty('ProgramDuration', ProgramDurationString)
-            listItem.setProperty('ProgramRecordSeriesId', ProgramRecordSeriesId)
+            listItem.setProperty('ProgramSeriesId', ProgramSeriesId)
             listItem.setProperty('ProgramDescriptionRaw', ProgramDescriptionRaw)
             listItem.setProperty('ProgramDescriptionDesc', ProgramDescriptionDesc)
             listItem.setProperty('ProgramEpgList', ProgramEpgList)

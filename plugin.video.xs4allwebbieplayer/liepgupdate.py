@@ -49,7 +49,7 @@ def list_update_program(listItem):
         ProgramDescriptionRaw = listItem.getProperty('ProgramDescriptionRaw')
         ProgramIsCatchup = listItem.getProperty('ProgramIsCatchup')
         ProgramDetails = listItem.getProperty('ProgramDetails')
-        ProgramRecordSeriesId = listItem.getProperty('ProgramRecordSeriesId')
+        ProgramSeriesId = listItem.getProperty('ProgramSeriesId')
         ProgramTimeStart = listItem.getProperty('ProgramTimeStart')
         ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
         ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
@@ -72,22 +72,16 @@ def list_update_program(listItem):
         #Check if program is recording event and if the recording is planned or done
         recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramId)
         if recordProgramEvent:
-            if dateTimeNow > ProgramTimeEndDateTime:
-                ProgramRecordEventPlanned = 'false'
-                ProgramRecordEventDone = 'true'
-            else:
-                ProgramRecordEventPlanned = 'true'
-                ProgramRecordEventDone = 'false'
+            ProgramRecordEvent = 'true'
             ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
             ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent))
         else:
-            ProgramRecordEventPlanned = 'false'
-            ProgramRecordEventDone = 'false'
+            ProgramRecordEvent = 'false'
             ProgramRecordEventId = ''
             ProgramDeltaTimeStart = '0'
 
         #Check if program is recording series
-        recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramRecordSeriesId)
+        recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramSeriesId)
         if recordProgramSeries:
             ProgramRecordSeries = 'true'
         else:
@@ -125,8 +119,7 @@ def list_update_program(listItem):
         listItem.setProperty('ProgramDescriptionDesc', ProgramDescriptionDesc)
         listItem.setProperty('ProgramAlarm', ProgramAlarm)
         listItem.setProperty('ProgramDeltaTimeStart', ProgramDeltaTimeStart)
-        listItem.setProperty('ProgramRecordEventPlanned', ProgramRecordEventPlanned)
-        listItem.setProperty('ProgramRecordEventDone', ProgramRecordEventDone)
+        listItem.setProperty('ProgramRecordEvent', ProgramRecordEvent)
         listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
         listItem.setProperty('ProgramRecordSeries', ProgramRecordSeries)
         listItem.setProperty('ProgramProgressPercent', str(ProgramProgressPercent))
