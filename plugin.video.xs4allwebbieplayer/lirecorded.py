@@ -63,8 +63,8 @@ def list_load_append(listContainer):
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-            ProgramTimeStartMinutes = (ProgramTimeStartDateTime.hour * 60) + ProgramTimeStartDateTime.minute
-            ProgramDurationMinutes = metadatainfo.programdurationstring_from_json_metadata(program, False, False, False)
+            ProgramDurationMinutes = int(metadatainfo.programdurationstring_from_json_metadata(program, False, False, False))
+            ProgramDurationSeconds = ProgramDurationMinutes * 60
             ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
             StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
@@ -75,11 +75,11 @@ def list_load_append(listContainer):
             ProgramDescription = metadatacombine.program_description_extended(program)
 
             #Combine program details
-            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, False, True)
+            ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
             ProgramNameList = ProgramName + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
-            ProgramNameDesc = ProgramName + '\n' + ProgramDetails
+            ProgramNameDesc = ProgramNameRaw + '\n' + ProgramDetails
 
             #Update program availability
             ProgramNameDesc += '\n' + ProgramAvailability
@@ -100,7 +100,7 @@ def list_load_append(listContainer):
                 "ProgramDetails": ProgramTiming,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription, 'Size': ProgramDurationMinutes, 'Duration': ProgramTimeStartMinutes},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramTiming, 'Title': ProgramName, 'Plot': ProgramDescription, 'Duration': ProgramDurationSeconds},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_recorded'
             }

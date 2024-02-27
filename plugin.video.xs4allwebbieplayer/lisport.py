@@ -60,8 +60,8 @@ def list_load_append(listContainer):
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
-            ProgramTimeStartMinutes = (ProgramTimeStartDateTime.hour * 60) + ProgramTimeStartDateTime.minute
-            ProgramDurationMinutes = metadatainfo.programdurationstring_from_json_metadata(program, False, False, False)
+            ProgramDurationMinutes = int(metadatainfo.programdurationstring_from_json_metadata(program, False, False, False))
+            ProgramDurationSeconds = ProgramDurationMinutes * 60
 
             #Combine program timing
             ProgramTiming = metadatacombine.program_timing_vod(program)
@@ -94,7 +94,7 @@ def list_load_append(listContainer):
                 "ProgramDetails": ProgramTiming,
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramNameRaw,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescription, 'Size': ProgramDurationMinutes, 'Duration': ProgramTimeStartMinutes},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramTiming, 'Title': ProgramNameRaw, 'Plot': ProgramDescription, 'Duration': ProgramDurationSeconds},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_program'
             }

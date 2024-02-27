@@ -99,21 +99,21 @@ def list_load_program_append(listContainer):
             ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
             if ContentSubtype == "VOD":
                 ProgramDetails = metadatacombine.program_details(program, True, True, True, False, False, False, True)
-                ItemAction = 'play_stream_program'
-                ItemInfoVideo = {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDetails}
-                dirIsfolder = False
-                iconProgramType = path.icon_addon('movies')
                 ProgramDescription = metadatacombine.program_description_extended(program)
                 ProgramAvailability = metadatainfo.available_time_program(program)
+                ItemAction = 'play_stream_program'
+                ItemInfoVideo = {'MediaType': 'movie', 'Genre': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription}
+                dirIsfolder = False
+                iconProgramType = path.icon_addon('movies')
                 StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
             else:
                 ProgramDetails = metadatacombine.program_details(program, True, False, True, False, False, False, True)
+                ProgramDescription = ""
+                ProgramAvailability = ""
                 ItemAction = 'load_kids_episodes_program'
                 ItemInfoVideo = {'MediaType': 'tvshow', 'Genre': ProgramDetails}
                 dirIsfolder = True
                 iconProgramType = path.icon_addon('series')
-                ProgramDescription = ""
-                ProgramAvailability = ""
                 StartOffset = ""
 
             #Load program details
