@@ -508,7 +508,6 @@
                     <wrapmultiline>true</wrapmultiline>
                     <textcolor>FFFFFFFF</textcolor>
                     <info>Container(1001).ListItem.Property(ProgramDescription)</info>
-                    <autoscroll delay="4000" time="2500" repeat="4000">String.IsEqual(Window().Property(WebbiePlayerFull), false) + Player.Paused</autoscroll>
                     <pagecontrol>2004</pagecontrol>
                 </control>
                 <control type="scrollbar" id="2004">
