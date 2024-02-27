@@ -99,13 +99,15 @@ def record_event_epg(_self, listItemSelected):
         ProgramDeltaTimeStart = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
         recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
         if recordRemove == True:
-            _self.update_channel_status()
-            _self.update_program_status()
+            #Force manual epg update
+            _self.ProgramManualUpdate = True
+            _self.ChannelManualUpdate = True
     else:
         recordAdd = download.record_event_add(ProgramId)
         if func.string_isnullorempty(recordAdd) == False:
-            _self.update_channel_status()
-            _self.update_program_status()
+            #Force manual epg update
+            _self.ProgramManualUpdate = True
+            _self.ChannelManualUpdate = True
 
 def record_event_now_television_playergui(listItemSelected):
     ProgramNowId = listItemSelected.getProperty('ProgramNowId')
@@ -187,7 +189,7 @@ def record_series_next_television_playergui(listItemSelected):
                 listItemSelected.setProperty('ProgramNowRecordEvent', 'true')
                 listItemSelected.setProperty('ProgramNowRecordSeries', 'true')
 
-def record_series_epg(_self, listItemSelected, forceRecord=False):
+def record_series_epg(_self, listItemSelected):
     ChannelId = listItemSelected.getProperty('ChannelId')
     ProgramSeriesId = listItemSelected.getProperty('ProgramSeriesId')
 
@@ -196,13 +198,15 @@ def record_series_epg(_self, listItemSelected, forceRecord=False):
     if recordProgramSeries:
         #Remove record series
         if record_series_remove_dialog(ProgramSeriesId) == True:
-            _self.update_channel_status()
-            _self.update_program_status()
+            #Force manual epg update
+            _self.ProgramManualUpdate = True
+            _self.ChannelManualUpdate = True
     else:
         #Add record series
         if download.record_series_add(ChannelId, ProgramSeriesId) == True:
-            _self.update_channel_status()
-            _self.update_program_status()
+            #Force manual epg update
+            _self.ProgramManualUpdate = True
+            _self.ChannelManualUpdate = True
 
 def record_series_remove_dialog(seriesId):
     try:
@@ -213,13 +217,13 @@ def record_series_remove_dialog(seriesId):
         dialogFooter = ''
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Opnames verwijderen':
-            keepRecording = False
+            keepRecordings = False
         elif dialogResult == 'Opnames houden': 
-            keepRecording = True
+            keepRecordings = True
         else:
             return False
 
         #Remove record series
-        return download.record_series_remove(seriesId, keepRecording)
+        return download.record_series_remove(seriesId, keepRecordings)
     except:
         return False

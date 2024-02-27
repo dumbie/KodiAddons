@@ -73,12 +73,8 @@ def list_update_program(listItem):
         recordProgramEvent = metadatafunc.search_programid_jsonrecording_event(ProgramId)
         if recordProgramEvent:
             ProgramRecordEvent = 'true'
-            ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
-            ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent))
         else:
             ProgramRecordEvent = 'false'
-            ProgramRecordEventId = ''
-            ProgramDeltaTimeStart = '0'
 
         #Check if program is recording series
         recordProgramSeries = metadatafunc.search_seriesid_jsonrecording_series(ProgramSeriesId)
@@ -118,9 +114,7 @@ def list_update_program(listItem):
         listItem.setProperty('ProgramEpgList', ProgramEpgList)
         listItem.setProperty('ProgramDescriptionDesc', ProgramDescriptionDesc)
         listItem.setProperty('ProgramAlarm', ProgramAlarm)
-        listItem.setProperty('ProgramDeltaTimeStart', ProgramDeltaTimeStart)
         listItem.setProperty('ProgramRecordEvent', ProgramRecordEvent)
-        listItem.setProperty('ProgramRecordEventId', ProgramRecordEventId)
         listItem.setProperty('ProgramRecordSeries', ProgramRecordSeries)
         listItem.setProperty('ProgramProgressPercent', str(ProgramProgressPercent))
     except:
