@@ -101,7 +101,7 @@
                         <control type="image">
                             <width>700</width>
                             <height>65</height>
-                            <texture colordiffuse="50888888">common/background_light.png</texture>
+                            <texture colordiffuse="2D888888">common/background_light.png</texture>
                         </control>
                         <control type="image">
                             <top>8</top>
