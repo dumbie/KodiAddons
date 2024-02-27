@@ -79,12 +79,14 @@ class Class_ThreadSafe:
         return self.thread == None
 
     #Check if thread is allowed to run
-    def Allowed(self, serviceThread=False):
+    def Allowed(self, serviceThread=False, sleepDelay=0):
+        if sleepDelay != 0:
+            self.Sleep(sleepDelay)
         if serviceThread:
             return self.allowed and var.addonmonitor.abortRequested() == False
         else:
             return self.allowed and var.addonmonitor.abortRequested() == False and getset.check_addon_running() == True
 
     #Sleep thread until set or timeout
-    def Sleep(self, duration):
-        self.eventSleep.wait(timeout=float(duration / 1000))
+    def Sleep(self, sleepDelay):
+        self.eventSleep.wait(timeout=float(sleepDelay / 1000))

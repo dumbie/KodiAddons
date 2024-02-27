@@ -39,7 +39,7 @@ def alarm_notification():
 
 def thread_alarm_timer():
     threadLastTime = ''
-    while var.thread_alarm_timer.Allowed(True):
+    while var.thread_alarm_timer.Allowed(True, sleepDelay=2000):
         try:
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime:
@@ -49,8 +49,6 @@ def thread_alarm_timer():
                 alarm.alarm_clean_expired(True)
         except:
             pass
-        finally:
-            var.thread_alarm_timer.Sleep(2000)
 
 def start_alarm_check():
     var.thread_alarm_timer.Start(thread_alarm_timer)

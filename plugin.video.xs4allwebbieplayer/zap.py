@@ -92,7 +92,7 @@ def zap_remote_number(_self):
     streamplay.play_tv(listItemSelected, ShowInformation=True)
 
 def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
-    while var.thread_zap_wait_timer.Allowed():
+    while var.thread_zap_wait_timer.Allowed(sleepDelay=100):
         try:
             interactSecond = 3
             lastInteractSeconds = int((datetime.now() - var.ZapDelayDateTime).total_seconds())
@@ -124,5 +124,3 @@ def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
                 _self.setProperty('ZapVisible', 'true')
         except:
             pass
-        finally:
-            var.thread_zap_wait_timer.Sleep(100)
