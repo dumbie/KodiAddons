@@ -1,5 +1,6 @@
 import os
 import platform
+import struct
 from zipfile import ZipFile
 import xbmc
 import xbmcaddon
@@ -75,7 +76,8 @@ def enable_widevine_support(forceUpdate=False):
     downloadArchitecture = ''
     systemArchitecture = platform.machine().lower()
     systemBits = platform.architecture()[0].lower()
-    if ('arm' in systemArchitecture or 'aarch' in systemArchitecture) and '64' in systemArchitecture:
+    system32Mode = struct.calcsize('P') * 8 == 32
+    if ('arm' in systemArchitecture or 'aarch' in systemArchitecture) and system32Mode == False:
         downloadArchitecture = 'arm64'
     elif 'arm' in systemArchitecture or 'aarch' in systemArchitecture:
         downloadArchitecture = 'arm32'
