@@ -20,7 +20,8 @@ def list_load_combined(listContainer=None, forceUpdate=False):
 
         #Add items to sort list
         listContainerSort = []
-        list_load_append(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_append(listContainerSort, remoteMode)
 
         #Sort list items
         listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramTimeStart'), reverse=True)
@@ -32,7 +33,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
     except:
         return False
 
-def list_load_append(listContainer):
+def list_load_append(listContainer, remoteMode=False):
     for program in var.RecordingEventDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -105,7 +106,7 @@ def list_load_append(listContainer):
                 'ItemAction': 'play_stream_recorded'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

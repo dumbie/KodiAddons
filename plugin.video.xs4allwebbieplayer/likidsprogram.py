@@ -20,8 +20,9 @@ def list_load_combined(listContainer=None, forceUpdate=False):
 
         #Add items to sort list
         listContainerSort = []
-        list_load_program_append(listContainerSort)
-        list_load_vod_append(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_program_append(listContainerSort, remoteMode)
+        list_load_vod_append(listContainerSort, remoteMode)
 
         #Sort items in list
         listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramName'))
@@ -33,7 +34,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
     except:
         return False
 
-def list_load_vod_append(listContainer):
+def list_load_vod_append(listContainer, remoteMode=False):
     for program in var.KidsVodDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -73,13 +74,13 @@ def list_load_vod_append(listContainer):
                 'ItemAction': 'load_kids_episodes_vod'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
 
-def list_load_program_append(listContainer):
+def list_load_program_append(listContainer, remoteMode=False):
     for program in var.KidsProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -94,6 +95,12 @@ def list_load_program_append(listContainer):
             #Check if program is already added
             duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower())
             if duplicateProgram == True: continue
+
+            #Load program details
+            ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
+            PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
+            ProgramId = metadatainfo.contentId_from_json_metadata(program)
+            ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
             #Check if program is serie or movie
             ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
@@ -116,12 +123,6 @@ def list_load_program_append(listContainer):
                 iconProgramType = path.icon_addon('series')
                 StartOffset = ""
 
-            #Load program details
-            ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
-            PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
-            ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
-
             #Set item icons
             iconDefault = path.icon_epg(PictureUrl)
             iconChannel = path.icon_television(ExternalId)
@@ -143,7 +144,7 @@ def list_load_program_append(listContainer):
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
                 'ItemAction': ItemAction
             }
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

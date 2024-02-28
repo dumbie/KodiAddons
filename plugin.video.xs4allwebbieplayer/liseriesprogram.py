@@ -1,9 +1,9 @@
+import xbmcgui
 import download
 import func
 import lifunc
 import metadatacombine
 import metadatainfo
-import xbmcgui
 import path
 import var
 
@@ -19,8 +19,9 @@ def list_load_combined(listContainer=None, forceUpdate=False):
 
         #Add items to sort list
         listContainerSort = []
-        list_load_program_append(listContainerSort)
-        list_load_vod_append(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_program_append(listContainerSort, remoteMode)
+        list_load_vod_append(listContainerSort, remoteMode)
 
         #Sort items in list
         listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramName'))
@@ -32,7 +33,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
     except:
         return False
 
-def list_load_vod_append(listContainer):
+def list_load_vod_append(listContainer, remoteMode=False):
     for program in var.SeriesVodDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -71,13 +72,13 @@ def list_load_vod_append(listContainer):
                 'ItemAction': 'load_series_episodes_vod'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
 
-def list_load_program_append(listContainer):
+def list_load_program_append(listContainer, remoteMode=False):
     for program in var.SeriesProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -121,7 +122,7 @@ def list_load_program_append(listContainer):
                 'ItemAction': 'load_series_episodes_program'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

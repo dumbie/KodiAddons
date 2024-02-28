@@ -20,8 +20,9 @@ def list_load_combined(listContainer=None, forceUpdate=False):
 
         #Add items to sort list
         listContainerSort = []
-        list_load_program(listContainerSort)
-        list_load_vod(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_program_append(listContainerSort, remoteMode)
+        list_load_vod_append(listContainerSort, remoteMode)
 
         #Sort items in list
         listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramName'))
@@ -35,7 +36,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         xbmcgui.Dialog().notification(var.addonname, "Films downloaden mislukt.", notificationIcon, 2500, False)
         return False
 
-def list_load_vod(listContainer):
+def list_load_vod_append(listContainer, remoteMode=False):
     for program in var.MoviesVodDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -85,13 +86,13 @@ def list_load_vod(listContainer):
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
 
-def list_load_program(listContainer):
+def list_load_program_append(listContainer, remoteMode=False):
     for program in var.MoviesProgramDataJson['resultObj']['containers']:
         try:
             #Load program basics
@@ -145,7 +146,7 @@ def list_load_program(listContainer):
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

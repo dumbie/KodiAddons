@@ -44,7 +44,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_television'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -58,7 +58,7 @@ def list_load_append(listContainer, remoteMode=False):
             'ItemAction': 'page_radio'
         }
         dirIsfolder = True
-        dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+        dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
         listItem = lifunc.jsonitem_to_listitem(jsonItem)
         listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -73,7 +73,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_movies'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -88,7 +88,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_series'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -103,7 +103,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_epg'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -118,7 +118,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_search'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -133,7 +133,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_sport'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -148,7 +148,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_vod'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -168,7 +168,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_kids'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -183,7 +183,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_recorded'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -198,7 +198,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_recording_event'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -213,7 +213,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_recording_series'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -228,7 +228,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_alarm'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -243,7 +243,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_sleep'
             }
             dirIsfolder = True
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -258,7 +258,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'addon_settings'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -273,7 +273,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'page_help'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -288,7 +288,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'addon_shutdown'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
@@ -303,7 +303,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'addon_launch'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
     except:

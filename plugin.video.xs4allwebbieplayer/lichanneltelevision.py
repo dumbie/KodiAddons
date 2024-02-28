@@ -34,7 +34,8 @@ def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=
 
         #Add items to sort list
         listContainerSort = []
-        list_load_append(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_append(listContainerSort, remoteMode)
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -43,7 +44,7 @@ def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=
     except:
         return False
 
-def list_load_append(listContainer):
+def list_load_append(listContainer, remoteMode=False):
     var.TelevisionChannelIdsPlayable = []
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
@@ -120,7 +121,7 @@ def list_load_append(listContainer):
                 'ItemAction': 'play_stream_tv'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

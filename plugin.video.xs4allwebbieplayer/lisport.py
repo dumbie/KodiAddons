@@ -20,7 +20,8 @@ def list_load_combined(listContainer=None, forceUpdate=False):
 
         #Add items to sort list
         listContainerSort = []
-        list_load_append(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_append(listContainerSort, remoteMode)
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -29,7 +30,7 @@ def list_load_combined(listContainer=None, forceUpdate=False):
     except:
         return False
 
-def list_load_append(listContainer):
+def list_load_append(listContainer, remoteMode=False):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
@@ -99,7 +100,7 @@ def list_load_append(listContainer):
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

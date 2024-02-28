@@ -19,7 +19,8 @@ def list_load_vod_combined(selectedProgramId, selectedPictureUrl, listContainer=
 
         #Add items to sort list
         listContainerSort = []
-        list_load_vod_append(listContainerSort, downloadResult, selectedPictureUrl)
+        remoteMode = listContainer == None
+        list_load_vod_append(listContainerSort, downloadResult, selectedPictureUrl, remoteMode)
 
         #Sort list items
         listContainerSort.sort(key=lambda x: (int(x[1].getProperty('ProgramSeasonInt')), int(x[1].getProperty('ProgramEpisodeInt'))))
@@ -42,7 +43,8 @@ def list_load_program_combined(selectedProgramName, selectedPictureUrl, listCont
 
         #Add items to sort list
         listContainerSort = []
-        list_load_program_append(listContainerSort, selectedProgramName, selectedPictureUrl)
+        remoteMode = listContainer == None
+        list_load_program_append(listContainerSort, selectedProgramName, selectedPictureUrl, remoteMode)
 
         #Sort list items
         listContainerSort.sort(key=lambda x: (int(x[1].getProperty('ProgramSeasonInt')), int(x[1].getProperty('ProgramEpisodeInt'))))
@@ -54,7 +56,7 @@ def list_load_program_combined(selectedProgramName, selectedPictureUrl, listCont
     except:
         return False
 
-def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
+def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl, remoteMode=False):
     for program in downloadedSeason["resultObj"]["containers"]:
         try:
             #Load program basics
@@ -101,13 +103,13 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl):
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
 
-def list_load_program_append(listContainer, selectedProgramName, selectedPictureUrl):
+def list_load_program_append(listContainer, selectedProgramName, selectedPictureUrl, remoteMode=False):
     for program in var.KidsProgramDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
@@ -161,7 +163,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False
-            dirUrl = var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
