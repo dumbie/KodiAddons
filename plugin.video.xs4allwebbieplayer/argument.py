@@ -32,16 +32,21 @@ def handle_launch_argument_source():
         #Handle settings
         if var.LaunchArgument == "InputAdaptiveSettings":
             xbmcaddon.Addon('inputstream.adaptive').openSettings()
+            return True
         elif var.LaunchArgument == "UpdateWidevineFiles":
             widevine.enable_widevine_support(True)
+            return True
         elif var.LaunchArgument == "ResetUserdata":
             default.reset_userdata()
+            return True
         elif var.LaunchArgument == "ResetThumbnails":
             default.reset_thumbnails()
+            return True
 
         #List main menu
         elif func.string_isnullorempty(var.LaunchArgument):
             limain.list_load_combined()
+            return True
 
         #Decode pickle directory url
         jsonItem = func.jsonstring_to_dictionary(var.LaunchArgument)
