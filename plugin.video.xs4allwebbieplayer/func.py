@@ -231,21 +231,27 @@ def device_reboot_dialog():
 #Convert object to pickle string
 def object_to_picklestring(object, useBase64=True):
     if useBase64:
-        return base64.b64encode(pickle.dumps(object))
+        return base64.urlsafe_b64encode(pickle.dumps(object))
     else:
         return pickle.dumps(object)
 
 #Convert pickle string to object
 def picklestring_to_object(picklestring, useBase64=True):
     if useBase64:
-        return pickle.loads(base64.b64decode(picklestring))
+        return pickle.loads(base64.urlsafe_b64decode(picklestring))
     else:
         return pickle.loads(picklestring)
 
 #Convert dictionary to json string
-def dictionary_to_jsonstring(dictionary):
-    return json.dumps(dictionary)
+def dictionary_to_jsonstring(dictionary, useBase64=True):
+    if useBase64:
+        return base64.urlsafe_b64encode(json.dumps(dictionary).encode("ascii")).decode("ascii")
+    else:
+        return json.dumps(dictionary)
 
 #Convert json string to dictionary
-def jsonstring_to_dictionary(jsonString):
-    return json.loads(jsonString)
+def jsonstring_to_dictionary(jsonString, useBase64=True):
+    if useBase64:
+        return json.loads(base64.urlsafe_b64decode(jsonString.encode("ascii")).decode("ascii"))
+    else:
+        return json.loads(jsonString)

@@ -2,7 +2,6 @@ import sys
 import xbmcaddon
 import default
 import func
-import hybrid
 import lichannelradio
 import lichanneltelevision
 import lifunc
@@ -23,7 +22,7 @@ def set_launch_argument_source():
     try:
         var.LaunchUrl = str(sys.argv[0])
         var.LaunchHandle = int(sys.argv[1])
-        var.LaunchArgument = hybrid.urllib_unquote(str(sys.argv[2])).lstrip("?").strip("\"")
+        var.LaunchArgument = str(sys.argv[2]).lstrip("?")
         return True
     except:
         return False

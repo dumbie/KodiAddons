@@ -27,7 +27,7 @@ def enable_inputstreamadaptive():
                 'enabled': True
             }
         }
-        result = xbmc.executeJSONRPC(func.dictionary_to_jsonstring(jsonRpcDictionary))
+        result = xbmc.executeJSONRPC(func.dictionary_to_jsonstring(jsonRpcDictionary, False))
         if 'error' in result:
             failed = True
     except:
