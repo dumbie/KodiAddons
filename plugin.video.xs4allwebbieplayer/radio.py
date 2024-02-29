@@ -18,6 +18,7 @@ import zap
 def switch_to_page():
     if var.guiRadio == None:
         var.guiRadio = Gui('radio.xml', var.addonpath, 'default', '720p')
+        var.guiRadio.setProperty('WebbiePlayerPage', 'Open')
         var.guiRadio.show()
 
 def close_the_page():

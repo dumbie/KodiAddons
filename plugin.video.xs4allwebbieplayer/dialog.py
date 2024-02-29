@@ -7,6 +7,7 @@ import var
 def show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, selectIndex=0):
     if var.guiDialog == None:
         var.guiDialog = Gui('dialog.xml', var.addonpath, 'default', '720p')
+        var.guiDialog.setProperty('WebbiePlayerPage', 'Open')
         var.guiDialog.show()
 
         var.guiDialog.update_dialogSize(dialogFooter, dialogAnswers)

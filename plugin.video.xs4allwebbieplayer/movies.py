@@ -14,6 +14,7 @@ import var
 def switch_to_page():
     if var.guiMovies == None:
         var.guiMovies = Gui('movies.xml', var.addonpath, 'default', '720p')
+        var.guiMovies.setProperty('WebbiePlayerPage', 'Open')
         var.guiMovies.show()
 
 def close_the_page():

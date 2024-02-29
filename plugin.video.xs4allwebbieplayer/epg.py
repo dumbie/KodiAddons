@@ -21,6 +21,7 @@ import zap
 def switch_to_page():
     if var.guiEpg == None:
         var.guiEpg = Gui('epg.xml', var.addonpath, 'default', '720p')
+        var.guiEpg.setProperty('WebbiePlayerPage', 'Open')
         var.guiEpg.show()
 
 def close_the_page():

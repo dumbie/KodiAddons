@@ -1,5 +1,4 @@
 import json
-import xbmc
 import xbmcgui
 import files
 import guifunc
@@ -110,6 +109,7 @@ def switch_to_page(hiddenMode='HiddenTelevision.js'):
     #Show hidden channel overlay
     if var.guiHidden == None:
         var.guiHidden = Gui('schedule.xml', var.addonpath, 'default', '720p')
+        var.guiHidden.setProperty('WebbiePlayerPage', 'Open')
         var.guiHidden.show()
 
 def close_the_page():

@@ -14,6 +14,7 @@ import var
 def switch_to_page():
     if var.guiRecorded == None:
         var.guiRecorded = Gui('vod.xml', var.addonpath, 'default', '720p')
+        var.guiRecorded.setProperty('WebbiePlayerPage', 'Open')
         var.guiRecorded.show()
 
 def close_the_page():

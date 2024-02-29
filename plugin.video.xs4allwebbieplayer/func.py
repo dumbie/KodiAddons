@@ -17,6 +17,14 @@ def run_addon(forceLaunch=False):
         xbmcgui.Dialog().notification(var.addonname, 'Webbie Player wordt gestart.', var.addonicon, 2500, False)
         xbmc.executebuiltin('RunScript(plugin.video.xs4allwebbieplayer)')
 
+#Check if add-on is running
+def check_addon_running():
+    return getset.get_addon_windowId_bottom() != 0
+
+#Check if current window is add-on
+def check_currentwindow_is_addon():
+    return xbmcgui.getCurrentWindowId() == getset.get_addon_windowId_top()
+
 #Get provider color string
 def get_provider_color_string():
     currentProvider = getset.setting_get('AddonAccent').lower()

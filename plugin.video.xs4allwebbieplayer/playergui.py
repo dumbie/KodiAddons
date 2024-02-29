@@ -23,6 +23,7 @@ def switch_to_page():
     if var.guiPlayer == None:
         #Show custom video player overlay
         var.guiPlayer = Gui('playergui.xml', var.addonpath, 'default', '720p')
+        var.guiPlayer.setProperty('WebbiePlayerPage', 'Open')
         var.guiPlayer.show()
 
 def close_the_page(closeFullscreen=True):

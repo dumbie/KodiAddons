@@ -3,17 +3,28 @@ import xbmcgui
 import func
 import var
 
-#Addon status
-def check_addon_running():
-    windowId = var.WINDOW_ADDON
-    for _ in range(5):
+#Addon window
+def get_addon_windowId_top():
+    windowId = var.WINDOW_ADDON + 10
+    for _ in range(11):
         try:
-            if str(xbmcgui.Window(windowId).getProperty('WebbiePlayerStatus')) == 'Running':
-                return True
+            if str(xbmcgui.Window(windowId).getProperty('WebbiePlayerPage')) == 'Open':
+                return windowId
+        except:
+            pass
+        windowId -= 1
+    return 0
+
+def get_addon_windowId_bottom():
+    windowId = var.WINDOW_ADDON
+    for _ in range(11):
+        try:
+            if str(xbmcgui.Window(windowId).getProperty('WebbiePlayerPage')) == 'Open':
+                return windowId
         except:
             pass
         windowId += 1
-    return False
+    return 0
 
 #Addon settings
 def setting_set(setName, setObject):

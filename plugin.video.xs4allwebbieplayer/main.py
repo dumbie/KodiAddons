@@ -33,7 +33,7 @@ import widevine
 def switch_to_page():
     if var.guiMain == None:
         var.guiMain = Gui('main.xml', var.addonpath, 'default', '720p')
-        getset.addon_set('Status', 'Running')
+        var.guiMain.setProperty('WebbiePlayerPage', 'Open')
         var.guiMain.doModal()
         var.guiMain = None
 

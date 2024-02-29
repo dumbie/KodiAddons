@@ -25,12 +25,14 @@ def launch_source():
     argument.handle_launch_argument_source()
 
 def launch_script():
-    if getset.check_addon_running() == False:
+    if func.check_addon_running() == False:
         func.stop_playing_media()
         reset_global_variables()
         check_login_settings()
         change_addon_accent()
         main.switch_to_page()
+    else:
+        func.open_window_id(getset.get_addon_windowId_top())
 
 def reset_global_variables():
     try:

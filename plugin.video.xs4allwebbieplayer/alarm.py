@@ -13,6 +13,7 @@ import var
 def switch_to_page():
     if var.guiAlarm == None:
         var.guiAlarm = Gui('schedule.xml', var.addonpath, 'default', '720p')
+        var.guiAlarm.setProperty('WebbiePlayerPage', 'Open')
         var.guiAlarm.show()
 
 def close_the_page():

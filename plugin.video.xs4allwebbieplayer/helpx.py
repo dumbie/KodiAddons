@@ -1,4 +1,3 @@
-import xbmc
 import xbmcgui
 import guifunc
 import var
@@ -6,6 +5,7 @@ import var
 def switch_to_page():
     if var.guiHelp == None:
         var.guiHelp = Gui('help.xml', var.addonpath, 'default', '720p')
+        var.guiHelp.setProperty('WebbiePlayerPage', 'Open')
         var.guiHelp.show()
 
 def close_the_page():

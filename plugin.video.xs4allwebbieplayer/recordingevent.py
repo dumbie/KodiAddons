@@ -7,6 +7,7 @@ import var
 def switch_to_page():
     if var.guiRecordingEvent == None:
         var.guiRecordingEvent = Gui('schedule.xml', var.addonpath, 'default', '720p')
+        var.guiRecordingEvent.setProperty('WebbiePlayerPage', 'Open')
         var.guiRecordingEvent.show()
 
 def close_the_page():

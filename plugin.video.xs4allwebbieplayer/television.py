@@ -29,6 +29,7 @@ def switch_to_page():
             var.guiTelevision = Gui('television-grid.xml', var.addonpath, 'default', '720p')
         elif channelView == 'minimaal':
             var.guiTelevision = Gui('television-min.xml', var.addonpath, 'default', '720p')
+        var.guiTelevision.setProperty('WebbiePlayerPage', 'Open')
         var.guiTelevision.show()
 
 def close_the_page():
