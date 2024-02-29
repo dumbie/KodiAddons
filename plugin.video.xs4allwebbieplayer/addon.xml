@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.25.1">
+<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.30.0">
   <requires>
     <import addon="inputstream.adaptive" version="2.0.10"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>video</provides>
+    <provides>executable</provides>
   </extension>
   <extension point="xbmc.python.script" library="default.py">
-    <provides>executable</provides>
+    <provides>video</provides>
   </extension>
   <extension point='xbmc.service' library='service.py' start='login'/>
   <extension point="xbmc.addon.metadata">
@@ -17,13 +17,19 @@
       <icon>resources/icon.png</icon>
       <screenshot>resources/screenshot1.jpg</screenshot>
     </assets>
-    <summary>Webbie Player</summary>
-    <summary lang="nl">Webbie Player</summary>
+    <summary>KPN internet television player.</summary>
+    <summary lang="nl">KPN internet televisie speler.</summary>
+    <description>Webbie Player is a Kodi add-on, which enables you to watch tv online if you are a television consumer at the internet service provider KPN.[CR][CR]Webbie Player requires the following: Kodi 18 or newer, InputStream Adaptive add-on and your subscription login details.</description>
+    <description lang="nl">Webbie Player is een Kodi add-on, waarmee u online TV kunt kijken als u televisie klant bent bij de internet provider KPN.[CR][CR]Webbie Player heeft de volgende benodigdheden nodig: Kodi 18 of nieuwer, InputStream Adaptive add-on en je abonnements inlog gegevens.</description>
     <disclaimer>This is not an official add-on made by KPN but developed by Arnold Vink, use this add-on at your own risk.</disclaimer>
     <disclaimer lang="nl">Dit is geen officiële add-on gemaakt door KPN maar ontwikkeld door Arnold Vink, gebruik deze add-on op eigen risico.</disclaimer>
-    <description>Webbie Player is a Kodi add-on, which enables you to watch tv online if you are a television consumer at the internet service provider XS4ALL, KPN or Telfort.[CR][CR]Webbie Player requires the following: Kodi 18 or newer, InputStream Adaptive add-on and your subscription login details.</description>
-    <description lang="nl">Webbie Player is een Kodi add-on, waarmee u online TV kunt kijken als u televisie klant bent bij de internet provider XS4ALL, KPN of Telfort.[CR][CR]Webbie Player heeft de volgende benodigdheden nodig: Kodi 18 of nieuwer, InputStream Adaptive add-on en je abonnements inlog gegevens.</description>
     <news>
+v1.30.0 (29 Februari 2024)
+- Add-on kan nu ook via de Yatse en Kore applicaties worden bestuurd.
+- Instelling toegevoegd om aantal terugspoel minuten aan te passen.
+- Zap balk is nu verticaal voor duidelijker zender overzicht.
+- Radio zenders kunnen nu ook worden verborgen.
+
 v1.25.1 (25 December 2023)
 - Functie toegevoegd om televisie zenders te verbergen.
 - Instelling toegevoegd om afsluitscherm te overslaan.
