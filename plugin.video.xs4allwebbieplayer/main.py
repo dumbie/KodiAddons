@@ -341,6 +341,6 @@ class Gui(xbmcgui.WindowXML):
             elif listItemAction == 'media_fullscreen':
                 player.Fullscreen(True)
             elif listItemAction == 'show_visualisation':
-                radio.show_visualisation()
+                player.Fullscreen(True)
         elif clickId == 3001:
             dialog_close()
