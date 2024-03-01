@@ -4,10 +4,10 @@ import argument
 import dialog
 import files
 import func
+import getset
 import hybrid
 import main
 import path
-import getset
 import var
 
 def get_launch_type():
@@ -65,20 +65,15 @@ def reset_userdata():
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'User data bestanden verwijderen':
-            files.removeFileUser('AlarmDataString.js')
-            files.removeFileUser('AlarmDataString1.js')
-            files.removeFileUser('EpgDataString.js')
-            files.removeFileUser('EpgProgramDescriptionString.js')
-            files.removeFileUser('EpgProgramDescriptionString1.js')
-            files.removeFileUser('EpgProgramDescriptionString2.js')
-            files.removeFileUser('ChannelsRadio.js')
-            files.removeFileUser('ChannelsTelevision.js')
-            files.removeFileUser('FavoriteTelevision.js')
-            files.removeFileUser('FavoriteRadio.js')
-            files.removeFileUser('SearchHistorySearch.js')
-            files.removeFileUser('SearchHistoryChannel.js')
-            files.removeFileUser('SearchHistoryRadio.js')
-            files.removeDirectoryUser('epg')
+            userDirs = files.listDirectoriesUser()
+            for userDir in userDirs:
+                files.removeDirectoryUser(userDir)
+
+            userFiles = files.listFilesUser()
+            for userFile in userFiles:
+                if userFile != 'settings.xml':
+                    files.removeFileUser(userFile)
+
             xbmcgui.Dialog().notification(var.addonname, 'User data bestanden zijn verwijderd.', var.addonicon, 2500, False)
     except:
         pass
@@ -145,7 +140,7 @@ def change_addon_accent():
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_gray.png'), scrollbar800)
 
     #Copy custom background image
-    if files.existFile(path.addonstorage("background.png")):
+    if files.existFileUser(path.addonstorage("background.png")):
         files.removeFile(backgroundAddon)
         files.copyFile(path.addonstorage("background.png"), backgroundAddon)
 

@@ -7,8 +7,8 @@ import var
 def favorite_television_json_load(forceLoad=False):
     try:
         if var.FavoriteTelevisionJson == [] or forceLoad == True:
-            if files.existFile('FavoriteTelevision.js') == True:
-                FavoriteJsonString = files.openFile('FavoriteTelevision.js')
+            if files.existFileUser('FavoriteTelevision.js') == True:
+                FavoriteJsonString = files.openFileUser('FavoriteTelevision.js')
                 var.FavoriteTelevisionJson = json.loads(FavoriteJsonString)
     except:
         var.FavoriteTelevisionJson = []
@@ -16,8 +16,8 @@ def favorite_television_json_load(forceLoad=False):
 def favorite_radio_json_load(forceLoad=False):
     try:
         if var.FavoriteRadioJson == [] or forceLoad == True:
-            if files.existFile('FavoriteRadio.js') == True:
-                FavoriteJsonString = files.openFile('FavoriteRadio.js')
+            if files.existFileUser('FavoriteRadio.js') == True:
+                FavoriteJsonString = files.openFileUser('FavoriteRadio.js')
                 var.FavoriteRadioJson = json.loads(FavoriteJsonString)
     except:
         var.FavoriteRadioJson = []
@@ -55,7 +55,7 @@ def favorite_add(listItem, favoriteJsonFile):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(favoriteTargetJson).encode('ascii')
-    files.saveFile(favoriteJsonFile, JsonDumpBytes)
+    files.saveFileUser(favoriteJsonFile, JsonDumpBytes)
 
     #Update the listitem status
     listItem.setProperty('ChannelFavorite', 'true')
@@ -85,7 +85,7 @@ def favorite_remove(listItem, favoriteJsonFile):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(favoriteTargetJson).encode('ascii')
-    files.saveFile(favoriteJsonFile, JsonDumpBytes)
+    files.saveFileUser(favoriteJsonFile, JsonDumpBytes)
 
     #Update the listitem status
     listItem.setProperty('ChannelFavorite', 'false')

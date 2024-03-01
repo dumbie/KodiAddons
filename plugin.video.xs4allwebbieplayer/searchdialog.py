@@ -10,8 +10,8 @@ import var
 def search_history_search_json_load(forceLoad=False):
     try:
         if var.SearchHistorySearchJson == [] or forceLoad == True:
-            if files.existFile('SearchHistorySearch.js') == True:
-                SearchHistoryJsonString = files.openFile('SearchHistorySearch.js')
+            if files.existFileUser('SearchHistorySearch.js') == True:
+                SearchHistoryJsonString = files.openFileUser('SearchHistorySearch.js')
                 var.SearchHistorySearchJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistorySearchJson = []
@@ -19,8 +19,8 @@ def search_history_search_json_load(forceLoad=False):
 def search_history_channel_json_load(forceLoad=False):
     try:
         if var.SearchHistoryChannelJson == [] or forceLoad == True:
-            if files.existFile('SearchHistoryChannel.js') == True:
-                SearchHistoryJsonString = files.openFile('SearchHistoryChannel.js')
+            if files.existFileUser('SearchHistoryChannel.js') == True:
+                SearchHistoryJsonString = files.openFileUser('SearchHistoryChannel.js')
                 var.SearchHistoryChannelJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistoryChannelJson = []
@@ -28,8 +28,8 @@ def search_history_channel_json_load(forceLoad=False):
 def search_history_radio_json_load(forceLoad=False):
     try:
         if var.SearchHistoryRadioJson == [] or forceLoad == True:
-            if files.existFile('SearchHistoryRadio.js') == True:
-                SearchHistoryJsonString = files.openFile('SearchHistoryRadio.js')
+            if files.existFileUser('SearchHistoryRadio.js') == True:
+                SearchHistoryJsonString = files.openFileUser('SearchHistoryRadio.js')
                 var.SearchHistoryRadioJson = json.loads(SearchHistoryJsonString)
     except:
         var.SearchHistoryRadioJson = []
@@ -59,7 +59,7 @@ def search_history_add(searchTerm, searchJsonFile):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
-    files.saveFile(searchJsonFile, JsonDumpBytes)
+    files.saveFileUser(searchJsonFile, JsonDumpBytes)
 
 def search_history_remove(searchTerm, searchJsonFile, saveJson=True):
     #Set Json target list variable
@@ -82,7 +82,7 @@ def search_history_remove(searchTerm, searchJsonFile, saveJson=True):
     #Save the raw json data to storage
     if saveJson == True:
         JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
-        files.saveFile(searchJsonFile, JsonDumpBytes)
+        files.saveFileUser(searchJsonFile, JsonDumpBytes)
 
 def search_dialog(searchJsonFile, headerText='Zoeken'):
     #Set Json target list variable

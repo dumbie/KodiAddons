@@ -10,8 +10,8 @@ import var
 def hidden_television_json_load(forceLoad=False):
     try:
         if var.HiddenTelevisionJson == [] or forceLoad == True:
-            if files.existFile('HiddenTelevision.js') == True:
-                HiddenJsonString = files.openFile('HiddenTelevision.js')
+            if files.existFileUser('HiddenTelevision.js') == True:
+                HiddenJsonString = files.openFileUser('HiddenTelevision.js')
                 var.HiddenTelevisionJson = json.loads(HiddenJsonString)
     except:
         var.HiddenTelevisionJson = []
@@ -19,8 +19,8 @@ def hidden_television_json_load(forceLoad=False):
 def hidden_radio_json_load(forceLoad=False):
     try:
         if var.HiddenRadioJson == [] or forceLoad == True: 
-            if files.existFile('HiddenRadio.js') == True:
-                HiddenJsonString = files.openFile('HiddenRadio.js')
+            if files.existFileUser('HiddenRadio.js') == True:
+                HiddenJsonString = files.openFileUser('HiddenRadio.js')
                 var.HiddenRadioJson = json.loads(HiddenJsonString)
     except:
         var.HiddenRadioJson = []
@@ -48,7 +48,7 @@ def hidden_add(listItem, hiddenJsonFile):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(hiddenTargetJson).encode('ascii')
-    files.saveFile(hiddenJsonFile, JsonDumpBytes)
+    files.saveFileUser(hiddenJsonFile, JsonDumpBytes)
 
     #Hidden has been set notification
     notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
@@ -77,7 +77,7 @@ def hidden_remove(listItem, hiddenJsonFile):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(hiddenTargetJson).encode('ascii')
-    files.saveFile(hiddenJsonFile, JsonDumpBytes)
+    files.saveFileUser(hiddenJsonFile, JsonDumpBytes)
 
     #Hidden has been removed notification
     notificationIcon = path.resources('resources/skins/default/media/common/vodyes.png')

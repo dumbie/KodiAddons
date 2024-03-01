@@ -25,8 +25,8 @@ def close_the_page():
 def alarm_json_load(forceLoad=False):
     try:
         if var.AlarmDataJson == [] or forceLoad == True:
-            if files.existFile('AlarmDataString1.js') == True:
-                AlarmJsonString = files.openFile('AlarmDataString1.js')
+            if files.existFileUser('AlarmDataString1.js') == True:
+                AlarmJsonString = files.openFileUser('AlarmDataString1.js')
                 var.AlarmDataJson = json.loads(AlarmJsonString)
     except:
         var.AlarmDataJson = []
@@ -50,7 +50,7 @@ def alarm_clean_expired(delayed=False):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
-    files.saveFile('AlarmDataString1.js', JsonDumpBytes)
+    files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
 
     #Update the main page count
     if var.guiMain != None:
@@ -114,7 +114,7 @@ def alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, Prog
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
-    files.saveFile('AlarmDataString1.js', JsonDumpBytes)
+    files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
 
     #Alarm has been set notification
     xbmcgui.Dialog().notification(var.addonname, 'Alarm gezet: ' + ProgramName + ' (' + ChannelName + ')', notificationIcon, 2500, False)
@@ -140,7 +140,7 @@ def alarm_remove(ProgramTimeStart):
 
     #Save the raw json data to storage
     JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
-    files.saveFile('AlarmDataString1.js', JsonDumpBytes)
+    files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
 
     #Alarm has been removed notification
     notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
@@ -170,7 +170,7 @@ def alarm_remove_all():
 
             #Save the raw json data to storage
             JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
-            files.saveFile('AlarmDataString1.js', JsonDumpBytes)
+            files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
 
             #Alarm has been removed notification
             notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
