@@ -41,9 +41,9 @@ def list_load_append(listContainer, remoteMode=False):
             ProgramName = ProgramNameRaw
 
             #Check if there are search results
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 searchMatch = func.search_filter_string(ProgramNameRaw)
-                searchResultFound = var.SearchTermCurrent in searchMatch
+                searchResultFound = var.SearchTermResult in searchMatch
                 if searchResultFound == False: continue
 
             #Load and check recording status

@@ -82,7 +82,7 @@ class Gui(xbmcgui.WindowXML):
 
     def open_context_menu(self):
         dialogAnswers = []
-        dialogHeader = 'Radio Menu'
+        dialogHeader = 'Zender Menu'
         dialogSummary = 'Wat wilt u doen met de geselecteerde zender?'
         dialogFooter = ''
 
@@ -190,9 +190,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
         self.load_channels(True, False)
-        var.SearchTermCurrent = ''
+        var.SearchTermResult = ''
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
         if forceUpdate == True:
@@ -228,7 +228,7 @@ class Gui(xbmcgui.WindowXML):
         #Update status label text
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + ' zenders gevonden')
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
@@ -239,7 +239,7 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
                 guifunc.listSelectItem(listContainer, 1)
             else:

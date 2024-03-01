@@ -177,8 +177,8 @@ HiddenRadioJson = []
 
 #Search variables
 SearchSelectIndex = 0
-SearchTermCurrent = ''
-SearchDownloadSearchTerm = ''
+SearchTermResult = ''
+SearchTermDownload = ''
 SearchProgramDataJson = []
 SearchHistorySearchJson = []
 SearchHistoryChannelJson = []

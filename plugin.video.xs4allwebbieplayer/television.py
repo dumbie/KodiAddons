@@ -15,6 +15,7 @@ import litelevision
 import path
 import player
 import recordingfunc
+import search
 import searchdialog
 import streamplay
 import var
@@ -107,7 +108,7 @@ class Gui(xbmcgui.WindowXML):
 
     def open_context_menu(self):
         dialogAnswers = []
-        dialogHeader = 'Televisie Menu'
+        dialogHeader = 'Zender Menu'
         dialogSummary = 'Wat wilt u doen met de geselecteerde zender?'
         dialogFooter = ''
 
@@ -118,6 +119,7 @@ class Gui(xbmcgui.WindowXML):
         #Add watch program from beginning
         dialogAnswers.append('Programma vanaf begin kijken')
         dialogAnswers.append('Programma in de TV Gids tonen')
+        dialogAnswers.append('Programma uitzendingen terugzoeken')
 
         #Add record program
         if var.RecordingAccess() == True:
@@ -146,16 +148,11 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma vanaf begin kijken':
-            ProgramTimeStart = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
-            ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
-            SeekOffsetSecEnd = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
-            streamplay.play_tv(listItemSelected, SeekOffsetSecEnd=SeekOffsetSecEnd)
+            self.program_watch_beginning(listItemSelected)
         elif dialogResult == 'Programma in de TV Gids tonen':
-            var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramNowId")
-            var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
-            var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
-            close_the_page()
-            epg.switch_to_page()
+            self.program_show_in_epg(listItemSelected)
+        elif dialogResult == 'Programma uitzendingen terugzoeken':
+            self.program_search(listItemSelected)
         elif dialogResult == 'Zender verbergen in zenderlijst':
             self.hide_channel(listContainer, listItemSelected)
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
@@ -169,11 +166,34 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Volgend serie seizoen opnemen of annuleren':
             recordingfunc.record_series_next_television_playergui(listItemSelected)
         elif dialogResult == 'Volgend programma alarm zetten of annuleren':
-            self.set_program_alarm_next(listItemSelected)
+            self.program_alarm_set_next(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
 
-    def set_program_alarm_next(self, listItemSelected):
+    def program_watch_beginning(self, listItemSelected):
+        ProgramTimeStart = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
+        ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
+        SeekOffsetSecEnd = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
+        streamplay.play_tv(listItemSelected, SeekOffsetSecEnd=SeekOffsetSecEnd)
+    
+    def program_show_in_epg(self, listItemSelected):
+        var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramNowId")
+        var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
+        var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+        close_the_page()
+        epg.switch_to_page()
+
+    def program_search(self, listItemSelected):
+        ProgramName = listItemSelected.getProperty("ProgramNowName")
+        if var.SearchTermDownload != ProgramName:
+            var.SearchSelectIndex = 0
+            var.SearchTermResult = ''
+            var.SearchTermDownload = ProgramName
+            var.SearchProgramDataJson = []
+        close_the_page()
+        search.switch_to_page()
+
+    def program_alarm_set_next(self, listItemSelected):
         ExternalId = listItemSelected.getProperty("ExternalId")
         ChannelId = listItemSelected.getProperty("ChannelId")
         ChannelName = listItemSelected.getProperty("ChannelName")
@@ -281,13 +301,13 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
 
         #Load television channels
         self.load_channels(True, False)
 
         #Reset search variable
-        var.SearchTermCurrent = ''
+        var.SearchTermResult = ''
 
     def load_channels(self, forceLoad=False, forceUpdate=False):
         self.EpgPauseUpdate = True
@@ -337,9 +357,9 @@ class Gui(xbmcgui.WindowXML):
         #Update status label text
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + ' zenders gevonden')
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermResult)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
                 if var.ApiHomeAccess() == True:
@@ -353,9 +373,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
                 guifunc.listSelectItem(listContainer, 2)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)

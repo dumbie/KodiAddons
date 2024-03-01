@@ -67,9 +67,9 @@ def list_load_append(listContainer, remoteMode=False):
             if getset.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Check if there are search results
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 searchMatch = func.search_filter_string(ChannelName)
-                searchResultFound = var.SearchTermCurrent in searchMatch
+                searchResultFound = var.SearchTermResult in searchMatch
                 if searchResultFound == False: continue
 
             #Check if channel is marked as favorite or epg navigate
@@ -79,7 +79,7 @@ def list_load_append(listContainer, remoteMode=False):
                 ChannelFavorite = 'false'
             elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
                 ChannelFavorite = 'false'
-            elif getset.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermCurrent):
+            elif getset.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermResult):
                 continue
             else:
                 ChannelFavorite = 'false'

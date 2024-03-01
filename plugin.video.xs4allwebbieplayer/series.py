@@ -105,11 +105,14 @@ class Gui(xbmcgui.WindowXML):
 
             dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
             if dialogResult == 'Aflevering in de TV Gids tonen':
-                var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
-                var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
-                var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
-                close_the_page()
-                epg.switch_to_page()
+                self.program_show_in_epg(listItemSelected)
+
+    def program_show_in_epg(self, listItemSelected):
+        var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
+        var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
+        var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
+        close_the_page()
+        epg.switch_to_page()
 
     def buttons_add_navigation(self):
         listContainer = self.getControl(1001)
@@ -139,9 +142,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
         self.load_program(True, False)
-        var.SearchTermCurrent = ''
+        var.SearchTermResult = ''
 
     def load_episodes_vod(self, listItem, focusList=False, selectIndex=0):
         #Get the selected parentid
@@ -240,9 +243,9 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0:
             guifunc.updateVisibility(self, 2, True)
             guifunc.updateVisibility(self, 3002, True)
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " series gevonden")
-                guifunc.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.updateLabelText(self, 4, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermResult)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " series")
                 guifunc.updateLabelText(self, 4, "")
@@ -255,9 +258,9 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateVisibility(self, 3002, False)
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, "Geen series gevonden")
-                guifunc.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
                 guifunc.listSelectItem(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, "Geen series")

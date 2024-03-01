@@ -77,8 +77,8 @@ class Gui(xbmcgui.WindowXML):
 
     def open_context_menu(self):
         dialogAnswers = ['Opname verwijderen', 'Programma zoeken in opnames']
-        dialogHeader = 'Opname verwijderen of programma zoeken'
-        dialogSummary = 'Wilt u de geselecteerde opname verwijderen of wilt u alleen naar dit programma zoeken in de opnames?'
+        dialogHeader = 'Opname Menu'
+        dialogSummary = 'Wat wilt u doen met de geselecteerde opname?'
         dialogFooter = ''
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
@@ -102,9 +102,9 @@ class Gui(xbmcgui.WindowXML):
             ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
 
             #Set search filter term
-            var.SearchTermCurrent = func.search_filter_string(ProgramNameRaw)
+            var.SearchTermResult = func.search_filter_string(ProgramNameRaw)
             self.load_program(True, False)
-            var.SearchTermCurrent = ''
+            var.SearchTermResult = ''
 
     def buttons_add_navigation(self):
         listContainer = self.getControl(1001)
@@ -134,9 +134,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
         self.load_program(True, False)
-        var.SearchTermCurrent = ''
+        var.SearchTermResult = ''
 
     def load_program(self, forceLoad=False, forceUpdate=False, selectIndex=0):
         if forceUpdate == True:
@@ -174,9 +174,9 @@ class Gui(xbmcgui.WindowXML):
         guifunc.updateLabelText(self, 4, var.RecordingAvailableSpace())
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " opnames gevonden")
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermResult)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " opnames")
                 guifunc.updateLabelText(self, 3, "")
@@ -187,9 +187,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen opnames gevonden')
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermCurrent)
+                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
                 guifunc.listSelectItem(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen opnames')

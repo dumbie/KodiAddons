@@ -11,7 +11,7 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=True):
     try:
         #Download search programs
-        downloadResult = download.download_search_program(var.SearchDownloadSearchTerm, forceUpdate)
+        downloadResult = download.download_search_program(var.SearchTermDownload, forceUpdate)
         if downloadResult == False:
             notificationIcon = path.resources('resources/skins/default/media/common/search.png')
             xbmcgui.Dialog().notification(var.addonname, "Zoek downloaden mislukt.", notificationIcon, 2500, False)
@@ -36,10 +36,10 @@ def list_load_append(listContainer):
             EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
 
             #Check if there are search results
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 searchMatch1 = func.search_filter_string(ProgramName)
                 searchMatch2 = func.search_filter_string(EpisodeTitle)
-                searchResultFound = var.SearchTermCurrent in searchMatch1 or var.SearchTermCurrent in searchMatch2
+                searchResultFound = var.SearchTermResult in searchMatch1 or var.SearchTermResult in searchMatch2
                 if searchResultFound == False: continue
 
             #Load program details

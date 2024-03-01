@@ -43,9 +43,9 @@ def list_load_vod_append(listContainer, remoteMode=False):
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
 
             #Check if there are search results
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchTermCurrent in searchMatch
+                searchResultFound = var.SearchTermResult in searchMatch
                 if searchResultFound == False: continue
 
             #Check if content is pay to play
@@ -99,9 +99,9 @@ def list_load_program_append(listContainer, remoteMode=False):
             ProgramName = metadatainfo.episodetitle_from_json_metadata(program)
 
             #Check if there are search results
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 searchMatch = func.search_filter_string(ProgramName)
-                searchResultFound = var.SearchTermCurrent in searchMatch
+                searchResultFound = var.SearchTermResult in searchMatch
                 if searchResultFound == False: continue
 
             #Check if program is already added

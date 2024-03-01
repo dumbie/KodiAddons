@@ -13,6 +13,7 @@ import lifunc
 import path
 import player
 import recordingfunc
+import search
 import searchdialog
 import streamplay
 import var
@@ -206,42 +207,40 @@ class Gui(xbmcgui.WindowXML):
         ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
         ProgramTimeEndString = listItemSelected.getProperty('ProgramTimeEnd')
         ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndString, '%Y-%m-%d %H:%M:%S')
-        ProgramName = listItemSelected.getProperty('ProgramName')
-        ChannelName = listItemSelected.getProperty('ChannelName')
 
         #Check if current program is airing and user has recording access
         dateTimeNow = datetime.now()
         if var.RecordingAccess() == True:
             if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                dialogAnswers = ['Live programma kijken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
-                dialogHeader = 'Programma kijken of opnemen'
-                dialogSummary = ProgramName + ' kijken of opnemen?'
+                dialogAnswers = ['Live programma kijken', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
+                dialogHeader = 'Programma Menu'
+                dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
             elif ProgramTimeStartDateTime < dateTimeNow:
-                dialogAnswers = ['Programma terug kijken', 'Serie seizoen opnemen of annuleren']
-                dialogHeader = 'Programma terug kijken of opnemen'
-                dialogSummary = ProgramName + ' terug kijken of opnemen?'
+                dialogAnswers = ['Programma uitzending terugkijken', 'Programma uitzendingen terugzoeken', 'Serie seizoen opnemen of annuleren']
+                dialogHeader = 'Programma Menu'
+                dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
             else:
-                dialogAnswers = ['Alarm zetten of annuleren', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
-                dialogHeader = 'Alarm zetten of opnemen'
-                dialogSummary = ProgramName + ' alarm zetten of opnemen?'
+                dialogAnswers = ['Alarm zetten of annuleren', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
+                dialogHeader = 'Programma Menu'
+                dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
         else:
             if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                dialogAnswers = ['Live programma kijken']
-                dialogHeader = 'Programma kijken'
-                dialogSummary = ProgramName + ' op ' + ChannelName + ' kijken?'
+                dialogAnswers = ['Live programma kijken', 'Programma uitzendingen terugzoeken']
+                dialogHeader = 'Programma Menu'
+                dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
             elif ProgramTimeStartDateTime < dateTimeNow:
-                dialogAnswers = ['Programma terug kijken']
-                dialogHeader = 'Programma terug kijken'
-                dialogSummary = ProgramName + ' terug kijken?'
+                dialogAnswers = ['Programma uitzending terugkijken', 'Programma uitzendingen terugzoeken']
+                dialogHeader = 'Programma Menu'
+                dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
             else:
-                dialogAnswers = ['Alarm zetten of annuleren']
-                dialogHeader = 'Alarm zetten'
-                dialogSummary = ProgramName + ' alarm zetten?'
+                dialogAnswers = ['Alarm zetten of annuleren', 'Programma uitzendingen terugzoeken']
+                dialogHeader = 'Programma Menu'
+                dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
 
         #Add switch favorite/all button
@@ -252,17 +251,29 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Alarm zetten of annuleren':
-            self.set_program_alarm(listItemSelected)
+            self.program_alarm_set(listItemSelected)
         elif dialogResult == 'Programma opnemen of annuleren':
             recordingfunc.record_event_epg(self, listItemSelected)
         elif dialogResult == 'Serie seizoen opnemen of annuleren':
             recordingfunc.record_series_epg(self, listItemSelected)
         elif dialogResult == 'Live programma kijken':
             streamplay.play_tv(listItemSelected)
-        elif dialogResult == 'Programma terug kijken':
+        elif dialogResult == 'Programma uitzending terugkijken':
             streamplay.play_program(listItemSelected)
+        elif dialogResult == 'Programma uitzendingen terugzoeken':
+            self.program_search(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
+
+    def program_search(self, listItemSelected):
+        ProgramName = listItemSelected.getProperty("ProgramName")
+        if var.SearchTermDownload != ProgramName:
+            var.SearchSelectIndex = 0
+            var.SearchTermResult = ''
+            var.SearchTermDownload = ProgramName
+            var.SearchProgramDataJson = []
+        close_the_page()
+        search.switch_to_page()
 
     def switch_all_favorites(self):
         try:
@@ -318,7 +329,7 @@ class Gui(xbmcgui.WindowXML):
             except:
                 pass
 
-    def set_program_alarm(self, listItemSelected):
+    def program_alarm_set(self, listItemSelected):
         ProgramTimeStartString = listItemSelected.getProperty('ProgramTimeStart')
         ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartString, '%Y-%m-%d %H:%M:%S')
         ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
@@ -348,9 +359,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
         channelsLoaded = self.load_channels(True)
-        var.SearchTermCurrent = ''
+        var.SearchTermResult = ''
         if channelsLoaded == True:
             self.load_programs(False, True)
 
@@ -363,9 +374,9 @@ class Gui(xbmcgui.WindowXML):
             return
 
         #Set search filter term
-        var.SearchTermCurrent = func.search_filter_string(searchDialogTerm.string)
+        var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
         self.load_programs(False, True, True)
-        var.SearchTermCurrent = ''
+        var.SearchTermResult = ''
 
     def load_channels(self, forceLoad=False):
         self.ChannelPauseUpdate = True
@@ -406,9 +417,9 @@ class Gui(xbmcgui.WindowXML):
 
             #Update status label text
             listContainer = self.getControl(1000)
-            if func.string_isnullorempty(var.SearchTermCurrent) == False:
+            if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden.[/COLOR]")
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermResult + " [COLOR gray]niet gevonden.[/COLOR]")
                 guifunc.listSelectItem(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)
@@ -543,19 +554,19 @@ class Gui(xbmcgui.WindowXML):
         #Update the label texts
         listContainer = self.getControl(1002)
         if listContainer.size() == 0:
-            if func.string_isnullorempty(var.SearchTermCurrent) == True:
+            if func.string_isnullorempty(var.SearchTermResult) == True:
                 guifunc.updateLabelText(self, 1, "Geen programma's")
                 guifunc.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermResult + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
         else:
-            if func.string_isnullorempty(var.SearchTermCurrent) == True:
+            if func.string_isnullorempty(var.SearchTermResult) == True:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
                 guifunc.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchTermCurrent + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchTermResult + " [COLOR gray]op[/COLOR] " + loadDayString)
 
     def thread_update_program_progress(self):
         threadLastTime = ''

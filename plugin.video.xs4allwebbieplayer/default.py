@@ -91,8 +91,7 @@ def check_login_settings():
         loginNotSet = True
 
     if loginNotSet == True:
-        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Stel uw abonnementsgegevens in', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Stel uw abonnementsgegevens in', var.addonicon, 2500, False)
         var.addon.openSettings()
         return False
     else:
