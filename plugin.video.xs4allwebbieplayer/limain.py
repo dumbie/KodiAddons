@@ -292,7 +292,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == True and func.check_currentwindow_is_addon() == False:
+        if remoteMode == True:
             #Set item icons
             iconDefault = path.resources('resources/icon.png')
 
