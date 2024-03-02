@@ -136,7 +136,10 @@ def list_update(listItem):
             ProgramNextRecordSeries = 'false'
 
         #Get upcoming programs information
-        ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
+        if getset.setting_get('TelevisionHideUpcomingAired') == 'false':
+            ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
+        else:
+            ProgramUpcoming = ''
 
         #Get earlier programs information
         if getset.setting_get('TelevisionHideEarlierAired') == 'false':

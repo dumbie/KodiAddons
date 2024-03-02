@@ -14,6 +14,7 @@
     <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="TelevisionHideEarlierAired" label="Eerder uitgezonden programma's niet tonen" type="bool" default="false"/>
+    <setting id="TelevisionHideUpcomingAired" label="Later uitgezonden programma's niet tonen" type="bool" default="false"/>
     <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="SearchFilterFuzzy" label="Vergelijkbare zoek resultaten tonen" type="bool" default="false"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
