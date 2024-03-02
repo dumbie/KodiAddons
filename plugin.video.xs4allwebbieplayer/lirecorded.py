@@ -48,12 +48,10 @@ def list_load_append(listContainer, remoteMode=False):
 
             #Load and check recording status
             recordingStatus = recordingfunc.get_status(program)
-            if recordingStatus == 'ScheduleSuccess' or recordingStatus == 'RescheduleSuccess':
+            if recordingStatus == 'ScheduleSuccess' or recordingStatus == 'RescheduleSuccess' or recordingStatus == 'NoAssets':
                 continue
             elif recordingStatus == 'RecordFailed':
                 ProgramName = '(Opname mislukt) ' + ProgramName
-            elif recordingStatus == 'NoAssets':
-                ProgramName = '(Niet speelbaar) ' + ProgramName
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)

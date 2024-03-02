@@ -14,7 +14,7 @@ def get_status(program):
 
 def check_status_recorded(program):
     recordingStatus = get_status(program)
-    if recordingStatus == 'RecordFailed' or recordingStatus == 'RecordSuccess' or recordingStatus == 'NoAssets':
+    if recordingStatus == 'RecordFailed' or recordingStatus == 'RecordSuccess':
         return True
     else:
         return False
