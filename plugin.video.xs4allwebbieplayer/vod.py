@@ -2,7 +2,9 @@ import xbmc
 import xbmcgui
 import dialog
 import epg
+import favorite
 import func
+import getset
 import guifunc
 import livod
 import path
@@ -44,6 +46,8 @@ class Gui(xbmcgui.WindowXML):
             listItemAction = listItemSelected.getProperty('ItemAction')
             if listItemAction == 'go_back':
                 close_the_page()
+            elif listItemAction == "switch_all_favorites":
+                self.switch_all_favorites()
             elif listItemAction == 'search_program':
                 self.search_program()
             elif listItemAction == 'set_load_day':
@@ -117,11 +121,19 @@ class Gui(xbmcgui.WindowXML):
         dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
         dialogFooter = ''
 
+        #Add switch favorite/all button
+        if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
+            dialogAnswers.append('Toon alle zenders')
+        else:
+            dialogAnswers.append('Toon favorieten zenders')
+
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma in de TV Gids tonen':
             self.program_show_in_epg()
         elif dialogResult == 'Programma zoeken in uitzendingen':
             self.program_search_result()
+        elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
+            self.switch_all_favorites()
 
     def program_show_in_epg(self):
         listContainer = self.getControl(1000)
@@ -161,6 +173,11 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/calendar.png'),'icon': path.resources('resources/skins/default/media/common/calendar.png')})
         listContainer.addItem(listItem)
 
+        listItem = xbmcgui.ListItem('Alle of favorieten')
+        listItem.setProperty('ItemAction', 'switch_all_favorites')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
+        listContainer.addItem(listItem)
+
         listItem = xbmcgui.ListItem("Vernieuwen")
         listItem.setProperty('ItemAction', 'refresh_programs')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
@@ -178,6 +195,17 @@ class Gui(xbmcgui.WindowXML):
         var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
         self.load_program(True, False)
         var.SearchTermResult = ''
+
+    def switch_all_favorites(self):
+        try:
+            #Switch favorites mode on or off
+            if favorite.favorite_switch_mode() == False:
+                return
+
+            #Load programs
+            self.load_program(True)
+        except:
+            pass
 
     def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True, selectIndex=0):
         if forceUpdate == True and silentUpdate == False:
@@ -207,8 +235,14 @@ class Gui(xbmcgui.WindowXML):
 
     #Update the status
     def count_program(self, resetSelect=False, selectIndex=0):
-        #Set the day string
+        #Set day string
         loadDayString = func.day_string_from_datetime(var.VodDayLoadDateTime)
+
+        #Set favorites string
+        if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
+            favoriteString = ' op favorieten zenders'
+        else:
+            favoriteString = ''
 
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
@@ -216,7 +250,7 @@ class Gui(xbmcgui.WindowXML):
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR gray]op[/COLOR] " + loadDayString)
             else:
-                guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
+                guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's" + favoriteString)
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Beschikbare programma's voor[/COLOR] " + loadDayString)
 
             if resetSelect == True:
@@ -230,6 +264,6 @@ class Gui(xbmcgui.WindowXML):
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR gray]op[/COLOR] " + loadDayString)
                 guifunc.listSelectItem(listContainer, 1)
             else:
-                guifunc.updateLabelText(self, 1, "Geen programma's")
+                guifunc.updateLabelText(self, 1, "Geen programma's" + favoriteString)
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + loadDayString)
                 guifunc.listSelectItem(listContainer, 0)

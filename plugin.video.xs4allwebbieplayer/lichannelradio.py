@@ -22,6 +22,9 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         favorite.favorite_radio_json_load()
         hidden.hidden_radio_json_load()
 
+        #Check if there are favorites set
+        favorite.favorite_check_set('FavoriteRadio.js')
+
         #Add items to sort list
         listContainerSort = []
         remoteMode = listContainer == None
@@ -55,7 +58,7 @@ def list_load_append(listContainer, remoteMode=False):
             ChannelStream = channel['stream']
 
             #Check if channel is marked as favorite
-            if favorite.favorite_check(ChannelId, 'FavoriteRadio.js'):
+            if favorite.favorite_check_channel(ChannelId, 'FavoriteRadio.js'):
                 ChannelFavorite = 'true'
             elif getset.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermResult):
                 continue

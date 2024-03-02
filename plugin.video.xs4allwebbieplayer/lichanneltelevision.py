@@ -33,6 +33,9 @@ def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=
         favorite.favorite_television_json_load()
         hidden.hidden_television_json_load()
 
+        #Check if there are favorites set
+        favorite.favorite_check_set('FavoriteTelevision.js')
+
         #Add items to sort list
         listContainerSort = []
         remoteMode = listContainer == None
@@ -74,7 +77,7 @@ def list_load_append(listContainer, remoteMode=False):
                 if searchResultFound == False: continue
 
             #Check if channel is marked as favorite or epg navigate
-            if favorite.favorite_check(ChannelId, 'FavoriteTelevision.js'):
+            if favorite.favorite_check_channel(ChannelId, 'FavoriteTelevision.js'):
                 ChannelFavorite = 'true'
             elif ChannelId == getset.setting_get('CurrentChannelId') and xbmc.Player().isPlayingVideo():
                 ChannelFavorite = 'false'

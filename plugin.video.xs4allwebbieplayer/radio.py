@@ -122,14 +122,14 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Alle of favorieten')
-        listItem.setProperty('ItemAction', 'switch_all_favorites')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
-        listContainer.addItem(listItem)
-
         listItem = xbmcgui.ListItem('Zoek naar zender')
         listItem.setProperty('ItemAction', 'search_channelprogram')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Alle of favorieten')
+        listItem.setProperty('ItemAction', 'switch_all_favorites')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Verborgen zenders')
@@ -154,7 +154,7 @@ class Gui(xbmcgui.WindowXML):
             self.count_channels(False)
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
-        favoriteResult = favorite.favorite_toggle(listItemSelected, 'FavoriteRadio.js')
+        favoriteResult = favorite.favorite_toggle_channel(listItemSelected, 'FavoriteRadio.js')
         if favoriteResult == 'Removed' and getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
             removeListItemId = listContainer.getSelectedPosition()
@@ -167,16 +167,10 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
-                getset.setting_set('LoadChannelFavoritesOnly', 'false')
-            else:
-                #Check if there are favorites set
-                if var.FavoriteRadioJson == []:
-                    notificationIcon = path.resources('resources/skins/default/media/common/star.png')
-                    xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
-                    return
-                getset.setting_set('LoadChannelFavoritesOnly', 'true')
+            if favorite.favorite_switch_mode() == False:
+                return
 
+            #Load radio channels
             self.load_channels(True, False)
         except:
             pass

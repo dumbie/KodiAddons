@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import xbmcgui
 import download
+import favorite
 import func
 import getset
 import lifunc
@@ -17,6 +18,12 @@ def list_load_combined(listContainer=None, forceUpdate=False):
             notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
             xbmcgui.Dialog().notification(var.addonname, "Programma's downloaden mislukt.", notificationIcon, 2500, False)
             return False
+
+        #Load favorite channels
+        favorite.favorite_television_json_load()
+
+        #Check if there are favorites set
+        favorite.favorite_check_set('FavoriteTelevision.js')
 
         #Add items to sort list
         listContainerSort = []
@@ -40,6 +47,7 @@ def list_load_append(listContainer, remoteMode=False):
             ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
             EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
+            ChannelId = metadatainfo.channelId_from_json_metadata(program)
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermResult) == False:
@@ -48,11 +56,14 @@ def list_load_append(listContainer, remoteMode=False):
                 searchResultFound = var.SearchTermResult in searchMatch1 or var.SearchTermResult in searchMatch2
                 if searchResultFound == False: continue
 
+            #Check if channel is marked as favorite and search term is empty
+            if func.string_isnullorempty(var.SearchTermResult) == True and getset.setting_get('LoadChannelFavoritesOnly') == 'true' and favorite.favorite_check_channel(ChannelId, 'FavoriteTelevision.js') == False:
+                continue
+
             #Check if program has finished airing and processing
             if dateTimeNow < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
 
             #Load program details
-            ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)

@@ -3,6 +3,7 @@ import xbmc
 import xbmcgui
 import alarm
 import dialog
+import favorite
 import func
 import getset
 import guifunc
@@ -278,16 +279,10 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
-                getset.setting_set('LoadChannelFavoritesOnly', 'false')
-            else:
-                #Check if there are favorites set
-                if var.FavoriteTelevisionJson == []:
-                    notificationIcon = path.resources('resources/skins/default/media/common/star.png')
-                    xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
-                    return
-                getset.setting_set('LoadChannelFavoritesOnly', 'true')
+            if favorite.favorite_switch_mode() == False:
+                return
 
+            #Load channels and programs
             channelsLoaded = self.load_channels(True)
             if channelsLoaded == True:
                 self.load_programs(False, True)
