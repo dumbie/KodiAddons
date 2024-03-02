@@ -33,7 +33,7 @@ def list_load_append(listContainer, remoteMode=False):
         ApiLoggedIn = var.ApiLoggedIn()
         RecordingAccess = var.RecordingAccess()
 
-        if ApiLoggedIn == True:
+        if ApiLoggedIn == True and getset.setting_get('MainShowTelevision') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/television.png')
 
@@ -48,21 +48,22 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        #Set item icons
-        iconDefault = path.resources('resources/skins/default/media/common/radio.png')
+        if getset.setting_get('MainShowRadio') == 'true':
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/radio.png')
 
-        #Set item details
-        jsonItem = {
-            'ItemLabel': 'Radio',
-            'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
-            'ItemAction': 'page_radio'
-        }
-        dirIsfolder = True
-        dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
-        listItem = lifunc.jsonitem_to_listitem(jsonItem)
-        listContainer.append((dirUrl, listItem, dirIsfolder))
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Radio',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemAction': 'page_radio'
+            }
+            dirIsfolder = True
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if ApiLoggedIn == True:
+        if ApiLoggedIn == True and getset.setting_get('MainShowMovies') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/movies.png')
 
@@ -77,7 +78,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if ApiLoggedIn == True:
+        if ApiLoggedIn == True and getset.setting_get('MainShowSeries') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/series.png')
 
@@ -92,7 +93,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and ApiLoggedIn == True:
+        if remoteMode == False and ApiLoggedIn == True and getset.setting_get('MainShowEpg') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/epg.png')
 
@@ -107,7 +108,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and ApiLoggedIn == True:
+        if remoteMode == False and ApiLoggedIn == True and getset.setting_get('MainShowSearch') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/search.png')
 
@@ -122,7 +123,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if ApiLoggedIn == True:
+        if ApiLoggedIn == True and getset.setting_get('MainShowSport') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/sport.png')
 
@@ -137,7 +138,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if ApiLoggedIn == True:
+        if ApiLoggedIn == True and getset.setting_get('MainShowVod') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/vod.png')
 
@@ -152,7 +153,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if ApiLoggedIn == True:
+        if ApiLoggedIn == True and getset.setting_get('MainShowKids') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/kids.png')
 
@@ -172,7 +173,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if ApiLoggedIn == True and RecordingAccess == True:
+        if ApiLoggedIn == True and RecordingAccess == True and getset.setting_get('MainShowRecordDone') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/recorddone.png')
 
@@ -187,7 +188,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True:
+        if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True and getset.setting_get('MainShowRecordEvent') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/recordevent.png')
 
@@ -202,7 +203,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True:
+        if remoteMode == False and ApiLoggedIn == True and RecordingAccess == True and getset.setting_get('MainShowRecordSeries') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/recordseries.png')
 
@@ -217,7 +218,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and ApiLoggedIn == True:
+        if remoteMode == False and ApiLoggedIn == True and getset.setting_get('MainShowAlarm') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/alarm.png')
 
@@ -232,7 +233,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False:
+        if remoteMode == False and getset.setting_get('MainShowSleep') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/sleep.png')
 
@@ -247,22 +248,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False:
-            #Set item icons
-            iconDefault = path.resources('resources/skins/default/media/common/settings.png')
-
-            #Set item details
-            jsonItem = {
-                'ItemLabel': 'Instellingen',
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
-                'ItemAction': 'addon_settings'
-            }
-            dirIsfolder = False
-            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
-            listItem = lifunc.jsonitem_to_listitem(jsonItem)
-            listContainer.append((dirUrl, listItem, dirIsfolder))
-
-        if remoteMode == False:
+        if remoteMode == False and getset.setting_get('MainShowHelp') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/help.png')
 
@@ -277,7 +263,22 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False:
+        if remoteMode == False and getset.setting_get('MainShowSettings') == 'true':
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/settings.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Instellingen',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemAction': 'addon_settings'
+            }
+            dirIsfolder = False
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
+
+        if remoteMode == False and getset.setting_get('MainShowShutdown') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/shutdown.png')
 

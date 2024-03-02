@@ -16,8 +16,27 @@
     <setting id="TelevisionHideEarlierAired" label="Eerder uitgezonden programma's niet tonen" type="bool" default="false"/>
     <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="SearchFilterFuzzy" label="Vergelijkbare zoek resultaten tonen" type="bool" default="false"/>
-    <setting id="ResetUserdata" type="action" label="Verwijder userdatabestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
-    <setting id="ResetThumbnails" type="action" label="Alle zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
+    <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
+  </category>
+  <category label="Hoofdpagina">
+    <setting id="MainShowTelevision" label="Toon Televisie op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowRadio" label="Toon Radio op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowMovies" label="Toon Films op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowSeries" label="Toon Series op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowEpg" label="Toon TV Gids op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowSearch" label="Toon Terugzoeken op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowSport" label="Toon Sport Gemist op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowVod" label="Toon Programma Gemist op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowKids" label="Toon Kids op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowRecordDone" label="Toon Bekijk Opnames op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowRecordEvent" label="Toon Geplande Opnames op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowRecordSeries" label="Toon Geplande Series op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowAlarm" label="Toon Alarmen op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowSleep" label="Toon Slaap Timer op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowHelp" label="Toon Help op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowSettings" label="Toon Instellingen op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowShutdown" label="Toon Sluiten op hoofdpagina" type="bool" default="true"/>
+    <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Afspelen">
@@ -30,7 +49,6 @@
   </category>
   <category label="Opstarten">
     <setting id="RunAddonOnKodiLaunch" label="Start Webbie Player bij het opstarten van Kodi" type="bool" default="false"/>
-    <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
     <setting id="StartWithTelevision" label="Open televisiepagina bij het opstarten van add-on" type="bool" default="false"/>
     <setting id="StartWithKids" label="Open kidspagina bij het opstarten van add-on" type="bool" default="false"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
@@ -45,12 +63,17 @@
     <setting id="SleepTimerCloseKodi" label="Sluit alleen Kodi in plaats van het gehele apparaat" type="bool" default="true"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
+  <category label="Onderhoud">
+    <setting id="ResetUserdata" type="action" label="Verwijder userdata bestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
+    <setting id="ResetThumbnails" type="action" label="Alle zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
+    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
+    <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
+  </category>
   <category label="Stream">
     <setting id="StreamResolution" type="select" label="Maximale resolutie van de videostream" default="1080pNormal" values="1080pBest|1080pHigh|1080pNormal|720p|576p|432p|360p|180p"/>
     <setting id="CustomUserAgent" type="text" label="User-agent verbindingsidentificatie" default="Webbie Player"/>
     <setting id="UseLocalhostProxy" label="Gebruik lokale proxy server voor stream verbinding" type="bool" default="false"/>
     <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream-adaptive add-on instellingen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?InputAdaptiveSettings)"/>
-    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
     <setting label="* Hier kunt u de streamkwaliteit-instellingen optimaliseren." type="lsep"/>
     <!-- Hidden variable settings -->
     <setting id="LoginDeviceId120" type="text" visible="false" default=""/>

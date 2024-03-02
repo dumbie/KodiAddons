@@ -29,7 +29,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def set_help_text(self):
         helpText = 'Sommige tv zenders willen niet laden'
-        helpText += '\n[COLOR gray]Als alleen NPO 1, 2 en 3 laden betekent dit dat uw apparaat niet de stream beveiliging (Widevine DRM) van de andere zenders kan openen, u kunt proberen Widevine opnieuw te installeren door naar de Webbie Player instellingen te gaan en op "Stream > Update de benodigde Widevine beveiliging bestanden" te drukken.[/COLOR]'
+        helpText += '\n[COLOR gray]Als alleen NPO 1, 2 en 3 laden betekent dit dat uw apparaat niet de stream beveiliging (Widevine DRM) van de andere zenders kan openen, u kunt proberen Widevine opnieuw te installeren door naar de Webbie Player instellingen te gaan en op "Onderhoud > Update de benodigde Widevine beveiliging bestanden" te drukken.[/COLOR]'
 
         helpText += '\n\nGoede draadloos verbinding vereist'
         helpText += '\n[COLOR gray]Als u via draadloos internet kijkt zorg er dan voor dat u een goed signaal heeft anders kunt u storingen zoals haperingen krijgen tijdens het tv kijken, u kunt de maximale beeld kwaliteit verlagen in de Webbie Player "Stream" instellingen.[/COLOR]'
