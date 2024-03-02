@@ -1,4 +1,5 @@
 import xbmcgui
+import accent
 import download
 import favorite
 import func
@@ -64,7 +65,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Update channel number
             ChannelNumberInt += 1
             ChannelNumberString = str(ChannelNumberInt)
-            ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
+            ChannelNumberAccent = accent.get_accent_color_string() + ChannelNumberString + '[/COLOR]'
 
             #Set item icons
             iconDefault = path.icon_radio(ChannelId)

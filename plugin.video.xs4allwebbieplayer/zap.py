@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import xbmc
+import accent
 import func
 import guifunc
 import lifunc
@@ -58,13 +59,13 @@ def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
             channelNumber = listItem.getProperty('ChannelNumber')
             if channelNumber.startswith(var.ZapNumberString):
                 channelNumberCut = channelNumber.replace(var.ZapNumberString, '', 1)
-                var.ZapHintString += '[COLOR white]' + var.ZapNumberString + '[/COLOR]' + func.get_provider_color_string() + channelNumberCut + '[/COLOR]  ' + channelName + '\n'
+                var.ZapHintString += '[COLOR white]' + var.ZapNumberString + '[/COLOR]' + accent.get_accent_color_string() + channelNumberCut + '[/COLOR]  ' + channelName + '\n'
         except:
             continue
 
     #Check if channel is found
     if func.string_isnullorempty(var.ZapHintString):
-        var.ZapHintString = 'Zender ' + func.get_provider_color_string() + var.ZapNumberString + '[/COLOR] niet gevonden.'
+        var.ZapHintString = 'Zender ' + accent.get_accent_color_string() + var.ZapNumberString + '[/COLOR] niet gevonden.'
         var.ZapNumberString = ''
 
     #Start zap wait thread

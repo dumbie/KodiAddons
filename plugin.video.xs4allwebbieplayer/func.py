@@ -25,18 +25,6 @@ def check_addon_running():
 def check_currentwindow_is_addon():
     return xbmcgui.getCurrentWindowId() == getset.get_addon_windowId_top()
 
-#Get provider color string
-def get_provider_color_string():
-    currentProvider = getset.setting_get('AddonAccent').lower()
-    if currentProvider == 'geel':
-        return '[COLOR FFF5AF00]'
-    elif currentProvider == 'blauw':
-        return '[COLOR FF2F41B7]'
-    elif currentProvider == 'groen':
-        return '[COLOR FF009900]'
-    elif currentProvider == 'grijs':
-        return '[COLOR FF888888]'
-
 #Stop currently playing media
 def stop_playing_media():
     if xbmc.Player().isPlaying():
@@ -202,7 +190,7 @@ def close_kodi_force():
 #Shutdown Kodi with dialog
 def close_kodi_dialog():
     dialogAnswers = ['Ja', 'Nee']
-    dialogHeader = 'Kodi afsluiten?'
+    dialogHeader = 'Kodi afsluiten'
     dialogSummary = 'Weet u zeker dat u Kodi wilt afsluiten?'
     dialogFooter = ''
 
@@ -213,7 +201,7 @@ def close_kodi_dialog():
 #Shutdown device with dialog
 def device_shutdown_dialog():
     dialogAnswers = ['Ja', 'Nee']
-    dialogHeader = 'Apparaat uitschakelen?'
+    dialogHeader = 'Apparaat uitschakelen'
     dialogSummary = 'Weet u zeker dat u dit apparaat wilt uitschakelen?'
     dialogFooter = ''
 
@@ -228,7 +216,7 @@ def device_shutdown_force():
 #Reboot device with dialog
 def device_reboot_dialog():
     dialogAnswers = ['Ja', 'Nee']
-    dialogHeader = 'Apparaat herstarten?'
+    dialogHeader = 'Apparaat herstarten'
     dialogSummary = 'Weet u zeker dat u dit apparaat wilt herstarten?'
     dialogFooter = ''
 

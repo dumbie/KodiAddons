@@ -1,5 +1,6 @@
 import xbmc
 import xbmcgui
+import accent
 import download
 import favorite
 import func
@@ -87,7 +88,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Load channel details
             ExternalId = metadatainfo.externalId_from_json_metadata(channel)
             ChannelNumberString = metadatainfo.orderId_from_json_metadata(channel)
-            ChannelNumberAccent = func.get_provider_color_string() + ChannelNumberString + '[/COLOR]'
+            ChannelNumberAccent = accent.get_accent_color_string() + ChannelNumberString + '[/COLOR]'
             ChannelRecordEvent = 'false'
             ChannelRecordSeries = 'false'
             ChannelAlarm = 'false'
