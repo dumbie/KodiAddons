@@ -21,6 +21,9 @@ def list_load_combined(listContainer=None, forceUpdate=True):
         listContainerSort = []
         list_load_append(listContainerSort)
 
+        #Sort list items
+        listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStartDateTime'), reverse=True)
+
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
         lifunc.auto_end_items()

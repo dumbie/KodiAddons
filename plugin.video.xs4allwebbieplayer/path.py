@@ -79,7 +79,7 @@ def channels_list_radio():
     return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/listradios.js'
 
 def channels_list_tv():
-    return api_url_120('TRAY/LIVECHANNELS/?orderBy=orderId&sortOrder=asc&dfilter_channels=subscription&from=0&to=9999')
+    return api_url_120('TRAY/LIVECHANNELS?dfilter_channels=subscription&from=0&to=9999')
 
 def recording_profile():
     return api_url_120('USER/PROFILE/RECORDING')
@@ -91,10 +91,10 @@ def recording_series_add_remove():
     return api_url_120('CONTENT/RECORDING/SERIES')
 
 def recording_event():
-    return api_url_120('TRAY/USER/RECORDING/EVENT?outputFormat=EXTENDED&sortOrder=desc&orderBy=StartTime&from=0&to=9999')
+    return api_url_120('TRAY/USER/RECORDING/EVENT?outputFormat=EXTENDED&from=0&to=9999')
 
 def recording_series():
-    return api_url_120('TRAY/USER/RECORDING/SERIES?sortOrder=desc&orderBy=StartTime&from=0&to=9999')
+    return api_url_120('TRAY/USER/RECORDING/SERIES?outputFormat=EXTENDED&from=0&to=9999')
 
 def vod_day(dayDateTime):
     #Set download time range
@@ -107,7 +107,7 @@ def vod_day(dayDateTime):
         startTimeEpoch = func.datetime_to_ticks(dateTimeMidnight - timedelta(hours=1), True)
         endTimeEpoch = func.datetime_to_ticks(dateTimeMidnight + timedelta(hours=25), True)
 
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999')
+    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(endTimeEpoch)
     downloadPath += '&filter_startTime=' + str(startTimeEpoch)
 
@@ -141,19 +141,19 @@ def vod_series_season(parentId):
     return api_url_120('TRAY/SEARCH/VOD?filter_parentId=' + parentId + '&from=0&to=9999')
 
 def search_sport():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_genre=sport')
+    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_genre=sport')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     return downloadPath
 
 def search_kids():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_genre=kinderen,kids')
+    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_genre=kinderen,kids')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     return downloadPath
 
 def search_movies():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_programType=film')
+    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_programType=film')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
@@ -163,7 +163,7 @@ def search_movies():
     return downloadPath
 
 def search_series():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&from=0&to=9999&filter_programType=serie')
+    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_programType=serie')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
@@ -174,7 +174,7 @@ def search_series():
 
 def search_program(programName):
     programName = hybrid.urllib_quote(programName)
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&from=0&to=9999&orderBy=airingStartTime&sortOrder=desc')
+    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
 
