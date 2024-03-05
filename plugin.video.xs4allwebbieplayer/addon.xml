@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.30.0">
+<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.31.1">
   <requires>
     <import addon="inputstream.adaptive" version="2.0.10"/>
   </requires>
@@ -24,6 +24,10 @@
     <disclaimer>This is not an official add-on made by KPN but developed by Arnold Vink, use this add-on at your own risk.</disclaimer>
     <disclaimer lang="nl">Dit is geen officiële add-on gemaakt door KPN maar ontwikkeld door Arnold Vink, gebruik deze add-on op eigen risico.</disclaimer>
     <news>
+v1.31.0 (2 Maart 2024)
+- Functie toegevoegd om programma terug te zoeken vanaf tv en gids.
+- Hoofdpagina weergave instellingen toegevoegd.
+
 v1.30.0 (29 Februari 2024)
 - Add-on kan nu ook via de Yatse en Kore applicaties worden bestuurd.
 - Instelling toegevoegd om aantal terugspoel minuten aan te passen.

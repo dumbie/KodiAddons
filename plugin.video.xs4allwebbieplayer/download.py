@@ -134,6 +134,10 @@ def download_recording_event(forceUpdate=False):
         if var.RecordingEventDataJson != [] and forceUpdate == False:
             return True
 
+        #Check if user has pvr access
+        if var.RecordingAccess() == False:
+            return True
+
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
             notificationIcon = path.resources('resources/skins/default/media/common/record.png')
@@ -164,6 +168,10 @@ def download_recording_series(forceUpdate=False):
     try:
         #Check if data is already cached
         if var.RecordingSeriesDataJson != [] and forceUpdate == False:
+            return True
+
+        #Check if user has pvr access
+        if var.RecordingAccess() == False:
             return True
 
         #Check if user needs to login
