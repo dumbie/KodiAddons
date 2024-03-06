@@ -4,6 +4,7 @@ import download
 import favorite
 import func
 import getset
+import hidden
 import lifunc
 import metadatacombine
 import metadatainfo
@@ -19,8 +20,9 @@ def list_load_combined(listContainer=None, forceUpdate=False):
             xbmcgui.Dialog().notification(var.addonname, "Programma's downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
-        #Load favorite channels
+        #Load favorite and hidden channels
         favorite.favorite_television_json_load()
+        hidden.hidden_television_json_load()
 
         #Check if there are favorites set
         favorite.favorite_check_set('FavoriteTelevision.js')
@@ -55,6 +57,9 @@ def list_load_append(listContainer, remoteMode=False):
                 searchMatch2 = func.search_filter_string(EpisodeTitle)
                 searchResultFound = var.SearchTermResult in searchMatch1 or var.SearchTermResult in searchMatch2
                 if searchResultFound == False: continue
+
+            #Check if channel is hidden
+            if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
 
             #Check if channel is marked as favorite and search term is empty
             if func.string_isnullorempty(var.SearchTermResult) == True and getset.setting_get('LoadChannelFavoritesOnly') == 'true' and favorite.favorite_check_channel(ChannelId, 'FavoriteTelevision.js') == False:
