@@ -41,7 +41,6 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         return False
 
 def list_load_append(listContainer, remoteMode=False):
-    ChannelNumberInt = 0
     for channel in var.RadioChannelsDataJson['radios']:
         try:
             #Load channel basics
@@ -69,8 +68,7 @@ def list_load_append(listContainer, remoteMode=False):
                 ChannelFavorite = 'false'
 
             #Update channel number
-            ChannelNumberInt += 1
-            ChannelNumberString = str(ChannelNumberInt)
+            ChannelNumberString = str(ChannelId)
             ChannelNumberAccent = accent.get_accent_color_string() + ChannelNumberString + '[/COLOR]'
 
             #Set item icons

@@ -262,11 +262,11 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Programma uitzending terugkijken':
             streamplay.play_program(listItemSelected)
         elif dialogResult == 'Programma uitzendingen terugzoeken':
-            self.program_search(listItemSelected)
+            self.program_search_history(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
 
-    def program_search(self, listItemSelected):
+    def program_search_history(self, listItemSelected):
         ProgramName = listItemSelected.getProperty("ProgramName")
         if var.SearchTermDownload != ProgramName:
             var.SearchSelectIndex = 0
@@ -395,7 +395,7 @@ class Gui(xbmcgui.WindowXML):
         guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
         if lichanneltelevision.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
-            guifunc.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
+            guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders zijn niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
             guifunc.controlFocus(self, listContainer)
             guifunc.listSelectItem(listContainer, 0)
