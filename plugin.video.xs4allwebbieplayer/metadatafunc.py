@@ -16,6 +16,20 @@ def search_channelid_jsonepg(jsonEpg, searchChannelId):
     except:
         return None
 
+#Search Program for airing program in json epg
+def search_program_airingtime_jsonepg(jsonEpg, targetTime):
+    try:
+        if jsonEpg == []: return None
+        for Program in jsonEpg['containers']:
+            try:
+                if metadatainfo.programenddatetime_from_json_metadata(Program) > targetTime:
+                    return Program
+            except:
+                continue
+        return None
+    except:
+        return None
+
 #Search ProgramIndex for airing program in json epg
 def search_programindex_airingtime_jsonepg(jsonEpg, targetTime):
     try:
@@ -23,8 +37,7 @@ def search_programindex_airingtime_jsonepg(jsonEpg, targetTime):
         programIndex = 0
         for Program in jsonEpg['containers']:
             try:
-                ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(Program)
-                if ProgramTimeEndDateTime < targetTime:
+                if metadatainfo.programenddatetime_from_json_metadata(Program) < targetTime:
                     programIndex += 1
                 else:
                     return programIndex

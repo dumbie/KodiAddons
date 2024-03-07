@@ -1,17 +1,19 @@
+from datetime import date, datetime, timedelta
 import xbmc
 import xbmcgui
 import accent
 import download
 import favorite
 import func
+import metadatainfo
+import metadatafunc
 import getset
 import hidden
 import lifunc
-import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=False):
+def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=False, forceUpdate=False):
     try:
         #Download channels
         downloadResultChannels = download.download_channels_tv(forceUpdate)
@@ -29,6 +31,16 @@ def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=
                 xbmcgui.Dialog().notification(var.addonname, "Opnames downloaden mislukt.", notificationIcon, 2500, False)
                 return False
 
+        #Download epg day
+        if downloadEpg == True:
+            downloadResultEpg = download.download_epg_day(datetime.now(), forceUpdate)
+            if downloadResultEpg == None:
+                notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
+                xbmcgui.Dialog().notification(var.addonname, "Tv Gids downloaden mislukt.", notificationIcon, 2500, False)
+                return False
+        else:
+            downloadResultEpg = None
+
         #Load favorite and hidden channels
         favorite.favorite_television_json_load()
         hidden.hidden_television_json_load()
@@ -39,7 +51,7 @@ def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=
         #Add items to sort list
         listContainerSort = []
         remoteMode = listContainer == None
-        list_load_append(listContainerSort, remoteMode)
+        list_load_append(listContainerSort, downloadResultEpg, remoteMode)
 
         #Sort list items
         listContainerSort.sort(key=lambda x: int(x[1].getProperty('ChannelNumber')))
@@ -51,7 +63,7 @@ def list_load_combined(listContainer=None, downloadRecordings=True, forceUpdate=
     except:
         return False
 
-def list_load_append(listContainer, remoteMode=False):
+def list_load_append(listContainer, downloadResultEpg=None, remoteMode=False):
     var.TelevisionChannelIdsPlayable = []
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
@@ -102,6 +114,25 @@ def list_load_append(listContainer, remoteMode=False):
             ProgramNextName = 'Informatie wordt geladen'
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramProgressPercent = '100'
+            ProgramGenre = 'Televisie'
+            ProgramDuration = ''
+
+            #Load program details
+            if remoteMode == True:
+                #Get json epg for the channelid
+                channelEpg = metadatafunc.search_channelid_jsonepg(downloadResultEpg, ChannelId)
+
+                #Look for current airing program index
+                metaData = metadatafunc.search_program_airingtime_jsonepg(channelEpg, datetime.now())
+
+                #Get the current program information
+                ProgramDuration = metadatainfo.programdurationint_from_json_metadata(metaData) * 60
+                ProgramStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
+                ProgramStartString = ProgramStartDateTime.strftime('%H:%M')
+                ProgramEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
+                ProgramEndString = ProgramEndDateTime.strftime('%H:%M')
+                ProgramNowName = metadatainfo.programtitle_from_json_metadata(metaData)
+                ProgramGenre = '(' + ProgramStartString + '/' + ProgramEndString + ') ' + ProgramNowName
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
@@ -123,7 +154,7 @@ def list_load_append(listContainer, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': 'Televisie', 'Tagline': ChannelNumberString, 'Title': ChannelName, 'TrackNumber': ChannelNumberString},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ChannelNumberString, 'Title': ChannelName, 'TrackNumber': ChannelNumberString, 'Duration': ProgramDuration},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_tv'
             }

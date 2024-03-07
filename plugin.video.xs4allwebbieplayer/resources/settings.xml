@@ -13,13 +13,14 @@
   <category label="Algemeen">
     <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
-    <setting id="TelevisionHideEarlierAired" label="Eerder uitgezonden programma's niet tonen" type="bool" default="false"/>
-    <setting id="TelevisionHideUpcomingAired" label="Later uitgezonden programma's niet tonen" type="bool" default="false"/>
+    <setting id="TelevisionHideEarlierAired" label="Toon geen eerder uitgezonden programma's" type="bool" default="false"/>
+    <setting id="TelevisionHideUpcomingAired" label="Toon geen later uitgezonden programma's" type="bool" default="false"/>
     <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
-    <setting id="SearchFilterFuzzy" label="Vergelijkbare zoek resultaten tonen" type="bool" default="false"/>
+    <setting id="SearchFilterFuzzy" label="Toon vergelijkbare zoek resultaten" type="bool" default="false"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Hoofdpagina">
+    <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
     <setting id="MainShowTelevision" label="Toon Televisie op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowRadio" label="Toon Radio op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowMovies" label="Toon Films op hoofdpagina" type="bool" default="true"/>
@@ -37,7 +38,6 @@
     <setting id="MainShowHelp" label="Toon Help op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowSettings" label="Toon Instellingen op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowShutdown" label="Toon Sluiten op hoofdpagina" type="bool" default="true"/>
-    <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Afspelen">
@@ -66,7 +66,8 @@
   </category>
   <category label="Onderhoud">
     <setting id="ResetUserdata" type="action" label="Verwijder userdata bestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
-    <setting id="ResetThumbnails" type="action" label="Alle zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
+    <setting id="ResetCache" type="action" label="Verwijder tijdelijke cache bestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetCache)"/>
+    <setting id="ResetThumbnails" type="action" label="Alle opgeslagen zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
     <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
