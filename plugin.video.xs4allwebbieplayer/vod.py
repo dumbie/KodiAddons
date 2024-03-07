@@ -9,6 +9,7 @@ import guifunc
 import livod
 import path
 import player
+import search
 import searchdialog
 import streamplay
 import var
@@ -116,7 +117,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True, True)
 
     def open_context_menu(self):
-        dialogAnswers = ['Programma in de TV Gids tonen', 'Programma zoeken in uitzendingen']
+        dialogAnswers = ['Programma in de TV Gids tonen', 'Programma zoeken in resultaat', 'Programma uitzendingen terugzoeken']
         dialogHeader = 'Programma Menu'
         dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
         dialogFooter = ''
@@ -130,8 +131,10 @@ class Gui(xbmcgui.WindowXML):
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma in de TV Gids tonen':
             self.program_show_in_epg()
-        elif dialogResult == 'Programma zoeken in uitzendingen':
+        elif dialogResult == 'Programma zoeken in resultaat':
             self.program_search_result()
+        elif dialogResult == 'Programma uitzendingen terugzoeken':
+            self.program_search_history()
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
 
@@ -153,6 +156,18 @@ class Gui(xbmcgui.WindowXML):
         var.SearchTermResult = func.search_filter_string(ProgramNameRaw)
         self.load_program(True, False)
         var.SearchTermResult = ''
+
+    def program_search_history(self):
+        listContainer = self.getControl(1000)
+        listItemSelected = listContainer.getSelectedItem()
+        ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
+        if var.SearchTermDownload != ProgramNameRaw:
+            var.SearchSelectIndex = 0
+            var.SearchTermResult = ''
+            var.SearchTermDownload = ProgramNameRaw
+            var.SearchProgramDataJson = []
+        close_the_page()
+        search.switch_to_page()
 
     def buttons_add_navigation(self):
         listContainer = self.getControl(1001)
