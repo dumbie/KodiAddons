@@ -74,6 +74,6 @@ def change_addon_accent():
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_gray.png'), scrollbar800)
 
     #Copy custom background image
-    if files.existFileUser(path.addonstorage("background.png")):
+    if files.existFileUser(path.addonstorageuser("background.png")):
         files.removeFile(backgroundAddon)
-        files.copyFile(path.addonstorage("background.png"), backgroundAddon)
+        files.copyFile(path.addonstorageuser("background.png"), backgroundAddon)

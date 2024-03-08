@@ -152,7 +152,7 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Programma in de TV Gids tonen':
             self.program_show_in_epg(listItemSelected)
         elif dialogResult == 'Programma uitzendingen terugzoeken':
-            self.program_search(listItemSelected)
+            self.program_search_history(listItemSelected)
         elif dialogResult == 'Zender verbergen in zenderlijst':
             self.hide_channel(listContainer, listItemSelected)
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
@@ -183,7 +183,7 @@ class Gui(xbmcgui.WindowXML):
         close_the_page()
         epg.switch_to_page()
 
-    def program_search(self, listItemSelected):
+    def program_search_history(self, listItemSelected):
         ProgramName = listItemSelected.getProperty("ProgramNowName")
         if var.SearchTermDownload != ProgramName:
             var.SearchSelectIndex = 0

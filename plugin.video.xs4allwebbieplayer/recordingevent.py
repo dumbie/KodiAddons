@@ -1,5 +1,5 @@
 import xbmcgui
-import download
+import dlrecordingrequest
 import guifunc
 import lirecordingevent
 import var
@@ -33,7 +33,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             listItemSelected = clickedControl.getSelectedItem()
             ProgramRecordEventId = listItemSelected.getProperty("ProgramRecordEventId")
             ProgramDeltaTimeStart = listItemSelected.getProperty("ProgramDeltaTimeStart")
-            recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
+            recordRemove = dlrecordingrequest.event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
             if recordRemove == True:
                 #Remove item from the list
                 removeListItemId = clickedControl.getSelectedPosition()

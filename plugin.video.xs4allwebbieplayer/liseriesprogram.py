@@ -1,5 +1,4 @@
-import xbmcgui
-import download
+import dlseriesprogram
 import func
 import lifunc
 import metadatacombine
@@ -10,11 +9,9 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download programs
-        downloadResultVod = download.download_vod_series(forceUpdate)
-        downloadResultProgram = download.download_search_series(forceUpdate)
+        downloadResultVod = dlseriesprogram.download_vod(forceUpdate)
+        downloadResultProgram = dlseriesprogram.download_program(forceUpdate)
         if downloadResultVod == False or downloadResultProgram == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/series.png')
-            xbmcgui.Dialog().notification(var.addonname, "Series downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list

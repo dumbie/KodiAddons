@@ -1,21 +1,20 @@
-import download
+import xbmcgui
+import dlchanneltelevision
+import dlrecordingseries
 import lifunc
-import metadatainfo
 import metadatacombine
 import metadatafunc
-import recordingfunc
-import xbmcgui
+import metadatainfo
 import path
+import recordingfunc
 import var
 
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download record series
-        downloadResultChannels = download.download_channels_tv(forceUpdate)
-        downloadResultSeries = download.download_recording_series(forceUpdate)
+        downloadResultChannels = dlchanneltelevision.download(forceUpdate)
+        downloadResultSeries = dlrecordingseries.download(forceUpdate)
         if downloadResultChannels == False or downloadResultSeries == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/recordseries.png')
-            xbmcgui.Dialog().notification(var.addonname, "Geplande series downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list

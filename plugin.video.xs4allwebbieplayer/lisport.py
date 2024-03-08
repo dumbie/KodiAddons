@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-import xbmcgui
-import download
+import dlsport
 import func
 import getset
 import lifunc
@@ -12,10 +11,8 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download programs
-        downloadResult = download.download_search_sport(forceUpdate)
+        downloadResult = dlsport.download(forceUpdate)
         if downloadResult == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/sport.png')
-            xbmcgui.Dialog().notification(var.addonname, "Sport downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list

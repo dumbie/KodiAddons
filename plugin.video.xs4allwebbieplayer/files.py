@@ -2,8 +2,11 @@ import os
 import shutil
 import var
 
+def fileTimeModifiedEpoch(filePath):
+    return os.path.getmtime(filePath)
+
 def listFilesUser():
-    return listFiles(var.addonstorage)
+    return listFiles(var.addonstorageuser)
 
 def listFiles(dirPath):
     try:
@@ -12,7 +15,7 @@ def listFiles(dirPath):
         return []
 
 def listDirectoriesUser():
-    return listDirectories(var.addonstorage)
+    return listDirectories(var.addonstorageuser)
 
 def listDirectories(dirPath):
     try:
@@ -21,11 +24,14 @@ def listDirectories(dirPath):
         return []
 
 def saveFileUser(fileName, fileContent):
-    return saveFile(os.path.join(var.addonstorage, fileName), fileContent)
+    return saveFile(os.path.join(var.addonstorageuser, fileName), fileContent)
 
 def saveFile(filePath, fileContent):
     try:
-        fileWrite = open(filePath, 'wb')
+        if type(fileContent) == bytes:
+            fileWrite = open(filePath, 'wb')
+        else:
+            fileWrite = open(filePath, 'w')
         fileWrite.write(fileContent)
         fileWrite.close()
         return True
@@ -33,11 +39,14 @@ def saveFile(filePath, fileContent):
         return False
 
 def openFileUser(fileName):
-    return openFile(os.path.join(var.addonstorage, fileName))
+    return openFile(os.path.join(var.addonstorageuser, fileName))
 
-def openFile(filePath):
+def openFile(filePath, readBytes=True):
     try:
-        fileRead = open(filePath, 'rb')
+        if readBytes == True:
+            fileRead = open(filePath, 'rb')
+        else:
+            fileRead = open(filePath, 'r')
         fileContent = fileRead.read()
         fileRead.close()
         return fileContent
@@ -45,7 +54,7 @@ def openFile(filePath):
         return None
 
 def copyFileUser(fileName, destinationName):
-    return copyFile(os.path.join(var.addonstorage, fileName), os.path.join(var.addonstorage, destinationName))
+    return copyFile(os.path.join(var.addonstorageuser, fileName), os.path.join(var.addonstorageuser, destinationName))
 
 def copyFile(filePath, destinationPath):
     try:
@@ -55,7 +64,7 @@ def copyFile(filePath, destinationPath):
         return False
 
 def existFileUser(fileName):
-    return existFile(os.path.join(var.addonstorage, fileName))
+    return existFile(os.path.join(var.addonstorageuser, fileName))
 
 def existFile(filePath):
     try:
@@ -64,7 +73,7 @@ def existFile(filePath):
         return False
 
 def existDirectoryUser(dirName):
-    return existDirectory(os.path.join(var.addonstorage, dirName))
+    return existDirectory(os.path.join(var.addonstorageuser, dirName))
 
 def existDirectory(dirPath):
     try:
@@ -73,7 +82,7 @@ def existDirectory(dirPath):
         return False
 
 def sizeFileUser(fileName):
-    return sizeFile(os.path.join(var.addonstorage, fileName))
+    return sizeFile(os.path.join(var.addonstorageuser, fileName))
 
 def sizeFile(filePath):
     try:
@@ -82,7 +91,7 @@ def sizeFile(filePath):
         return False
 
 def removeFileUser(fileName):
-    return removeFile(os.path.join(var.addonstorage, fileName))
+    return removeFile(os.path.join(var.addonstorageuser, fileName))
 
 def removeFile(filePath):
     try:
@@ -92,7 +101,7 @@ def removeFile(filePath):
         return False
 
 def removeDirectoryUser(dirName):
-    return removeDirectory(os.path.join(var.addonstorage, dirName))
+    return removeDirectory(os.path.join(var.addonstorageuser, dirName))
 
 def removeDirectory(dirPath):
     try:
@@ -102,7 +111,7 @@ def removeDirectory(dirPath):
         return False
 
 def createDirectoryUser(dirName):
-    return createDirectory(os.path.join(var.addonstorage, dirName))
+    return createDirectory(os.path.join(var.addonstorageuser, dirName))
 
 def createDirectory(dirPath):
     try:

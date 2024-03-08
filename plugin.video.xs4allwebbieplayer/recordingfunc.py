@@ -1,5 +1,7 @@
 import dialog
-import download
+import dlrecordingevent
+import dlrecordingrequest
+import dlrecordingseries
 import func
 import metadatafunc
 import metadatainfo
@@ -29,7 +31,7 @@ def check_status_scheduled(program):
 def count_recording_events():
     try:
         #Download the recording programs
-        downloadResult = download.download_recording_event(False)
+        downloadResult = dlrecordingevent.download(False)
         if downloadResult == False: return '?'
 
         #Count planned recordings
@@ -47,7 +49,7 @@ def count_recording_events():
 def count_recorded_events():
     try:
         #Download the recording programs
-        downloadResult = download.download_recording_event(False)
+        downloadResult = dlrecordingevent.download(False)
         if downloadResult == False: return '?'
 
         #Count finished recordings
@@ -65,7 +67,7 @@ def count_recorded_events():
 def count_recording_series():
     try:
         #Download the recording programs
-        downloadResult = download.download_recording_series(False)
+        downloadResult = dlrecordingseries.download(False)
         if downloadResult == False: return '?'
 
         #Count planned recording
@@ -97,13 +99,13 @@ def record_event_epg(_self, listItemSelected):
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
         ProgramDeltaTimeStart = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
+        recordRemove = dlrecordingrequest.event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
         if recordRemove == True:
             #Force manual epg update
             _self.ProgramManualUpdate = True
             _self.ChannelManualUpdate = True
     else:
-        recordAdd = download.record_event_add(ProgramId)
+        recordAdd = dlrecordingrequest.event_add(ProgramId)
         if func.string_isnullorempty(recordAdd) == False:
             #Force manual epg update
             _self.ProgramManualUpdate = True
@@ -117,11 +119,11 @@ def record_event_now_television_playergui(listItemSelected):
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
         ProgramDeltaTimeStart = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
+        recordRemove = dlrecordingrequest.event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
         if recordRemove == True:
             listItemSelected.setProperty("ProgramNowRecordEvent", 'false')
     else:
-        recordAdd = download.record_event_add(ProgramNowId)
+        recordAdd = dlrecordingrequest.event_add(ProgramNowId)
         if func.string_isnullorempty(recordAdd) == False:
             listItemSelected.setProperty("ProgramNowRecordEvent", 'true')
 
@@ -133,11 +135,11 @@ def record_event_next_television_playergui(listItemSelected):
     if recordProgramEvent:
         ProgramRecordEventId = metadatainfo.contentId_from_json_metadata(recordProgramEvent)
         ProgramDeltaTimeStart = metadatainfo.programstartdeltatime_from_json_metadata(recordProgramEvent)
-        recordRemove = download.record_event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
+        recordRemove = dlrecordingrequest.event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
         if recordRemove == True:
             listItemSelected.setProperty("ProgramNextRecordEvent", 'false')
     else:
-        recordAdd = download.record_event_add(ProgramNextId)
+        recordAdd = dlrecordingrequest.event_add(ProgramNextId)
         if func.string_isnullorempty(recordAdd) == False:
             listItemSelected.setProperty("ProgramNextRecordEvent", 'true')
 
@@ -158,7 +160,7 @@ def record_series_now_television_playergui(listItemSelected):
                 listItemSelected.setProperty('ProgramNextRecordSeries', 'false')
     else:
         #Add record series
-        if download.record_series_add(ChannelId, ProgramNowSeriesId) == True:
+        if dlrecordingrequest.series_add(ChannelId, ProgramNowSeriesId) == True:
             listItemSelected.setProperty('ProgramNowRecordEvent', 'true')
             listItemSelected.setProperty('ProgramNowRecordSeries', 'true')
             if ProgramNextSeriesId == ProgramNowSeriesId:
@@ -182,7 +184,7 @@ def record_series_next_television_playergui(listItemSelected):
                 listItemSelected.setProperty('ProgramNowRecordSeries', 'false')
     else:
         #Add record series
-        if download.record_series_add(ChannelId, ProgramNextSeriesId) == True:
+        if dlrecordingrequest.series_add(ChannelId, ProgramNextSeriesId) == True:
             listItemSelected.setProperty('ProgramNextRecordEvent', 'true')
             listItemSelected.setProperty('ProgramNextRecordSeries', 'true')
             if ProgramNextSeriesId == ProgramNowSeriesId:
@@ -203,7 +205,7 @@ def record_series_epg(_self, listItemSelected):
             _self.ChannelManualUpdate = True
     else:
         #Add record series
-        if download.record_series_add(ChannelId, ProgramSeriesId) == True:
+        if dlrecordingrequest.series_add(ChannelId, ProgramSeriesId) == True:
             #Force manual epg update
             _self.ProgramManualUpdate = True
             _self.ChannelManualUpdate = True
@@ -224,6 +226,6 @@ def record_series_remove_dialog(seriesId):
             return False
 
         #Remove record series
-        return download.record_series_remove(seriesId, keepRecordings)
+        return dlrecordingrequest.series_remove(seriesId, keepRecordings)
     except:
         return False

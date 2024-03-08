@@ -1,6 +1,5 @@
-import xbmcgui
 import accent
-import download
+import dlchannelradio
 import favorite
 import func
 import getset
@@ -12,10 +11,8 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download channels
-        downloadResult = download.download_channels_radio(forceUpdate)
+        downloadResult = dlchannelradio.download(forceUpdate)
         if downloadResult == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
-            xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Load favorite and hidden channels

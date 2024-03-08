@@ -1,42 +1,38 @@
 from datetime import date, datetime, timedelta
 import xbmc
-import xbmcgui
 import accent
-import download
+import dlchanneltelevision
+import dlepg
+import dlrecordingevent
+import dlrecordingseries
 import favorite
 import func
-import metadatainfo
-import metadatafunc
 import getset
 import hidden
 import lifunc
+import metadatafunc
+import metadatainfo
 import path
 import var
 
 def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=False, forceUpdate=False):
     try:
         #Download channels
-        downloadResultChannels = download.download_channels_tv(forceUpdate)
+        downloadResultChannels = dlchanneltelevision.download(forceUpdate)
         if downloadResultChannels == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/television.png')
-            xbmcgui.Dialog().notification(var.addonname, "Zenders downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Download recordings
         if downloadRecordings == True:
-            downloadResultRecordingEvent = download.download_recording_event(forceUpdate)
-            downloadResultRecordingSeries = download.download_recording_series(forceUpdate)
+            downloadResultRecordingEvent = dlrecordingevent.download(forceUpdate)
+            downloadResultRecordingSeries = dlrecordingseries.download(forceUpdate)
             if downloadResultRecordingEvent == False or downloadResultRecordingSeries == False:
-                notificationIcon = path.resources('resources/skins/default/media/common/record.png')
-                xbmcgui.Dialog().notification(var.addonname, "Opnames downloaden mislukt.", notificationIcon, 2500, False)
                 return False
 
         #Download epg day
         if downloadEpg == True:
-            downloadResultEpg = download.download_epg_day(datetime.now(), forceUpdate)
+            downloadResultEpg = dlepg.download(datetime.now(), forceUpdate)
             if downloadResultEpg == None:
-                notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-                xbmcgui.Dialog().notification(var.addonname, "Tv Gids downloaden mislukt.", notificationIcon, 2500, False)
                 return False
         else:
             downloadResultEpg = None
@@ -63,7 +59,7 @@ def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=
     except:
         return False
 
-def list_load_append(listContainer, downloadResultEpg=None, remoteMode=False):
+def list_load_append(listContainer, downloadResultEpg, remoteMode=False):
     var.TelevisionChannelIdsPlayable = []
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
@@ -117,9 +113,8 @@ def list_load_append(listContainer, downloadResultEpg=None, remoteMode=False):
             ProgramGenre = 'Televisie'
             ProgramDuration = ''
 
-            #Load program details
             if remoteMode == True:
-                #Get json epg for the channelid
+                #Get json epg for channel identifier
                 channelEpg = metadatafunc.search_channelid_jsonepg(downloadResultEpg, ChannelId)
 
                 #Look for current airing program index

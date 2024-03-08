@@ -150,7 +150,7 @@ class Gui(xbmcgui.WindowXML):
             epg.switch_to_page()
 
     def update_kids_background(self):
-        if files.existFileUser(path.addonstorage("background.png")) == False:
+        if files.existFileUser(path.addonstorageuser("background.png")) == False:
             guifunc.updateImage(self, 8000, 'common/background_addon_kids.png')
 
     def buttons_add_navigation(self):

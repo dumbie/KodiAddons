@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 import base64
 import json
 import pickle
@@ -138,6 +138,10 @@ def datetime_to_string(date_time, date_format):
 #Convert string to datetime
 def datetime_from_string(date_string, date_format):
     return datetime(*(time.strptime(date_string, date_format)[0:6]))
+
+#Get current time in epoch ticks
+def ticks_current_time():
+    return time.time()
 
 #Convert epoch ticks to seconds
 def ticks_to_seconds(ticks):

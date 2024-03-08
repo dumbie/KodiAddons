@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import alarm
-import download
+import dlepg
 import func
 import getset
 import metadatacombine
@@ -18,19 +18,19 @@ def list_update(listItem):
         channelName = listItem.getProperty('ChannelName')
         channelNumberAccent = listItem.getProperty('ChannelNumberAccent')
 
-        #Get json epg from today
-        epgTodayJson = download.download_epg_day(dateTimeNow, False)
+        #Get json epg for datetime
+        jsonEpg = dlepg.download(dateTimeNow)
 
-        #Get json epg for the channelid
-        channelEpg = metadatafunc.search_channelid_jsonepg(epgTodayJson, channelId)
+        #Get json epg for channelid
+        jsonEpgChannel = metadatafunc.search_channelid_jsonepg(jsonEpg, channelId)
 
         #Look for current airing program index
-        programIndex = metadatafunc.search_programindex_airingtime_jsonepg(channelEpg, dateTimeNow)
+        programIndex = metadatafunc.search_programindex_airingtime_jsonepg(jsonEpgChannel, dateTimeNow)
 
         #Get the current program information
         try:
             #Load program basics
-            metaData = channelEpg['containers'][programIndex]
+            metaData = jsonEpgChannel['containers'][programIndex]
             ProgramNowId = metadatainfo.contentId_from_json_metadata(metaData)
             ProgramNowName = metadatainfo.programtitle_from_json_metadata(metaData)
 
@@ -86,7 +86,7 @@ def list_update(listItem):
 
         #Get the next program information
         try:
-            metaData = channelEpg['containers'][programIndex + 1]
+            metaData = jsonEpgChannel['containers'][programIndex + 1]
             ProgramNextId = metadatainfo.contentId_from_json_metadata(metaData)
             ProgramNextNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
             ProgramNextTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
@@ -137,13 +137,13 @@ def list_update(listItem):
 
         #Get upcoming programs information
         if getset.setting_get('TelevisionHideUpcomingAired') == 'false':
-            ProgramUpcoming = metadatacombine.program_upcoming_list(channelEpg['containers'], programIndex)
+            ProgramUpcoming = metadatacombine.program_upcoming_list(jsonEpgChannel['containers'], programIndex)
         else:
             ProgramUpcoming = ''
 
         #Get earlier programs information
         if getset.setting_get('TelevisionHideEarlierAired') == 'false':
-            ProgramEarlier = metadatacombine.program_earlier_list(channelEpg['containers'], programIndex)
+            ProgramEarlier = metadatacombine.program_earlier_list(jsonEpgChannel['containers'], programIndex)
         else:
             ProgramEarlier = ''
 

@@ -1,5 +1,5 @@
 import xbmcgui
-import download
+import dlsearch
 import func
 import getset
 import lifunc
@@ -11,10 +11,8 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=True):
     try:
         #Download search programs
-        downloadResult = download.download_search_program(var.SearchTermDownload, forceUpdate)
+        downloadResult = dlsearch.download(var.SearchTermDownload, forceUpdate)
         if downloadResult == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/search.png')
-            xbmcgui.Dialog().notification(var.addonname, "Zoek downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list

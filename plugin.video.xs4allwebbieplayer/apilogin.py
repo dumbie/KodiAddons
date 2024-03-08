@@ -5,7 +5,7 @@ import re
 import xbmcgui
 import classes
 import default
-import download
+import dlfunc
 import func
 import getset
 import hybrid
@@ -29,7 +29,7 @@ def ApiGenerateDeviceId():
 
 def ApiSetEndpointAdresNumber():
     try:
-        DownloadDataJson = download.request_download_gzip(path.api_endpoint_number())
+        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint_number())
         var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:
@@ -45,7 +45,7 @@ def ApiSetEndpointAdresEmail():
         apiEndpoint = apiEndpoint.__dict__
 
         DownloadDataSend = json.dumps(apiEndpoint).encode('ascii')
-        DownloadDataJson = download.request_download_gzip(path.api_endpoint_email(), DownloadDataSend)
+        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint_email(), DownloadDataSend)
         var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:

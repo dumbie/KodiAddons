@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import xbmcgui
-import download
+import dlepg
 import func
 import getset
 import lifunc
@@ -13,23 +13,19 @@ import var
 def list_load_combined(listContainer, forceUpdate=False):
     try:
         #Download epg day
-        var.EpgCurrentDayDataJson = download.download_epg_day(var.EpgCurrentLoadDateTime, forceUpdate)
-        if var.EpgCurrentDayDataJson == None:
-            notificationIcon = path.resources('resources/skins/default/media/common/epg.png')
-            xbmcgui.Dialog().notification(var.addonname, "Tv Gids downloaden mislukt.", notificationIcon, 2500, False)
-            return False
+        downloadResultEpg = dlepg.download(var.EpgCurrentLoadDateTime, forceUpdate)
 
         #Add items to sort list
         listContainerSort = []
         if func.string_isnullorempty(var.SearchTermResult):
             #Load programs for current channel on set day
-            channelEpgJson = metadatafunc.search_channelid_jsonepg(var.EpgCurrentDayDataJson, var.EpgCurrentChannelId)
-            if channelEpgJson != None:
-                list_load_append(listContainerSort, channelEpgJson)
+            jsonEpgChannel = metadatafunc.search_channelid_jsonepg(downloadResultEpg, var.EpgCurrentChannelId)
+            if jsonEpgChannel != None:
+                list_load_append(listContainerSort, jsonEpgChannel)
         else:
             #Load programs for search term from all channels on set day
-            for channelEpgJson in var.EpgCurrentDayDataJson["resultObj"]["containers"]:
-                list_load_append(listContainerSort, channelEpgJson)
+            for jsonEpgChannel in downloadResultEpg["resultObj"]["containers"]:
+                list_load_append(listContainerSort, jsonEpgChannel)
 
         #Sort list items
         listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
@@ -41,11 +37,11 @@ def list_load_combined(listContainer, forceUpdate=False):
     except:
         return False
 
-def list_load_append(listContainer, epgJson):
+def list_load_append(listContainer, jsonEpgChannel):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
-    for program in epgJson['containers']:
+    for program in jsonEpgChannel['containers']:
         try:
             #Load program basics
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)

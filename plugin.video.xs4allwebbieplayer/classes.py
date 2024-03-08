@@ -54,8 +54,8 @@ class Class_ApiLogin_deviceRegistrationData:
         self.deviceFirmVersion = deviceFirmVersion
         self.appVersion = appVersion
 
-#Epg day cache
-class Class_EpgCache:
+#Cache epg days
+class Class_CacheEpgDays:
     def __init__(self, dayDateString=None, epgJson=None):
         self.dayDateString = dayDateString
         self.epgJson = epgJson

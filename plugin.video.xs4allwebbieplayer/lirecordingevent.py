@@ -1,5 +1,5 @@
 import xbmcgui
-import download
+import dlrecordingevent
 import lifunc
 import metadatacombine
 import metadatainfo
@@ -10,10 +10,8 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download record events
-        downloadResult = download.download_recording_event(forceUpdate)
+        downloadResult = dlrecordingevent.download(forceUpdate)
         if downloadResult == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/record.png')
-            xbmcgui.Dialog().notification(var.addonname, "Geplande opnames downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list

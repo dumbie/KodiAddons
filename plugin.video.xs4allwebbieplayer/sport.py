@@ -76,7 +76,7 @@ class Gui(xbmcgui.WindowXML):
         var.SportSelectIndex = listContainer.getSelectedPosition()
 
     def open_context_menu(self):
-        dialogAnswers = ['Programma in de TV Gids tonen', 'Programma zoeken in uitzendingen']
+        dialogAnswers = ['Programma in de TV Gids tonen', 'Programma zoeken in resultaat']
         dialogHeader = 'Programma Menu'
         dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
         dialogFooter = ''
@@ -84,7 +84,7 @@ class Gui(xbmcgui.WindowXML):
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma in de TV Gids tonen':
             self.program_show_in_epg()
-        elif dialogResult == 'Programma zoeken in uitzendingen':
+        elif dialogResult == 'Programma zoeken in resultaat':
             self.program_search_result()
 
     def program_show_in_epg(self):

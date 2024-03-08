@@ -1,5 +1,5 @@
 import apilogin
-import download
+import dlrecordingprofile
 import func
 import getset
 import lifunc
@@ -14,7 +14,7 @@ def list_load_combined(listContainer=None):
 
         #Check if user is logged in
         if var.ApiLoggedIn() == True:
-             download.download_recording_profile()
+             dlrecordingprofile.download()
 
         #Add items to sort list
         listContainerSort = []

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import xbmcgui
 import apilogin
-import download
+import dlfunc
 import func
 import getset
 import metadatainfo
@@ -39,7 +39,7 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         StartString = '&time=' + str(func.datetime_to_ticks(DateTimeUtc))
 
         #Download television stream url
-        DownloadDataJson = download.request_download_gzip(path.stream_url_tv(NewChannelId, NewStreamAssetId) + StartString)
+        DownloadDataJson = dlfunc.download_gzip_json(path.stream_url_tv(NewChannelId, NewStreamAssetId) + StartString)
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -123,7 +123,7 @@ def play_program(listItem, Windowed=False):
             return
 
         #Download program details
-        DownloadDataJson = download.request_download_gzip(path.detail_program(ProgramId))
+        DownloadDataJson = dlfunc.download_gzip_json(path.detail_program(ProgramId))
 
         #Get the stream asset id
         StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(DownloadDataJson)
@@ -135,7 +135,7 @@ def play_program(listItem, Windowed=False):
             return
 
         #Download program stream url
-        DownloadDataJson = download.request_download_gzip(path.stream_url_program(ProgramId, StreamAssetId))
+        DownloadDataJson = dlfunc.download_gzip_json(path.stream_url_program(ProgramId, StreamAssetId))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -192,7 +192,7 @@ def play_vod(listItem, Windowed=False):
             return
 
         #Download the program stream url
-        DownloadDataJson = download.request_download_gzip(path.stream_url_vod(ProgramId, StreamAssetId))
+        DownloadDataJson = dlfunc.download_gzip_json(path.stream_url_vod(ProgramId, StreamAssetId))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -249,7 +249,7 @@ def play_recorded(listItem, Windowed=False):
             return
 
         #Download the program stream url
-        DownloadDataJson = download.request_download_gzip(path.stream_url_recording(ProgramRecordEventId, StreamAssetId))
+        DownloadDataJson = dlfunc.download_gzip_json(path.stream_url_recording(ProgramRecordEventId, StreamAssetId))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:

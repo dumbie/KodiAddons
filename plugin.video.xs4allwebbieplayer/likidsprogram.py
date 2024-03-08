@@ -1,5 +1,4 @@
-import xbmcgui
-import download
+import dlkidsprogram
 import func
 import getset
 import lifunc
@@ -11,11 +10,9 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download programs
-        downloadResultVod = download.download_vod_kids(forceUpdate)
-        downloadResultProgram = download.download_search_kids(forceUpdate)
+        downloadResultVod = dlkidsprogram.download_vod(forceUpdate)
+        downloadResultProgram = dlkidsprogram.download_program(forceUpdate)
         if downloadResultVod == False or downloadResultProgram == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
-            xbmcgui.Dialog().notification(var.addonname, "Kids downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list

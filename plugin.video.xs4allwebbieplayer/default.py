@@ -2,6 +2,7 @@ import sys
 import xbmcgui
 import accent
 import argument
+import cache
 import dialog
 import files
 import func
@@ -21,6 +22,8 @@ def get_launch_type():
 
 def launch_source():
     check_login_settings()
+    cache.cache_check_folder()
+    cache.cache_cleanup_all()
     argument.set_launch_argument_source()
     argument.handle_launch_argument_source()
 
@@ -29,6 +32,8 @@ def launch_script():
         func.stop_playing_media()
         reset_global_variables()
         check_login_settings()
+        cache.cache_check_folder()
+        cache.cache_cleanup_all()
         accent.change_addon_accent()
         main.switch_to_page()
     else:

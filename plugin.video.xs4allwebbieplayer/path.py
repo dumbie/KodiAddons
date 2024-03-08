@@ -9,8 +9,11 @@ import var
 def resources(fileName):
     return os.path.join(var.addonpath, fileName)
 
-def addonstorage(fileName):
-    return os.path.join(var.addonstorage, fileName)
+def addonstorageuser(fileName):
+    return os.path.join(var.addonstorageuser, fileName)
+
+def addonstoragecache(fileName):
+    return os.path.join(var.addonstoragecache, fileName)
 
 def requirements():
     return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/requirements/'
@@ -96,7 +99,7 @@ def recording_event():
 def recording_series():
     return api_url_120('TRAY/USER/RECORDING/SERIES?outputFormat=EXTENDED&from=0&to=9999')
 
-def vod_day(dayDateTime):
+def program_vod(dayDateTime):
     #Set download time range
     if dayDateTime.date() == datetime.now().date():
         dateTimeMidnight = func.datetime_to_midnight(datetime.now())
@@ -134,25 +137,24 @@ def vod_series():
     return downloadPath
 
 def vod_kids():
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999&filter_genres=kinderen,kids')
-    return downloadPath
+    return api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999&filter_genres=kinderen,kids')
 
-def vod_series_season(parentId):
+def vod_episodes(parentId):
     return api_url_120('TRAY/SEARCH/VOD?filter_parentId=' + parentId + '&from=0&to=9999')
 
-def search_sport():
+def program_sport():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_genre=sport')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     return downloadPath
 
-def search_kids():
+def program_kids():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_genre=kinderen,kids')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     return downloadPath
 
-def search_movies():
+def program_movies():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_programType=film')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
@@ -162,7 +164,7 @@ def search_movies():
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
     return downloadPath
 
-def search_series():
+def program_series():
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999&filter_programType=serie')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
@@ -172,7 +174,7 @@ def search_series():
         downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
     return downloadPath
 
-def search_program(programName):
+def program_search(programName):
     programName = hybrid.urllib_quote(programName)
     downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))

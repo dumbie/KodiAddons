@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-import xbmcgui
-import download
+import dlvod
 import favorite
 import func
 import getset
@@ -14,10 +13,8 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download programs
-        downloadResult = download.download_vod_day(var.VodDayLoadDateTime, forceUpdate)
+        downloadResult = dlvod.download(var.VodDayLoadDateTime, forceUpdate)
         if downloadResult == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
-            xbmcgui.Dialog().notification(var.addonname, "Programma's downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Load favorite and hidden channels

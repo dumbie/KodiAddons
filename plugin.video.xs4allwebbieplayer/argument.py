@@ -1,5 +1,6 @@
 import sys
 import xbmcaddon
+import cache
 import default
 import func
 import lichannelradio
@@ -39,6 +40,9 @@ def handle_launch_argument_source():
         elif var.LaunchArgument == "ResetUserdata":
             default.reset_userdata()
             return True
+        elif var.LaunchArgument == "ResetCache":
+            cache.cache_remove_all()
+            return True
         elif var.LaunchArgument == "ResetThumbnails":
             default.reset_thumbnails()
             return True
@@ -59,7 +63,7 @@ def handle_launch_argument_source():
 
         #List pages
         elif actionItem == "page_television":
-            lichanneltelevision.list_load_combined(downloadRecordings=False)
+            lichanneltelevision.list_load_combined(downloadRecordings=False, downloadEpg=True)
         elif actionItem == "page_radio":
             lichannelradio.list_load_combined()
         elif actionItem == "page_movies":

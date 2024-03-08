@@ -1,5 +1,4 @@
-import xbmcgui
-import download
+import dlrecordingevent
 import func
 import getset
 import lifunc
@@ -12,10 +11,8 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download recordings
-        downloadResult = download.download_recording_event(forceUpdate)
+        downloadResult = dlrecordingevent.download(forceUpdate)
         if downloadResult == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
-            xbmcgui.Dialog().notification(var.addonname, "Opnames downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list

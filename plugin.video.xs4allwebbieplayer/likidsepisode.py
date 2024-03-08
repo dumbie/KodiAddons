@@ -1,5 +1,5 @@
-import xbmcgui
-import download
+import dlkidsprogram
+import dlseriesepisode
 import func
 import getset
 import lifunc
@@ -11,10 +11,8 @@ import var
 def list_load_vod_combined(selectedProgramId, selectedPictureUrl, listContainer=None):
     try:
         #Download episodes
-        downloadResult = download.download_vod_series_season(selectedProgramId)
+        downloadResult = dlseriesepisode.download(selectedProgramId)
         if downloadResult == None:
-            notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
-            xbmcgui.Dialog().notification(var.addonname, "Afleveringen downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list
@@ -32,32 +30,8 @@ def list_load_vod_combined(selectedProgramId, selectedPictureUrl, listContainer=
     except:
         return False
 
-def list_load_program_combined(selectedProgramName, selectedPictureUrl, listContainer=None):
-    try:
-        #Download episodes
-        downloadResult = download.download_search_kids()
-        if downloadResult == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/kids.png')
-            xbmcgui.Dialog().notification(var.addonname, "Afleveringen downloaden mislukt.", notificationIcon, 2500, False)
-            return False
-
-        #Add items to sort list
-        listContainerSort = []
-        remoteMode = listContainer == None
-        list_load_program_append(listContainerSort, selectedProgramName, selectedPictureUrl, remoteMode)
-
-        #Sort list items
-        listContainerSort.sort(key=lambda x: (int(x[1].getProperty('ProgramSeasonInt')), int(x[1].getProperty('ProgramEpisodeInt'))))
-
-        #Add items to container
-        lifunc.auto_add_items(listContainerSort, listContainer)
-        lifunc.auto_end_items()
-        return True
-    except:
-        return False
-
-def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl, remoteMode=False):
-    for program in downloadedSeason["resultObj"]["containers"]:
+def list_load_vod_append(listContainer, downloadResult, selectedPictureUrl, remoteMode=False):
+    for program in downloadResult["resultObj"]["containers"]:
         try:
             #Load program basics
             TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
@@ -108,6 +82,28 @@ def list_load_vod_append(listContainer, downloadedSeason, selectedPictureUrl, re
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue
+
+def list_load_program_combined(selectedProgramName, selectedPictureUrl, listContainer=None):
+    try:
+        #Download episodes
+        downloadResult = dlkidsprogram.download_program()
+        if downloadResult == False:
+            return False
+
+        #Add items to sort list
+        listContainerSort = []
+        remoteMode = listContainer == None
+        list_load_program_append(listContainerSort, selectedProgramName, selectedPictureUrl, remoteMode)
+
+        #Sort list items
+        listContainerSort.sort(key=lambda x: (int(x[1].getProperty('ProgramSeasonInt')), int(x[1].getProperty('ProgramEpisodeInt'))))
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
 
 def list_load_program_append(listContainer, selectedProgramName, selectedPictureUrl, remoteMode=False):
     for program in var.KidsProgramDataJson["resultObj"]["containers"]:

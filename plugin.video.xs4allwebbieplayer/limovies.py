@@ -1,5 +1,4 @@
-import xbmcgui
-import download
+import dlmovies
 import func
 import getset
 import lifunc
@@ -11,11 +10,9 @@ import var
 def list_load_combined(listContainer=None, forceUpdate=False):
     try:
         #Download movies
-        downloadResultVod = download.download_vod_movies(forceUpdate)
-        downloadResultProgram = download.download_search_movies(forceUpdate)
+        downloadResultVod = dlmovies.download_vod(forceUpdate)
+        downloadResultProgram = dlmovies.download_program(forceUpdate)
         if downloadResultVod == False or downloadResultProgram == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
-            xbmcgui.Dialog().notification(var.addonname, "Films downloaden mislukt.", notificationIcon, 2500, False)
             return False
 
         #Add items to sort list
@@ -32,8 +29,6 @@ def list_load_combined(listContainer=None, forceUpdate=False):
         lifunc.auto_end_items()
         return True
     except:
-        notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
-        xbmcgui.Dialog().notification(var.addonname, "Films downloaden mislukt.", notificationIcon, 2500, False)
         return False
 
 def list_load_vod_append(listContainer, remoteMode=False):
