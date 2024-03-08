@@ -10,6 +10,7 @@ class Class_ThreadSafe:
         self.thread = None
         self.eventSleep = None
         self.threadName = ""
+        self.loopCount = 0
 
     #Start thread
     def Start(self, threadTarget, threadArgs=None, threadForce=False):
@@ -65,6 +66,7 @@ class Class_ThreadSafe:
             self.thread = None
             self.eventSleep = None
             self.threadName = ""
+            self.loopCount = 0
             return True
         except:
             xbmc.log("Thread failed to stop.", xbmc.LOGINFO)
@@ -79,13 +81,14 @@ class Class_ThreadSafe:
         return self.thread == None
 
     #Check if thread is allowed to run
-    def Allowed(self, serviceThread=False, sleepDelay=0):
-        if sleepDelay != 0:
-            self.Sleep(sleepDelay)
+    def Allowed(self, serviceThread=False, sleepDelayMs=0):
+        if self.loopCount != 0 and sleepDelayMs != 0:
+            self.Sleep(sleepDelayMs)
+        self.loopCount += 1
         if serviceThread:
-            return self.allowed and var.addonmonitor.abortRequested() == False
+            return self.allowed == True and var.addonmonitor.abortRequested() == False
         else:
-            return self.allowed and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True
+            return self.allowed == True and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True
 
     #Sleep thread until set or timeout
     def Sleep(self, sleepDelay):
