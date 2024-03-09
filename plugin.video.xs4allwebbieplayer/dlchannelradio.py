@@ -1,5 +1,6 @@
 import json
 import xbmcgui
+import cache
 import dlfunc
 import files
 import path
@@ -7,13 +8,18 @@ import var
 
 def download(forceUpdate=False):
     try:
+        #Cleanup downloaded cache files
+        filePath = path.addonstoragecache('radio.js')
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeChannels) == True:
+            var.RadioChannelsDataJson = []
+
         if forceUpdate == False:
             #Check if already cached in variables
             if var.RadioChannelsDataJson != []:
                 return True
 
             #Check if already cached in files
-            fileCache = files.openFile(path.addonstoragecache('radio.js'))
+            fileCache = files.openFile(filePath)
             if fileCache != None:
                 var.RadioChannelsDataJson = json.loads(fileCache)
                 return True
@@ -32,7 +38,7 @@ def download(forceUpdate=False):
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-        files.saveFile(path.addonstoragecache('radio.js'), JsonDumpBytes)
+        files.saveFile(filePath, JsonDumpBytes)
 
         return True
     except:

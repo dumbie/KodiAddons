@@ -178,14 +178,14 @@ class Gui(xbmcgui.WindowXMLDialog):
         var.thread_hide_playergui_info.Start(self.thread_hide_playergui_info)
 
     def thread_update_playergui_info(self):
-        while var.thread_update_playergui_info.Allowed(sleepDelay=400):
+        while var.thread_update_playergui_info.Allowed(sleepDelayMs=400):
             try:
                 self.update_epg_information()
             except:
                 pass
 
     def thread_hide_playergui_info(self):
-        while var.thread_hide_playergui_info.Allowed(sleepDelay=1000):
+        while var.thread_hide_playergui_info.Allowed(sleepDelayMs=1000):
             try:
                 lastInteractSeconds = int((datetime.now() - self.InfoLastInteraction).total_seconds())
                 if lastInteractSeconds >= int(getset.setting_get('PlayerInformationCloseTime')):

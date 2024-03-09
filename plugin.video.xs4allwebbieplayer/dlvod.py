@@ -1,6 +1,7 @@
 import json
 import xbmcgui
 import apilogin
+import cache
 import dlfunc
 import files
 import path
@@ -8,13 +9,18 @@ import var
 
 def download(dayDateTime, forceUpdate=False):
     try:
+        #Cleanup downloaded cache files
+        filePath = path.addonstoragecache('vod.js')
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+            var.VodDayDataJson = []
+
         if forceUpdate == False:
             #Check if already cached in variables
             if var.VodDayDataJson != []:
                 return var.VodDayDataJson
 
             #Check if already cached in files
-            fileCache = files.openFile(path.addonstoragecache('vod.js'))
+            fileCache = files.openFile(filePath)
             if fileCache != None:
                 var.VodDayDataJson = json.loads(fileCache)
                 return var.VodDayDataJson
@@ -43,7 +49,7 @@ def download(dayDateTime, forceUpdate=False):
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-        files.saveFile(path.addonstoragecache('vod.js'), JsonDumpBytes)
+        files.saveFile(filePath, JsonDumpBytes)
 
         return var.VodDayDataJson
     except:

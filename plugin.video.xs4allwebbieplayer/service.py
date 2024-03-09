@@ -1,5 +1,6 @@
-import func
 import xbmc
+import cache
+import func
 import servicealarm
 import serviceproxy
 
@@ -7,6 +8,9 @@ import serviceproxy
 if __name__ == '__main__':
     #Run Webbie Player on Kodi launch
     func.run_addon(False)
+
+    #Check if cache folder exists
+    cache.cache_check_folder()
 
     #Start proxy server thread
     serviceproxy.start_proxy_server()

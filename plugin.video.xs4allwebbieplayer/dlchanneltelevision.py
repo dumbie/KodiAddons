@@ -1,6 +1,7 @@
 import json
 import xbmcgui
 import apilogin
+import cache
 import dlfunc
 import files
 import path
@@ -8,13 +9,18 @@ import var
 
 def download(forceUpdate=False):
     try:
+        #Cleanup downloaded cache files
+        filePath = path.addonstoragecache('television.js')
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeChannels) == True:
+            var.TelevisionChannelsDataJson = []
+
         if forceUpdate == False:
             #Check if already cached in variables
             if var.TelevisionChannelsDataJson != []:
                 return True
 
             #Check if already cached in files
-            fileCache = files.openFile(path.addonstoragecache('television.js'))
+            fileCache = files.openFile(filePath)
             if fileCache != None:
                 var.TelevisionChannelsDataJson = json.loads(fileCache)
                 return True
@@ -43,7 +49,7 @@ def download(forceUpdate=False):
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-        files.saveFile(path.addonstoragecache('television.js'), JsonDumpBytes)
+        files.saveFile(filePath, JsonDumpBytes)
 
         return True
     except:

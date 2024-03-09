@@ -1,6 +1,7 @@
 import json
 import xbmcgui
 import apilogin
+import cache
 import dlfunc
 import files
 import path
@@ -8,13 +9,18 @@ import var
 
 def download_vod(forceUpdate=False):
     try:
+        #Cleanup downloaded cache files
+        filePath = path.addonstoragecache('seriesvod.js')
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+            var.SeriesVodDataJson = []
+
         if forceUpdate == False:
             #Check if already cached in variables
             if var.SeriesVodDataJson != []:
                 return True
 
             #Check if already cached in files
-            fileCache = files.openFile(path.addonstoragecache('seriesvod.js'))
+            fileCache = files.openFile(filePath)
             if fileCache != None:
                 var.SeriesVodDataJson = json.loads(fileCache)
                 return True
@@ -43,7 +49,7 @@ def download_vod(forceUpdate=False):
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-        files.saveFile(path.addonstoragecache('seriesvod.js'), JsonDumpBytes)
+        files.saveFile(filePath, JsonDumpBytes)
 
         return True
     except:
@@ -53,13 +59,18 @@ def download_vod(forceUpdate=False):
 
 def download_program(forceUpdate=False):
     try:
+        #Cleanup downloaded cache files
+        filePath = path.addonstoragecache('seriesprogram.js')
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+            var.SeriesProgramDataJson = []
+
         if forceUpdate == False:
             #Check if already cached in variables
             if var.SeriesProgramDataJson != []:
                 return True
 
             #Check if already cached in files
-            fileCache = files.openFile(path.addonstoragecache('seriesprogram.js'))
+            fileCache = files.openFile(filePath)
             if fileCache != None:
                 var.SeriesProgramDataJson = json.loads(fileCache)
                 return True
@@ -88,7 +99,7 @@ def download_program(forceUpdate=False):
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-        files.saveFile(path.addonstoragecache('seriesprogram.js'), JsonDumpBytes)
+        files.saveFile(filePath, JsonDumpBytes)
 
         return True
     except:

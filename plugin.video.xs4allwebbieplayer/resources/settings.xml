@@ -36,6 +36,7 @@
     <setting id="MainShowAlarm" label="Toon Alarmen op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowSleep" label="Toon Slaap Timer op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowHelp" label="Toon Help op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowRefresh" label="Toon Vernieuwen op hoofdpagina" type="bool" default="false"/>
     <setting id="MainShowSettings" label="Toon Instellingen op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowShutdown" label="Toon Sluiten op hoofdpagina" type="bool" default="true"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>

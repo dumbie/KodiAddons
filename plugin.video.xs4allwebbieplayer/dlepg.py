@@ -1,15 +1,16 @@
 import json
 import xbmcgui
 import apilogin
+import cache
 import classes
 import dlfunc
 import files
 import path
 import var
 
-def get_cache_variable_class(dayDateString):
+def get_epg_cache(dayDateString):
     #Check if epg day is cached in variable
-    for epgCache in var.EpgCacheArrayDataJson:
+    for epgCache in var.CacheEpgDaysArray:
         try:
             if epgCache.dayDateString == dayDateString:
                 return epgCache
@@ -17,36 +18,33 @@ def get_cache_variable_class(dayDateString):
             continue
     return None
 
-def download(dayDateTime, forceUpdate=False):
+def download(dayDateTime, forceUpdate=False, cleanupCache=True):
     try:
+        #Cleanup downloaded cache files
+        if cleanupCache == True and cache.cache_cleanup_epg() == True:
+            var.CacheEpgDaysArray = []
+
         #Convert datetime to datestring
         dayDateString = dayDateTime.strftime('%Y-%m-%d')
 
-        #Get cache from variable
-        variableCache = get_cache_variable_class(dayDateString)
-
         if forceUpdate == False:
             #Check if already cached in variable
+            variableCache = get_epg_cache(dayDateString)
             if variableCache != None:
-                return variableCache.epgJson
+                return variableCache.dataJson
 
             #Check if already cached in files
-            fileCache = files.openFile(path.addonstoragecache('epg' + dayDateString + '.js'))
+            filePath = path.addonstoragecache('epg' + dayDateString + '.js')
+            fileCache = files.openFile(filePath)
             if fileCache != None:
                 fileCacheJson = json.loads(fileCache)
 
                 #Update variable cache
                 classAdd = classes.Class_CacheEpgDays()
                 classAdd.dayDateString = dayDateString
-                classAdd.epgJson = fileCacheJson
-                var.EpgCacheArrayDataJson.append(classAdd)
-
-                #Return epg json
+                classAdd.dataJson = fileCacheJson
+                var.CacheEpgDaysArray.append(classAdd)
                 return fileCacheJson
-
-        #Remove cache from variable
-        if variableCache != None:
-            var.EpgCacheArrayDataJson.remove(variableCache)
 
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -70,12 +68,12 @@ def download(dayDateTime, forceUpdate=False):
         #Update variable cache
         classAdd = classes.Class_CacheEpgDays()
         classAdd.dayDateString = dayDateString
-        classAdd.epgJson = DownloadDataJson
-        var.EpgCacheArrayDataJson.append(classAdd)
+        classAdd.dataJson = DownloadDataJson
+        var.CacheEpgDaysArray.append(classAdd)
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-        files.saveFile(path.addonstoragecache('epg' + dayDateString + '.js'), JsonDumpBytes)
+        files.saveFile(filePath, JsonDumpBytes)
 
         return DownloadDataJson
     except:

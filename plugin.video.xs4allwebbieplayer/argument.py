@@ -60,6 +60,8 @@ def handle_launch_argument_source():
         #List actions
         if actionItem == "addon_launch":
             func.run_addon(True)
+        elif actionItem == "cache_remove_all":
+            cache.cache_remove_all()
 
         #List pages
         elif actionItem == "page_television":

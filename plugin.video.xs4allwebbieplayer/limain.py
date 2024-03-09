@@ -263,6 +263,21 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
+        if getset.setting_get('MainShowRefresh') == 'true':
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/refresh.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Vernieuwen',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemAction': 'cache_remove_all'
+            }
+            dirIsfolder = False
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
+
         if remoteMode == False and getset.setting_get('MainShowSettings') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/settings.png')

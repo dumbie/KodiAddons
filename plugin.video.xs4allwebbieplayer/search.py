@@ -33,7 +33,7 @@ class Gui(xbmcgui.WindowXML):
         self.buttons_add_navigation()
         listContainer = self.getControl(1000)
         if listContainer.size() == 0:
-            if var.SearchProgramDataJson == [] and func.string_isnullorempty(var.SearchTermDownload) == True:
+            if func.string_isnullorempty(var.SearchTermDownload) == True:
                 guifunc.updateLabelText(self, 1, 'Geen zoek term')
                 guifunc.updateLabelText(self, 3, "")
                 listContainer = self.getControl(1001)
@@ -137,7 +137,8 @@ class Gui(xbmcgui.WindowXML):
 
     def search_result(self):
         #Check if search result is available
-        if var.SearchProgramDataJson == []:
+        listContainer = self.getControl(1000)
+        if listContainer.size() == 0:
             notificationIcon = path.resources('resources/skins/default/media/common/searchresult.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen zoekresultaten.', notificationIcon, 2500, False)
             return

@@ -2,6 +2,7 @@ import xbmc
 import xbmcgui
 import alarm
 import apilogin
+import cache
 import dialog
 import epg
 import func
@@ -325,6 +326,8 @@ class Gui(xbmcgui.WindowXML):
                 recordingevent.switch_to_page()
             elif listItemAction == 'page_recording_series':
                 recordingseries.switch_to_page()
+            elif listItemAction == 'cache_remove_all':
+                cache.cache_remove_all()
             elif listItemAction == 'addon_settings':
                 var.addon.openSettings()
             elif listItemAction == 'page_help':

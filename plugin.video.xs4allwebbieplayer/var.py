@@ -105,6 +105,10 @@ LaunchArgument = ''
 #Dialog variables
 DialogResult = None
 
+#Cache variables
+CacheCleanTimeChannels = 360 * 60 #6h
+CacheCleanTimeOther = 10 * 60 #10m
+
 #Thread variables
 thread_notification = threadclass.Class_ThreadSafe()
 thread_check_requirements = threadclass.Class_ThreadSafe()
@@ -256,7 +260,7 @@ EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
 EpgNavigateProgramId = ''
 EpgDaysOffsetFuture = 7
-EpgCacheArrayDataJson = []
+CacheEpgDaysArray = []
 
 #Program variables
 ProgramRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten', 'round-up', 'replay', 'wiederholung']
@@ -276,10 +280,3 @@ AlarmDataJson = []
 
 #Widevine variables
 WidevineUpdating = False
-
-#Service - Alarm variables
-thread_alarm_timer = threadclass.Class_ThreadSafe()
-
-#Service - Proxy variables
-ProxyServer = None
-thread_proxy_server = threadclass.Class_ThreadSafe()

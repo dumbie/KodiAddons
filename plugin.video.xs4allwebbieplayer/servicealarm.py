@@ -3,6 +3,7 @@ import xbmcgui
 import alarm
 import func
 import path
+import servicevar
 import var
 
 def alarm_notification():
@@ -39,7 +40,7 @@ def alarm_notification():
 
 def thread_alarm_timer():
     threadLastTime = ''
-    while var.thread_alarm_timer.Allowed(True, sleepDelay=2000):
+    while servicevar.thread_alarm_timer.Allowed(True, sleepDelayMs=2000):
         try:
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime:
@@ -51,7 +52,7 @@ def thread_alarm_timer():
             pass
 
 def start_alarm_check():
-    var.thread_alarm_timer.Start(thread_alarm_timer)
+    servicevar.thread_alarm_timer.Start(thread_alarm_timer)
 
 def stop_alarm_check():
-    var.thread_alarm_timer.Stop()
+    servicevar.thread_alarm_timer.Stop()

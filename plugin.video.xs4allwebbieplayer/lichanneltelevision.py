@@ -31,7 +31,7 @@ def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=
 
         #Download epg day
         if downloadEpg == True:
-            downloadResultEpg = dlepg.download(datetime.now(), forceUpdate)
+            downloadResultEpg = dlepg.download(datetime.now())
             if downloadResultEpg == None:
                 return False
         else:
@@ -59,8 +59,10 @@ def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=
     except:
         return False
 
-def list_load_append(listContainer, downloadResultEpg, remoteMode=False):
+def list_load_append(listContainer, jsonEpg, remoteMode=False):
+    #Reset playable channel identifiers
     var.TelevisionChannelIdsPlayable = []
+
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
@@ -115,10 +117,10 @@ def list_load_append(listContainer, downloadResultEpg, remoteMode=False):
 
             if remoteMode == True:
                 #Get json epg for channel identifier
-                channelEpg = metadatafunc.search_channelid_jsonepg(downloadResultEpg, ChannelId)
+                jsonEpgChannel = metadatafunc.search_channelid_jsonepg(jsonEpg, ChannelId)
 
                 #Look for current airing program index
-                metaData = metadatafunc.search_program_airingtime_jsonepg(channelEpg, datetime.now())
+                metaData = metadatafunc.search_program_airingtime_jsonepg(jsonEpgChannel, datetime.now())
 
                 #Get the current program information
                 ProgramDuration = metadatainfo.programdurationint_from_json_metadata(metaData) * 60

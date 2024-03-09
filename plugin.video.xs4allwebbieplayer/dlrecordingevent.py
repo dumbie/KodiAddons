@@ -1,6 +1,7 @@
 import json
 import xbmcgui
 import apilogin
+import cache
 import dlfunc
 import files
 import path
@@ -12,13 +13,18 @@ def download(forceUpdate=False):
         if var.RecordingAccess() == False:
             return True
 
+        #Cleanup downloaded cache files
+        filePath = path.addonstoragecache('recordingevent.js')
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+            var.RecordingEventDataJson = []
+
         if forceUpdate == False:
             #Check if already cached in variables
             if var.RecordingEventDataJson != []:
                 return True
 
             #Check if already cached in files
-            fileCache = files.openFile(path.addonstoragecache('recordingevent.js'))
+            fileCache = files.openFile(filePath)
             if fileCache != None:
                 var.RecordingEventDataJson = json.loads(fileCache)
                 return True
@@ -47,7 +53,7 @@ def download(forceUpdate=False):
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-        files.saveFile(path.addonstoragecache('recordingevent.js'), JsonDumpBytes)
+        files.saveFile(filePath, JsonDumpBytes)
 
         return True
     except:

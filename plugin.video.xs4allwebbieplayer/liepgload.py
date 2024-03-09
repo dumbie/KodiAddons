@@ -13,7 +13,9 @@ import var
 def list_load_combined(listContainer, forceUpdate=False):
     try:
         #Download epg day
-        downloadResultEpg = dlepg.download(var.EpgCurrentLoadDateTime, forceUpdate)
+        downloadResultEpg = dlepg.download(var.EpgCurrentLoadDateTime)
+        if downloadResultEpg == None:
+            return False
 
         #Add items to sort list
         listContainerSort = []

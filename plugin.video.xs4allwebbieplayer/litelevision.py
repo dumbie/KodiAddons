@@ -19,7 +19,7 @@ def list_update(listItem):
         channelNumberAccent = listItem.getProperty('ChannelNumberAccent')
 
         #Get json epg for datetime
-        jsonEpg = dlepg.download(dateTimeNow)
+        jsonEpg = dlepg.download(dateTimeNow, cleanupCache=False)
 
         #Get json epg for channelid
         jsonEpgChannel = metadatafunc.search_channelid_jsonepg(jsonEpg, channelId)

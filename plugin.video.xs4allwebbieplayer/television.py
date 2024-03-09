@@ -380,7 +380,7 @@ class Gui(xbmcgui.WindowXML):
 
     def thread_update_television_program(self):
         threadLastTime = ''
-        while var.thread_update_television_program.Allowed(sleepDelay=1000):
+        while var.thread_update_television_program.Allowed(sleepDelayMs=1000):
             try:
                 threadCurrentTime = datetime.now().strftime('%H:%M')
                 if threadLastTime != threadCurrentTime or self.EpgManualUpdate == True:

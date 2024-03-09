@@ -565,7 +565,7 @@ class Gui(xbmcgui.WindowXML):
 
     def thread_update_program_progress(self):
         threadLastTime = ''
-        while var.thread_update_epg_program.Allowed(sleepDelay=1000):
+        while var.thread_update_epg_program.Allowed(sleepDelayMs=1000):
             try:
                 threadCurrentTime = datetime.now().strftime('%H:%M')
                 if threadLastTime != threadCurrentTime or self.ProgramManualUpdate:
@@ -579,7 +579,7 @@ class Gui(xbmcgui.WindowXML):
 
     def thread_update_channel_progress(self):
         threadLastTime = ''
-        while var.thread_update_epg_channel.Allowed(sleepDelay=1000):
+        while var.thread_update_epg_channel.Allowed(sleepDelayMs=1000):
             try:
                 threadCurrentTime = datetime.now().strftime('%H:%M')
                 if threadLastTime != threadCurrentTime or self.ChannelManualUpdate:
