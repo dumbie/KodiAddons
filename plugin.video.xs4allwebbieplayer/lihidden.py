@@ -58,15 +58,18 @@ def list_load_append(listContainer, hiddenJsonFile):
                 ChannelId = hiddenChannelId
                 ChannelDetails = metadatafunc.search_channelid_jsonradio(ChannelId)
                 if ChannelDetails:
+                    ChannelNumber = ChannelDetails['id']
                     ChannelName = ChannelDetails['name']
                     ChannelIcon = path.icon_radio(ChannelId)
                 else:
+                    ChannelNumber = "?"
                     ChannelName = "Onbekende zender"
                     ChannelIcon = path.icon_addon('unknown')
 
                 listItem = xbmcgui.ListItem()
                 listItem.setProperty('ChannelId', ChannelId)
                 listItem.setProperty('ProgramName', ChannelName)
+                listItem.setProperty('ProgramDescription', ChannelNumber)
                 listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
                 listContainer.append(listItem)
             except:
