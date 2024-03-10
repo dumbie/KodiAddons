@@ -7,11 +7,11 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None):
     try:
         #Download movies
-        downloadResultVod = dlmovies.download_vod(forceUpdate)
-        downloadResultProgram = dlmovies.download_program(forceUpdate)
+        downloadResultVod = dlmovies.download_vod()
+        downloadResultProgram = dlmovies.download_program()
         if downloadResultVod == False or downloadResultProgram == False:
             return False
 

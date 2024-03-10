@@ -30,7 +30,7 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         self.buttons_add_navigation()
-        self.load_channels(False, False)
+        self.load_channels(False)
 
     def onClick(self, clickId):
         if var.thread_zap_wait_timer.Finished():
@@ -45,8 +45,6 @@ class Gui(xbmcgui.WindowXML):
                 listItemAction = listItemSelected.getProperty('ItemAction')
                 if listItemAction == 'go_back':
                     close_the_page()
-                elif listItemAction == 'refresh_programs':
-                    self.load_channels(True, True)
                 elif listItemAction == 'hidden_channels':
                     hidden.switch_to_page('HiddenRadio.js')
                 elif listItemAction == "switch_all_favorites":
@@ -137,11 +135,6 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/vodno.png'), 'icon': path.resources('resources/skins/default/media/common/vodno.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Vernieuwen')
-        listItem.setProperty('ItemAction', 'refresh_programs')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
-        listContainer.addItem(listItem)
-
     def hide_channel(self, listContainer, listItemSelected):
         hiddenResult = hidden.hidden_add(listItemSelected, 'HiddenRadio.js')
         if hiddenResult == True:
@@ -167,11 +160,11 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if favorite.favorite_switch_mode() == False:
+            if favorite.favorite_switch_mode('FavoriteRadio.js') == False:
                 return
 
             #Load radio channels
-            self.load_channels(True, False)
+            self.load_channels(True)
         except:
             pass
 
@@ -185,24 +178,20 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
-        self.load_channels(True, False)
+        self.load_channels(True)
         var.SearchTermResult = ''
 
-    def load_channels(self, forceLoad=False, forceUpdate=False):
-        if forceUpdate == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Zenders worden vernieuwd.', notificationIcon, 2500, False)
-
+    def load_channels(self, forceLoad=False):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        if forceLoad == False and forceUpdate == False:
+        if forceLoad == False:
             if listContainer.size() > 0: return True
         else:
             guifunc.listReset(listContainer)
 
         #Add items to list container
         guifunc.updateLabelText(self, 1, 'Zenders laden')
-        if lichannelradio.list_load_combined(listContainer, forceUpdate) == False:
+        if lichannelradio.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)

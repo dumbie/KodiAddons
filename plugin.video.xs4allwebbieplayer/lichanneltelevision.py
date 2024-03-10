@@ -15,17 +15,17 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=False, forceUpdate=False):
+def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=False):
     try:
         #Download channels
-        downloadResultChannels = dlchanneltelevision.download(forceUpdate)
+        downloadResultChannels = dlchanneltelevision.download()
         if downloadResultChannels == False:
             return False
 
         #Download recordings
         if downloadRecordings == True:
-            downloadResultRecordingEvent = dlrecordingevent.download(forceUpdate)
-            downloadResultRecordingSeries = dlrecordingseries.download(forceUpdate)
+            downloadResultRecordingEvent = dlrecordingevent.download()
+            downloadResultRecordingSeries = dlrecordingseries.download()
             if downloadResultRecordingEvent == False or downloadResultRecordingSeries == False:
                 return False
 

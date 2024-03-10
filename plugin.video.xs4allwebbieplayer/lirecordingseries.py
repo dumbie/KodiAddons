@@ -9,11 +9,11 @@ import path
 import recordingfunc
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None):
     try:
         #Download record series
-        downloadResultChannels = dlchanneltelevision.download(forceUpdate)
-        downloadResultSeries = dlrecordingseries.download(forceUpdate)
+        downloadResultChannels = dlchanneltelevision.download()
+        downloadResultSeries = dlrecordingseries.download()
         if downloadResultChannels == False or downloadResultSeries == False:
             return False
 

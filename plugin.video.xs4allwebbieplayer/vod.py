@@ -33,7 +33,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         guifunc.updateLabelText(self, 2, "Programma Gemist")
         self.buttons_add_navigation()
-        self.load_program(False, False, True, var.VodSelectIndex)
+        self.load_program(False, var.VodSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -53,8 +53,6 @@ class Gui(xbmcgui.WindowXML):
                 self.search_program()
             elif listItemAction == 'set_load_day':
                 self.dialog_set_day()
-            elif listItemAction == 'refresh_programs':
-                self.load_program(True, True, False)
         elif clickId == 9000:
             if xbmc.Player().isPlaying():
                 player.Fullscreen(True)
@@ -83,6 +81,30 @@ class Gui(xbmcgui.WindowXML):
             self.search_program()
         elif (actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM) and focusItem:
             self.open_context_menu()
+
+    def buttons_add_navigation(self):
+        listContainer = self.getControl(1001)
+        if listContainer.size() > 0: return True
+
+        listItem = xbmcgui.ListItem('Ga een stap terug')
+        listItem.setProperty('ItemAction', 'go_back')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem("Zoek programma")
+        listItem.setProperty('ItemAction', 'search_program')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Selecteer dag')
+        listItem.setProperty('ItemAction', 'set_load_day')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/calendar.png'),'icon': path.resources('resources/skins/default/media/common/calendar.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Alle of favorieten')
+        listItem.setProperty('ItemAction', 'switch_all_favorites')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
+        listContainer.addItem(listItem)
 
     def save_select_index(self):
         listContainer = self.getControl(1000)
@@ -114,7 +136,7 @@ class Gui(xbmcgui.WindowXML):
         var.VodDayLoadDateTime = func.datetime_from_day_offset(selectedIndex)
 
         #Load day programs
-        self.load_program(True, True)
+        self.load_program(True)
 
     def open_context_menu(self):
         dialogAnswers = ['Programma in de TV Gids tonen', 'Programma zoeken in resultaat', 'Programma uitzendingen terugzoeken']
@@ -132,9 +154,9 @@ class Gui(xbmcgui.WindowXML):
         if dialogResult == 'Programma in de TV Gids tonen':
             self.program_show_in_epg()
         elif dialogResult == 'Programma zoeken in resultaat':
-            self.program_search_result()
+            self.search_program_result()
         elif dialogResult == 'Programma uitzendingen terugzoeken':
-            self.program_search_history()
+            self.search_program_history()
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
 
@@ -147,17 +169,17 @@ class Gui(xbmcgui.WindowXML):
         close_the_page()
         epg.switch_to_page()
 
-    def program_search_result(self):
+    def search_program_result(self):
         listContainer = self.getControl(1000)
         listItemSelected = listContainer.getSelectedItem()
         ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(ProgramNameRaw)
-        self.load_program(True, False)
+        self.load_program(True)
         var.SearchTermResult = ''
 
-    def program_search_history(self):
+    def search_program_history(self):
         listContainer = self.getControl(1000)
         listItemSelected = listContainer.getSelectedItem()
         ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
@@ -169,35 +191,6 @@ class Gui(xbmcgui.WindowXML):
         close_the_page()
         search.switch_to_page()
 
-    def buttons_add_navigation(self):
-        listContainer = self.getControl(1001)
-        if listContainer.size() > 0: return True
-
-        listItem = xbmcgui.ListItem('Ga een stap terug')
-        listItem.setProperty('ItemAction', 'go_back')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'), 'icon': path.resources('resources/skins/default/media/common/back.png')})
-        listContainer.addItem(listItem)
-
-        listItem = xbmcgui.ListItem("Zoek programma")
-        listItem.setProperty('ItemAction', 'search_program')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
-        listContainer.addItem(listItem)
-
-        listItem = xbmcgui.ListItem('Selecteer dag')
-        listItem.setProperty('ItemAction', 'set_load_day')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/calendar.png'),'icon': path.resources('resources/skins/default/media/common/calendar.png')})
-        listContainer.addItem(listItem)
-
-        listItem = xbmcgui.ListItem('Alle of favorieten')
-        listItem.setProperty('ItemAction', 'switch_all_favorites')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/star.png'), 'icon': path.resources('resources/skins/default/media/common/star.png')})
-        listContainer.addItem(listItem)
-
-        listItem = xbmcgui.ListItem("Vernieuwen")
-        listItem.setProperty('ItemAction', 'refresh_programs')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
-        listContainer.addItem(listItem)
-
     def search_program(self):
         #Open the search dialog
         searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek programma')
@@ -208,13 +201,13 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
-        self.load_program(True, False)
+        self.load_program(True)
         var.SearchTermResult = ''
 
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if favorite.favorite_switch_mode() == False:
+            if favorite.favorite_switch_mode('FavoriteTelevision.js') == False:
                 return
 
             #Load programs
@@ -222,14 +215,10 @@ class Gui(xbmcgui.WindowXML):
         except:
             pass
 
-    def load_program(self, forceLoad=False, forceUpdate=False, silentUpdate=True, selectIndex=0):
-        if forceUpdate == True and silentUpdate == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/vod.png')
-            xbmcgui.Dialog().notification(var.addonname, "Programma's worden vernieuwd.", notificationIcon, 2500, False)
-
+    def load_program(self, forceLoad=False, selectIndex=0):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        if forceLoad == False and forceUpdate == False:
+        if forceLoad == False:
             if listContainer.size() > 0: return True
         else:
             guifunc.listReset(listContainer)
@@ -237,7 +226,7 @@ class Gui(xbmcgui.WindowXML):
         #Add items to list container
         guifunc.updateLabelText(self, 1, "Programma's laden")
         guifunc.updateLabelText(self, 3, "")
-        if livod.list_load_combined(listContainer, forceUpdate) == False:
+        if livod.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)

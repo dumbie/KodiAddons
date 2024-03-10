@@ -40,7 +40,7 @@ class Gui(xbmcgui.WindowXML):
                 guifunc.controlFocus(self, listContainer)
                 guifunc.listSelectItem(listContainer, 1)
             else:
-                self.search_list(var.SearchSelectIndex, False)
+                self.search_list(False, var.SearchSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -93,7 +93,7 @@ class Gui(xbmcgui.WindowXML):
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
         if dialogResult == 'Programma zoeken in resultaat':
-            self.program_search_result()
+            self.search_program_result()
         elif dialogResult == 'Programma in de TV Gids tonen':
             self.program_show_in_epg()
 
@@ -106,14 +106,14 @@ class Gui(xbmcgui.WindowXML):
         close_the_page()
         epg.switch_to_page()
 
-    def program_search_result(self):
+    def search_program_result(self):
         listContainer = self.getControl(1000)
         listItemSelected = listContainer.getSelectedItem()
         ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(ProgramNameRaw)
-        self.search_list(forceUpdate=False)
+        self.search_list(False)
         var.SearchTermResult = ''
 
     def buttons_add_navigation(self):
@@ -137,8 +137,7 @@ class Gui(xbmcgui.WindowXML):
 
     def search_result(self):
         #Check if search result is available
-        listContainer = self.getControl(1000)
-        if listContainer.size() == 0:
+        if var.SearchProgramDataJson == []:
             notificationIcon = path.resources('resources/skins/default/media/common/searchresult.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen zoekresultaten.', notificationIcon, 2500, False)
             return
@@ -152,7 +151,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
-        self.search_list(forceUpdate=False)
+        self.search_list(False)
         var.SearchTermResult = ''
 
     def search_program(self):
@@ -173,9 +172,9 @@ class Gui(xbmcgui.WindowXML):
         var.SearchTermDownload = searchDialogTerm.string
 
         #List search results
-        self.search_list()
+        self.search_list(True)
 
-    def search_list(self, selectIndex=0, forceUpdate=True):
+    def search_list(self, forceUpdate=True, selectIndex=0):
         #Get and check the list container
         listContainer = self.getControl(1000)
         guifunc.listReset(listContainer)

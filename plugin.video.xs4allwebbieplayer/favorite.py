@@ -5,13 +5,19 @@ import getset
 import path
 import var
 
-def favorite_switch_mode():
+def favorite_switch_mode(favoriteJsonFile):
+    #Set Json target list variable
+    if favoriteJsonFile == 'FavoriteTelevision.js':
+        favoriteTargetJson = var.FavoriteTelevisionJson
+    elif favoriteJsonFile == 'FavoriteRadio.js':
+        favoriteTargetJson = var.FavoriteRadioJson
+
     #Switch favorites mode on or off
     if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
         getset.setting_set('LoadChannelFavoritesOnly', 'false')
     else:
         #Check if there are favorites set
-        if var.FavoriteTelevisionJson == []:
+        if favoriteTargetJson == []:
             notificationIcon = path.resources('resources/skins/default/media/common/star.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
             return False

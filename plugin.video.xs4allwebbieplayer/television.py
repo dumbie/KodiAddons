@@ -48,7 +48,7 @@ class Gui(xbmcgui.WindowXML):
 
     def onInit(self):
         self.buttons_add_navigation()
-        self.load_channels(False, False)
+        self.load_channels(False)
         self.start_threads()
 
     def onClick(self, clickId):
@@ -64,8 +64,6 @@ class Gui(xbmcgui.WindowXML):
                 listItemAction = listItemSelected.getProperty('ItemAction')
                 if listItemAction == 'go_back':
                     close_the_page()
-                elif listItemAction == 'refresh_programs':
-                    self.load_channels(True, True)
                 elif listItemAction == 'hidden_channels':
                     hidden.switch_to_page()
                 elif listItemAction == "switch_all_favorites":
@@ -152,7 +150,7 @@ class Gui(xbmcgui.WindowXML):
         elif dialogResult == 'Programma in de TV Gids tonen':
             self.program_show_in_epg(listItemSelected)
         elif dialogResult == 'Programma uitzendingen terugzoeken':
-            self.program_search_history(listItemSelected)
+            self.search_program_history(listItemSelected)
         elif dialogResult == 'Zender verbergen in zenderlijst':
             self.hide_channel(listContainer, listItemSelected)
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
@@ -183,7 +181,7 @@ class Gui(xbmcgui.WindowXML):
         close_the_page()
         epg.switch_to_page()
 
-    def program_search_history(self, listItemSelected):
+    def search_program_history(self, listItemSelected):
         ProgramName = listItemSelected.getProperty("ProgramNowName")
         if var.SearchTermDownload != ProgramName:
             var.SearchSelectIndex = 0
@@ -235,11 +233,6 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/vodno.png'), 'icon': path.resources('resources/skins/default/media/common/vodno.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Vernieuwen')
-        listItem.setProperty('ItemAction', 'refresh_programs')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
-        listContainer.addItem(listItem)
-
     def hide_channel(self, listContainer, listItemSelected):
         self.EpgPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
@@ -277,11 +270,11 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if favorite.favorite_switch_mode() == False:
+            if favorite.favorite_switch_mode('FavoriteTelevision.js') == False:
                 return
 
             #Load television channels
-            self.load_channels(True, False)
+            self.load_channels(True)
         except:
             pass
 
@@ -295,27 +288,19 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
-
-        #Load television channels
-        self.load_channels(True, False)
-
-        #Reset search variable
+        self.load_channels(True)
         var.SearchTermResult = ''
 
-    def load_channels(self, forceLoad=False, forceUpdate=False):
+    def load_channels(self, forceLoad=False):
         self.EpgPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
-        self.load_channels_code(forceLoad, forceUpdate)
+        self.load_channels_code(forceLoad)
         self.EpgPauseUpdate = False
 
-    def load_channels_code(self, forceLoad=False, forceUpdate=False):
-        if forceUpdate == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/television.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Zenders worden vernieuwd.', notificationIcon, 2500, False)
-
+    def load_channels_code(self, forceLoad=False):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        if forceLoad == False and forceUpdate == False:
+        if forceLoad == False:
             if listContainer.size() > 0:
                 currentChannelId = getset.setting_get('CurrentChannelId', True)
                 lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
@@ -326,7 +311,7 @@ class Gui(xbmcgui.WindowXML):
         #Add items to list container
         guifunc.updateLabelText(self, 1, 'Zenders laden')
         guifunc.updateLabelText(self, 3, "")
-        if lichanneltelevision.list_load_combined(listContainer, forceUpdate=forceUpdate) == False:
+        if lichanneltelevision.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)

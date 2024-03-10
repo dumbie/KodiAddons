@@ -8,10 +8,10 @@ import path
 import recordingfunc
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None):
     try:
         #Download recordings
-        downloadResult = dlrecordingevent.download(forceUpdate)
+        downloadResult = dlrecordingevent.download()
         if downloadResult == False:
             return False
 

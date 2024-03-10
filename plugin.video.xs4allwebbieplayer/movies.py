@@ -29,7 +29,7 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         self.buttons_add_navigation()
-        self.load_movies(False, False, var.MovieSelectIndex)
+        self.load_movies(False, var.MovieSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -45,8 +45,6 @@ class Gui(xbmcgui.WindowXML):
             listItemAction = listItemSelected.getProperty('ItemAction')
             if listItemAction == 'go_back':
                 close_the_page()
-            elif listItemAction == 'refresh_programs':
-                self.load_movies(True, True)
             elif listItemAction == 'search_movie':
                 self.search_movie()
         elif clickId == 9000:
@@ -111,11 +109,6 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem("Vernieuwen")
-        listItem.setProperty('ItemAction', 'refresh_programs')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
-        listContainer.addItem(listItem)
-
     def search_movie(self):
         #Open the search dialog
         searchDialogTerm = searchdialog.search_dialog('SearchHistorySearch.js', 'Zoek naar film')
@@ -126,17 +119,13 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
-        self.load_movies(True, False)
+        self.load_movies(True)
         var.SearchTermResult = ''
 
-    def load_movies(self, forceLoad=False, forceUpdate=False, selectIndex=0):
-        if forceUpdate == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/movies.png')
-            xbmcgui.Dialog().notification(var.addonname, "Films worden vernieuwd.", notificationIcon, 2500, False)
-
+    def load_movies(self, forceLoad=False, selectIndex=0):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        if forceLoad == False and forceUpdate == False:
+        if forceLoad == False:
             if listContainer.size() > 0: return True
         else:
             guifunc.listReset(listContainer)
@@ -144,7 +133,7 @@ class Gui(xbmcgui.WindowXML):
         #Add items to list container
         guifunc.updateLabelText(self, 1, "Films laden")
         guifunc.updateLabelText(self, 3, "")
-        if limovies.list_load_combined(listContainer, forceUpdate) == False:
+        if limovies.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)

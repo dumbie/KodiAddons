@@ -8,10 +8,10 @@ import lifunc
 import path
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None):
     try:
         #Download channels
-        downloadResult = dlchannelradio.download(forceUpdate)
+        downloadResult = dlchannelradio.download()
         if downloadResult == False:
             return False
 

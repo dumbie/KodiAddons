@@ -8,10 +8,10 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None):
     try:
         #Download programs
-        downloadResult = dlsport.download(forceUpdate)
+        downloadResult = dlsport.download()
         if downloadResult == False:
             return False
 

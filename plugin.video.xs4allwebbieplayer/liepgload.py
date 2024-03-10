@@ -10,7 +10,7 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer, forceUpdate=False):
+def list_load_combined(listContainer):
     try:
         #Download epg day
         downloadResultEpg = dlepg.download(var.EpgCurrentLoadDateTime)

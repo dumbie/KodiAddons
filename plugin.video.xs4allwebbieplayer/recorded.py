@@ -30,7 +30,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         guifunc.updateLabelText(self, 2, "Opnames")
         self.buttons_add_navigation()
-        self.load_program(False, False, var.RecordedSelectIndex)
+        self.load_program(False, var.RecordedSelectIndex)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -46,8 +46,6 @@ class Gui(xbmcgui.WindowXML):
                 close_the_page()
             elif listItemAction == 'search_program':
                 self.search_program()
-            elif listItemAction == 'refresh_programs':
-                self.load_program(True, True)
         elif clickId == 9000:
             if xbmc.Player().isPlaying():
                 player.Fullscreen(True)
@@ -97,14 +95,7 @@ class Gui(xbmcgui.WindowXML):
                 #Update the status
                 self.count_program(False)
         elif dialogResult == 'Programma zoeken in opnames':
-            listContainer = self.getControl(1000)
-            listItemSelected = listContainer.getSelectedItem()
-            ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
-
-            #Set search filter term
-            var.SearchTermResult = func.search_filter_string(ProgramNameRaw)
-            self.load_program(True, False)
-            var.SearchTermResult = ''
+            self.search_program_result()
 
     def buttons_add_navigation(self):
         listContainer = self.getControl(1001)
@@ -120,10 +111,15 @@ class Gui(xbmcgui.WindowXML):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/search.png'), 'icon': path.resources('resources/skins/default/media/common/search.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem("Vernieuwen")
-        listItem.setProperty('ItemAction', 'refresh_programs')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/refresh.png'), 'icon': path.resources('resources/skins/default/media/common/refresh.png')})
-        listContainer.addItem(listItem)
+    def search_program_result(self):
+        listContainer = self.getControl(1000)
+        listItemSelected = listContainer.getSelectedItem()
+        ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
+
+        #Set search filter term
+        var.SearchTermResult = func.search_filter_string(ProgramNameRaw)
+        self.load_program(True)
+        var.SearchTermResult = ''
 
     def search_program(self):
         #Open the search dialog
@@ -135,17 +131,13 @@ class Gui(xbmcgui.WindowXML):
 
         #Set search filter term
         var.SearchTermResult = func.search_filter_string(searchDialogTerm.string)
-        self.load_program(True, False)
+        self.load_program(True)
         var.SearchTermResult = ''
 
-    def load_program(self, forceLoad=False, forceUpdate=False, selectIndex=0):
-        if forceUpdate == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/recorddone.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Opnames worden vernieuwd.', notificationIcon, 2500, False)
-
+    def load_program(self, forceLoad=False, selectIndex=0):
         #Get and check the list container
         listContainer = self.getControl(1000)
-        if forceLoad == False and forceUpdate == False:
+        if forceLoad == False:
             if listContainer.size() > 0: return True
         else:
             guifunc.listReset(listContainer)
@@ -153,7 +145,7 @@ class Gui(xbmcgui.WindowXML):
         #Add items to list container
         guifunc.updateLabelText(self, 1, "Opnames laden")
         guifunc.updateLabelText(self, 3, "")
-        if lirecorded.list_load_combined(listContainer, forceUpdate) == False:
+        if lirecorded.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)

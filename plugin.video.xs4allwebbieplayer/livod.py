@@ -10,10 +10,10 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None):
     try:
         #Download programs
-        downloadResult = dlvod.download(var.VodDayLoadDateTime, forceUpdate)
+        downloadResult = dlvod.download(var.VodDayLoadDateTime)
         if downloadResult == False:
             return False
 

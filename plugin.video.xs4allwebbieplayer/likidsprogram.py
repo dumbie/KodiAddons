@@ -7,11 +7,11 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, forceUpdate=False):
+def list_load_combined(listContainer=None):
     try:
         #Download programs
-        downloadResultVod = dlkidsprogram.download_vod(forceUpdate)
-        downloadResultProgram = dlkidsprogram.download_program(forceUpdate)
+        downloadResultVod = dlkidsprogram.download_vod()
+        downloadResultProgram = dlkidsprogram.download_program()
         if downloadResultVod == False or downloadResultProgram == False:
             return False
 

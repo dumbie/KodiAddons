@@ -20,11 +20,10 @@ class Gui(xbmcgui.WindowXMLDialog):
     def onInit(self):
         #Set the schedule window text
         guifunc.updateLabelText(self, 3000, 'Geplande Series')
-        guifunc.updateLabelText(self, 4001, 'Series vernieuwen')
-        guifunc.updateVisibility(self, 4001, True)
+        guifunc.updateVisibility(self, 4001, False)
 
         #Load all current set recording
-        self.load_recording(False)
+        self.load_recording()
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -43,21 +42,21 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif clickId == 4000:
             close_the_page()
         elif clickId == 4001:
-            self.load_recording(True)
+            self.load_recording()
 
     def onAction(self, action):
         actionId = action.getId()
         if (actionId == var.ACTION_PREVIOUS_MENU or actionId == var.ACTION_BACKSPACE):
             close_the_page()
 
-    def load_recording(self, forceUpdate=False):
+    def load_recording(self):
         #Get and check the list container
         listContainer = self.getControl(1000)
         guifunc.listReset(listContainer)
 
         #Add items to list container
         guifunc.updateLabelText(self, 3001, "Geplande series worden geladen.")
-        if lirecordingseries.list_load_combined(listContainer, forceUpdate) == False:
+        if lirecordingseries.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 3001, 'Geplande series zijn niet beschikbaar')
             closeButton = self.getControl(4000)
             guifunc.controlFocus(self, closeButton)

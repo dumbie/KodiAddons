@@ -45,6 +45,8 @@ def download(dayDateTime, forceUpdate=False, cleanupCache=True):
                 classAdd.dataJson = fileCacheJson
                 var.CacheEpgDaysArray.append(classAdd)
                 return fileCacheJson
+        else:
+            var.CacheEpgDaysArray = []
 
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:

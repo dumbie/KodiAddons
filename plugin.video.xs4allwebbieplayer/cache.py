@@ -62,7 +62,6 @@ def cache_cleanup_epg():
                     fileRemoved = True
                     cachePath = path.addonstoragecache(cacheFile)
                     files.removeFile(cachePath)
-                    xbmcgui.Dialog().notification(var.addonname, "Epg cache cleaned", var.addonicon, 2500, False)
         return fileRemoved
     except:
         return False
@@ -73,7 +72,6 @@ def cache_cleanup_file(filePath, epochCleanupTime):
         timeModifiedEpoch = files.fileTimeModifiedEpoch(filePath)
         timeDifferenceEpoch = timeCurrentEpoch - timeModifiedEpoch
         if timeDifferenceEpoch > epochCleanupTime:
-            xbmcgui.Dialog().notification(var.addonname, "File cache cleaned", var.addonicon, 2500, False)
             return files.removeFile(filePath)
         return False
     except:

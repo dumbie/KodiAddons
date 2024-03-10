@@ -47,7 +47,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         self.buttons_add_sidebar()
-        self.load_channels()
+        self.load_channels(False)
         self.start_threads()
 
     def onClick(self, clickId):
