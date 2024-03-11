@@ -15,8 +15,8 @@
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="TelevisionHideEarlierAired" label="Toon geen eerder uitgezonden programma's" type="bool" default="false"/>
     <setting id="TelevisionHideUpcomingAired" label="Toon geen later uitgezonden programma's" type="bool" default="false"/>
-    <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="SearchFilterFuzzy" label="Toon vergelijkbare zoek resultaten" type="bool" default="false"/>
+    <setting id="AdultFilterSwitch" type="action" label="Erotische media in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?AdultFilterSwitch)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Hoofdpagina">
@@ -56,9 +56,8 @@
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Kids Slot">
-    <setting id="KidsPageLock" label="Vraag om pincode bij sluiten van kidspagina" type="bool" default="false"/>
-    <setting id="KidsHiddenLock" label="Vraag om pincode bij zenders niet meer verbergen" type="bool" default="false"/>
-    <setting id="KidsPincode" type="text" label="Gebruikte pincode" option="hidden" default="1234"/>
+    <setting id="KidsSwitchLock" type="action" label="Vraag pincode bij o.a. sluiten van kidspagina in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?KidsSwitchLock)"/>
+    <setting id="KidsChangePincode" type="action" label="Gebruikte kids pincode wijzigen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?KidsChangePincode)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Slaap Timer">
@@ -83,6 +82,10 @@
     <setting id="WidevineVersion" type="text" visible="false" default=""/>
     <setting id="CurrentRadioId" type="text" visible="false" default=""/>
     <setting id="CurrentChannelId" type="text" visible="false" default=""/>
+    <setting id="PreviousChannelId" type="text" visible="false" default=""/>
     <setting id="LoadChannelFavoritesOnly" type="text" visible="false" default="false"/>
+    <setting id="TelevisionChannelNoErotic" type="text" visible="false" default="false"/>
+    <setting id="KidsPincode" type="text" visible="false" default="1234"/>
+    <setting id="KidsPageLock" type="text" visible="false" default="false"/>
   </category>
 </settings>

@@ -1,7 +1,6 @@
 import sys
 import xbmcaddon
 import cache
-import default
 import func
 import lichannelradio
 import lichanneltelevision
@@ -15,6 +14,7 @@ import liseriesepisode
 import liseriesprogram
 import lisport
 import livod
+import settings
 import streamplay
 import var
 import widevine
@@ -37,14 +37,23 @@ def handle_launch_argument_source():
         elif var.LaunchArgument == "UpdateWidevineFiles":
             widevine.enable_widevine_support(True)
             return True
-        elif var.LaunchArgument == "ResetUserdata":
-            default.reset_userdata()
-            return True
         elif var.LaunchArgument == "ResetCache":
             cache.cache_remove_all()
             return True
+        elif var.LaunchArgument == "ResetUserdata":
+            settings.reset_userdata()
+            return True
         elif var.LaunchArgument == "ResetThumbnails":
-            default.reset_thumbnails()
+            settings.reset_thumbnails()
+            return True
+        elif var.LaunchArgument == "SwitchAdultFilter":
+            settings.switch_adultfilter_onoff()
+            return True
+        elif var.LaunchArgument == "KidsSwitchLock":
+            settings.switch_kidslock_onoff()
+            return True
+        elif var.LaunchArgument == "KidsChangePincode":
+            settings.kids_change_pincode()
             return True
 
         #List main menu

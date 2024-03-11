@@ -23,8 +23,8 @@ def switch_to_page():
 
 def close_the_page():
     if var.guiKids != None:
-        #Check kids page lock
-        if lock_check_page() == False:
+        #Check kids lock
+        if lock_check() == False:
             notificationIcon = path.resources('resources/skins/default/media/common/kidstongue.png')
             xbmcgui.Dialog().notification(var.addonname, "Helaas pindakaas!", notificationIcon, 2500, False)
             return False
@@ -37,13 +37,7 @@ def close_the_page():
         var.guiKids = None
         return True
 
-def lock_check_hidden():
-    if getset.setting_get('KidsHiddenLock') == 'true':
-        return lock_check_dialog()
-    else:
-        return True
-
-def lock_check_page():
+def lock_check():
     if getset.setting_get('KidsPageLock') == 'true':
         return lock_check_dialog()
     else:
@@ -52,7 +46,7 @@ def lock_check_page():
 def lock_check_dialog():
     #Keyboard enter kids pincode
     keyboard = xbmc.Keyboard('default', 'heading')
-    keyboard.setHeading('Kids pincode')
+    keyboard.setHeading('Kids pincode controle')
     keyboard.setDefault('')
     keyboard.setHiddenInput(True)
     keyboard.doModal()

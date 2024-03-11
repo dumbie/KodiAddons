@@ -4,12 +4,12 @@ import random
 import re
 import xbmcgui
 import classes
-import default
 import dlfunc
 import func
 import getset
 import hybrid
 import path
+import settings
 import var
 
 def ApiGenerateDeviceId():
@@ -81,7 +81,7 @@ def ApiFailVariableUpdate():
 def ApiLogin(loginNotification=False, forceLogin=False):
     try:
         #Check login settings
-        if default.check_login_settings() == False:
+        if settings.check_login_settings() == False:
             return False
 
         #Check failed login retry limit

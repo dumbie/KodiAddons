@@ -85,8 +85,8 @@ def hidden_remove(listItem, hiddenJsonFile):
     return hiddenRemoved
 
 def switch_to_page(hiddenMode='HiddenTelevision.js'):
-    #Check kids hidden lock
-    if kids.lock_check_hidden() == False:
+    #Check kids lock
+    if kids.lock_check() == False:
         notificationIcon = path.resources('resources/skins/default/media/common/kidstongue.png')
         xbmcgui.Dialog().notification(var.addonname, "Helaas pindakaas!", notificationIcon, 2500, False)
         return False
