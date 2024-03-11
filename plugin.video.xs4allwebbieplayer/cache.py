@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import xbmcgui
 import files
 import func
@@ -24,14 +25,14 @@ def cache_reset_variables():
         var.SportProgramDataJson = []
         var.RadioChannelsDataJson = []
         var.TelevisionChannelsDataJson = []
-        var.VodDayDataJson = []
+        var.VodCacheDaysArray = []
         var.MoviesProgramDataJson = []
         var.MoviesVodDataJson = []
         var.SeriesProgramDataJson = []
         var.SeriesVodDataJson = []
         var.RecordingEventDataJson = []
         var.RecordingSeriesDataJson = []
-        var.CacheEpgDaysArray = []
+        var.EpgCacheDaysArray = []
         return True
     except:
         return False
@@ -50,18 +51,21 @@ def cache_remove_files():
         xbmcgui.Dialog().notification(var.addonname, 'Cache bestanden verwijderen mislukt.', var.addonicon, 2500, False)
         return False
 
-def cache_cleanup_epg():
+def cache_cleanup_days(fileName, epochCleanupTimeToday=0):
     try:
         fileRemoved = False
+        dateStringToday = datetime.now().strftime('%Y-%m-%d')
         for cacheFile in files.listFiles(var.addonstoragecache):
-            if cacheFile.startswith('epg'):
-                dateString = cacheFile.lstrip('epg').rstrip('.js')
-                dateTimeFile = func.datetime_from_string(dateString, '%Y-%m-%d')
+            if cacheFile.startswith(fileName):
+                dateStringFile = cacheFile.lstrip(fileName).rstrip('.js')
+                dateTimeFile = func.datetime_from_string(dateStringFile, '%Y-%m-%d')
                 daysPassed = func.day_offset_from_datetime(dateTimeFile)
                 if daysPassed > var.VodDayOffsetPast:
-                    fileRemoved = True
                     cachePath = path.addonstoragecache(cacheFile)
-                    files.removeFile(cachePath)
+                    if files.removeFile(cachePath) == True: fileRemoved = True
+                elif epochCleanupTimeToday != 0 and dateStringFile == dateStringToday:
+                    cachePath = path.addonstoragecache(cacheFile)
+                    if cache_cleanup_file(cachePath, epochCleanupTimeToday) == True: fileRemoved = True
         return fileRemoved
     except:
         return False
