@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
-import dlvod
+import dlchanneltelevision
+import dlepg
 import favorite
 import func
 import getset
@@ -12,8 +13,13 @@ import var
 
 def list_load_combined(listContainer=None):
     try:
+        #Download channels
+        downloadResultChannels = dlchanneltelevision.download()
+        if downloadResultChannels == False:
+            return False
+
         #Download programs
-        downloadResult = dlvod.download(var.VodDayLoadDateTime)
+        downloadResult = dlepg.download(var.VodDayLoadDateTime)
         if downloadResult == None:
             return False
 
@@ -29,6 +35,9 @@ def list_load_combined(listContainer=None):
         remoteMode = listContainer == None
         list_load_append(listContainerSort, downloadResult, remoteMode)
 
+        #Sort list items
+        listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramTimeStartDateTime'), reverse=True)
+
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
         lifunc.auto_end_items()
@@ -37,33 +46,46 @@ def list_load_combined(listContainer=None):
         return False
 
 def list_load_append(listContainer, downloadResult, remoteMode=False):
+    for channel in downloadResult['resultObj']['containers']:
+        list_load_append_program(listContainer, channel, remoteMode)
+
+def list_load_append_program(listContainer, downloadResult, remoteMode=False):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
-    for program in downloadResult['resultObj']['containers']:
+    for program in downloadResult['containers']:
         try:
             #Load program basics
+            ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
             EpisodeTitle = metadatainfo.episodetitle_from_json_metadata(program, True)
-            ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
-            ChannelId = metadatainfo.channelId_from_json_metadata(program)
 
-            #Check if there are search results
             if func.string_isnullorempty(var.SearchTermResult) == False:
+                #Check if there are search results
                 searchMatch1 = func.search_filter_string(ProgramNameRaw)
                 searchMatch2 = func.search_filter_string(EpisodeTitle)
                 searchResultFound = var.SearchTermResult in searchMatch1 or var.SearchTermResult in searchMatch2
                 if searchResultFound == False: continue
+            else:
+                #Check if channel is marked as favorite
+                if getset.setting_get('LoadChannelFavoritesOnly') == 'true' and favorite.favorite_check_channel(ChannelId, 'FavoriteTelevision.js') == False: continue
 
             #Check if channel is hidden
             if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
 
-            #Check if channel is marked as favorite and search term is empty
-            if func.string_isnullorempty(var.SearchTermResult) == True and getset.setting_get('LoadChannelFavoritesOnly') == 'true' and favorite.favorite_check_channel(ChannelId, 'FavoriteTelevision.js') == False:
-                continue
+            #Check if program vod playback is allowed
+            contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
+            if ('CATCHUP' in contentOptionsArray) == False: continue
+            if ('TV_PREMIERE' in contentOptionsArray) == False: continue
 
             #Check if program has finished airing and processing
+            ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
             if dateTimeNow < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
+
+            #Check if program is starting or ending on target day
+            ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
+            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
+            if ProgramTimeStartDateTime.date() != var.VodDayLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.VodDayLoadDateTime.date(): continue
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
@@ -71,8 +93,6 @@ def list_load_append(listContainer, downloadResult, remoteMode=False):
             StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Load program timing
-            ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             ProgramDurationMinutes = int(metadatainfo.programdurationstring_from_json_metadata(program, False, False, False))
             ProgramDurationSeconds = ProgramDurationMinutes * 60
 

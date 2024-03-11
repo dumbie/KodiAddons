@@ -19,12 +19,13 @@ def get_epg_cache(dayDateString):
 
 def download(dayDateTime, forceUpdate=False, cleanupCache=True):
     try:
-        #Cleanup downloaded cache files
-        if cleanupCache == True and cache.cache_cleanup_days('epg', var.CacheCleanTimeEpg) == True:
-            var.EpgCacheDaysArray = []
-
         #Convert datetime to datestring
         dayDateString = dayDateTime.strftime('%Y-%m-%d')
+
+        #Cleanup downloaded cache files
+        filePath = path.addonstoragecache('epg' + dayDateString + '.js')
+        if cleanupCache == True and cache.cache_cleanup_days('epg', var.CacheCleanTimeEpg) == True:
+            var.EpgCacheDaysArray = []
 
         if forceUpdate == False:
             #Check if already cached in variables
@@ -33,7 +34,6 @@ def download(dayDateTime, forceUpdate=False, cleanupCache=True):
                 return variableCache.dataJson
 
             #Check if already cached in files
-            filePath = path.addonstoragecache('epg' + dayDateString + '.js')
             fileCache = files.openFile(filePath)
             if fileCache != None:
                 fileCacheJson = json.loads(fileCache)

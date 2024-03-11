@@ -4,8 +4,28 @@ import apilogin
 import cache
 import dlfunc
 import files
+import func
+import metadatainfo
 import path
 import var
+
+def update_playable_channel_identifiers():
+    ChannelIdsPlayable = []
+    for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
+        try:
+            #Load channel basics
+            StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channel)
+            ChannelId = metadatainfo.channelId_from_json_metadata(channel)
+
+            #Check if channel is streamable
+            if func.string_isnullorempty(StreamAssetId) == False:
+                #Add channelId to playable id list
+                ChannelIdsPlayable.append(ChannelId)
+        except:
+            pass
+
+    #Convert playable identifiers to string
+    var.TelevisionChannelIdsPlayable = ','.join(filter(None, ChannelIdsPlayable))
 
 def download(forceUpdate=False):
     try:
@@ -22,7 +42,11 @@ def download(forceUpdate=False):
             #Check if already cached in files
             fileCache = files.openFile(filePath)
             if fileCache != None:
+                #Update variable cache
                 var.TelevisionChannelsDataJson = json.loads(fileCache)
+
+                #Update playable channel identifiers
+                update_playable_channel_identifiers()
                 return True
 
         #Check if user needs to login
@@ -46,6 +70,9 @@ def download(forceUpdate=False):
 
         #Update variable cache
         var.TelevisionChannelsDataJson = DownloadDataJson
+
+        #Update playable channel identifiers
+        update_playable_channel_identifiers()
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import xbmcgui
+import dlchanneltelevision
 import dlepg
 import func
 import getset
@@ -12,6 +13,11 @@ import var
 
 def list_load_combined(listContainer):
     try:
+        #Download channels
+        downloadResultChannels = dlchanneltelevision.download()
+        if downloadResultChannels == False:
+            return False
+
         #Download epg day
         downloadResultEpg = dlepg.download(var.EpgCurrentLoadDateTime)
         if downloadResultEpg == None:
@@ -51,8 +57,7 @@ def list_load_append(listContainer, jsonEpgChannel):
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
 
             #Check if program is starting or ending on target day
-            if ProgramTimeStartDateTime.date() != var.EpgCurrentLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.EpgCurrentLoadDateTime.date():
-                continue
+            if ProgramTimeStartDateTime.date() != var.EpgCurrentLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.EpgCurrentLoadDateTime.date(): continue
 
             #Load program basics
             ProgramName = metadatainfo.programtitle_from_json_metadata(program)
@@ -61,17 +66,12 @@ def list_load_append(listContainer, jsonEpgChannel):
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 searchMatch = func.search_filter_string(ProgramName)
                 searchResultFound = var.SearchTermResult in searchMatch
-                if searchResultFound == False:
-                    continue
+                if searchResultFound == False: continue
 
             #Load channel basics
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ChannelExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
             ChannelName = metadatainfo.channelName_from_json_metadata(program)
-            ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(program)
-
-            #Check if channel is filtered
-            if getset.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)

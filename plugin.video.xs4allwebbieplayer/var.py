@@ -206,7 +206,7 @@ RadioChannelsDataJson = []
 #Television variables
 TelevisionChannelListItemCurrent = None
 TelevisionChannelListItemLast = None
-TelevisionChannelIdsPlayable = []
+TelevisionChannelIdsPlayable = ''
 TelevisionChannelsDataJson = []
 
 #Vod variables

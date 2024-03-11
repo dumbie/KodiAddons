@@ -60,28 +60,18 @@ def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=
         return False
 
 def list_load_append(listContainer, jsonEpg, remoteMode=False):
-    #Reset playable channel identifiers
-    var.TelevisionChannelIdsPlayable = []
-
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
             StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channel)
             ChannelId = metadatainfo.channelId_from_json_metadata(channel)
             ChannelName = metadatainfo.channelName_from_json_metadata(channel)
-            ChannelIsAdult = metadatainfo.isAdult_from_json_metadata(channel)
 
             #Check if channel is streamable
             if func.string_isnullorempty(StreamAssetId): continue
 
-            #Add channelId to playable id list
-            var.TelevisionChannelIdsPlayable.append(ChannelId)
-
             #Check if channel is hidden
             if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
-
-            #Check if channel is filtered
-            if getset.setting_get('TelevisionChannelNoErotic') == 'true' and ChannelIsAdult == True: continue
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermResult) == False:

@@ -1,7 +1,7 @@
 import xbmc
 
 #Variables
-InterfaceUpdateDelay = 50
+InterfaceUpdateDelay = 100
 
 #Control
 def updateImage(_self, controlId, ImagePath):

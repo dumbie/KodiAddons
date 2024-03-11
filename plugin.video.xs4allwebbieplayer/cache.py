@@ -57,14 +57,13 @@ def cache_cleanup_days(fileName, epochCleanupTimeToday=0):
         dateStringToday = datetime.now().strftime('%Y-%m-%d')
         for cacheFile in files.listFiles(var.addonstoragecache):
             if cacheFile.startswith(fileName):
+                cachePath = path.addonstoragecache(cacheFile)
                 dateStringFile = cacheFile.lstrip(fileName).rstrip('.js')
                 dateTimeFile = func.datetime_from_string(dateStringFile, '%Y-%m-%d')
                 daysPassed = func.day_offset_from_datetime(dateTimeFile)
                 if daysPassed > var.VodDayOffsetPast:
-                    cachePath = path.addonstoragecache(cacheFile)
                     if files.removeFile(cachePath) == True: fileRemoved = True
                 elif epochCleanupTimeToday != 0 and dateStringFile == dateStringToday:
-                    cachePath = path.addonstoragecache(cacheFile)
                     if cache_cleanup_file(cachePath, epochCleanupTimeToday) == True: fileRemoved = True
         return fileRemoved
     except:

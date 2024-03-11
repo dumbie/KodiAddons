@@ -20,6 +20,9 @@ def list_load_combined(listContainer=None):
         remoteMode = listContainer == None
         list_load_append(listContainerSort, remoteMode)
 
+        #Sort list items
+        listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramTimeStartDateTime'), reverse=True)
+
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
         lifunc.auto_end_items()
