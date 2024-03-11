@@ -4,6 +4,7 @@ import dialog
 import epg
 import func
 import guifunc
+import lifunc
 import lisport
 import path
 import player
@@ -30,7 +31,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         guifunc.updateLabelText(self, 2, "Sport Gemist")
         self.buttons_add_navigation()
-        self.load_program(False, var.SportSelectIndex)
+        self.load_program(False, var.SportSelectIdentifier)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -84,8 +85,12 @@ class Gui(xbmcgui.WindowXML):
         listContainer.addItem(listItem)
 
     def save_select_index(self):
-        listContainer = self.getControl(1000)
-        var.SportSelectIndex = listContainer.getSelectedPosition()
+        try:
+            listContainer = self.getControl(1000)
+            listItemSelected = listContainer.getSelectedItem()
+            var.SportSelectIdentifier = listItemSelected.getProperty("ProgramId")
+        except:
+            pass
 
     def open_context_menu(self):
         dialogAnswers = ['Programma in de TV Gids tonen', 'Programma zoeken in resultaat']
@@ -131,7 +136,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True)
         var.SearchTermResult = ''
 
-    def load_program(self, forceLoad=False, selectIndex=0):
+    def load_program(self, forceLoad=False, selectIdentifier=""):
         #Get and check the list container
         listContainer = self.getControl(1000)
         if forceLoad == False:
@@ -147,14 +152,14 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return False
 
         #Update the status
-        self.count_program(True, selectIndex)
+        self.count_program(True, selectIdentifier)
 
     #Update the status
-    def count_program(self, resetSelect=False, selectIndex=0):
+    def count_program(self, resetSelect=False, selectIdentifier=""):
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
             if func.string_isnullorempty(var.SearchTermResult) == False:
@@ -166,15 +171,16 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
-                guifunc.listSelectItem(listContainer, selectIndex)
+                listIndex = lifunc.search_listcontainer_property_listindex(listContainer, 'ProgramId', selectIdentifier)
+                guifunc.listSelectIndex(listContainer, listIndex)
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
-                guifunc.listSelectItem(listContainer, 1)
+                guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, "Geen programma's")
                 guifunc.updateLabelText(self, 3, "")
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)

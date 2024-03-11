@@ -218,9 +218,9 @@ class Gui(xbmcgui.WindowXMLDialog):
             alarmRemoved = alarm_remove(ProgramTimeStart)
             if alarmRemoved == True:
                 #Remove item from the list
-                removeListItemId = clickedControl.getSelectedPosition()
-                guifunc.listRemoveItem(clickedControl, removeListItemId)
-                guifunc.listSelectItem(clickedControl, removeListItemId)
+                removeListItemIndex = clickedControl.getSelectedPosition()
+                guifunc.listRemoveItem(clickedControl, removeListItemIndex)
+                guifunc.listSelectIndex(clickedControl, removeListItemIndex)
         elif clickId == 4000:
             close_the_page()
         elif clickId == 4001:
@@ -252,7 +252,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             guifunc.updateLabelText(self, 3001, 'Huidig geplande programma alarmen, u kunt een alarm annuleren door er op te klikken.')
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)
         else:
             guifunc.updateLabelText(self, 3000, 'Geplande Alarmen (0)')
             guifunc.updateLabelText(self, 3001, 'Er zijn geen programma alarmen gezet, u kunt een nieuw alarm zetten in de tv gids, op de televisie pagina of tijdens het tv kijken.')

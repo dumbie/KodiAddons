@@ -6,6 +6,7 @@ import files
 import func
 import getset
 import guifunc
+import lifunc
 import likidsepisode
 import likidsprogram
 import path
@@ -64,7 +65,7 @@ class Gui(xbmcgui.WindowXML):
         guifunc.updateLabelText(self, 3, "Kids")
         self.update_kids_background()
         self.buttons_add_navigation()
-        self.load_program(False, var.KidsProgramSelectIndex, var.KidsEpisodeSelectIndex)
+        self.load_program(False, var.KidsProgramSelectIdentifier, var.KidsEpisodeSelectIdentifier)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -120,11 +121,16 @@ class Gui(xbmcgui.WindowXML):
             self.open_context_menu()
 
     def save_select_index(self):
-        listContainer = self.getControl(1000)
-        var.KidsProgramSelectIndex = listContainer.getSelectedPosition()
+        try:
+            listContainer = self.getControl(1000)
+            listItemSelected = listContainer.getSelectedItem()
+            var.KidsProgramSelectIdentifier = listItemSelected.getProperty("ProgramId")
 
-        listContainer = self.getControl(1002)
-        var.KidsEpisodeSelectIndex = listContainer.getSelectedPosition()
+            listContainer = self.getControl(1002)
+            listItemSelected = listContainer.getSelectedItem()
+            var.KidsEpisodeSelectIdentifier = listItemSelected.getProperty("ProgramId")
+        except:
+            pass
 
     def open_context_menu(self):
         listContainer = self.getControl(1002)
@@ -178,7 +184,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True)
         var.SearchTermResult = ''
 
-    def load_episodes_vod(self, listItem, focusList=False, selectIndex=0):
+    def load_episodes_vod(self, listItem, focusList=False, selectIdentifier=""):
         #Get the selected parentid
         selectedProgramId = listItem.getProperty('ProgramId')
         selectedProgramName = listItem.getProperty('ProgramName')
@@ -205,9 +211,10 @@ class Gui(xbmcgui.WindowXML):
                 guifunc.controlFocus(self, listContainer)
 
             #Select list item
-            guifunc.listSelectItem(listContainer, selectIndex)
+            listIndex = lifunc.search_listcontainer_property_listindex(listContainer, 'ProgramId', selectIdentifier)
+            guifunc.listSelectIndex(listContainer, listIndex)
 
-    def load_episodes_program(self, listItem, focusList=False, selectIndex=0):
+    def load_episodes_program(self, listItem, focusList=False, selectIdentifier=""):
         #Get the selected parentid
         selectedProgramName = listItem.getProperty('ProgramName')
         selectedPictureUrl = listItem.getProperty('PictureUrl')
@@ -233,9 +240,10 @@ class Gui(xbmcgui.WindowXML):
                 guifunc.controlFocus(self, listContainer)
 
             #Select list item
-            guifunc.listSelectItem(listContainer, selectIndex)
+            listIndex = lifunc.search_listcontainer_property_listindex(listContainer, 'ProgramId', selectIdentifier)
+            guifunc.listSelectIndex(listContainer, listIndex)
 
-    def load_program(self, forceLoad=False, programSelectIndex=0, episodeSelectIndex=0):
+    def load_program(self, forceLoad=False, programselectIdentifier="", episodeselectIdentifier=""):
         #Get and check the list container
         listContainer = self.getControl(1000)
         if forceLoad == False:
@@ -251,22 +259,22 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 4, "")
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return False
 
         #Update the status
-        self.count_program(True, programSelectIndex)
+        self.count_program(True, programselectIdentifier)
 
         #Load selected episodes
         listItemSelected = listContainer.getSelectedItem()
         listItemAction = listItemSelected.getProperty('ItemAction')
         if listItemAction == 'load_kids_episodes_vod':
-            self.load_episodes_vod(listItemSelected, False, episodeSelectIndex)
+            self.load_episodes_vod(listItemSelected, False, episodeselectIdentifier)
         elif listItemAction == 'load_kids_episodes_program':
-            self.load_episodes_program(listItemSelected, False, episodeSelectIndex)
+            self.load_episodes_program(listItemSelected, False, episodeselectIdentifier)
 
     #Update the status
-    def count_program(self, resetSelect=False, selectIndex=0):
+    def count_program(self, resetSelect=False, selectIdentifier=""):
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
             guifunc.updateVisibility(self, 2, True)
@@ -280,7 +288,8 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
-                guifunc.listSelectItem(listContainer, selectIndex)
+                listIndex = lifunc.search_listcontainer_property_listindex(listContainer, 'ProgramId', selectIdentifier)
+                guifunc.listSelectIndex(listContainer, listIndex)
         else:
             guifunc.updateVisibility(self, 2, False)
             guifunc.updateVisibility(self, 3002, False)
@@ -289,8 +298,8 @@ class Gui(xbmcgui.WindowXML):
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
                 guifunc.updateLabelText(self, 4, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
-                guifunc.listSelectItem(listContainer, 1)
+                guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, "Geen programma's")
                 guifunc.updateLabelText(self, 4, "")
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)

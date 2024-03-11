@@ -108,6 +108,7 @@ DialogResult = None
 #Cache variables
 CacheCleanTimeChannels = 360 * 60 #6h
 CacheCleanTimeOther = 10 * 60 #10m
+CacheCleanTimeEpg = 120 * 60 #2h
 
 #Thread variables
 thread_notification = threadclass.Class_ThreadSafe()
@@ -181,7 +182,7 @@ HiddenTelevisionJson = []
 HiddenRadioJson = []
 
 #Search variables
-SearchSelectIndex = 0
+SearchSelectIdentifier = ''
 SearchTermResult = ''
 SearchTermDownload = ''
 SearchProgramDataJson = []
@@ -190,13 +191,13 @@ SearchHistoryChannelJson = []
 SearchHistoryRadioJson = []
 
 #Kids variables
-KidsProgramSelectIndex = 0
-KidsEpisodeSelectIndex = 0
+KidsProgramSelectIdentifier = ''
+KidsEpisodeSelectIdentifier = ''
 KidsProgramDataJson = []
 KidsVodDataJson = []
 
 #Sport variables
-SportSelectIndex = 0
+SportSelectIdentifier = ''
 SportProgramDataJson = []
 
 #Radio variables
@@ -209,25 +210,25 @@ TelevisionChannelIdsPlayable = []
 TelevisionChannelsDataJson = []
 
 #Vod variables
-VodSelectIndex = 0
+VodSelectIdentifier = ''
 VodDayLoadDateTime = datetime.now()
 VodDayOffsetPast = 10
 VodDayOffsetFuture = 1
-VodDayDataJson = []
+VodCacheDaysArray = []
 
 #Movies variables
-MovieSelectIndex = 0
+MovieSelectIdentifier = ''
 MoviesProgramDataJson = []
 MoviesVodDataJson = []
 
 #Series variables
-SeriesProgramSelectIndex = 0
-SeriesEpisodeSelectIndex = 0
+SeriesProgramSelectIdentifier = ''
+SeriesEpisodeSelectIdentifier = ''
 SeriesProgramDataJson = []
 SeriesVodDataJson = []
 
 #Recording variables
-RecordedSelectIndex = 0
+RecordedSelectIdentifier = ''
 RecordingProcessMinutes = 10
 RecordingEventDataJson = []
 RecordingSeriesDataJson = []
@@ -260,7 +261,7 @@ EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
 EpgNavigateProgramId = ''
 EpgDaysOffsetFuture = 7
-CacheEpgDaysArray = []
+EpgCacheDaysArray = []
 
 #Program variables
 ProgramRerunSearchTerm = ['loop:', 'herhaling', 'herhalingen', 'samenvatting', 'nabeschouwing', 'terugblik', 'highlights', 'hoogtepunten', 'round-up', 'replay', 'wiederholung']

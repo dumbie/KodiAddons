@@ -297,7 +297,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Focus and select list item
         guifunc.controlFocus(self, listContainer)
-        guifunc.listSelectItem(listContainer, 0)
+        guifunc.listSelectIndex(listContainer, 0)
 
     def set_alarm_next(self):
         #Get and check the list container
@@ -352,7 +352,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select current channel in list container
         CurrentChannelId = getset.setting_get('CurrentChannelId', True)
-        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
+        lifunc.focus_listcontainer_value(self, 1001, 0, False, 'ChannelId', CurrentChannelId)
 
     def seek_back(self, showEpg=False):
         xbmc.executebuiltin('Action(StepBack)')
@@ -364,12 +364,12 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select current channel in list container
         CurrentChannelId = getset.setting_get('CurrentChannelId', True)
-        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
+        lifunc.focus_listcontainer_value(self, 1001, 0, False, 'ChannelId', CurrentChannelId)
 
     def seek_begin_program(self):
         #Select current channel in list container
         CurrentChannelId = getset.setting_get('CurrentChannelId', True)
-        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
+        lifunc.focus_listcontainer_value(self, 1001, 0, False, 'ChannelId', CurrentChannelId)
 
         #Get and check the list container
         listContainer = self.getControl(1001)
@@ -403,7 +403,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select current channel in list container
         CurrentChannelId = getset.setting_get('CurrentChannelId', True)
-        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, CurrentChannelId)
+        lifunc.focus_listcontainer_value(self, 1001, 0, False, 'ChannelId', CurrentChannelId)
 
     def switch_channel_lasttv(self):
         if var.TelevisionChannelListItemLast != None:
@@ -418,13 +418,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         self.show_epg(False, False, False, False)
         listContainer = self.getControl(1001)
         guifunc.controlFocus(self, listContainer)
-        guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() + 1)
+        guifunc.listSelectIndex(listContainer, listContainer.getSelectedPosition() + 1)
 
     def switch_channel_previoustv(self):
         self.show_epg(False, False, False, False)
         listContainer = self.getControl(1001)
         guifunc.controlFocus(self, listContainer)
-        guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() - 1)
+        guifunc.listSelectIndex(listContainer, listContainer.getSelectedPosition() - 1)
 
     def load_channels(self, forceLoad=False):
         self.EpgPauseUpdate = True
@@ -447,7 +447,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Select channel in list container
         currentChannelId = getset.setting_get('CurrentChannelId', True)
-        lifunc.focus_on_channelid_in_list(self, 1001, 0, False, currentChannelId)
+        lifunc.focus_listcontainer_value(self, 1001, 0, False, 'ChannelId', currentChannelId)
 
     def hide_epg(self):
         #Update the last hide time
@@ -474,7 +474,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Select current channel in list container
         if selectCurrentChannel == True:
             currentChannelId = getset.setting_get('CurrentChannelId', True)
-            lifunc.focus_on_channelid_in_list(self, 1001, 0, focusCurrentChannel, currentChannelId)
+            lifunc.focus_listcontainer_value(self, 1001, 0, focusCurrentChannel, 'ChannelId', currentChannelId)
 
         #Remove focus from the interface
         if removeFocus == True:

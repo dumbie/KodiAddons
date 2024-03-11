@@ -184,7 +184,7 @@ class Gui(xbmcgui.WindowXML):
     def search_program_history(self, listItemSelected):
         ProgramName = listItemSelected.getProperty("ProgramNowName")
         if var.SearchTermDownload != ProgramName:
-            var.SearchSelectIndex = 0
+            var.SearchSelectIdentifier = ''
             var.SearchTermResult = ''
             var.SearchTermDownload = ProgramName
             var.SearchProgramDataJson = []
@@ -243,9 +243,9 @@ class Gui(xbmcgui.WindowXML):
         hiddenResult = hidden.hidden_add(listItemSelected, 'HiddenTelevision.js')
         if hiddenResult == True:
             #Remove item from the list
-            removeListItemId = listContainer.getSelectedPosition()
-            guifunc.listRemoveItem(listContainer, removeListItemId)
-            guifunc.listSelectItem(listContainer, removeListItemId)
+            removeListItemIndex = listContainer.getSelectedPosition()
+            guifunc.listRemoveItem(listContainer, removeListItemIndex)
+            guifunc.listSelectIndex(listContainer, removeListItemIndex)
 
             #Update the status
             self.count_channels(False)
@@ -260,9 +260,9 @@ class Gui(xbmcgui.WindowXML):
         favoriteResult = favorite.favorite_toggle_channel(listItemSelected, 'FavoriteTelevision.js')
         if favoriteResult == 'Removed' and getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
-            removeListItemId = listContainer.getSelectedPosition()
-            guifunc.listRemoveItem(listContainer, removeListItemId)
-            guifunc.listSelectItem(listContainer, removeListItemId)
+            removeListItemIndex = listContainer.getSelectedPosition()
+            guifunc.listRemoveItem(listContainer, removeListItemIndex)
+            guifunc.listSelectIndex(listContainer, removeListItemIndex)
 
             #Update the status
             self.count_channels(False)
@@ -303,7 +303,7 @@ class Gui(xbmcgui.WindowXML):
         if forceLoad == False:
             if listContainer.size() > 0:
                 currentChannelId = getset.setting_get('CurrentChannelId', True)
-                lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
+                lifunc.focus_listcontainer_value(self, 1000, 0, True, 'ChannelId', currentChannelId)
                 return True
         else:
             guifunc.listReset(listContainer)
@@ -316,7 +316,7 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return False
 
         #Update the status
@@ -347,21 +347,21 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 currentChannelId = getset.setting_get('CurrentChannelId', True)
-                lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
+                lifunc.focus_listcontainer_value(self, 1000, 0, True, 'ChannelId', currentChannelId)
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
-                guifunc.listSelectItem(listContainer, 2)
+                guifunc.listSelectIndex(listContainer, 2)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)
                 if var.ApiHomeAccess() == True:
                     guifunc.updateLabelText(self, 3, "")
                 else:
                     guifunc.updateLabelText(self, 3, "Buitenshuis zijn er minder zenders beschikbaar.")
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)
 
     def thread_update_television_program(self):
         threadLastTime = ''

@@ -9,8 +9,7 @@ import path
 import var
 
 def get_epg_cache(dayDateString):
-    #Check if epg day is cached in variable
-    for epgCache in var.CacheEpgDaysArray:
+    for epgCache in var.EpgCacheDaysArray:
         try:
             if epgCache.dayDateString == dayDateString:
                 return epgCache
@@ -21,14 +20,14 @@ def get_epg_cache(dayDateString):
 def download(dayDateTime, forceUpdate=False, cleanupCache=True):
     try:
         #Cleanup downloaded cache files
-        if cleanupCache == True and cache.cache_cleanup_epg() == True:
-            var.CacheEpgDaysArray = []
+        if cleanupCache == True and cache.cache_cleanup_days('epg', var.CacheCleanTimeEpg) == True:
+            var.EpgCacheDaysArray = []
 
         #Convert datetime to datestring
         dayDateString = dayDateTime.strftime('%Y-%m-%d')
 
         if forceUpdate == False:
-            #Check if already cached in variable
+            #Check if already cached in variables
             variableCache = get_epg_cache(dayDateString)
             if variableCache != None:
                 return variableCache.dataJson
@@ -40,13 +39,13 @@ def download(dayDateTime, forceUpdate=False, cleanupCache=True):
                 fileCacheJson = json.loads(fileCache)
 
                 #Update variable cache
-                classAdd = classes.Class_CacheEpgDays()
+                classAdd = classes.Class_CacheDays()
                 classAdd.dayDateString = dayDateString
                 classAdd.dataJson = fileCacheJson
-                var.CacheEpgDaysArray.append(classAdd)
+                var.EpgCacheDaysArray.append(classAdd)
                 return fileCacheJson
         else:
-            var.CacheEpgDaysArray = []
+            var.EpgCacheDaysArray = []
 
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -68,10 +67,10 @@ def download(dayDateTime, forceUpdate=False, cleanupCache=True):
                 return None
 
         #Update variable cache
-        classAdd = classes.Class_CacheEpgDays()
+        classAdd = classes.Class_CacheDays()
         classAdd.dayDateString = dayDateString
         classAdd.dataJson = DownloadDataJson
-        var.CacheEpgDaysArray.append(classAdd)
+        var.EpgCacheDaysArray.append(classAdd)
 
         #Update file cache
         JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')

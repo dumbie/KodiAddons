@@ -35,9 +35,9 @@ class Gui(xbmcgui.WindowXMLDialog):
             recordRemove = dlrecordingrequest.event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
             if recordRemove == True:
                 #Remove item from the list
-                removeListItemId = clickedControl.getSelectedPosition()
-                guifunc.listRemoveItem(clickedControl, removeListItemId)
-                guifunc.listSelectItem(clickedControl, removeListItemId)
+                removeListItemIndex = clickedControl.getSelectedPosition()
+                guifunc.listRemoveItem(clickedControl, removeListItemIndex)
+                guifunc.listSelectIndex(clickedControl, removeListItemIndex)
 
                 #Update the status
                 self.count_recording(False)
@@ -80,7 +80,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             guifunc.updateLabelText(self, 3001, 'Huidig geplande programma opnames, u kunt een opname annuleren door er op te klikken.')
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)
         else:
             guifunc.updateLabelText(self, 3000, 'Geplande Opnames (0)')
             guifunc.updateLabelText(self, 3001, 'Er zijn geen programma opnames gepland, u kunt een nieuwe opname plannen in de TV Gids of op de Televisie pagina.')

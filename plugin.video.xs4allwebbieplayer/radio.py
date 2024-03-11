@@ -139,9 +139,9 @@ class Gui(xbmcgui.WindowXML):
         hiddenResult = hidden.hidden_add(listItemSelected, 'HiddenRadio.js')
         if hiddenResult == True:
             #Remove item from the list
-            removeListItemId = listContainer.getSelectedPosition()
-            guifunc.listRemoveItem(listContainer, removeListItemId)
-            guifunc.listSelectItem(listContainer, removeListItemId)
+            removeListItemIndex = listContainer.getSelectedPosition()
+            guifunc.listRemoveItem(listContainer, removeListItemIndex)
+            guifunc.listSelectIndex(listContainer, removeListItemIndex)
 
             #Update the status
             self.count_channels(False)
@@ -150,9 +150,9 @@ class Gui(xbmcgui.WindowXML):
         favoriteResult = favorite.favorite_toggle_channel(listItemSelected, 'FavoriteRadio.js')
         if favoriteResult == 'Removed' and getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
-            removeListItemId = listContainer.getSelectedPosition()
-            guifunc.listRemoveItem(listContainer, removeListItemId)
-            guifunc.listSelectItem(listContainer, removeListItemId)
+            removeListItemIndex = listContainer.getSelectedPosition()
+            guifunc.listRemoveItem(listContainer, removeListItemIndex)
+            guifunc.listSelectIndex(listContainer, removeListItemIndex)
 
             #Update the status
             self.count_channels(False)
@@ -195,7 +195,7 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return False
 
         #Update the status
@@ -218,13 +218,13 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 currentChannelId = getset.setting_get('CurrentRadioId', True)
-                lifunc.focus_on_channelid_in_list(self, 1000, 0, True, currentChannelId)
+                lifunc.focus_listcontainer_value(self, 1000, 0, True, 'ChannelId', currentChannelId)
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
-                guifunc.listSelectItem(listContainer, 1)
+                guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)

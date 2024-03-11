@@ -86,7 +86,7 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Focus on the list
         guifunc.controlFocus(self, listContainer)
-        guifunc.listSelectItem(listContainer, selectIndex)
+        guifunc.listSelectIndex(listContainer, selectIndex)
 
     def onAction(self, action):
         actionId = action.getId()

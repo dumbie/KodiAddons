@@ -69,58 +69,70 @@ def auto_end_items():
     except:
         return False
 
-#Search for ChannelId in container
-def search_channelid_listcontainer(listContainer, searchChannelId):
-    listItemCount = listContainer.size()
-    for itemNum in range(0, listItemCount):
-        try:
-            ChannelId = listContainer.getListItem(itemNum).getProperty('ChannelId')
-            if ChannelId == searchChannelId:
-                return itemNum
-        except:
-            continue
-    return None
+#Search for property in listcontainer index
+def search_listcontainer_property_listindex(listContainer, searchProperty, searchValue):
+    try:
+        listItemCount = listContainer.size()
+        for itemNum in range(0, listItemCount):
+            try:
+                listItem = listContainer.getListItem(itemNum)
+                if str(listItem.getProperty(searchProperty)) == searchValue:
+                    return itemNum
+            except:
+                continue
+        return None
+    except:
+        return None
 
-#Search for ChannelNumber in container
-def search_channelnumber_listcontainer(listContainer, searchChannelNumber):
-    listItemCount = listContainer.size()
-    for itemNum in range(0, listItemCount):
-        try:
-            ChannelNumber = listContainer.getListItem(itemNum).getProperty('ChannelNumber')
-            if ChannelNumber == searchChannelNumber:
-                return itemNum
-        except:
-            continue
-    return None
+#Search for property in listcontainer listitem
+def search_listcontainer_property_listitem(listContainer, searchProperty, searchValue):
+    try:
+        listItemCount = listContainer.size()
+        for itemNum in range(0, listItemCount):
+            try:
+                listItem = listContainer.getListItem(itemNum)
+                if str(listItem.getProperty(searchProperty)) == searchValue:
+                    return listItem
+            except:
+                continue
+        return None
+    except:
+        return None
 
-#Search for label in container
-def search_label_listcontainer(listContainer, searchLabel):
-    listItemCount = listContainer.size()
-    for itemNum in range(0, listItemCount):
-        try:
-            listItem = listContainer.getListItem(itemNum)
-            if str(listItem.getLabel()).startswith(searchLabel):
-                return listItem
-        except:
-            continue
-    return None
+#Search for label in listcontainer listitem
+def search_listcontainer_label_listitem(listContainer, searchLabel):
+    try:
+        listItemCount = listContainer.size()
+        for itemNum in range(0, listItemCount):
+            try:
+                listItem = listContainer.getListItem(itemNum)
+                if str(listItem.getLabel()).startswith(searchLabel):
+                    return listItem
+            except:
+                continue
+        return None
+    except:
+        return None
 
-#Focus on channel in list container
-def focus_on_channelid_in_list(_self, controlId, defaultNum, forceFocus, channelId):
-    #Check if list container has items
-    listContainer = _self.getControl(controlId)
-    listItemCount = listContainer.size()
-    if listItemCount > 0:
-        #Focus on list container 
-        if forceFocus:
-            guifunc.controlFocus(_self, listContainer)
+#Focus on value in listcontainer
+def focus_listcontainer_value(_self, controlId, defaultIndex, forceFocus, searchProperty, searchValue):
+    try:
+        #Check if listcontainer has items
+        listContainer = _self.getControl(controlId)
+        listItemCount = listContainer.size()
+        if listItemCount > 0:
+            #Focus on listcontainer
+            if forceFocus:
+                guifunc.controlFocus(_self, listContainer)
 
-        #Select list item
-        if func.string_isnullorempty(channelId) == False:
-            itemNum = search_channelid_listcontainer(listContainer, channelId)
-            if itemNum == None:
-                guifunc.listSelectItem(listContainer, defaultNum)
+            #Select listitem
+            if func.string_isnullorempty(searchValue) == False:
+                listIndex = search_listcontainer_property_listindex(listContainer, searchProperty, searchValue)
+                if listIndex == None:
+                    guifunc.listSelectIndex(listContainer, defaultIndex)
+                else:
+                    guifunc.listSelectIndex(listContainer, listIndex)
             else:
-                guifunc.listSelectItem(listContainer, itemNum)
-        else:
-            guifunc.listSelectItem(listContainer, defaultNum)
+                guifunc.listSelectIndex(listContainer, defaultIndex)
+    except:
+        pass

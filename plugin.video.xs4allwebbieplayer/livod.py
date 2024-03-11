@@ -14,7 +14,7 @@ def list_load_combined(listContainer=None):
     try:
         #Download programs
         downloadResult = dlvod.download(var.VodDayLoadDateTime)
-        if downloadResult == False:
+        if downloadResult == None:
             return False
 
         #Load favorite and hidden channels
@@ -27,7 +27,7 @@ def list_load_combined(listContainer=None):
         #Add items to sort list
         listContainerSort = []
         remoteMode = listContainer == None
-        list_load_append(listContainerSort, remoteMode)
+        list_load_append(listContainerSort, downloadResult, remoteMode)
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -36,11 +36,11 @@ def list_load_combined(listContainer=None):
     except:
         return False
 
-def list_load_append(listContainer, remoteMode=False):
+def list_load_append(listContainer, downloadResult, remoteMode=False):
     #Set the current player play time
     dateTimeNow = datetime.now()
 
-    for program in var.VodDayDataJson['resultObj']['containers']:
+    for program in downloadResult['resultObj']['containers']:
         try:
             #Load program basics
             ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)

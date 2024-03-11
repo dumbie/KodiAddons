@@ -88,12 +88,12 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_NEXT_ITEM:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() + 1)
+            guifunc.listSelectIndex(listContainer, listContainer.getSelectedPosition() + 1)
             self.load_programs(False)
         elif actionId == var.ACTION_PREV_ITEM:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, listContainer.getSelectedPosition() - 1)
+            guifunc.listSelectIndex(listContainer, listContainer.getSelectedPosition() - 1)
             self.load_programs(False)
         elif actionId == var.ACTION_PLAYER_PLAY:
             self.dialog_set_day()
@@ -359,7 +359,7 @@ class Gui(xbmcgui.WindowXML):
     def search_program_history(self, listItemSelected):
         ProgramName = listItemSelected.getProperty("ProgramName")
         if var.SearchTermDownload != ProgramName:
-            var.SearchSelectIndex = 0
+            var.SearchSelectIdentifier = ''
             var.SearchTermResult = ''
             var.SearchTermDownload = ProgramName
             var.SearchProgramDataJson = []
@@ -378,7 +378,7 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1001)
         if forceLoad == False:
             if listContainer.size() > 0:
-                lifunc.focus_on_channelid_in_list(self, 1001, 0, False, var.EpgCurrentChannelId)
+                lifunc.focus_listcontainer_value(self, 1001, 0, False, 'ChannelId', var.EpgCurrentChannelId)
                 return True
         else:
             guifunc.listReset(listContainer)
@@ -391,12 +391,12 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders zijn niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return False
 
         #Focus on the list container
         if listContainer.size() > 0:
-            lifunc.focus_on_channelid_in_list(self, 1001, 0, True, var.EpgCurrentChannelId)
+            lifunc.focus_listcontainer_value(self, 1001, 0, True, 'ChannelId', var.EpgCurrentChannelId)
         else:
             #Set channel type string
             channelTypeString = 'zenders'
@@ -408,11 +408,11 @@ class Gui(xbmcgui.WindowXML):
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
                 guifunc.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermResult + " [COLOR gray]niet gevonden.[/COLOR]")
-                guifunc.listSelectItem(listContainer, 1)
+                guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)
                 guifunc.updateLabelText(self, 2, "[COLOR gray]Geen beschikbare " + channelTypeString + ".[/COLOR]")
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)
 
             #Focus on navigation menu list
             guifunc.controlFocus(self, listContainer)
@@ -470,7 +470,7 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return
 
         #Select program index
@@ -519,13 +519,13 @@ class Gui(xbmcgui.WindowXML):
         #Select program list item
         if programSelectIndexNavigate != 0:
             forceFocus = True
-            guifunc.listSelectItem(listContainer, programSelectIndexNavigate)
+            guifunc.listSelectIndex(listContainer, programSelectIndexNavigate)
         elif programSelectIndexAiring != 0:
-            guifunc.listSelectItem(listContainer, programSelectIndexAiring)
+            guifunc.listSelectIndex(listContainer, programSelectIndexAiring)
         elif programSelectIndexUpcoming != 0:
-            guifunc.listSelectItem(listContainer, programSelectIndexUpcoming)
+            guifunc.listSelectIndex(listContainer, programSelectIndexUpcoming)
         else:
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
 
         #Focus on program list
         if forceFocus == True:

@@ -207,7 +207,7 @@ class Gui(xbmcgui.WindowXML):
             recordingCount = recordingfunc.count_recorded_events()
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listContainer, 'Bekijk Opnames')
+            countItem = lifunc.search_listcontainer_label_listitem(listContainer, 'Bekijk Opnames')
             countItem.setLabel('Bekijk Opnames (' + str(recordingCount) + ')')
         except:
             pass
@@ -223,7 +223,7 @@ class Gui(xbmcgui.WindowXML):
             recordingCount = recordingfunc.count_recording_events()
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listContainer, 'Geplande Opnames')
+            countItem = lifunc.search_listcontainer_label_listitem(listContainer, 'Geplande Opnames')
             countItem.setLabel('Geplande Opnames (' + str(recordingCount) + ')')
         except:
             pass
@@ -239,7 +239,7 @@ class Gui(xbmcgui.WindowXML):
             recordingCount = recordingfunc.count_recording_series()
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listContainer, 'Geplande Series')
+            countItem = lifunc.search_listcontainer_label_listitem(listContainer, 'Geplande Series')
             countItem.setLabel('Geplande Series (' + str(recordingCount) + ')')
         except:
             pass
@@ -255,7 +255,7 @@ class Gui(xbmcgui.WindowXML):
             alarm.alarm_json_load(forceLoad)
 
             #Update the list count
-            countItem = lifunc.search_label_listcontainer(listContainer, 'Alarmen')
+            countItem = lifunc.search_listcontainer_label_listitem(listContainer, 'Alarmen')
             countItem.setLabel('Alarmen (' + str(len(var.AlarmDataJson)) + ')')
         except:
             pass

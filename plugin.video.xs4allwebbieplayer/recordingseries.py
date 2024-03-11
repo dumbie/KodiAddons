@@ -33,9 +33,9 @@ class Gui(xbmcgui.WindowXMLDialog):
             ProgramSeriesId = listItemSelected.getProperty('ProgramSeriesId')
             if recordingfunc.record_series_remove_dialog(ProgramSeriesId) == True:
                 #Remove item from the list
-                removeListItemId = clickedControl.getSelectedPosition()
-                guifunc.listRemoveItem(clickedControl, removeListItemId)
-                guifunc.listSelectItem(clickedControl, removeListItemId)
+                removeListItemIndex = clickedControl.getSelectedPosition()
+                guifunc.listRemoveItem(clickedControl, removeListItemIndex)
+                guifunc.listSelectIndex(clickedControl, removeListItemIndex)
 
                 #Update the status
                 self.count_recording(False)
@@ -77,7 +77,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             guifunc.updateLabelText(self, 3001, 'U kunt een serie seizoen annuleren door er op te klikken.')
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)
         else:
             guifunc.updateLabelText(self, 3000, 'Geplande Series (0)')
             guifunc.updateLabelText(self, 3001, 'Er zijn geen serie seizoen opnames gepland, u kunt een nieuwe serie seizoen opnemen vanuit de TV Gids.')

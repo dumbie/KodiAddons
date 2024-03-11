@@ -4,6 +4,7 @@ import dialog
 import dlrecordingrequest
 import func
 import guifunc
+import lifunc
 import lirecorded
 import path
 import player
@@ -30,7 +31,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         guifunc.updateLabelText(self, 2, "Opnames")
         self.buttons_add_navigation()
-        self.load_program(False, var.RecordedSelectIndex)
+        self.load_program(False, var.RecordedSelectIdentifier)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -70,8 +71,12 @@ class Gui(xbmcgui.WindowXML):
             self.open_context_menu()
 
     def save_select_index(self):
-        listContainer = self.getControl(1000)
-        var.RecordedSelectIndex = listContainer.getSelectedPosition()
+        try:
+            listContainer = self.getControl(1000)
+            listItemSelected = listContainer.getSelectedItem()
+            var.RecordedSelectIdentifier = listItemSelected.getProperty("ProgramRecordEventId")
+        except:
+            pass
 
     def open_context_menu(self):
         dialogAnswers = ['Opname verwijderen', 'Programma zoeken in opnames']
@@ -88,9 +93,9 @@ class Gui(xbmcgui.WindowXML):
             recordRemove = dlrecordingrequest.event_remove(ProgramRecordEventId, ProgramDeltaTimeStart)
             if recordRemove == True:
                 #Remove item from the list
-                removeListItemId = listContainer.getSelectedPosition()
-                guifunc.listRemoveItem(listContainer, removeListItemId)
-                guifunc.listSelectItem(listContainer, removeListItemId)
+                removeListItemIndex = listContainer.getSelectedPosition()
+                guifunc.listRemoveItem(listContainer, removeListItemIndex)
+                guifunc.listSelectIndex(listContainer, removeListItemIndex)
 
                 #Update the status
                 self.count_program(False)
@@ -134,7 +139,7 @@ class Gui(xbmcgui.WindowXML):
         self.load_program(True)
         var.SearchTermResult = ''
 
-    def load_program(self, forceLoad=False, selectIndex=0):
+    def load_program(self, forceLoad=False, selectIdentifier=""):
         #Get and check the list container
         listContainer = self.getControl(1000)
         if forceLoad == False:
@@ -150,11 +155,11 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return False
 
         #Update the status
-        self.count_program(True, selectIndex)
+        self.count_program(True, selectIdentifier)
 
         #Update the main page count
         if var.guiMain != None:
@@ -162,7 +167,7 @@ class Gui(xbmcgui.WindowXML):
             var.guiMain.count_recording_events()
 
     #Update the status
-    def count_program(self, resetSelect=False, selectIndex=0):
+    def count_program(self, resetSelect=False, selectIdentifier=""):
         guifunc.updateLabelText(self, 4, var.RecordingAvailableSpace())
         listContainer = self.getControl(1000)
         if listContainer.size() > 0:
@@ -175,15 +180,16 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
-                guifunc.listSelectItem(listContainer, selectIndex)
+                listIndex = lifunc.search_listcontainer_property_listindex(listContainer, 'ProgramRecordEventId', selectIdentifier)
+                guifunc.listSelectIndex(listContainer, listIndex)
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen opnames gevonden')
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
-                guifunc.listSelectItem(listContainer, 1)
+                guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen opnames')
                 guifunc.updateLabelText(self, 3, 'Geen opnames beschikbaar.')
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)

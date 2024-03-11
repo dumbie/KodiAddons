@@ -6,6 +6,7 @@ import favorite
 import func
 import getset
 import guifunc
+import lifunc
 import livod
 import path
 import player
@@ -33,7 +34,7 @@ class Gui(xbmcgui.WindowXML):
     def onInit(self):
         guifunc.updateLabelText(self, 2, "Programma Gemist")
         self.buttons_add_navigation()
-        self.load_program(False, var.VodSelectIndex)
+        self.load_program(False, var.VodSelectIdentifier)
 
     def onClick(self, clickId):
         clickedControl = self.getControl(clickId)
@@ -107,8 +108,12 @@ class Gui(xbmcgui.WindowXML):
         listContainer.addItem(listItem)
 
     def save_select_index(self):
-        listContainer = self.getControl(1000)
-        var.VodSelectIndex = listContainer.getSelectedPosition()
+        try:
+            listContainer = self.getControl(1000)
+            listItemSelected = listContainer.getSelectedItem()
+            var.VodSelectIdentifier = listItemSelected.getProperty("ProgramId")
+        except:
+            pass
 
     def dialog_set_day(self):
         #Set dates to array
@@ -184,7 +189,7 @@ class Gui(xbmcgui.WindowXML):
         listItemSelected = listContainer.getSelectedItem()
         ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
         if var.SearchTermDownload != ProgramNameRaw:
-            var.SearchSelectIndex = 0
+            var.SearchSelectIdentifier = ''
             var.SearchTermResult = ''
             var.SearchTermDownload = ProgramNameRaw
             var.SearchProgramDataJson = []
@@ -215,7 +220,7 @@ class Gui(xbmcgui.WindowXML):
         except:
             pass
 
-    def load_program(self, forceLoad=False, selectIndex=0):
+    def load_program(self, forceLoad=False, selectIdentifier=""):
         #Get and check the list container
         listContainer = self.getControl(1000)
         if forceLoad == False:
@@ -231,14 +236,14 @@ class Gui(xbmcgui.WindowXML):
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
-            guifunc.listSelectItem(listContainer, 0)
+            guifunc.listSelectIndex(listContainer, 0)
             return False
 
         #Update the status
-        self.count_program(True, selectIndex)
+        self.count_program(True, selectIdentifier)
 
     #Update the status
-    def count_program(self, resetSelect=False, selectIndex=0):
+    def count_program(self, resetSelect=False, selectIdentifier=""):
         #Set day string
         loadDayString = func.day_string_from_datetime(var.VodDayLoadDateTime)
 
@@ -259,15 +264,16 @@ class Gui(xbmcgui.WindowXML):
 
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
-                guifunc.listSelectItem(listContainer, selectIndex)
+                listIndex = lifunc.search_listcontainer_property_listindex(listContainer, 'ProgramId', selectIdentifier)
+                guifunc.listSelectIndex(listContainer, listIndex)
         else:
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR gray]op[/COLOR] " + loadDayString)
-                guifunc.listSelectItem(listContainer, 1)
+                guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, "Geen programma's" + favoriteString)
                 guifunc.updateLabelText(self, 3, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + loadDayString)
-                guifunc.listSelectItem(listContainer, 0)
+                guifunc.listSelectIndex(listContainer, 0)
