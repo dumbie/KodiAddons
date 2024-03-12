@@ -260,12 +260,18 @@ class Gui(xbmcgui.WindowXML):
         self.count_program(True, programselectIdentifier)
 
         #Load selected episodes
-        listItemSelected = listContainer.getSelectedItem()
-        listItemAction = listItemSelected.getProperty('ItemAction')
-        if listItemAction == 'load_kids_episodes_vod':
-            self.load_episodes_vod(listItemSelected, False, episodeselectIdentifier)
-        elif listItemAction == 'load_kids_episodes_program':
-            self.load_episodes_program(listItemSelected, False, episodeselectIdentifier)
+        self.load_episodes(episodeselectIdentifier)
+
+    #Load selected episodes
+    def load_episodes(self, episodeselectIdentifier=""):
+        listContainer = self.getControl(1000)
+        if listContainer.size() > 0:
+            listItemSelected = listContainer.getSelectedItem()
+            listItemAction = listItemSelected.getProperty('ItemAction')
+            if listItemAction == 'load_kids_episodes_vod':
+                self.load_episodes_vod(listItemSelected, False, episodeselectIdentifier)
+            elif listItemAction == 'load_kids_episodes_program':
+                self.load_episodes_program(listItemSelected, False, episodeselectIdentifier)
 
     #Update the status
     def count_program(self, resetSelect=False, selectIdentifier=""):
