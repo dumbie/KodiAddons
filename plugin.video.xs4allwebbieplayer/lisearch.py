@@ -51,7 +51,6 @@ def list_load_append(listContainer):
 
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
             #Combine program timing

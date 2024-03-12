@@ -60,7 +60,6 @@ def list_load_append(listContainer, remoteMode=False):
 
             #Load program timing
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             ProgramDurationMinutes = int(metadatainfo.programdurationstring_from_json_metadata(program, False, False, False))
             ProgramDurationSeconds = ProgramDurationMinutes * 60
 

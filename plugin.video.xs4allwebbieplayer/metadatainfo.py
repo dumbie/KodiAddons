@@ -162,23 +162,12 @@ def programstartdeltatime_from_json_metadata(metaData):
         return 0
 
 #Get program starttime from json metadata
-def programstarttime_from_json_metadata(metaData):
-    try:
-        if 'airingStartTime' in metaData['metadata']:
-            return int(metaData['metadata']['airingStartTime'])
-        if 'programStartTime' in metaData['metadata']:
-            return int(metaData['metadata']['programStartTime'])
-        return 0
-    except:
-        return 0
-
-#Get program starttime from json metadata
 def programstartdatetime_from_json_metadata(metaData):
     try:
         if 'airingStartTime' in metaData['metadata']:
-            return func.datetime_from_ticks(int(metaData['metadata']['airingStartTime']))
+            return func.datetime_remove_seconds(func.datetime_from_ticks(int(metaData['metadata']['airingStartTime'])))
         if 'programStartTime' in metaData['metadata']:
-            return func.datetime_from_ticks(int(metaData['metadata']['programStartTime']))
+            return func.datetime_remove_seconds(func.datetime_from_ticks(int(metaData['metadata']['programStartTime'])))
         return datetime(1970,1,1)
     except:
         return datetime(1970,1,1)
@@ -187,9 +176,9 @@ def programstartdatetime_from_json_metadata(metaData):
 def programenddatetime_from_json_metadata(metaData):
     try:
         if 'airingEndTime' in metaData['metadata']:
-            return func.datetime_from_ticks(int(metaData['metadata']['airingEndTime']))
+            return func.datetime_remove_seconds(func.datetime_from_ticks(int(metaData['metadata']['airingEndTime'])))
         if 'programEndTime' in metaData['metadata']:
-            return func.datetime_from_ticks(int(metaData['metadata']['programEndTime']))
+            return func.datetime_remove_seconds(func.datetime_from_ticks(int(metaData['metadata']['programEndTime'])))
         return datetime(1970,1,1)
     except:
         return datetime(1970,1,1)

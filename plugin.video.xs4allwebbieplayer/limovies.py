@@ -112,7 +112,6 @@ def list_load_program_append(listContainer, remoteMode=False):
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             ProgramAvailability = metadatainfo.available_time_program(program)
             StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 

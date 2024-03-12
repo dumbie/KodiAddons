@@ -84,7 +84,6 @@ def list_load_append_program(listContainer, downloadResult, remoteMode=False):
 
             #Check if program is starting or ending on target day
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             if ProgramTimeStartDateTime.date() != var.VodDayLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.VodDayLoadDateTime.date(): continue
 
             #Load program details

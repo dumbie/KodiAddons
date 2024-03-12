@@ -53,7 +53,6 @@ def list_load_append(listContainer, jsonEpgChannel):
         try:
             #Load program basics
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
 
             #Check if program is starting or ending on target day

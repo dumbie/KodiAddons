@@ -36,7 +36,6 @@ def list_update(listItem):
 
             #Load program timing
             ProgramNowTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
-            ProgramNowTimeStartDateTime = func.datetime_remove_seconds(ProgramNowTimeStartDateTime)
             ProgramNowTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
             ProgramProgressPercent = str(int(((dateTimeNow - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
 
@@ -90,7 +89,6 @@ def list_update(listItem):
             ProgramNextId = metadatainfo.contentId_from_json_metadata(metaData)
             ProgramNextNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
             ProgramNextTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
-            ProgramNextTimeStartDateTime = func.datetime_remove_seconds(ProgramNextTimeStartDateTime)
             ProgramNextTimeStartString = ProgramNextTimeStartDateTime.strftime('%H:%M')
             ProgramNextTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
             ProgramNextTimeEndString = ProgramNextTimeEndDateTime.strftime('%H:%M')

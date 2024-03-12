@@ -52,7 +52,6 @@ def program_timing_vod(metaData):
     try:
         ProgramDuration = metadatainfo.programdurationstring_from_json_metadata(metaData, False, False, True)
         ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
-        ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
         ProgramTimeStartStringTime = ProgramTimeStartDateTime.strftime('%H:%M')
         ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
         return '[COLOR gray]Begon om[/COLOR] ' + ProgramTimeStartStringTime + ' [COLOR gray]op[/COLOR] ' + ProgramTimeStartStringDate + ' [COLOR gray]en duurde[/COLOR] ' + ProgramDuration
@@ -62,7 +61,6 @@ def program_timing_vod(metaData):
 def program_timing_program_metadata(metaData, dateTimeNow, dateTimeSeek):
     try:
         ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
-        ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
         ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
         ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
         ProgramTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(metaData, False, False, True)
@@ -83,7 +81,6 @@ def program_timing_program_property(propertyData, dateTimeNow, returnShort=False
     try:
         ProgramTimeStart = propertyData.getProperty('ProgramTimeStart')
         ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
-        ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
         ProgramTimeStartString = ProgramTimeStartDateTime.strftime('%H:%M')
         ProgramTimeEnd = propertyData.getProperty('ProgramTimeEnd')
         ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEnd, '%Y-%m-%d %H:%M:%S')

@@ -377,7 +377,6 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         #Check the program start time
         ProgramNowTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
-        ProgramNowTimeStartDateTime = func.datetime_remove_seconds(ProgramNowTimeStartDateTime)
         if ProgramNowTimeStartDateTime != datetime(1970,1,1):
             playingSeconds = int((datetime.now() - ProgramNowTimeStartDateTime).total_seconds())
             totalSeconds = int(xbmc.Player().getTotalTime())

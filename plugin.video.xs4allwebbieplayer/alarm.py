@@ -40,7 +40,6 @@ def alarm_clean_expired(delayed=False):
     for alarm in var.AlarmDataJson:
         try:
             ProgramTimeStartDateTime = func.datetime_from_string(alarm['starttime'], '%Y-%m-%d %H:%M:%S')
-            ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
 
             #Remove the alarm if it has passed
             if datetime.now() >= ProgramTimeStartDateTime:
@@ -91,9 +90,6 @@ def alarm_duplicate_channel_check(ChannelId):
 
 def alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramName, removeDuplicate=False):
     notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
-
-    #Remove seconds from the program start time
-    ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
 
     #Check if alarm start time already exists
     if removeDuplicate == True and alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId):

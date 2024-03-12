@@ -198,7 +198,6 @@ class Gui(xbmcgui.WindowXML):
         listItemSelected = clickedControl.getSelectedItem()
         ProgramTimeStartString = listItemSelected.getProperty('ProgramTimeStart')
         ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartString, '%Y-%m-%d %H:%M:%S')
-        ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
         ProgramTimeEndString = listItemSelected.getProperty('ProgramTimeEnd')
         ProgramTimeEndDateTime = func.datetime_from_string(ProgramTimeEndString, '%Y-%m-%d %H:%M:%S')
 
@@ -310,7 +309,6 @@ class Gui(xbmcgui.WindowXML):
     def program_alarm_set(self, listItemSelected):
         ProgramTimeStartString = listItemSelected.getProperty('ProgramTimeStart')
         ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartString, '%Y-%m-%d %H:%M:%S')
-        ProgramTimeStartDateTime = func.datetime_remove_seconds(ProgramTimeStartDateTime)
 
         ChannelId = listItemSelected.getProperty('ChannelId')
         ExternalId = listItemSelected.getProperty('ExternalId')
