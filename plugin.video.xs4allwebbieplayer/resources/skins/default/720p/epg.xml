@@ -332,7 +332,7 @@
                         <width>65</width>
                         <height>30</height>
                         <align>center</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
@@ -398,7 +398,7 @@
                         <width>65</width>
                         <height>30</height>
                         <align>center</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
@@ -531,7 +531,7 @@
                         <width>450</width>
                         <height>30</height>
                         <align>left</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ProgramEpgList)</info>
                     </control>
@@ -641,7 +641,7 @@
                         <width>450</width>
                         <height>30</height>
                         <align>left</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ProgramEpgList)</info>
                     </control>

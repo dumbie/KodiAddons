@@ -106,7 +106,7 @@ def list_load_append_program(listContainer, downloadResult, remoteMode=False):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
-            ProgramNameList = ProgramNameRaw + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramNameList = ProgramNameRaw + ' ' + ProgramDetails
             ProgramNameDesc = ProgramNameRaw + '\n' + ProgramDetails
 
             #Set item icons

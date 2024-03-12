@@ -292,7 +292,7 @@
                         <width>56</width>
                         <height>30</height>
                         <align>center</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
@@ -340,7 +340,7 @@
                         <width>56</width>
                         <height>30</height>
                         <align>center</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>

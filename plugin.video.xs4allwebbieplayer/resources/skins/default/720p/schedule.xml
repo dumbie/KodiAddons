@@ -126,7 +126,7 @@
                             <width>630</width>
                             <height>30</height>
                             <align>left</align>
-                            <textcolor>FF888888</textcolor>
+                            <textcolor>FFFFFFFF</textcolor>
                             <selectedcolor>FF888888</selectedcolor>
                             <info>ListItem.Property(ProgramDescription)</info>
                         </control>
@@ -162,7 +162,7 @@
                             <width>630</width>
                             <height>30</height>
                             <align>left</align>
-                            <textcolor>FF888888</textcolor>
+                            <textcolor>FFFFFFFF</textcolor>
                             <selectedcolor>FF888888</selectedcolor>
                             <info>ListItem.Property(ProgramDescription)</info>
                         </control>

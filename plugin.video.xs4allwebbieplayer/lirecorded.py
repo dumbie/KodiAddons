@@ -74,7 +74,7 @@ def list_load_append(listContainer, remoteMode=False):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
-            ProgramNameList = ProgramName + ' [COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramNameList = ProgramName + ' ' + ProgramDetails
             ProgramNameDesc = ProgramNameRaw + '\n' + ProgramDetails
 
             #Update program availability

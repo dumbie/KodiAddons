@@ -50,24 +50,19 @@ def list_load_append(listContainer):
             #Combine recorded episodes count
             ProgramDetails += ' [COLOR gray]' + ProgramEpisodeCount + '[/COLOR]'
 
-            #Update program name string
-            ProgramName += ' ' + ProgramDetails
-
             #Get channel basics
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
-            ChannelName = 'Onbekende zender'
             ChannelIcon = path.resources('resources/skins/default/media/common/unknown.png')
             ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
             if ChannelDetails:
                 ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
-                ChannelName = metadatainfo.channelName_from_json_metadata(ChannelDetails)
                 ChannelIcon = path.icon_television(ExternalId)
 
             #Set item details
             listItem = xbmcgui.ListItem()
             listItem.setProperty('ProgramSeriesId', ProgramSeriesId)
             listItem.setProperty('ProgramName', ProgramName)
-            listItem.setProperty('ProgramDescription', ChannelName)
+            listItem.setProperty('ProgramDescription', ProgramDetails)
             listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
             listContainer.append(listItem)
         except:

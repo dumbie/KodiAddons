@@ -27,7 +27,7 @@
             <height>30</height>
             <align>center</align>
             <label>$INFO[MusicPlayer.Artist,, ]$INFO[MusicPlayer.Title]</label>
-            <textcolor>80FFFFFF</textcolor>
+            <textcolor>FF888888</textcolor>
             <visible>Player.HasAudio</visible>
         </control>
         <!-- Video Window -->

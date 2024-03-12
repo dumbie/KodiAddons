@@ -293,7 +293,7 @@
                         <width>56</width>
                         <height>30</height>
                         <align>center</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
@@ -324,7 +324,7 @@
                         <width>640</width>
                         <height>30</height>
                         <align>left</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ProgramNextName)</info>
                     </control>
@@ -426,7 +426,7 @@
                         <width>56</width>
                         <height>30</height>
                         <align>center</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
@@ -459,7 +459,7 @@
                         <width>640</width>
                         <height>30</height>
                         <align>left</align>
-                        <textcolor>FF888888</textcolor>
+                        <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ProgramNextName)</info>
                         <scroll>true</scroll>

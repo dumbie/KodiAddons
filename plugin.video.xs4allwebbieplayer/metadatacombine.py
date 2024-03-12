@@ -94,28 +94,29 @@ def program_timing_program_property(propertyData, dateTimeNow, returnShort=False
 
         if ProgramTimeDurationString == '0':
             if returnShort == True:
-                return 'onbekend programmaduur'
+                return '[COLOR gray]onbekend programmaduur[/COLOR]'
             else:
                 return '[COLOR gray]onbekend programmaduur[/COLOR]'
+
         if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
             if ProgramTimeLeftString == '0':
                 if returnShort == True:
-                    return 'is bijna afgelopen, duurde ' + ProgramTimeDurationString
+                    return '[COLOR gray]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString
                 else:
                     return '[COLOR gray]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString
             else:
                 if returnShort == True:
-                    return 'duurt nog ' + ProgramTimeLeftString + ' van de ' + ProgramTimeDurationString
+                    return '[COLOR gray]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR gray]van de[/COLOR] ' + ProgramTimeDurationString
                 else:
                     return '[COLOR gray]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR gray]van de[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigt rond[/COLOR] ' + ProgramTimeEndString
         elif dateTimeNow > ProgramTimeEndDateTime:
             if returnShort == True:
-                return 'duurde ' + ProgramTimeDurationString
+                return '[COLOR gray]duurde[/COLOR] ' + ProgramTimeDurationString
             else:
                 return '[COLOR gray]duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigde rond[/COLOR] ' + ProgramTimeEndString
         else:
             if returnShort == True:
-                return 'duurt ' + ProgramTimeDurationString
+                return '[COLOR gray]duurt[/COLOR] ' + ProgramTimeDurationString
             else:
                 return '[COLOR gray]duurt[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begint om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigt rond[/COLOR] ' + ProgramTimeEndString
     except:
