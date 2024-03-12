@@ -92,9 +92,11 @@ def list_update(listItem):
             ProgramNextTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
             ProgramNextTimeStartDateTime = func.datetime_remove_seconds(ProgramNextTimeStartDateTime)
             ProgramNextTimeStartString = ProgramNextTimeStartDateTime.strftime('%H:%M')
+            ProgramNextTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
+            ProgramNextTimeEndString = ProgramNextTimeEndDateTime.strftime('%H:%M')
 
             #Combine program next name
-            ProgramNextName = '[COLOR gray]' + ProgramNextTimeStartString + ': ' + ProgramNextNameRaw + '[/COLOR]'
+            ProgramNextName = '[COLOR gray](' + ProgramNextTimeStartString + '/' + ProgramNextTimeEndString + ') ' + ProgramNextNameRaw + '[/COLOR]'
 
             #Check if program has active alarm
             if alarm.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
