@@ -244,7 +244,7 @@
                 <onright>2001</onright>
                 <pagecontrol>2001</pagecontrol>
                 <orientation>vertical</orientation>
-                <itemlayout width="800" height="64">
+                <itemlayout width="800" height="67">
                     <control type="image">
                         <width>800</width>
                         <height>62</height>
@@ -278,7 +278,7 @@
                         <info>ListItem.Property(ProgramDetails)</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="800" height="64">
+                <focusedlayout width="800" height="67">
                     <control type="image">
                         <width>800</width>
                         <height>62</height>

@@ -268,7 +268,7 @@
                 <onright>2001</onright>
                 <pagecontrol>2001</pagecontrol>
                 <orientation>vertical</orientation>
-                <itemlayout width="800" height="70">
+                <itemlayout width="800" height="73">
                     <control type="image">
                         <width>800</width>
                         <height>68</height>
@@ -401,7 +401,7 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramNextRecordSeries), true)</visible>
                     </control>
                 </itemlayout>
-                <focusedlayout width="800" height="70">
+                <focusedlayout width="800" height="73">
                     <control type="image">
                         <width>800</width>
                         <height>68</height>

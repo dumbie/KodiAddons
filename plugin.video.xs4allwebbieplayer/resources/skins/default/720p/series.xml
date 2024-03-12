@@ -374,7 +374,7 @@
         <control type="label" id="2">
             <top>240</top>
             <right>50</right>
-            <width>688</width>
+            <width>690</width>
             <height>30</height>
             <align>left</align>
             <label>Afleveringen</label>
@@ -386,7 +386,7 @@
         <control type="group" id="3002">
             <top>270</top>
             <right>50</right>
-            <width>688</width>
+            <width>690</width>
             <height>450</height>
             <control type="panel" id="1002">
                 <onup>1001</onup>
@@ -394,9 +394,9 @@
                 <onright>2002</onright>
                 <pagecontrol>2002</pagecontrol>
                 <orientation>vertical</orientation>
-                <itemlayout width="688" height="90">
+                <itemlayout width="690" height="93">
                     <control type="image">
-                        <width>688</width>
+                        <width>690</width>
                         <height>88</height>
                         <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
@@ -438,9 +438,9 @@
                         <info>ListItem.Property(ProgramAvailability)</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="688" height="90">
+                <focusedlayout width="690" height="93">
                     <control type="image">
-                        <width>688</width>
+                        <width>690</width>
                         <height>88</height>
                         <texture colordiffuse="A0888888">common/background_accent.png</texture>
                     </control>
