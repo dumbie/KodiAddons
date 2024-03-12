@@ -138,7 +138,7 @@
         <control type="group">
             <top>245</top>
             <right>50</right>
-            <width>378</width>
+            <width>380</width>
             <height>475</height>
             <control type="image">
                 <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
@@ -156,7 +156,7 @@
                 <pagecontrol>2000</pagecontrol>
             </control>
             <control type="scrollbar" id="2000">
-                <width>378</width>
+                <width>380</width>
                 <onup>1001</onup>
                 <onleft>2001</onleft>
                 <onright>1001</onright>
@@ -269,8 +269,8 @@
                 <pagecontrol>2001</pagecontrol>
                 <itemlayout width="160" height="160">
                     <control type="image">
-                        <width>156</width>
-                        <height>156</height>
+                        <width>155</width>
+                        <height>155</height>
                         <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="image">
@@ -305,10 +305,8 @@
                         <info>ListItem.Property(ProgramNowName)</info>
                     </control>
                     <control type="progress">
-                        <top>151</top>
-                        <left>5</left>
-                        <right>5</right>
-                        <width>146</width>
+                        <top>150</top>
+                        <width>155</width>
                         <height>5</height>
                         <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
                         <lefttexture>-</lefttexture>
@@ -327,17 +325,8 @@
                         <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
                     </control>
                     <control type="image">
-                        <top>6</top>
-                        <left>64</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/alarm.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
-                    </control>
-                    <control type="image">
-                        <top>6</top>
-                        <left>86</left>
+                        <top>28</top>
+                        <left>6</left>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -346,7 +335,16 @@
                     </control>
                     <control type="image">
                         <top>6</top>
-                        <left>108</left>
+                        <right>10</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>28</top>
+                        <right>10</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -354,8 +352,8 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramNowRecordEvent), true)</visible>
                     </control>
                     <control type="image">
-                        <top>6</top>
-                        <left>130</left>
+                        <top>50</top>
+                        <right>10</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -365,8 +363,8 @@
                 </itemlayout>
                 <focusedlayout width="160" height="160">
                     <control type="image">
-                        <width>156</width>
-                        <height>156</height>
+                        <width>155</width>
+                        <height>155</height>
                         <texture colordiffuse="A0888888">common/background_accent.png</texture>
                     </control>
                     <control type="image">
@@ -402,10 +400,8 @@
                         <autoscroll delay="0" time="1000" repeat="1000"/>
                     </control>
                     <control type="progress">
-                        <top>151</top>
-                        <left>5</left>
-                        <right>5</right>
-                        <width>146</width>
+                        <top>150</top>
+                        <width>155</width>
                         <height>5</height>
                         <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
                         <lefttexture>-</lefttexture>
@@ -424,17 +420,8 @@
                         <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
                     </control>
                     <control type="image">
-                        <top>6</top>
-                        <left>64</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/alarm.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
-                    </control>
-                    <control type="image">
-                        <top>6</top>
-                        <left>86</left>
+                        <top>28</top>
+                        <left>6</left>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -443,7 +430,16 @@
                     </control>
                     <control type="image">
                         <top>6</top>
-                        <left>108</left>
+                        <right>10</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>28</top>
+                        <right>10</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -451,8 +447,8 @@
                         <visible>String.IsEqual(ListItem().Property(ProgramNowRecordEvent), true)</visible>
                     </control>
                     <control type="image">
-                        <top>6</top>
-                        <left>130</left>
+                        <top>50</top>
+                        <right>10</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -462,7 +458,7 @@
                 </focusedlayout>
             </control>
             <control type="scrollbar" id="2001">
-                <right>4</right>
+                <right>5</right>
                 <width>8</width>
                 <onup>1001</onup>
                 <onleft>1000</onleft>

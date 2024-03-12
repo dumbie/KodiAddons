@@ -329,7 +329,7 @@
                         <info>ListItem.Property(ProgramNextName)</info>
                     </control>
                     <control type="image">
-                        <top>4</top>
+                        <top>2</top>
                         <left>40</left>
                         <width>18</width>
                         <height>18</height>
@@ -466,7 +466,7 @@
                         <scrollspeed>60</scrollspeed>
                     </control>
                     <control type="image">
-                        <top>4</top>
+                        <top>2</top>
                         <left>40</left>
                         <width>18</width>
                         <height>18</height>
