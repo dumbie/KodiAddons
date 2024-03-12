@@ -266,43 +266,46 @@
                 <onleft>SendClick(9000)</onleft>
                 <onright>2001</onright>
                 <pagecontrol>2001</pagecontrol>
-                <orientation>vertical</orientation>
-                <itemlayout width="1280" height="63">
+                <itemlayout width="168" height="168">
                     <control type="image">
-                        <width>1280</width>
-                        <height>58</height>
+                        <width>163</width>
+                        <height>163</height>
                         <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="image">
                         <top>3</top>
-                        <left>3</left>
-                        <width>50</width>
-                        <height>50</height>
+                        <left>46</left>
+                        <width>70</width>
+                        <height>70</height>
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
                     </control>
                     <control type="label">
-                        <left>60</left>
-                        <width>720</width>
+                        <top>75</top>
+                        <left>5</left>
+                        <right>5</right>
+                        <width>153</width>
                         <height>30</height>
-                        <align>left</align>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ChannelName)</info>
-                    </control>
-                    <control type="label">
-                        <top>30</top>
-                        <left>60</left>
-                        <width>720</width>
-                        <height>30</height>
-                        <align>left</align>
+                        <align>center</align>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
+                    <control type="textbox">
+                        <top>100</top>
+                        <left>5</left>
+                        <right>5</right>
+                        <width>153</width>
+                        <height>60</height>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelName)</info>
+                    </control>
                     <control type="image">
-                        <top>2</top>
-                        <left>40</left>
+                        <top>6</top>
+                        <right>12</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -310,42 +313,46 @@
                         <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
                     </control>
                 </itemlayout>
-                <focusedlayout width="1280" height="63">
+                <focusedlayout width="168" height="168">
                     <control type="image">
-                        <width>1280</width>
-                        <height>58</height>
+                        <width>163</width>
+                        <height>163</height>
                         <texture colordiffuse="A0888888">common/background_accent.png</texture>
                     </control>
                     <control type="image">
                         <top>3</top>
-                        <left>3</left>
-                        <width>50</width>
-                        <height>50</height>
+                        <left>46</left>
+                        <width>70</width>
+                        <height>70</height>
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
                     </control>
                     <control type="label">
-                        <left>60</left>
-                        <width>720</width>
+                        <top>75</top>
+                        <left>5</left>
+                        <right>5</right>
+                        <width>153</width>
                         <height>30</height>
-                        <align>left</align>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ChannelName)</info>
-                    </control>
-                    <control type="label">
-                        <top>30</top>
-                        <left>60</left>
-                        <width>720</width>
-                        <height>30</height>
-                        <align>left</align>
+                        <align>center</align>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
+                    <control type="textbox">
+                        <top>100</top>
+                        <left>5</left>
+                        <right>5</right>
+                        <width>153</width>
+                        <height>60</height>
+                        <align>center</align>
+                        <aligny>center</aligny>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ChannelName)</info>
+                    </control>
                     <control type="image">
-                        <top>2</top>
-                        <left>40</left>
+                        <top>6</top>
+                        <right>12</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -355,7 +362,7 @@
                 </focusedlayout>
             </control>
             <control type="scrollbar" id="2001">
-                <right>0</right>
+                <right>9</right>
                 <width>8</width>
                 <onup>1001</onup>
                 <onleft>1000</onleft>

@@ -17,7 +17,11 @@ import zap
 
 def switch_to_page():
     if var.guiRadio == None:
-        var.guiRadio = Gui('radio.xml', var.addonpath, 'default', '720p')
+        channelView = getset.setting_get('RadioChannelView').lower()
+        if channelView == 'lijst':
+            var.guiRadio = Gui('radio.xml', var.addonpath, 'default', '720p')
+        elif channelView == 'blokken':
+            var.guiRadio = Gui('radio-grid.xml', var.addonpath, 'default', '720p')
         var.guiRadio.setProperty('WebbiePlayerPage', 'Open')
         var.guiRadio.show()
 

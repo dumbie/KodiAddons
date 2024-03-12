@@ -213,7 +213,7 @@
             <right>50</right>
             <top>215</top>
             <width>1280</width>
-            <height>460</height>
+            <height>465</height>
             <onup condition="Control.IsVisible(1001) + Integer.IsGreater(Container(1001).NumItems,0)">Control.setFocus(1001, $INFO[Container(1000).Position])</onup>
             <orientation>vertical</orientation>
             <itemlayout width="285" height="150">

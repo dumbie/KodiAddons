@@ -13,6 +13,7 @@
   <category label="Algemeen">
     <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
+    <setting id="RadioChannelView" type="select" label="Radiozenders weergavestijl" default="Blokken" values="Lijst|Blokken"/>
     <setting id="TelevisionHideEarlierAired" label="Toon geen eerder uitgezonden programma's" type="bool" default="false"/>
     <setting id="TelevisionHideUpcomingAired" label="Toon geen later uitgezonden programma's" type="bool" default="false"/>
     <setting id="SearchFilterFuzzy" label="Toon vergelijkbare zoek resultaten" type="bool" default="false"/>
