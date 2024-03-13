@@ -53,10 +53,9 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
 
         #Update channel settings and variables
         CurrentChannelId = getset.setting_get('CurrentChannelId', True)
-        getset.setting_set('CurrentChannelId', NewChannelId)
         if CurrentChannelId != NewChannelId:
-            var.TelevisionChannelListItemLast = var.TelevisionChannelListItemCurrent
-        var.TelevisionChannelListItemCurrent = listItem
+            getset.setting_set('CurrentChannelId', NewChannelId)
+            getset.setting_set('LastChannelId', CurrentChannelId)
 
         #Get downloaded stream url
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']

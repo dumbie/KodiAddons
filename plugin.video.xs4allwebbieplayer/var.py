@@ -204,8 +204,6 @@ SportProgramDataJson = []
 RadioChannelsDataJson = []
 
 #Television variables
-TelevisionChannelListItemCurrent = None
-TelevisionChannelListItemLast = None
 TelevisionChannelIdsPlayable = ''
 TelevisionChannelsDataJson = []
 

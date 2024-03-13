@@ -11,6 +11,7 @@ import liplayergui
 import path
 import recordingfunc
 import sleep
+import streamgenerate
 import streamplay
 import var
 import zap
@@ -405,10 +406,12 @@ class Gui(xbmcgui.WindowXMLDialog):
         lifunc.focus_listcontainer_value(self, 1001, 0, False, 'ChannelId', CurrentChannelId)
 
     def switch_channel_lasttv(self):
-        if var.TelevisionChannelListItemLast != None:
+        ChannelId = getset.setting_get('LastChannelId', True)
+        if func.string_isnullorempty(ChannelId) == False:
+            ChannelListItem = streamgenerate.generate_listitem_tv(ChannelId)
+            streamplay.play_tv(ChannelListItem, ShowInformation=True)
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Gezapt naar vorige zender.', notificationIcon, 2500, False)
-            streamplay.play_tv(var.TelevisionChannelListItemLast, ShowInformation=True)
         else:
             notificationIcon = path.resources('resources/skins/default/media/common/last.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen vorige zender beschikbaar.', notificationIcon, 2500, False)
