@@ -106,7 +106,7 @@ LaunchArgument = ''
 DialogResult = None
 
 #Cache variables
-CacheCleanTimeChannels = 360 * 60 #6h
+CacheCleanTimeChannels = 240 * 60 #4h
 CacheCleanTimeOther = 10 * 60 #10m
 CacheCleanTimeEpg = 120 * 60 #2h
 

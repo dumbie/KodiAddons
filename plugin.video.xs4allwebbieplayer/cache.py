@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import xbmcgui
 import files
 import func
@@ -51,20 +51,35 @@ def cache_remove_files():
         xbmcgui.Dialog().notification(var.addonname, 'Cache bestanden verwijderen mislukt.', var.addonicon, 2500, False)
         return False
 
-def cache_cleanup_days(fileName, epochCleanupTimeToday=0):
+def cache_cleanup_today(fileName, epochCleanupTime):
     try:
         fileRemoved = False
-        dateStringToday = datetime.now().strftime('%Y-%m-%d')
+        nowDateString = datetime.now().strftime('%Y-%m-%d')
         for cacheFile in files.listFiles(var.addonstoragecache):
             if cacheFile.startswith(fileName):
                 cachePath = path.addonstoragecache(cacheFile)
-                dateStringFile = cacheFile.lstrip(fileName).rstrip('.js')
-                dateTimeFile = func.datetime_from_string(dateStringFile, '%Y-%m-%d')
-                daysPassed = func.day_offset_from_datetime(dateTimeFile)
+                fileDateString = cacheFile.lstrip(fileName).rstrip('.js')
+                if fileDateString == nowDateString:
+                    if cache_cleanup_file(cachePath, epochCleanupTime) == True: fileRemoved = True
+                else:
+                    if files.removeFile(cachePath) == True: fileRemoved = True
+        return fileRemoved
+    except:
+        return False
+
+def cache_cleanup_days(fileName, epochCleanupTime=0):
+    try:
+        fileRemoved = False
+        for cacheFile in files.listFiles(var.addonstoragecache):
+            if cacheFile.startswith(fileName):
+                cachePath = path.addonstoragecache(cacheFile)
+                fileDateString = cacheFile.lstrip(fileName).rstrip('.js')
+                fileDateTime = func.datetime_from_string(fileDateString, '%Y-%m-%d')
+                daysPassed = func.day_offset_from_datetime(fileDateTime)
                 if daysPassed > var.VodDayOffsetPast:
                     if files.removeFile(cachePath) == True: fileRemoved = True
-                elif epochCleanupTimeToday != 0 and dateStringFile == dateStringToday:
-                    if cache_cleanup_file(cachePath, epochCleanupTimeToday) == True: fileRemoved = True
+                elif daysPassed == 0 and epochCleanupTime != 0:
+                    if cache_cleanup_file(cachePath, epochCleanupTime) == True: fileRemoved = True
         return fileRemoved
     except:
         return False
