@@ -38,7 +38,7 @@
     <setting id="MainShowAlarm" label="Toon Alarmen op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowSleep" label="Toon Slaap Timer op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowHelp" label="Toon Help op hoofdpagina" type="bool" default="true"/>
-    <setting id="MainShowRefresh" label="Toon Vernieuwen op hoofdpagina" type="bool" default="false"/>
+    <setting id="MainShowRefresh" label="Toon Vernieuwen op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowSettings" label="Toon Instellingen op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowShutdown" label="Toon Sluiten op hoofdpagina" type="bool" default="true"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
@@ -69,7 +69,6 @@
   </category>
   <category label="Onderhoud">
     <setting id="ResetUserdata" type="action" label="Verwijder userdata bestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
-    <setting id="ResetCache" type="action" label="Verwijder tijdelijke cache bestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetCache)"/>
     <setting id="ResetThumbnails" type="action" label="Alle opgeslagen zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
     <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>

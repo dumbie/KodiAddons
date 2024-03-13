@@ -37,9 +37,6 @@ def handle_launch_argument_source():
         elif var.LaunchArgument == "UpdateWidevineFiles":
             widevine.enable_widevine_support(True)
             return True
-        elif var.LaunchArgument == "ResetCache":
-            cache.cache_remove_all()
-            return True
         elif var.LaunchArgument == "ResetUserdata":
             settings.reset_userdata()
             return True
@@ -70,7 +67,7 @@ def handle_launch_argument_source():
         if actionItem == "addon_launch":
             func.run_addon(True)
         elif actionItem == "cache_remove_all":
-            cache.cache_remove_all()
+            cache.cache_remove_all(False)
 
         #List pages
         elif actionItem == "page_television":

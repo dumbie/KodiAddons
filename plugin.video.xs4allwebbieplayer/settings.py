@@ -74,7 +74,7 @@ def switch_adultfilter_onoff():
             xbmcgui.Dialog().notification(var.addonname, "Erotische media ingeschakeld, herstart de add-on.", var.addonicon, 2500, False)
 
         #Remove current cache
-        cache.cache_remove_all()
+        cache.cache_remove_all(False)
     except:
         pass
 

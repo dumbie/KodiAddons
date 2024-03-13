@@ -1,9 +1,11 @@
 from datetime import datetime
 import xbmcgui
+import dialog
 import files
 import func
 import path
 import var
+import getset
 
 def cache_check_folder():
     try:
@@ -13,7 +15,20 @@ def cache_check_folder():
     except:
         return False
 
-def cache_remove_all():
+def cache_remove_all(showDialog=True):
+    if showDialog == True:
+        cacheCleanTime = getset.setting_get('CacheCleanTimeOther')
+
+        dialogAnswers = ['Handmatig vernieuwen']
+        dialogHeader = 'Vernieuwen'
+        dialogSummary = "Programma en opnames worden automatisch elke " + cacheCleanTime + " minuten vernieuwt bij het openen van een pagina, wilt u nu alles handmatig vernieuwen?"
+        dialogFooter = ''
+
+        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+        if dialogResult != 'Handmatig vernieuwen':
+            return
+
+    #Reset and remove cache
     cache_reset_variables()
     cache_remove_files()
 
