@@ -52,6 +52,7 @@
   </category>
   <category label="Opstarten">
     <setting id="RunAddonOnKodiLaunch" label="Start Webbie Player bij het opstarten van Kodi" type="bool" default="false"/>
+    <setting id="StartWithLastChannel" label="Open laatstbekeken tv-zender bij het opstarten van add-on" type="bool" default="false"/>
     <setting id="StartWithTelevision" label="Open televisiepagina bij het opstarten van add-on" type="bool" default="false"/>
     <setting id="StartWithKids" label="Open kidspagina bij het opstarten van add-on" type="bool" default="false"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>

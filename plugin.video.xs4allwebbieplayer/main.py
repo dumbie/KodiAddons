@@ -25,6 +25,8 @@ import search
 import series
 import sleep
 import sport
+import streamgenerate
+import streamplay
 import television
 import threadfunc
 import var
@@ -127,6 +129,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Check if user is logged in
         if var.ApiLoggedIn() == True:
+            #Switch to last known television channel
+            if var.addon.getSetting('StartWithLastChannel') == 'true' and var.addon.getSetting('StartWithKids') == 'false':
+                self.switch_channel_currenttv()
+
             #Go to the desired page on startup
             if getset.setting_get('StartWithKids') == 'true':
                 kids.switch_to_page()
@@ -195,6 +201,12 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         limain.list_load_combined(listContainer)
+
+    def switch_channel_currenttv(self):
+        ChannelId = getset.setting_get('CurrentChannelId', True)
+        if func.string_isnullorempty(ChannelId) == False:
+            ChannelListItem = streamgenerate.generate_listitem_tv(ChannelId)
+            streamplay.play_tv(ChannelListItem, ShowInformation=True)
 
     def count_recorded_events(self):
         try:
