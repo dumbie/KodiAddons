@@ -15,7 +15,7 @@ def download(forceUpdate=False):
 
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('recordingseries.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
             var.RecordingSeriesDataJson = []
 
         if forceUpdate == False:

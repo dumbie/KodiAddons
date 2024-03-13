@@ -11,7 +11,7 @@ def download_vod(forceUpdate=False):
     try:
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('seriesvod.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
             var.SeriesVodDataJson = []
 
         if forceUpdate == False:
@@ -61,7 +61,7 @@ def download_program(forceUpdate=False):
     try:
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('seriesprogram.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
             var.SeriesProgramDataJson = []
 
         if forceUpdate == False:

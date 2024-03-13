@@ -15,7 +15,7 @@ def download(forceUpdate=False):
 
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('recordingevent.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
             var.RecordingEventDataJson = []
 
         if forceUpdate == False:

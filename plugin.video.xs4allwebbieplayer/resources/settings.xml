@@ -16,7 +16,8 @@
     <setting id="RadioChannelView" type="select" label="Radiozenders weergavestijl" default="Blokken" values="Lijst|Blokken"/>
     <setting id="TelevisionHideEarlierAired" label="Toon geen eerder uitgezonden programma's" type="bool" default="false"/>
     <setting id="TelevisionHideUpcomingAired" label="Toon geen later uitgezonden programma's" type="bool" default="false"/>
-    <setting id="SearchFilterFuzzy" label="Toon vergelijkbare zoek resultaten" type="bool" default="false"/>
+    <setting id="SearchFilterFuzzy" label="Toon vergelijkbare en niet identieke zoekresultaten" type="bool" default="false"/>
+    <setting id="CacheCleanTimeOther" label="Media automatisch vernieuw tijd in minuten" type="slider" default="10" range="1,1,20" option="int"/>
     <setting id="SwitchAdultFilter" type="action" label="Erotische media in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?SwitchAdultFilter)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>

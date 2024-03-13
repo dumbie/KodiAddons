@@ -11,7 +11,7 @@ def download_vod(forceUpdate=False):
     try:
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('kidsvod.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
             var.KidsVodDataJson = []
 
         if forceUpdate == False:
@@ -61,7 +61,7 @@ def download_program(forceUpdate=False):
     try:
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('kidsprogram.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
             var.KidsProgramDataJson = []
 
         if forceUpdate == False:

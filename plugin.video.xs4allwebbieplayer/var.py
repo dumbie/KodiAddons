@@ -107,8 +107,9 @@ DialogResult = None
 
 #Cache variables
 CacheCleanTimeChannels = 240 * 60 #4h
-CacheCleanTimeOther = 10 * 60 #10m
 CacheCleanTimeEpg = 120 * 60 #2h
+def CacheCleanTimeOther():
+     return int(getset.setting_get('CacheCleanTimeOther')) * 60
 
 #Thread variables
 thread_notification = threadclass.Class_ThreadSafe()

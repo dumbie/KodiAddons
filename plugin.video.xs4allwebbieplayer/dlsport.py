@@ -11,7 +11,7 @@ def download(forceUpdate=False):
     try:
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('sport.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther) == True:
+        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
             var.SportProgramDataJson = []
 
         if forceUpdate == False:
