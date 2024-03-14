@@ -12,10 +12,10 @@ import getset
 import var
 
 #Run this add-on
-def run_addon(forceLaunch=False):
-    if getset.setting_get('RunAddonOnKodiLaunch') == 'true' or forceLaunch:
+def run_addon(showNotification=True):
+    if showNotification == True:
         xbmcgui.Dialog().notification(var.addonname, 'Webbie Player wordt gestart.', var.addonicon, 2500, False)
-        xbmc.executebuiltin('RunScript(plugin.video.xs4allwebbieplayer)')
+    xbmc.executebuiltin('RunScript(plugin.video.xs4allwebbieplayer)')
 
 #Check if add-on is running
 def check_addon_running():

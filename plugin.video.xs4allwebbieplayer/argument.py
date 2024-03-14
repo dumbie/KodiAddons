@@ -46,15 +46,10 @@ def handle_launch_argument_source():
         elif var.LaunchArgument == "SwitchAdultFilter":
             settings.switch_adultfilter_onoff()
             return True
-        elif var.LaunchArgument == "KidsSwitchLock":
-            settings.switch_kidslock_onoff()
-            return True
-        elif var.LaunchArgument == "KidsChangePincode":
-            settings.kids_change_pincode()
-            return True
 
         #List main menu
         elif func.string_isnullorempty(var.LaunchArgument):
+            func.run_addon()
             limain.list_load_combined()
             return True
 
@@ -65,7 +60,7 @@ def handle_launch_argument_source():
 
         #List actions
         if actionItem == "addon_launch":
-            func.run_addon(True)
+            func.run_addon()
         elif actionItem == "cache_remove_all":
             cache.cache_remove_all(False)
 

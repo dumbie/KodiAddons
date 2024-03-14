@@ -23,6 +23,7 @@ import recordingfunc
 import recordingseries
 import search
 import series
+import settings
 import sleep
 import sport
 import streamgenerate
@@ -130,7 +131,7 @@ class Gui(xbmcgui.WindowXML):
         #Check if user is logged in
         if var.ApiLoggedIn() == True:
             #Switch to last known television channel
-            if var.addon.getSetting('StartWithLastChannel') == 'true' and var.addon.getSetting('StartWithKids') == 'false':
+            if getset.setting_get('StartWithLastChannel') == 'true' and getset.setting_get('StartWithKids') == 'false':
                 self.switch_channel_currenttv()
 
             #Go to the desired page on startup
@@ -341,7 +342,7 @@ class Gui(xbmcgui.WindowXML):
             elif listItemAction == 'cache_remove_all':
                 cache.cache_remove_all()
             elif listItemAction == 'addon_settings':
-                var.addon.openSettings()
+                settings.open_settings()
             elif listItemAction == 'page_help':
                 helpx.switch_to_page()
             elif listItemAction == 'addon_shutdown':

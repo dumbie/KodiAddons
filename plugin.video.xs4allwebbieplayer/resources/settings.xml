@@ -58,19 +58,19 @@
     <setting id="StartWithKids" label="Open kidspagina bij het opstarten van add-on" type="bool" default="false"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
-  <category label="Kids Slot">
-    <setting id="KidsSwitchLock" type="action" label="Vraag pincode bij o.a. sluiten van kidspagina in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?KidsSwitchLock)"/>
-    <setting id="KidsChangePincode" type="action" label="Gebruikte kids pincode wijzigen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?KidsChangePincode)"/>
+  <category label="Kidsbeveiliging">
+    <setting id="KidsPageLock" label="Kinderbeveiliging in- of uitschakelen" type="bool" default="false"/>
+    <setting id="KidsPincode" type="text" label="Gebruikte kids pincode" option="hidden" default="1234"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
-  <category label="Slaap Timer">
+  <category label="Slaaptimer">
     <setting id="SleepTimerCloseKodi" label="Sluit alleen Kodi in plaats van het gehele apparaat" type="bool" default="true"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Onderhoud">
-    <setting id="ResetUserdata" type="action" label="Verwijder userdata bestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
-    <setting id="ResetThumbnails" type="action" label="Alle opgeslagen zenderlogo's vernieuwen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
-    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
+    <setting id="ResetUserdata" type="action" label="Verwijder userdata bestanden" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
+    <setting id="ResetThumbnails" type="action" label="Alle opgeslagen zenderlogo's vernieuwen" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
+    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Stream">
@@ -87,8 +87,6 @@
     <setting id="CurrentChannelId" type="text" visible="false" default=""/>
     <setting id="LastChannelId" type="text" visible="false" default=""/>
     <setting id="LoadChannelFavoritesOnly" type="text" visible="false" default="false"/>
-    <setting id="TelevisionChannelNoErotic" type="text" visible="false" default="false"/>
-    <setting id="KidsPincode" type="text" visible="false" default="1234"/>
-    <setting id="KidsPageLock" type="text" visible="false" default="false"/>
+    <setting id="TelevisionChannelNoErotic" type="text" visible="false" default="true"/>
   </category>
 </settings>

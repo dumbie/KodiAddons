@@ -1,13 +1,16 @@
 import xbmc
 import cache
 import func
+import getset
 import servicealarm
 import serviceproxy
+import servicevar
 
 #Service launch
 if __name__ == '__main__':
     #Run Webbie Player on Kodi launch
-    func.run_addon(False)
+    if getset.setting_get('RunAddonOnKodiLaunch') == 'true':
+        func.run_addon()
 
     #Check if cache folder exists
     cache.cache_check_folder()
@@ -19,8 +22,7 @@ if __name__ == '__main__':
     servicealarm.start_alarm_check()
 
     #Wait for service stop request
-    addonmonitor = xbmc.Monitor()
-    while addonmonitor.abortRequested() == False:
+    while servicevar.addonmonitor.abortRequested() == False:
         xbmc.sleep(100)
 
     #Stop proxy server thread

@@ -15,25 +15,21 @@ def cache_check_folder():
     except:
         return False
 
-def cache_remove_all(showDialog=True):
-    if showDialog == True:
-        cacheCleanTime = getset.setting_get('CacheCleanTimeOther')
-
-        dialogAnswers = ['Handmatig vernieuwen']
-        dialogHeader = 'Vernieuwen'
-        dialogSummary = "Programma en opnames worden automatisch elke " + cacheCleanTime + " minuten vernieuwt bij het openen van een pagina, wilt u nu alles handmatig vernieuwen?"
-        dialogFooter = ''
-
-        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-        if dialogResult != 'Handmatig vernieuwen':
-            return
-
-    #Reset and remove cache
-    cache_reset_variables()
-    cache_remove_files()
-
-def cache_reset_variables():
+def cache_remove_all(showDialog=True, showNotification=True):
     try:
+        if showDialog == True:
+            cacheCleanTime = getset.setting_get('CacheCleanTimeOther')
+
+            dialogAnswers = ['Handmatig vernieuwen']
+            dialogHeader = 'Vernieuwen'
+            dialogSummary = "Programma en opnames worden automatisch elke " + cacheCleanTime + " minuten vernieuwt bij het openen van een pagina, wilt u nu alles handmatig vernieuwen?"
+            dialogFooter = ''
+
+            dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
+            if dialogResult != 'Handmatig vernieuwen':
+                return
+
+        #Reset cache variables 
         var.SearchProgramDataJson = []
         var.KidsProgramDataJson = []
         var.KidsVodDataJson = []
@@ -48,20 +44,14 @@ def cache_reset_variables():
         var.RecordingEventDataJson = []
         var.RecordingSeriesDataJson = []
         var.EpgCacheDaysArray = []
-        return True
-    except:
-        return False
 
-def cache_remove_file(cacheName):
-    files.removeFile(path.addonstoragecache(cacheName))
-
-def cache_remove_files():
-    try:
+        #Remove cache files
         cacheFiles = files.listFiles(var.addonstoragecache)
         for cacheFile in cacheFiles:
             files.removeFile(path.addonstoragecache(cacheFile))
-        xbmcgui.Dialog().notification(var.addonname, "Zender, programma en opnames worden vernieuwd.", var.addonicon, 2500, False)
-        return True
+
+        if showNotification == True:
+            xbmcgui.Dialog().notification(var.addonname, "Zender, programma en opnames worden vernieuwd.", var.addonicon, 2500, False)
     except:
         xbmcgui.Dialog().notification(var.addonname, 'Cache bestanden verwijderen mislukt.', var.addonicon, 2500, False)
         return False

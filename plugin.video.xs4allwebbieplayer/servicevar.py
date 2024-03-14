@@ -1,4 +1,8 @@
+import xbmc
 import threadclass
+
+#Add-on variables
+addonmonitor = xbmc.Monitor()
 
 #Service - Alarm variables
 thread_alarm_timer = threadclass.Class_ThreadSafe()

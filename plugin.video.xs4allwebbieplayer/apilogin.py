@@ -78,7 +78,7 @@ def ApiFailVariableUpdate():
     except:
         return False
 
-def ApiLogin(loginNotification=False, forceLogin=False):
+def ApiLogin(showNotification=False, forceLogin=False):
     try:
         #Check login settings
         if settings.check_login_settings() == False:
@@ -215,8 +215,8 @@ def ApiLogin(loginNotification=False, forceLogin=False):
         var.ApiLoginLastUsername(loginUsername)
         var.ApiLoginFailCount(0)
 
-        #Show the login notification
-        if loginNotification == True:
+        #Show login notification
+        if showNotification == True:
             xbmcgui.Dialog().notification(var.addonname, 'Aangemeld, veel kijkplezier.', var.addonicon, 2500, False)
         return True
     except:

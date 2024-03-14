@@ -25,8 +25,6 @@ def close_the_page():
     if var.guiKids != None:
         #Check kids lock
         if lock_check() == False:
-            notificationIcon = path.resources('resources/skins/default/media/common/kidstongue.png')
-            xbmcgui.Dialog().notification(var.addonname, "Helaas pindakaas!", notificationIcon, 2500, False)
             return False
 
         #Save select index
@@ -39,7 +37,11 @@ def close_the_page():
 
 def lock_check():
     if getset.setting_get('KidsPageLock') == 'true':
-        return lock_check_dialog()
+        lockResult = lock_check_dialog()
+        if lockResult == False:
+            notificationIcon = path.resources('resources/skins/default/media/common/kidstongue.png')
+            xbmcgui.Dialog().notification(var.addonname, "Helaas pindakaas!", notificationIcon, 2500, False)
+        return lockResult
     else:
         return True
 
