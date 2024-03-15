@@ -7,7 +7,7 @@
         <control type="image" id="8000">
             <width>1280</width>
             <height>720</height>
-            <texture>common/background_addon.png</texture>
+            <texture>$INFO[Window(10000).Property(WebbiePlayerAccentBackgroundAddon)]</texture>
         </control>
         <!-- Music Animation -->
         <control type="image">

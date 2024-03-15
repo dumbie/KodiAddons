@@ -29,16 +29,14 @@ def get_accent_color_string():
 #Change add-on accent images
 def change_addon_accent():
     #Set image destination paths
-    backgroundAddon = path.resources("resources/skins/default/media/common/background_addon.png")
     backgroundAccent = path.resources("resources/skins/default/media/common/background_accent.png")
     scrollbar400 = path.resources("resources/skins/default/media/common/scrollbar_accent_400.png")
     scrollbar800 = path.resources("resources/skins/default/media/common/scrollbar_accent_800.png")
 
-    #Copy add-on accent images
+    #Set add-on images
     currentProvider = getset.setting_get('AddonAccent').lower()
     if currentProvider == 'geel':
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_yellow.png'), backgroundAddon)
+        getset.global_set('AccentBackgroundAddon', 'common/background_addon_yellow.png')
         files.removeFile(backgroundAccent)
         files.copyFile(path.resources('resources/skins/default/media/common/background_accent_yellow.png'), backgroundAccent)
         files.removeFile(scrollbar400)
@@ -46,8 +44,7 @@ def change_addon_accent():
         files.removeFile(scrollbar800)
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_yellow.png'), scrollbar800)
     elif currentProvider == 'blauw':
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_blue.png'), backgroundAddon)
+        getset.global_set('AccentBackgroundAddon', 'common/background_addon_blue.png')
         files.removeFile(backgroundAccent)
         files.copyFile(path.resources('resources/skins/default/media/common/background_accent_blue.png'), backgroundAccent)
         files.removeFile(scrollbar400)
@@ -55,8 +52,7 @@ def change_addon_accent():
         files.removeFile(scrollbar800)
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_blue.png'), scrollbar800)
     elif currentProvider == 'groen':
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_green.png'), backgroundAddon)
+        getset.global_set('AccentBackgroundAddon', 'common/background_addon_green.png')
         files.removeFile(backgroundAccent)
         files.copyFile(path.resources('resources/skins/default/media/common/background_accent_green.png'), backgroundAccent)
         files.removeFile(scrollbar400)
@@ -64,8 +60,7 @@ def change_addon_accent():
         files.removeFile(scrollbar800)
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_green.png'), scrollbar800)
     elif currentProvider == 'grijs':
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.resources('resources/skins/default/media/common/background_addon_gray.png'), backgroundAddon)
+        getset.global_set('AccentBackgroundAddon', 'common/background_addon_gray.png')
         files.removeFile(backgroundAccent)
         files.copyFile(path.resources('resources/skins/default/media/common/background_accent_gray.png'), backgroundAccent)
         files.removeFile(scrollbar400)
@@ -73,7 +68,6 @@ def change_addon_accent():
         files.removeFile(scrollbar800)
         files.copyFile(path.resources('resources/skins/default/media/common/scrollbar_accent_800_gray.png'), scrollbar800)
 
-    #Copy custom background image
+    #Set custom images
     if files.existFileUser(path.addonstorageuser("background.png")):
-        files.removeFile(backgroundAddon)
-        files.copyFile(path.addonstorageuser("background.png"), backgroundAddon)
+        getset.global_set('AccentBackgroundAddon', path.addonstorageuser("background.png"))
