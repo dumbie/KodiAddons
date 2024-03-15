@@ -38,6 +38,7 @@
                 <width>700</width>
                 <height>60</height>
                 <aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor>
             </control>
             <!-- Footer Label -->
             <control type="label" id="3002">
@@ -46,6 +47,7 @@
                 <width>700</width>
                 <height>60</height>
                 <aligny>center</aligny>
+                <textcolor>FF888888</textcolor>
             </control>
             <!-- Description Label -->
             <control type="label" id="3001">
@@ -55,6 +57,7 @@
                 <height>60</height>
                 <aligny>top</aligny>
                 <wrapmultiline>true</wrapmultiline>
+                <textcolor>FFFFFFFF</textcolor>
             </control>
             <!-- Button Remove All -->
             <control type="button" id="4001">
@@ -82,6 +85,8 @@
                 <align>center</align>
                 <label>X</label>
                 <textcolor>FFFFFFFF</textcolor>
+                <textoffsetx>0</textoffsetx>
+                <textoffsety>0</textoffsety>
                 <ondown>1000</ondown>
                 <onleft>4001</onleft>
                 <onright>4001</onright>

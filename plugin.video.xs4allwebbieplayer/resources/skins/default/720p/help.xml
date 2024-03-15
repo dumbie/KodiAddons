@@ -39,6 +39,7 @@
                 <height>60</height>
                 <aligny>center</aligny>
                 <label>Help</label>
+                <textcolor>FFFFFFFF</textcolor>
             </control>
             <!-- Button Close -->
             <control type="button" id="4000">
@@ -51,6 +52,8 @@
                 <align>center</align>
                 <label>X</label>
                 <textcolor>FFFFFFFF</textcolor>
+                <textoffsetx>0</textoffsetx>
+                <textoffsety>0</textoffsety>
                 <ondown>2000</ondown>
             </control>
             <!-- Help Description -->
