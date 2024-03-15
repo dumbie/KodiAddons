@@ -61,11 +61,14 @@
                     <width>700</width>
                     <height>40</height>
                     <align>left</align>
+                    <textoffsetx>0</textoffsetx>
+                    <textoffsety>0</textoffsety>
                     <radioposx>640</radioposx>
                     <radioposy>0</radioposy>
                     <radiowidth>80</radiowidth>
                     <radioheight>40</radioheight>
                     <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>Inloggen met abonnementsnummer:</label>
                     <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
@@ -77,6 +80,8 @@
                     <width>700</width>
                     <height>40</height>
                     <align>left</align>
+                    <textoffsetx>0</textoffsetx>
+                    <textoffsety>0</textoffsety>
                     <textcolor>FF888888</textcolor>
                     <label>Abonnementsnummer</label>
                     <hinttext>...</hinttext>
@@ -90,6 +95,8 @@
                     <width>700</width>
                     <height>40</height>
                     <align>left</align>
+                    <textoffsetx>0</textoffsetx>
+                    <textoffsety>0</textoffsety>
                     <password>true</password>
                     <textcolor>FF888888</textcolor>
                     <label>Pincode</label>
@@ -112,11 +119,14 @@
                     <width>700</width>
                     <height>40</height>
                     <align>left</align>
+                    <textoffsetx>0</textoffsetx>
+                    <textoffsety>0</textoffsety>
                     <radioposx>640</radioposx>
                     <radioposy>0</radioposy>
                     <radiowidth>80</radiowidth>
                     <radioheight>40</radioheight>
                     <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>Inloggen met emailadres:</label>
                     <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
@@ -128,6 +138,8 @@
                     <width>700</width>
                     <height>40</height>
                     <align>left</align>
+                    <textoffsetx>0</textoffsetx>
+                    <textoffsety>0</textoffsety>
                     <textcolor>FF888888</textcolor>
                     <label>Emailadres</label>
                     <hinttext>...</hinttext>
@@ -141,6 +153,8 @@
                     <width>700</width>
                     <height>40</height>
                     <align>left</align>
+                    <textoffsetx>0</textoffsetx>
+                    <textoffsety>0</textoffsety>
                     <password>true</password>
                     <textcolor>FF888888</textcolor>
                     <label>Wachtwoord</label>
@@ -150,7 +164,6 @@
                 </control>
                 <!-- Warning -->
                 <control type="label">
-                    <left>5</left>
                     <top>415</top>
                     <width>700</width>
                     <height>60</height>
@@ -158,6 +171,8 @@
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
                     <label>Je hebt 5 inlogpogingen, daarna wordt je account 24 uur geblokkeerd.</label>
+                    <scroll>true</scroll>
+                    <scrollspeed>60</scrollspeed>
                 </control>
                 <!-- Login -->
                 <control type="button" id="1007">
@@ -166,6 +181,7 @@
                     <height>40</height>
                     <label>Inloggen</label>
                     <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
                     <onup>1006</onup>
                     <ondown>1008</ondown>
                     <align>center</align>
@@ -180,6 +196,7 @@
                     <height>40</height>
                     <label>Annuleren</label>
                     <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
                     <onup>1007</onup>
                     <ondown>1001</ondown>
                     <align>center</align>
