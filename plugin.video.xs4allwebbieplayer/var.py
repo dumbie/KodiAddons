@@ -76,6 +76,7 @@ guiRadio = None
 guiEpg = None
 guiHelp = None
 guiHidden = None
+guiWelcome = None
 windowHome = xbmcgui.Window(10000)
 WINDOW_HOME = 10000
 WINDOW_DIALOG_VIDEO_OSD_SETTINGS = 10123
@@ -278,5 +279,15 @@ SleepEndingMinutes = 9999
 #Alarm variables
 AlarmDataJson = []
 
+#Welcome variables
+WelcomeResult = None
+
 #Widevine variables
 WidevineUpdating = False
+
+#Service - Alarm variables
+thread_alarm_timer = threadclass.Class_ThreadSafe()
+
+#Service - Proxy variables
+ProxyServer = None
+thread_proxy_server = threadclass.Class_ThreadSafe()

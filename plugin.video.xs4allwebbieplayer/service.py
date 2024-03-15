@@ -4,7 +4,7 @@ import func
 import getset
 import servicealarm
 import serviceproxy
-import servicevar
+import var
 
 #Service launch
 if __name__ == '__main__':
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     servicealarm.start_alarm_check()
 
     #Wait for service stop request
-    while servicevar.addonmonitor.abortRequested() == False:
+    while var.addonmonitor.abortRequested() == False:
         xbmc.sleep(100)
 
     #Stop proxy server thread

@@ -17,6 +17,7 @@ import livod
 import settings
 import streamplay
 import var
+import welcome
 import widevine
 
 def set_launch_argument_source():
@@ -42,6 +43,9 @@ def handle_launch_argument_source():
             return True
         elif var.LaunchArgument == "ResetThumbnails":
             settings.reset_thumbnails()
+            return True
+        elif var.LaunchArgument == "OpenWelcomeScreen":
+            welcome.show_welcome()
             return True
         elif var.LaunchArgument == "SwitchAdultFilter":
             settings.switch_adultfilter_onoff()

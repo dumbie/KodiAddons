@@ -21,6 +21,13 @@ def run_addon(showNotification=True):
 def check_addon_running():
     return getset.get_addon_windowId_bottom() != 0
 
+#Check if loop is allowed
+def check_loop_allowed():
+    try:
+        return var.addonmonitor.abortRequested() == False
+    except:
+        return False
+
 #Check if current window is add-on
 def check_currentwindow_is_addon():
     return xbmcgui.getCurrentWindowId() == getset.get_addon_windowId_top()

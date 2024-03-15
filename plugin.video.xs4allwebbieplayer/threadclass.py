@@ -1,7 +1,6 @@
 import threading
 import xbmc
 import func
-import var
 
 class Class_ThreadSafe:
     #Initialize thread
@@ -80,15 +79,12 @@ class Class_ThreadSafe:
     def Finished(self):
         return self.thread == None
 
-    #Check if thread is allowed to run
-    def Allowed(self, serviceThread=False, sleepDelayMs=0):
+    #Check if thread is allowed to loop
+    def Allowed(self, sleepDelayMs=0):
         if self.loopCount != 0 and sleepDelayMs != 0:
             self.Sleep(sleepDelayMs)
         self.loopCount += 1
-        if serviceThread:
-            return self.allowed == True and var.addonmonitor.abortRequested() == False
-        else:
-            return self.allowed == True and var.addonmonitor.abortRequested() == False and func.check_addon_running() == True
+        return self.allowed == True and func.check_loop_allowed()
 
     #Sleep thread until set or timeout
     def Sleep(self, sleepDelay):

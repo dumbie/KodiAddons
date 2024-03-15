@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="100" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="100" start="100" end="50">WindowClose</animation>
+    <controls>
+        <!-- Background -->
+        <control type="image">
+            <width>1280</width>
+            <height>720</height>
+            <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
+        </control>
+        <!-- Window Popup -->
+        <control type="group">
+            <top>50</top>
+            <left>300</left>
+            <!-- Border -->
+            <control type="image" id="5001">
+                <left>-3</left>
+                <width>726</width>
+                <height>583</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Background -->
+            <control type="image" id="5000">
+                <width>720</width>
+                <height>580</height>
+                <texture>common/background_dark.png</texture>
+            </control>
+            <!-- Header Background -->
+            <control type="image">
+                <width>720</width>
+                <height>60</height>
+                <texture>common/background_accent.png</texture>
+            </control>
+            <!-- Header Label -->
+            <control type="label">
+                <left>5</left>
+                <width>700</width>
+                <height>60</height>
+                <aligny>center</aligny>
+                <label>Inloggen</label>
+            </control>
+            <!-- Header Logo KPN -->
+            <control type="image">
+                <top>5</top>
+                <left>600</left>
+                <width>112</width>
+                <height>50</height>
+                <aspectratio>keep</aspectratio>
+                <texture>common/logo.png</texture>
+            </control>
+            <!-- Welcome -->
+            <control type="group">
+                <left>10</left>
+                <!-- Number -->
+                <control type="radiobutton" id="1001">
+                    <top>75</top>
+                    <onup>1008</onup>
+                    <ondown>1002</ondown>
+                    <width>700</width>
+                    <height>40</height>
+                    <label>Inloggen met abonnementsnummer:</label>
+                    <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+                <control type="edit" id="1002">
+                    <onup>1001</onup>
+                    <ondown>1003</ondown>
+                    <top>125</top>
+                    <width>700</width>
+                    <height>40</height>
+                    <textcolor>FF888888</textcolor>
+                    <label>Abonnementsnummer</label>
+                    <hinttext>...</hinttext>
+                    <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+                <control type="edit" id="1003">
+                    <onup>1002</onup>
+                    <ondown>1004</ondown>
+                    <top>175</top>
+                    <width>700</width>
+                    <height>40</height>
+                    <password>true</password>
+                    <textcolor>FF888888</textcolor>
+                    <label>Pincode</label>
+                    <hinttext>...</hinttext>
+                    <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+                <!-- Seperator -->
+                <control type="image">
+                    <top>232</top>
+                    <width>700</width>
+                    <height>2</height>
+                    <texture>common/background_accent.png</texture>
+                </control>
+                <!-- Email -->
+                <control type="radiobutton" id="1004">
+                    <top>250</top>
+                    <onup>1003</onup>
+                    <ondown>1005</ondown>
+                    <width>700</width>
+                    <height>40</height>
+                    <label>Inloggen met emailadres:</label>
+                    <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+                <control type="edit" id="1005">
+                    <onup>1004</onup>
+                    <ondown>1006</ondown>
+                    <top>300</top>
+                    <width>700</width>
+                    <height>40</height>
+                    <textcolor>FF888888</textcolor>
+                    <label>Emailadres</label>
+                    <hinttext>...</hinttext>
+                    <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+                <control type="edit" id="1006">
+                    <onup>1005</onup>
+                    <ondown>1007</ondown>
+                    <top>350</top>
+                    <width>700</width>
+                    <height>40</height>
+                    <password>true</password>
+                    <textcolor>FF888888</textcolor>
+                    <label>Wachtwoord</label>
+                    <hinttext>...</hinttext>
+                    <texturefocus colordiffuse="FF888888">common/background_accent.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                </control>
+                <!-- Warning -->
+                <control type="label">
+                    <left>5</left>
+                    <top>415</top>
+                    <width>700</width>
+                    <height>60</height>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <label>Je hebt 5 inlogpogingen, daarna wordt je account 24 uur geblokkeerd.</label>
+                </control>
+                <!-- Login -->
+                <control type="button" id="1007">
+                    <top>475</top>
+                    <width>700</width>
+                    <height>40</height>
+                    <label>Inloggen</label>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <onup>1006</onup>
+                    <ondown>1008</ondown>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texturefocus colordiffuse="FFFFFFFF">common/background_accent.png</texturefocus>
+                    <texturenofocus colordiffuse="FF888888">common/background_accent.png</texturenofocus>
+                </control>
+                <!-- Cancel -->
+                <control type="button" id="1008">
+                    <top>530</top>
+                    <width>700</width>
+                    <height>40</height>
+                    <label>Annuleren</label>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <onup>1007</onup>
+                    <ondown>1001</ondown>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <texturefocus colordiffuse="FFFFFFFF">common/background_accent.png</texturefocus>
+                    <texturenofocus colordiffuse="FF888888">common/background_accent.png</texturenofocus>
+                </control>
+            </control>
+        </control>
+    </controls>
+</window>

@@ -32,6 +32,13 @@ def updateTextBoxText(_self, controlId, string):
     except:
         return False
 
+def updateRadioSelection(_self, controlId, boolean):
+    try:
+        _self.getControl(controlId).setSelected(boolean)
+        return True
+    except:
+        return False
+
 def updateProgressbarPercent(_self, controlId, percent):
     try:
         _self.getControl(controlId).setPercent(float(percent))
@@ -41,7 +48,10 @@ def updateProgressbarPercent(_self, controlId, percent):
 
 def controlFocus(_self, control):
     try:
-        _self.setFocus(control)
+        if type(control) == int:
+            _self.setFocusId(control)
+        else:
+            _self.setFocus(control)
         xbmc.sleep(InterfaceUpdateDelay)
         return True
     except:

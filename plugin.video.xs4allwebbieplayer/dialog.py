@@ -17,7 +17,7 @@ def show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, select
         var.guiDialog.update_dialogAnswers(dialogAnswers, selectIndex)
 
         var.DialogResult = None
-        while var.DialogResult == None:
+        while var.DialogResult == None and func.check_loop_allowed():
             xbmc.sleep(100)
 
         return var.DialogResult

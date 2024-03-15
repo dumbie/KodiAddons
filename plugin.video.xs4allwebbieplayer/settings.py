@@ -7,6 +7,7 @@ import getset
 import hybrid
 import kids
 import var
+import welcome
 
 def open_settings():
     try:
@@ -83,15 +84,25 @@ def reset_userdata():
         pass
 
 def check_login_settings():
-    loginNotSet = False
-    if func.string_isnullorempty(getset.setting_get('LoginUsername')) == True and func.string_isnullorempty(getset.setting_get('LoginEmail')) == True:
-        loginNotSet = True
-    elif func.string_isnullorempty(getset.setting_get('LoginPassword')) == True and func.string_isnullorempty(getset.setting_get('LoginPasswordEmail')) == True:
-        loginNotSet = True
+    #Get settings
+    currentLoginType = getset.setting_get('LoginType')
+    currentLoginChecked = getset.setting_get('LoginChecked')
+    currentLoginUsername = getset.setting_get('LoginUsername')
+    currentLoginPassword = getset.setting_get('LoginPassword')
+    currentLoginEmail = getset.setting_get('LoginEmail')
+    currentLoginPasswordEmail = getset.setting_get('LoginPasswordEmail')
 
-    if loginNotSet == True:
-        xbmcgui.Dialog().notification(var.addonname, 'Stel uw abonnementsgegevens in', var.addonicon, 2500, False)
-        var.addon.openSettings()
-        return False
+    #Check settings
+    loginNotValid = False
+    if currentLoginChecked == 'false':
+        loginNotValid = True
+    elif currentLoginType == 'Abonnementsnummer' and (func.string_isnullorempty(currentLoginUsername) == True or func.string_isnullorempty(currentLoginPassword) == True):
+        loginNotValid = True
+    elif currentLoginType == 'Emailadres' and (func.string_isnullorempty(currentLoginEmail) == True or func.string_isnullorempty(currentLoginPasswordEmail) == True):
+        loginNotValid = True
+
+    #Open login screen
+    if loginNotValid == True:
+        return welcome.show_welcome()
     else:
         return True

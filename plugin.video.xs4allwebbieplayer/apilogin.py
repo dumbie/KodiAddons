@@ -9,7 +9,6 @@ import func
 import getset
 import hybrid
 import path
-import settings
 import var
 
 def ApiGenerateDeviceId():
@@ -21,7 +20,7 @@ def ApiGenerateDeviceId():
             for _ in range(64):
                 DeviceId += str(random.randint(0,9))
 
-            #Update settings
+            #Update api login settings
             getset.setting_set('LoginDeviceId120', DeviceId)
         return True
     except:
@@ -80,10 +79,6 @@ def ApiFailVariableUpdate():
 
 def ApiLogin(showNotification=False, forceLogin=False):
     try:
-        #Check login settings
-        if settings.check_login_settings() == False:
-            return False
-
         #Check failed login retry limit
         if var.ApiLoginFailCount() > 2:
             notificationIcon = path.resources('resources/skins/default/media/common/error.png')
@@ -187,7 +182,7 @@ def ApiLogin(showNotification=False, forceLogin=False):
                 ApiFailVariableUpdate()
                 return False
 
-        #Filter and clone the cookie contents
+        #Filter cookie contents
         newApiLoginCookie = ''
         HeaderCookie = hybrid.urllib_getheader(DownloadDataHttp, 'Set-Cookie')
         try:
@@ -198,6 +193,8 @@ def ApiLogin(showNotification=False, forceLogin=False):
             newApiLoginCookie = newApiLoginCookie[:-1]
         except:
             pass
+
+        #Check cookie contents
         if func.string_isnullorempty(newApiLoginCookie) == True:
             notificationIcon = path.resources('resources/skins/default/media/common/error.png')
             xbmcgui.Dialog().notification(var.addonname, 'Login cookie lezen mislukt.', notificationIcon, 2500, False)
@@ -215,12 +212,15 @@ def ApiLogin(showNotification=False, forceLogin=False):
         var.ApiLoginLastUsername(loginUsername)
         var.ApiLoginFailCount(0)
 
+        #Update api login settings
+        getset.setting_set('LoginChecked', 'true')
+
         #Show login notification
         if showNotification == True:
             xbmcgui.Dialog().notification(var.addonname, 'Aangemeld, veel kijkplezier.', var.addonicon, 2500, False)
         return True
     except:
         notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Aanmelden is mislukt.', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Aanmelden mislukt, probeer het nog een keer.', notificationIcon, 2500, False)
         ApiFailVariableUpdate()
         return False

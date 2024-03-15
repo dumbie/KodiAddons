@@ -88,7 +88,7 @@ class Gui(xbmcgui.WindowXML):
         #Check if logged in on launch
         if var.ApiLoggedIn() == False:
             guifunc.updateLabelText(self, 1, "Aan het aanmelden.")
-            apilogin.ApiLogin()
+            apilogin.ApiLogin(False)
 
         #Update current login status
         if var.ApiLoggedIn() == True:

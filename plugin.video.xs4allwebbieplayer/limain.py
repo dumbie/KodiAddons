@@ -9,8 +9,7 @@ import var
 def list_load_combined(listContainer=None):
     try:
         #Check if logged in on launch
-        if var.ApiLoggedIn() == False:
-             apilogin.ApiLogin()
+        apilogin.ApiLogin(False)
 
         #Check if user is logged in
         if var.ApiLoggedIn() == True:

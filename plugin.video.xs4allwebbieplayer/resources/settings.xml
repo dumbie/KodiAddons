@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
-  <category label="Abonnement">
-    <setting id="LoginType" type="select" label="Inloggen met" default="Abonnementsnummer" values="Abonnementsnummer|Emailadres"/>
-    <setting type="sep"/>
-    <setting id="LoginUsername" type="text" label="Abonnementsnummer" default=""/>
-    <setting id="LoginPassword" type="text" label="Pincode" option="hidden" default=""/>
-    <setting type="sep"/>
-    <setting id="LoginEmail" type="text" label="Emailadres" default=""/>
-    <setting id="LoginPasswordEmail" type="text" label="Wachtwoord" option="hidden" default=""/>
-    <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
-  </category>
   <category label="Algemeen">
+    <setting id="OpenWelcomeScreen" type="action" label="Open het inlog scherm" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?OpenWelcomeScreen)"/>
+    <setting id="SwitchAdultFilter" type="action" label="Erotische media in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?SwitchAdultFilter)"/>
     <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="RadioChannelView" type="select" label="Radiozenders weergavestijl" default="Blokken" values="Lijst|Blokken"/>
@@ -18,7 +10,6 @@
     <setting id="TelevisionHideUpcomingAired" label="Toon geen later uitgezonden programma's" type="bool" default="false"/>
     <setting id="SearchFilterFuzzy" label="Toon vergelijkbare en niet identieke zoekresultaten" type="bool" default="false"/>
     <setting id="CacheCleanTimeOther" label="Media automatisch vernieuw tijd in minuten" type="slider" default="10" range="1,1,20" option="int"/>
-    <setting id="SwitchAdultFilter" type="action" label="Erotische media in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?SwitchAdultFilter)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Hoofdpagina">
@@ -82,6 +73,12 @@
   </category>
   <category label="Hidden">
     <setting id="LoginDeviceId120" type="text" visible="false" default=""/>
+    <setting id="LoginType" type="text" visible="false" default="Abonnementsnummer"/>
+    <setting id="LoginChecked" type="text" visible="false" default="false"/>
+    <setting id="LoginUsername" type="text" visible="false" default=""/>
+    <setting id="LoginPassword" type="text" visible="false" default=""/>
+    <setting id="LoginEmail" type="text" visible="false" default=""/>
+    <setting id="LoginPasswordEmail" type="text" visible="false" default=""/>
     <setting id="WidevineVersion" type="text" visible="false" default=""/>
     <setting id="CurrentRadioId" type="text" visible="false" default=""/>
     <setting id="CurrentChannelId" type="text" visible="false" default=""/>
