@@ -7,7 +7,7 @@
         <control type="image">
             <width>1280</width>
             <height>720</height>
-            <texture>$INFO[Window(10000).Property(WebbiePlayerAccentBackgroundAddon)]</texture>
+            <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_addon.png</texture>
         </control>
         <!-- Music Animation -->
         <control type="image">
@@ -17,7 +17,7 @@
             <width>670</width>
             <height>230</height>
             <aspectratio>keep</aspectratio>
-            <texture colordiffuse="20888888">common/radioanimation.gif</texture>
+            <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/radioanimation.gif</texture>
             <visible>Player.HasAudio</visible>
         </control>
         <!-- Music Information -->
@@ -186,7 +186,7 @@
                 <control type="image">
                     <width>275</width>
                     <height>40</height>
-                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                 </control>
                 <control type="image">
                     <left>4</left>
@@ -244,7 +244,7 @@
                 <control type="image">
                     <width>275</width>
                     <height>140</height>
-                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                 </control>
                 <control type="image">
                     <centertop>35%</centertop>

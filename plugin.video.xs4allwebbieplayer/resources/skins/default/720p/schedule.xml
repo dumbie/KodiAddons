@@ -18,7 +18,7 @@
                 <left>-3</left>
                 <width>726</width>
                 <height>558</height>
-                <texture>common/background_accent.png</texture>
+                <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</texture>
             </control>
             <!-- Background -->
             <control type="image" id="8000">
@@ -30,7 +30,7 @@
             <control type="image">
                 <width>720</width>
                 <height>60</height>
-                <texture>common/background_accent.png</texture>
+                <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</texture>
             </control>
             <!-- Header Label -->
             <control type="label" id="3000">
@@ -65,8 +65,8 @@
                 <top>10</top>
                 <width>250</width>
                 <height>40</height>
-                <texturefocus colordiffuse="50FFFFFF">common/background_dark.png</texturefocus>
-                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+                <texturefocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texturefocus>
+                <texturenofocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorNoFocus)]">common/background_light.png</texturenofocus>
                 <align>center</align>
                 <label>Alles annuleren</label>
                 <textcolor>FFFFFFFF</textcolor>
@@ -80,8 +80,8 @@
                 <top>10</top>
                 <width>60</width>
                 <height>40</height>
-                <texturefocus colordiffuse="50FFFFFF">common/background_dark.png</texturefocus>
-                <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
+                <texturefocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texturefocus>
+                <texturenofocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorNoFocus)]">common/background_light.png</texturenofocus>
                 <align>center</align>
                 <label>X</label>
                 <textcolor>FFFFFFFF</textcolor>
@@ -106,7 +106,7 @@
                         <control type="image">
                             <width>700</width>
                             <height>65</height>
-                            <texture colordiffuse="2D888888">common/background_light.png</texture>
+                            <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorNoFocus)]">common/background_light.png</texture>
                         </control>
                         <control type="image">
                             <top>8</top>
@@ -140,7 +140,7 @@
                         <control type="image">
                             <width>700</width>
                             <height>65</height>
-                            <texture colordiffuse="C8FFFFFF">common/background_accent.png</texture>
+                            <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                         </control>
                         <control type="image">
                             <top>8</top>
@@ -179,7 +179,7 @@
                     <onup>4000</onup>
                     <onleft>1000</onleft>
                     <orientation>vertical</orientation>
-                    <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                    <texturesliderbarfocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</texturesliderbarfocus>
                     <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                     <texturesliderbackground>-</texturesliderbackground>
                 </control>

@@ -16,16 +16,17 @@ def get_launch_type():
         return 'Script'
 
 def launch_source():
+    accent.change_addon_accent()
     if settings.check_login_settings() == False: return
     argument.set_launch_argument_source()
     argument.handle_launch_argument_source()
 
 def launch_script():
     if func.check_addon_running() == False:
+        accent.change_addon_accent()
         if settings.check_login_settings() == False: return
         func.stop_playing_media()
         settings.reset_global_variables()
-        accent.change_addon_accent()
         main.switch_to_page()
     else:
         func.open_window_id(getset.get_addon_windowId_top())

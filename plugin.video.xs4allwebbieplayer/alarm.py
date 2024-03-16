@@ -198,7 +198,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         dialogControl = self.getControl(8000)
         dialogControl.setHeight(590)
         dialogControl = self.getControl(8001)
-        dialogControl.setHeight(592)
+        dialogControl.setHeight(593)
 
         #Clear expired alarms from Json
         alarm_clean_expired()

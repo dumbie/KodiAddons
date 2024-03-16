@@ -3,7 +3,7 @@
   <category label="Algemeen">
     <setting id="OpenWelcomeScreen" type="action" label="Open het inlog scherm" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?OpenWelcomeScreen)"/>
     <setting id="SwitchAdultFilter" type="action" label="Erotische media in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?SwitchAdultFilter)"/>
-    <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Grijs"/>
+    <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Rood|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="RadioChannelView" type="select" label="Radiozenders weergavestijl" default="Blokken" values="Lijst|Blokken"/>
     <setting id="TelevisionHideEarlierAired" label="Toon geen eerder uitgezonden programma's" type="bool" default="false"/>

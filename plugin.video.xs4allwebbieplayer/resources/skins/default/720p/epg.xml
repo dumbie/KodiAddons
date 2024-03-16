@@ -7,7 +7,7 @@
         <control type="image">
             <width>1280</width>
             <height>720</height>
-            <texture>$INFO[Window(10000).Property(WebbiePlayerAccentBackgroundAddon)]</texture>
+            <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_addon.png</texture>
         </control>
         <!-- Music Animation -->
         <control type="image">
@@ -17,7 +17,7 @@
             <width>670</width>
             <height>230</height>
             <aspectratio>keep</aspectratio>
-            <texture colordiffuse="20888888">common/radioanimation.gif</texture>
+            <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/radioanimation.gif</texture>
             <visible>Player.HasAudio</visible>
         </control>
         <!-- Video Window -->
@@ -159,7 +159,7 @@
                 <width>375</width>
                 <onleft>2001</onleft>
                 <onright>1000</onright>
-                <texturesliderbarfocus>common/scrollbar_accent_400.png</texturesliderbarfocus>
+                <texturesliderbarfocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/scrollbar_light_400.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
             </control>
@@ -174,7 +174,7 @@
             <control type="button" id="9000">
                 <width>35</width>
                 <height>475</height>
-                <texturefocus colordiffuse="A0888888">common/background_accent.png</texturefocus>
+                <texturefocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texturefocus>
                 <texturenofocus colordiffuse="BEFFFFFF">common/background_dark.png</texturenofocus>
             </control>
             <control type="image">
@@ -238,7 +238,7 @@
                 <control type="image">
                     <width>260</width>
                     <height>40</height>
-                    <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                    <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                 </control>
                 <control type="image">
                     <left>4</left>
@@ -341,7 +341,7 @@
                     <control type="image">
                         <width>65</width>
                         <height>65</height>
-                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                        <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                     </control>
                     <control type="image">
                         <top>2</top>
@@ -391,7 +391,7 @@
                         <top>45</top>
                         <width>65</width>
                         <height>20</height>
-                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                        <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                     </control>
                     <control type="label">
                         <top>41</top>
@@ -411,7 +411,7 @@
                 <onleft>1001</onleft>
                 <onright>1002</onright>
                 <orientation>vertical</orientation>
-                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbarfocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
             </control>
@@ -519,7 +519,7 @@
                         <height>5</height>
                         <texturebg>common/background_transp.png</texturebg>
                         <lefttexture>-</lefttexture>
-                        <midtexture>common/background_accent.png</midtexture>
+                        <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
                         <righttexture>-</righttexture>
                         <overlaytexture>-</overlaytexture>
                         <visible>Integer.IsGreater(ListItem().Property(ProgramProgressPercent), 0)</visible>
@@ -540,7 +540,7 @@
                     <control type="image">
                         <width>730</width>
                         <height>65</height>
-                        <texture colordiffuse="A0888888">common/background_accent.png</texture>
+                        <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                     </control>
                     <control type="image">
                         <top>8</top>
@@ -629,7 +629,7 @@
                         <height>5</height>
                         <texturebg>common/background_transp.png</texturebg>
                         <lefttexture>-</lefttexture>
-                        <midtexture>common/background_accent.png</midtexture>
+                        <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
                         <righttexture>-</righttexture>
                         <overlaytexture>-</overlaytexture>
                         <visible>Integer.IsGreater(ListItem().Property(ProgramProgressPercent), 0)</visible>
@@ -653,7 +653,7 @@
                 <onup>1000</onup>
                 <onleft>1002</onleft>
                 <onright>2000</onright>
-                <texturesliderbarfocus>common/background_accent.png</texturesliderbarfocus>
+                <texturesliderbarfocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</texturesliderbarfocus>
                 <texturesliderbar colordiffuse="DC888888">common/background_light.png</texturesliderbar>
                 <texturesliderbackground>-</texturesliderbackground>
             </control>
@@ -672,7 +672,7 @@
                 <left>280</left>
                 <height>720</height>
                 <width>5</width>
-                <texture>common/background_accent.png</texture>
+                <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</texture>
             </control>
             <!-- Text Countdown -->
             <control type="label" id="7001">

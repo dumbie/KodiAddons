@@ -46,9 +46,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         helpText += '\n\nSneller menu navigatie inschakelen'
         helpText += '\n[COLOR gray]Tijdens het afspelen kunt u de menu navigatie sneller maken door de volgende Kodi instelling in te schakelen: "Kodi instellingen > Speler > Video > Limiteer GUI tijdens afspelen > Onbeperkt"[/COLOR]'
 
-        helpText += '\n\nEigen achtergrond afbeelding instellen'
-        helpText += '\n[COLOR gray]U kunt uw eigen achtergrond weergeven door een "background.png" afbeelding te plaatsen in de "userdata/addon_data/plugin.video.xs4allwebbieplayer" map.[/COLOR]'
-
         helpText += '\n\nWelke knoppen kan ik gebruiken?'
         helpText += '\nNummers: [COLOR gray]Door het invoeren van een nummer kunt u rechtstreeks naar een zender schakelen.[/COLOR]\nMedia knoppen: [COLOR gray]Hiermee kunt u naar de volgende en vorige zender tijdens het tv kijken of in de tv gids.[/COLOR]\nSpoel knoppen: [COLOR gray]Hiermee kunt u naar de volgende en vorige dag in de tv gids.[/COLOR]\nMenu knop: [COLOR gray]Hiermee kunt u naar de vorig bekeken zender terug zappen tijdens het tv kijken.[/COLOR]\nPijl omhoog/omlaag: [COLOR gray]Kunt u de volume mee aanpassen tijdens het tv kijken.[/COLOR]\nPijl links: [COLOR gray]Kunt u mee terug naar de stream op de televisie pagina.[/COLOR]'
 
