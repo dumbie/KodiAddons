@@ -43,8 +43,8 @@ def close_the_page():
         var.guiTelevision = None
 
 class Gui(xbmcgui.WindowXML):
-    EpgPauseUpdate = False
-    EpgManualUpdate = False
+    ProgramPauseUpdate = False
+    ProgramManualUpdate = False
 
     def onInit(self):
         self.buttons_add_navigation()
@@ -99,7 +99,7 @@ class Gui(xbmcgui.WindowXML):
 
     def start_threads(self):
         #Force manual epg update
-        self.EpgManualUpdate = True
+        self.ProgramManualUpdate = True
 
         #Start the epg update thread
         var.thread_update_television_program.Start(self.thread_update_television_program)
@@ -234,10 +234,10 @@ class Gui(xbmcgui.WindowXML):
         listContainer.addItem(listItem)
 
     def hide_channel(self, listContainer, listItemSelected):
-        self.EpgPauseUpdate = True
+        self.ProgramPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
         self.hide_channel_code(listContainer, listItemSelected)
-        self.EpgPauseUpdate = False
+        self.ProgramPauseUpdate = False
 
     def hide_channel_code(self, listContainer, listItemSelected):
         hiddenResult = hidden.hidden_add(listItemSelected, 'HiddenTelevision.js')
@@ -251,10 +251,10 @@ class Gui(xbmcgui.WindowXML):
             self.count_channels(False)
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
-        self.EpgPauseUpdate = True
+        self.ProgramPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
         self.switch_favorite_channel_code(listContainer, listItemSelected)
-        self.EpgPauseUpdate = False
+        self.ProgramPauseUpdate = False
 
     def switch_favorite_channel_code(self, listContainer, listItemSelected):
         favoriteResult = favorite.favorite_toggle_channel(listItemSelected, 'FavoriteTelevision.js')
@@ -292,10 +292,10 @@ class Gui(xbmcgui.WindowXML):
         var.SearchTermResult = ''
 
     def load_channels(self, forceLoad=False):
-        self.EpgPauseUpdate = True
+        self.ProgramPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
         self.load_channels_code(forceLoad)
-        self.EpgPauseUpdate = False
+        self.ProgramPauseUpdate = False
 
     def load_channels_code(self, forceLoad=False):
         #Get and check the list container
@@ -311,7 +311,7 @@ class Gui(xbmcgui.WindowXML):
         #Add items to list container
         guifunc.updateLabelText(self, 1, 'Zenders laden')
         guifunc.updateLabelText(self, 3, "")
-        if lichanneltelevision.list_load_combined(listContainer) == False:
+        if lichanneltelevision.list_load_combined(listContainer, downloadRecordings=True) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             guifunc.updateLabelText(self, 3, "")
             listContainer = self.getControl(1001)
@@ -323,7 +323,7 @@ class Gui(xbmcgui.WindowXML):
         self.count_channels(True)
 
         #Force manual epg update
-        self.EpgManualUpdate = True
+        self.ProgramManualUpdate = True
 
     #Update the status
     def count_channels(self, resetSelect=False):
@@ -368,10 +368,10 @@ class Gui(xbmcgui.WindowXML):
         while var.thread_update_television_program.Allowed(sleepDelayMs=1000):
             try:
                 threadCurrentTime = datetime.now().strftime('%H:%M')
-                if threadLastTime != threadCurrentTime or self.EpgManualUpdate == True:
+                if threadLastTime != threadCurrentTime or self.ProgramManualUpdate == True:
                     #Update thread variables
                     threadLastTime = threadCurrentTime
-                    self.EpgManualUpdate = False
+                    self.ProgramManualUpdate = False
 
                     #Update program information
                     self.update_television_program()
@@ -388,7 +388,7 @@ class Gui(xbmcgui.WindowXML):
             for itemNum in range(0, listItemCount):
                 try:
                     #Check if epg is allowed to update
-                    if self.EpgPauseUpdate: return
+                    if self.ProgramPauseUpdate: return
 
                     #Generate and update program summary
                     updateItem = listContainer.getListItem(itemNum)

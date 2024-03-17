@@ -15,7 +15,7 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, downloadRecordings=True, downloadEpg=True):
+def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg=False):
     try:
         #Download channels
         downloadResultChannels = dlchanneltelevision.download()

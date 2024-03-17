@@ -384,7 +384,7 @@ class Gui(xbmcgui.WindowXML):
         #Add items to list container
         guifunc.updateLabelText(self, 1, 'Zenders laden')
         guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
-        if lichanneltelevision.list_load_combined(listContainer, downloadEpg=False) == False:
+        if lichanneltelevision.list_load_combined(listContainer, downloadRecordings=True) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders zijn niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)

@@ -42,7 +42,7 @@ def close_the_page(closeFullscreen=True):
             func.close_window_id(var.WINDOW_FULLSCREEN_VIDEO)
 
 class Gui(xbmcgui.WindowXMLDialog):
-    EpgPauseUpdate = False
+    ProgramPauseUpdate = False
     InfoLastHide = datetime(1970,1,1)
     InfoLastInteraction = datetime(1970,1,1)
 
@@ -429,10 +429,10 @@ class Gui(xbmcgui.WindowXMLDialog):
         guifunc.listSelectIndex(listContainer, listContainer.getSelectedPosition() - 1)
 
     def load_channels(self, forceLoad=False):
-        self.EpgPauseUpdate = True
+        self.ProgramPauseUpdate = True
         xbmc.sleep(250) #Wait for epg update to pause
         self.load_channels_code(forceLoad)
-        self.EpgPauseUpdate = False
+        self.ProgramPauseUpdate = False
 
     def load_channels_code(self, forceLoad=False):
         #Get and check the list container
@@ -444,7 +444,7 @@ class Gui(xbmcgui.WindowXMLDialog):
             guifunc.listReset(listContainer)
 
         #Add items to list container
-        if lichanneltelevision.list_load_combined(listContainer) == False:
+        if lichanneltelevision.list_load_combined(listContainer, downloadRecordings=True) == False:
             return False
 
         #Select channel in list container
@@ -486,7 +486,7 @@ class Gui(xbmcgui.WindowXMLDialog):
     def update_epg_information(self):
         try:
             #Check if epg is allowed to update
-            if self.EpgPauseUpdate: return
+            if self.ProgramPauseUpdate: return
 
             #Check if player currently has media
             if xbmc.getCondVisibility("Player.HasMedia") == False: return

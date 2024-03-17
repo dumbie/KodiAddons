@@ -70,7 +70,7 @@ def handle_launch_argument_source():
 
         #List pages
         elif actionItem == "page_television":
-            lichanneltelevision.list_load_combined(downloadRecordings=False, downloadEpg=True)
+            lichanneltelevision.list_load_combined(downloadEpg=True)
         elif actionItem == "page_radio":
             lichannelradio.list_load_combined()
         elif actionItem == "page_movies":
