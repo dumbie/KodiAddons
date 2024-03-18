@@ -262,6 +262,21 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
+        if remoteMode == True and getset.setting_get('MainShowFavorite') == 'true':
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/star.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Alle of favorieten',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemAction': 'switch_all_favorites'
+            }
+            dirIsfolder = False
+            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
+
         if getset.setting_get('MainShowRefresh') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/refresh.png')

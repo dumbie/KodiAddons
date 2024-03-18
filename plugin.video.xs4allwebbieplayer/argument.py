@@ -1,6 +1,7 @@
 import sys
 import xbmcaddon
 import cache
+import favorite
 import func
 import lichannelradio
 import lichanneltelevision
@@ -65,6 +66,8 @@ def handle_launch_argument_source():
         #List actions
         if actionItem == "addon_launch":
             func.run_addon()
+        elif actionItem == "switch_all_favorites":
+            favorite.favorite_switch_mode('', True)
         elif actionItem == "cache_remove_all":
             cache.cache_remove_all(False)
 

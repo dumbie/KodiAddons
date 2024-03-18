@@ -1,11 +1,12 @@
 import json
 import xbmcgui
 import files
+import func
 import getset
 import path
 import var
 
-def favorite_switch_mode(favoriteJsonFile):
+def favorite_switch_mode(favoriteJsonFile, showNotification=False):
     #Set Json target list variable
     if favoriteJsonFile == 'FavoriteTelevision.js':
         favoriteTargetJson = var.FavoriteTelevisionJson
@@ -15,13 +16,19 @@ def favorite_switch_mode(favoriteJsonFile):
     #Switch favorites mode on or off
     if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
         getset.setting_set('LoadChannelFavoritesOnly', 'false')
+        if showNotification == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/star.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Toon alle zenders.', notificationIcon, 2500, False)
     else:
         #Check if there are favorites set
-        if favoriteTargetJson == []:
+        if func.string_isnullorempty(favoriteJsonFile) == False and favoriteTargetJson == []:
             notificationIcon = path.resources('resources/skins/default/media/common/star.png')
             xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
             return False
         getset.setting_set('LoadChannelFavoritesOnly', 'true')
+        if showNotification == True:
+            notificationIcon = path.resources('resources/skins/default/media/common/star.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Toon favorieten zenders.', notificationIcon, 2500, False)
     return True
 
 def favorite_check_set(favoriteJsonFile):
