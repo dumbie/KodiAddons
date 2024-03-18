@@ -4,32 +4,32 @@ import getset
 def get_accent_color_string():
     currentProvider = getset.setting_get('AddonAccent').lower()
     if currentProvider == 'geel':
-        return '[COLOR FFB38300]'
+        return '[COLOR FFA87B00]'
     elif currentProvider == 'blauw':
-        return '[COLOR FF2D43B3]'
+        return '[COLOR FF203D80]'
     elif currentProvider == 'groen':
-        return '[COLOR FF008500]'
+        return '[COLOR FF007300]'
+    elif currentProvider == 'rood':
+        return '[COLOR FF981C26]'
     elif currentProvider == 'grijs':
         return '[COLOR FF888888]'
-    elif currentProvider == 'rood':
-        return '[COLOR FFB32430]'
 
 #Change add-on accent variables
 def change_addon_accent():
     currentProvider = getset.setting_get('AddonAccent').lower()
     if currentProvider == 'geel':
-        getset.global_set('ColorAccent', 'FFB38300')
-        getset.global_set('ColorFocused', 'F5664B00')
+        getset.global_set('ColorAccent', 'FFA87B00')
+        getset.global_set('ColorFocused', 'F5705200')
     elif currentProvider == 'blauw':
-        getset.global_set('ColorAccent', 'FF2D43B3')
-        getset.global_set('ColorFocused', 'F51A2666')
+        getset.global_set('ColorAccent', 'FF203D80')
+        getset.global_set('ColorFocused', 'F513244d')
     elif currentProvider == 'groen':
-        getset.global_set('ColorAccent', 'FF008500')
-        getset.global_set('ColorFocused', 'F5004D00')
-    elif currentProvider == 'grijs':
-        getset.global_set('ColorAccent', 'FF444444')
-        getset.global_set('ColorFocused', 'F5333333')
+        getset.global_set('ColorAccent', 'FF007300')
+        getset.global_set('ColorFocused', 'F5004700')
     elif currentProvider == 'rood':
-        getset.global_set('ColorAccent', 'FFB32430')
-        getset.global_set('ColorFocused', 'F566141B')
+        getset.global_set('ColorAccent', 'FF981C26')
+        getset.global_set('ColorFocused', 'F5611118')
+    elif currentProvider == 'grijs':
+        getset.global_set('ColorAccent', 'FF404040')
+        getset.global_set('ColorFocused', 'F5313131')
     getset.global_set('ColorNoFocus', 'FF181818')

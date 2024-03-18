@@ -59,13 +59,13 @@ def set_remote_number(_self, ZapNumberPress, selectMode, clickOnSelection):
             channelNumber = listItem.getProperty('ChannelNumber')
             if channelNumber.startswith(var.ZapNumberString):
                 channelNumberCut = channelNumber.replace(var.ZapNumberString, '', 1)
-                var.ZapHintString += '[COLOR white]' + var.ZapNumberString + '[/COLOR]' + accent.get_accent_color_string() + channelNumberCut + '[/COLOR]  ' + channelName + '\n'
+                var.ZapHintString += '[B][COLOR FFFFFFFF]' + var.ZapNumberString + '[/COLOR]' + accent.get_accent_color_string() + channelNumberCut + '[/COLOR][/B]  ' + channelName + '\n'
         except:
             continue
 
     #Check if channel is found
     if func.string_isnullorempty(var.ZapHintString):
-        var.ZapHintString = 'Zender ' + accent.get_accent_color_string() + var.ZapNumberString + '[/COLOR] niet gevonden.'
+        var.ZapHintString = 'Zender [B]' + accent.get_accent_color_string() + var.ZapNumberString + '[/COLOR][/B] niet gevonden.'
         var.ZapNumberString = ''
 
     #Start zap wait thread
@@ -116,7 +116,7 @@ def thread_zap_wait_timer(_self, selectMode, clickOnSelection):
             else:
                 #Countdown string
                 zapCountInt = interactSecond - lastInteractSeconds
-                zapCountString = '[COLOR gray]' + str(zapCountInt) + '[/COLOR]'
+                zapCountString = '[COLOR FF888888]' + str(zapCountInt) + '[/COLOR]'
 
                 #Show remote number popup
                 guifunc.updateLabelText(_self, 7001, zapCountString)

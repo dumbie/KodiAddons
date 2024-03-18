@@ -65,8 +65,8 @@ def list_load_append(listContainer, remoteMode=False):
                 ChannelFavorite = 'false'
 
             #Update channel number
-            ChannelNumberString = str(ChannelId)
-            ChannelNumberAccent = accent.get_accent_color_string() + ChannelNumberString + '[/COLOR]'
+            ChannelNumberInt = str(ChannelId)
+            ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + ChannelNumberInt + '[/COLOR][/B]'
 
             #Set item icons
             iconDefault = path.icon_radio(ChannelId)
@@ -75,12 +75,12 @@ def list_load_append(listContainer, remoteMode=False):
             jsonItem = {
                 'ChannelId': ChannelId,
                 'ChannelName': ChannelName,
-                'ChannelNumber': ChannelNumberString,
+                'ChannelNumber': ChannelNumberInt,
                 'ChannelNumberAccent': ChannelNumberAccent,
                 'ChannelFavorite': ChannelFavorite,
                 'StreamUrl': ChannelStream,
                 'ItemLabel': ChannelName,
-                'ItemInfoMusic': {'MediaType': 'music', 'Genre': 'Radio', 'TrackNumber': ChannelNumberString},
+                'ItemInfoMusic': {'MediaType': 'music', 'Genre': 'Radio', 'TrackNumber': ChannelNumberInt},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_radio'
             }

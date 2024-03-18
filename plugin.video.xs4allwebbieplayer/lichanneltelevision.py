@@ -93,8 +93,8 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
 
             #Load channel details
             ExternalId = metadatainfo.externalId_from_json_metadata(channel)
-            ChannelNumberString = metadatainfo.orderId_from_json_metadata(channel)
-            ChannelNumberAccent = accent.get_accent_color_string() + ChannelNumberString + '[/COLOR]'
+            ChannelNumberInt = metadatainfo.orderId_from_json_metadata(channel)
+            ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + ChannelNumberInt + '[/COLOR][/B]'
             ChannelRecordEvent = 'false'
             ChannelRecordSeries = 'false'
             ChannelAlarm = 'false'
@@ -131,7 +131,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 'StreamAssetId': StreamAssetId,
                 'ExternalId': ExternalId,
                 'ChannelId': ChannelId,
-                'ChannelNumber': ChannelNumberString,
+                'ChannelNumber': ChannelNumberInt,
                 'ChannelNumberAccent': ChannelNumberAccent,
                 'ChannelFavorite': ChannelFavorite,
                 'ChannelName': ChannelName,
@@ -143,7 +143,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ChannelNumberString, 'Title': ChannelName, 'TrackNumber': ChannelNumberString, 'Duration': ProgramDuration},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ChannelNumberInt, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt, 'Duration': ProgramDuration},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_tv'
             }

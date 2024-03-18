@@ -1,8 +1,9 @@
-import lifunc
+import xbmcgui
+import accent
 import hidden
+import lifunc
 import metadatafunc
 import metadatainfo
-import xbmcgui
 import path
 import var
 
@@ -36,18 +37,18 @@ def list_load_append(listContainer, hiddenJsonFile):
                 ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
                 if ChannelDetails:
                     ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
-                    ChannelNumber = metadatainfo.orderId_from_json_metadata(ChannelDetails)
+                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + metadatainfo.orderId_from_json_metadata(ChannelDetails) + '[/COLOR][/B]'
                     ChannelName = metadatainfo.channelName_from_json_metadata(ChannelDetails)
                     ChannelIcon = path.icon_television(ExternalId)
                 else:
-                    ChannelNumber = "?"
+                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + '?[/COLOR][/B]'
                     ChannelName = "Onbekende zender"
                     ChannelIcon = path.icon_addon('unknown')
 
                 listItem = xbmcgui.ListItem()
                 listItem.setProperty('ChannelId', ChannelId)
                 listItem.setProperty('ProgramName', ChannelName)
-                listItem.setProperty('ProgramDescription', ChannelNumber)
+                listItem.setProperty('ProgramDescription', ChannelNumberAccent)
                 listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
                 listContainer.append(listItem)
             except:
@@ -58,18 +59,18 @@ def list_load_append(listContainer, hiddenJsonFile):
                 ChannelId = hiddenChannelId
                 ChannelDetails = metadatafunc.search_channelid_jsonradio(ChannelId)
                 if ChannelDetails:
-                    ChannelNumber = ChannelDetails['id']
+                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + ChannelDetails['id'] + '[/COLOR][/B]'
                     ChannelName = ChannelDetails['name']
                     ChannelIcon = path.icon_radio(ChannelId)
                 else:
-                    ChannelNumber = "?"
+                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + '?[/COLOR][/B]'
                     ChannelName = "Onbekende zender"
                     ChannelIcon = path.icon_addon('unknown')
 
                 listItem = xbmcgui.ListItem()
                 listItem.setProperty('ChannelId', ChannelId)
                 listItem.setProperty('ProgramName', ChannelName)
-                listItem.setProperty('ProgramDescription', ChannelNumber)
+                listItem.setProperty('ProgramDescription', ChannelNumberAccent)
                 listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
                 listContainer.append(listItem)
             except:
