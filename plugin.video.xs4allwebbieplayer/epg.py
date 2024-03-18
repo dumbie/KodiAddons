@@ -383,10 +383,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         guifunc.updateLabelText(self, 1, 'Zenders laden')
-        guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders worden geladen, nog even geduld...[/COLOR]')
+        guifunc.updateLabelText(self, 2, '[COLOR FF888888]Zenders worden geladen, nog even geduld...[/COLOR]')
         if lichanneltelevision.list_load_combined(listContainer, downloadRecordings=True) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
-            guifunc.updateLabelText(self, 2, '[COLOR gray]Zenders zijn niet beschikbaar.[/COLOR]')
+            guifunc.updateLabelText(self, 2, '[COLOR FF888888]Zenders zijn niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
             guifunc.controlFocus(self, listContainer)
             guifunc.listSelectIndex(listContainer, 0)
@@ -405,11 +405,11 @@ class Gui(xbmcgui.WindowXML):
             listContainer = self.getControl(1000)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen zenders gevonden')
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Zender[/COLOR] " + var.SearchTermResult + " [COLOR gray]niet gevonden.[/COLOR]")
+                guifunc.updateLabelText(self, 2, "[COLOR FF888888]Zender[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]niet gevonden.[/COLOR]")
                 guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen ' + channelTypeString)
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Geen beschikbare " + channelTypeString + ".[/COLOR]")
+                guifunc.updateLabelText(self, 2, "[COLOR FF888888]Geen beschikbare " + channelTypeString + ".[/COLOR]")
                 guifunc.listSelectIndex(listContainer, 0)
 
             #Focus on navigation menu list
@@ -436,7 +436,7 @@ class Gui(xbmcgui.WindowXML):
         listItemSelected = listContainer.getSelectedItem()
         if listItemSelected == None:
             guifunc.updateLabelText(self, 1, 'Selecteer zender')
-            guifunc.updateLabelText(self, 2, "[COLOR gray]Selecteer de gewenste televisie zender.[/COLOR]")
+            guifunc.updateLabelText(self, 2, "[COLOR FF888888]Selecteer de gewenste televisie zender.[/COLOR]")
             return
         else:
             var.EpgCurrentChannelId = listItemSelected.getProperty('ChannelId')
@@ -462,10 +462,10 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         guifunc.updateLabelText(self, 1, 'TV Gids laden')
-        guifunc.updateLabelText(self, 2, '[COLOR gray]TV Gids wordt geladen, nog even geduld...[/COLOR]')
+        guifunc.updateLabelText(self, 2, '[COLOR FF888888]TV Gids wordt geladen, nog even geduld...[/COLOR]')
         if liepgload.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
-            guifunc.updateLabelText(self, 2, '[COLOR gray]TV Gids is niet beschikbaar.[/COLOR]')
+            guifunc.updateLabelText(self, 2, '[COLOR FF888888]TV Gids is niet beschikbaar.[/COLOR]')
             listContainer = self.getControl(1000)
             guifunc.controlFocus(self, listContainer)
             guifunc.listSelectIndex(listContainer, 0)
@@ -542,17 +542,17 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() == 0:
             if func.string_isnullorempty(var.SearchTermResult) == True:
                 guifunc.updateLabelText(self, 1, "Geen programma's")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR FF888888]Geen programma's beschikbaar voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR FF888888]op[/COLOR] " + loadDayString)
             else:
                 guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma[/COLOR] " + var.SearchTermResult + " [COLOR gray]niet gevonden op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR FF888888]Programma[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]niet gevonden op[/COLOR] " + loadDayString)
         else:
             if func.string_isnullorempty(var.SearchTermResult) == True:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Alle programma's voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR FF888888]Alle programma's voor[/COLOR] " + var.EpgCurrentChannelName + " [COLOR FF888888]op[/COLOR] " + loadDayString)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
-                guifunc.updateLabelText(self, 2, "[COLOR gray]Programma's gevonden voor[/COLOR] " + var.SearchTermResult + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 2, "[COLOR FF888888]Programma's gevonden voor[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]op[/COLOR] " + loadDayString)
 
     def thread_update_program_progress(self):
         threadLastTime = ''

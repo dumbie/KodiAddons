@@ -178,7 +178,7 @@
                     <align>center</align>
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
-                    <label>Je hebt 5 inlogpogingen, daarna wordt je account 24 uur geblokkeerd.</label>
+                    <label>U heeft 5 inlogpogingen, daarna wordt uw account 24 uur geblokkeerd.</label>
                     <scroll>true</scroll>
                     <scrollspeed>60</scrollspeed>
                 </control>

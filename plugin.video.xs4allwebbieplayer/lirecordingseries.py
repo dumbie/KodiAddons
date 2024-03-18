@@ -48,7 +48,7 @@ def list_load_append(listContainer):
             ProgramDetails = metadatacombine.program_details(RecordingEventMetaData, True, False, True, True, False, False, False)
 
             #Combine recorded episodes count
-            ProgramDetails += ' [COLOR gray]' + ProgramEpisodeCount + '[/COLOR]'
+            ProgramDetails += ' [COLOR FF888888]' + ProgramEpisodeCount + '[/COLOR]'
 
             #Get channel basics
             ChannelId = metadatainfo.channelId_from_json_metadata(program)

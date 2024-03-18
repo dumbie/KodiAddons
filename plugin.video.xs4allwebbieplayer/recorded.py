@@ -173,7 +173,7 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0:
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " opnames gevonden")
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermResult)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Zoekresultaten voor[/COLOR] " + var.SearchTermResult)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " opnames")
                 guifunc.updateLabelText(self, 3, "")
@@ -187,7 +187,7 @@ class Gui(xbmcgui.WindowXML):
             guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, 'Geen opnames gevonden')
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult)
                 guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, 'Geen opnames')

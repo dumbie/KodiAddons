@@ -42,7 +42,7 @@ def list_load_append(listContainer):
             ProgramDeltaTimeStart = str(metadatainfo.programstartdeltatime_from_json_metadata(program))
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_generate_from_json_metadata(program)
-            ProgramDescription = '[COLOR gray]Van[/COLOR] ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' [COLOR gray]tot[/COLOR] ' + ProgramTimeEndDateTime.strftime('%H:%M') + ' [COLOR gray]op[/COLOR] ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
+            ProgramDescription = '[COLOR FF888888]Van[/COLOR] ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' [COLOR FF888888]tot[/COLOR] ' + ProgramTimeEndDateTime.strftime('%H:%M') + ' [COLOR FF888888]op[/COLOR] ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, False, False)

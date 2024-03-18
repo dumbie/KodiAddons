@@ -91,7 +91,7 @@ def list_update(listItem):
             ProgramNowId = ''
             ProgramNowSeriesId = ''
             ProgramNowName = 'Onbekend programma'
-            ProgramNowTiming = '[COLOR gray]onbekend programmaduur[/COLOR]'
+            ProgramNowTiming = '[COLOR FF888888]onbekend programmaduur[/COLOR]'
             ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
             ProgramNowDetails = 'Onbekend seizoen en aflevering'
             ProgramNowTimeStartDateTime = datetime(1970,1,1)
@@ -110,7 +110,7 @@ def list_update(listItem):
             ProgramNextTimeStartString = ProgramNextTimeStartDateTime.strftime('%H:%M')
 
             #Combine program next name
-            ProgramNextName = '[COLOR gray]' + ProgramNextTimeStartString + ': ' + ProgramNextNameRaw + '[/COLOR]'
+            ProgramNextName = '[COLOR FF888888]' + ProgramNextTimeStartString + ': ' + ProgramNextNameRaw + '[/COLOR]'
 
             #Check if program has active alarm
             if alarm.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
@@ -142,7 +142,7 @@ def list_update(listItem):
         except:
             ProgramNextId = ''
             ProgramNextSeriesId = ''
-            ProgramNextName = '[COLOR gray]Onbekend programma[/COLOR]'
+            ProgramNextName = '[COLOR FF888888]Onbekend programma[/COLOR]'
             ProgramNextNameRaw = 'Onbekend programma'
             ProgramNextTimeStartDateTime = datetime(1970,1,1)
             ProgramNextTimeStartString = 'Onbekend'

@@ -13,7 +13,7 @@ def program_upcoming_list(metaData, programIndex):
                 ProgramListTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(ProgramListMetaData)
                 ProgramListTimeStartString = ProgramListTimeStartDateTime.strftime('%H:%M')
                 ProgramListTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(ProgramListMetaData)
-                ProgramListString += '\n' + ProgramListTimeStartString + ' ' + ProgramListTimeDurationString + ' [COLOR gray]' + ProgramListName + '[/COLOR]'
+                ProgramListString += '\n' + ProgramListTimeStartString + ' ' + ProgramListTimeDurationString + ' [COLOR FF888888]' + ProgramListName + '[/COLOR]'
                 ProgramListId += 1
             except:
                 break
@@ -21,7 +21,7 @@ def program_upcoming_list(metaData, programIndex):
         if func.string_isnullorempty(ProgramListString) == True:
             return ''
         else:
-            return '[COLOR gray]Later op deze zender[/COLOR]' + ProgramListString
+            return '[COLOR FF888888]Later op deze zender[/COLOR]' + ProgramListString
     except:
         return ''
 
@@ -36,7 +36,7 @@ def program_earlier_list(metaData, programIndex):
                 ProgramListTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(ProgramListMetaData)
                 ProgramListTimeStartString = ProgramListTimeStartDateTime.strftime('%H:%M')
                 ProgramListTimeDurationString = metadatainfo.programdurationstring_from_json_metadata(ProgramListMetaData)
-                ProgramListString += '\n' + ProgramListTimeStartString + ' ' + ProgramListTimeDurationString + ' [COLOR gray]' + ProgramListName + '[/COLOR]'
+                ProgramListString += '\n' + ProgramListTimeStartString + ' ' + ProgramListTimeDurationString + ' [COLOR FF888888]' + ProgramListName + '[/COLOR]'
                 ProgramListId += 1
             except:
                 break
@@ -44,7 +44,7 @@ def program_earlier_list(metaData, programIndex):
         if func.string_isnullorempty(ProgramListString) == True:
             return ''
         else:
-            return '[COLOR gray]Eerder op deze zender[/COLOR]' + ProgramListString
+            return '[COLOR FF888888]Eerder op deze zender[/COLOR]' + ProgramListString
     except:
         return ''
 
@@ -54,7 +54,7 @@ def program_timing_vod(metaData):
         ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
         ProgramTimeStartStringTime = ProgramTimeStartDateTime.strftime('%H:%M')
         ProgramTimeStartStringDate = ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
-        return '[COLOR gray]Begon om[/COLOR] ' + ProgramTimeStartStringTime + ' [COLOR gray]op[/COLOR] ' + ProgramTimeStartStringDate + ' [COLOR gray]en duurde[/COLOR] ' + ProgramDuration
+        return '[COLOR FF888888]Begon om[/COLOR] ' + ProgramTimeStartStringTime + ' [COLOR FF888888]op[/COLOR] ' + ProgramTimeStartStringDate + ' [COLOR FF888888]en duurde[/COLOR] ' + ProgramDuration
     except:
         return ''
 
@@ -69,11 +69,11 @@ def program_timing_program_metadata(metaData, dateTimeNow, dateTimeSeek):
         ProgramTimeEndString = (dateTimeNow + timedelta(minutes=ProgramTimeLeftMinutes)).strftime('%H:%M')
 
         if ProgramTimeDurationString == '0':
-            return '[COLOR gray]onbekend programmaduur[/COLOR]'
+            return '[COLOR FF888888]onbekend programmaduur[/COLOR]'
         elif ProgramTimeLeftString == '0':
-            return '[COLOR gray]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString
+            return '[COLOR FF888888]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR FF888888], begon om[/COLOR] ' + ProgramTimeStartString
         else:
-            return '[COLOR gray]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR gray]van de[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigt rond[/COLOR] ' + ProgramTimeEndString
+            return '[COLOR FF888888]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR FF888888]van de[/COLOR] ' + ProgramTimeDurationString + '[COLOR FF888888], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR FF888888]eindigt rond[/COLOR] ' + ProgramTimeEndString
     except:
         return ''
 
@@ -91,31 +91,31 @@ def program_timing_program_property(propertyData, dateTimeNow, returnShort=False
 
         if ProgramTimeDurationString == '0':
             if returnShort == True:
-                return '[COLOR gray]onbekend programmaduur[/COLOR]'
+                return '[COLOR FF888888]onbekend programmaduur[/COLOR]'
             else:
-                return '[COLOR gray]onbekend programmaduur[/COLOR]'
+                return '[COLOR FF888888]onbekend programmaduur[/COLOR]'
 
         if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
             if ProgramTimeLeftString == '0':
                 if returnShort == True:
-                    return '[COLOR gray]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString
+                    return '[COLOR FF888888]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString
                 else:
-                    return '[COLOR gray]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString
+                    return '[COLOR FF888888]is bijna afgelopen, duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR FF888888], begon om[/COLOR] ' + ProgramTimeStartString
             else:
                 if returnShort == True:
-                    return '[COLOR gray]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR gray]van de[/COLOR] ' + ProgramTimeDurationString
+                    return '[COLOR FF888888]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR FF888888]van de[/COLOR] ' + ProgramTimeDurationString
                 else:
-                    return '[COLOR gray]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR gray]van de[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigt rond[/COLOR] ' + ProgramTimeEndString
+                    return '[COLOR FF888888]duurt nog[/COLOR] ' + ProgramTimeLeftString + ' [COLOR FF888888]van de[/COLOR] ' + ProgramTimeDurationString + '[COLOR FF888888], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR FF888888]eindigt rond[/COLOR] ' + ProgramTimeEndString
         elif dateTimeNow > ProgramTimeEndDateTime:
             if returnShort == True:
-                return '[COLOR gray]duurde[/COLOR] ' + ProgramTimeDurationString
+                return '[COLOR FF888888]duurde[/COLOR] ' + ProgramTimeDurationString
             else:
-                return '[COLOR gray]duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigde rond[/COLOR] ' + ProgramTimeEndString
+                return '[COLOR FF888888]duurde[/COLOR] ' + ProgramTimeDurationString + '[COLOR FF888888], begon om[/COLOR] ' + ProgramTimeStartString + ' [COLOR FF888888]eindigde rond[/COLOR] ' + ProgramTimeEndString
         else:
             if returnShort == True:
-                return '[COLOR gray]duurt[/COLOR] ' + ProgramTimeDurationString
+                return '[COLOR FF888888]duurt[/COLOR] ' + ProgramTimeDurationString
             else:
-                return '[COLOR gray]duurt[/COLOR] ' + ProgramTimeDurationString + '[COLOR gray], begint om[/COLOR] ' + ProgramTimeStartString + ' [COLOR gray]eindigt rond[/COLOR] ' + ProgramTimeEndString
+                return '[COLOR FF888888]duurt[/COLOR] ' + ProgramTimeDurationString + '[COLOR FF888888], begint om[/COLOR] ' + ProgramTimeStartString + ' [COLOR FF888888]eindigt rond[/COLOR] ' + ProgramTimeEndString
     except:
         return ''
 
@@ -153,7 +153,7 @@ def program_genres(metaData):
     try:
         programGenres = metadatainfo.programgenres_from_json_metadata(metaData)
         if func.string_isnullorempty(programGenres) == False:
-            programGenres = 'Genres [COLOR gray]' + programGenres + '[/COLOR]'
+            programGenres = 'Genres [COLOR FF888888]' + programGenres + '[/COLOR]'
         return programGenres
     except:
         return ''
@@ -178,13 +178,13 @@ def program_actors_directors(metaData):
                 return ''
 
         if directorsNull == False:
-            programDirectors = 'Regie [COLOR gray]' + programDirectors + '[/COLOR]'
+            programDirectors = 'Regie [COLOR FF888888]' + programDirectors + '[/COLOR]'
 
         if actorsNull == False:
-            programActors = 'Acteurs [COLOR gray]' + programActors + '[/COLOR]'
+            programActors = 'Acteurs [COLOR FF888888]' + programActors + '[/COLOR]'
 
         if presentersNull == False:
-            programPresenters = 'Presentatoren [COLOR gray]' + programPresenters + '[/COLOR]'
+            programPresenters = 'Presentatoren [COLOR FF888888]' + programPresenters + '[/COLOR]'
 
         #Combine cast details
         stringJoin = [ programDirectors, programActors, programPresenters ]
@@ -234,9 +234,9 @@ def program_details(metaData, returnShort=False, addDuration=False, addYear=Fals
 
         #Add program episode title and color
         if func.string_isnullorempty(ProgramEpisodeTitle) == False:
-            ProgramDetails = '[COLOR gray]' + ProgramEpisodeTitle + '[/COLOR] ' + ProgramDetails
+            ProgramDetails = '[COLOR FF888888]' + ProgramEpisodeTitle + '[/COLOR] ' + ProgramDetails
         else:
-            ProgramDetails = '[COLOR gray]' + ProgramDetails + '[/COLOR]'
+            ProgramDetails = '[COLOR FF888888]' + ProgramDetails + '[/COLOR]'
 
         #Return program details
         return ProgramDetails

@@ -121,7 +121,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 ProgramNowName = metadatainfo.programtitle_from_json_metadata(metaData)
 
                 #Combine program name
-                ProgramGenre = '[COLOR gray](' + ProgramStartString + '/' + ProgramEndString + ') ' + ProgramNowName + '[/COLOR]'
+                ProgramGenre = '[COLOR FF888888](' + ProgramStartString + '/' + ProgramEndString + ') ' + ProgramNowName + '[/COLOR]'
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)

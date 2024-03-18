@@ -257,10 +257,10 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0:
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's gevonden")
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]op[/COLOR] " + loadDayString)
             else:
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + " programma's" + favoriteString)
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Beschikbare programma's voor[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Beschikbare programma's voor[/COLOR] " + loadDayString)
 
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
@@ -271,9 +271,9 @@ class Gui(xbmcgui.WindowXML):
             guifunc.controlFocus(self, listContainer)
             if func.string_isnullorempty(var.SearchTermResult) == False:
                 guifunc.updateLabelText(self, 1, "Geen programma's gevonden")
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR gray]op[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]op[/COLOR] " + loadDayString)
                 guifunc.listSelectIndex(listContainer, 1)
             else:
                 guifunc.updateLabelText(self, 1, "Geen programma's" + favoriteString)
-                guifunc.updateLabelText(self, 3, "[COLOR gray]Geen programma's beschikbaar voor[/COLOR] " + loadDayString)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Geen programma's beschikbaar voor[/COLOR] " + loadDayString)
                 guifunc.listSelectIndex(listContainer, 0)
