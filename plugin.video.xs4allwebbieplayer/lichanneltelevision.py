@@ -143,7 +143,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ChannelNumberInt, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt, 'Duration': ProgramDuration},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt, 'Duration': ProgramDuration},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_tv'
             }
