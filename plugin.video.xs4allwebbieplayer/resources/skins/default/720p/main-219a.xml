@@ -44,7 +44,7 @@
         <control type="image">
             <top>50</top>
             <left>50</left>
-            <width>223</width>
+            <width>165</width>
             <height>100</height>
             <aspectratio>keep</aspectratio>
             <texture>common/logo.png</texture>
@@ -52,7 +52,7 @@
         <control type="button" id="3001">
             <top>50</top>
             <left>50</left>
-            <width>223</width>
+            <width>165</width>
             <height>100</height>
             <aspectratio>keep</aspectratio>
             <texturefocus>-</texturefocus>
@@ -61,7 +61,7 @@
         <!-- Information -->
         <control type="label">
             <top>70</top>
-            <left>325</left>
+            <left>270</left>
             <width>500</width>
             <height>30</height>
             <align>left</align>
@@ -70,7 +70,7 @@
         </control>
         <control type="label" id="1">
             <top>100</top>
-            <left>325</left>
+            <left>270</left>
             <width>500</width>
             <height>30</height>
             <align>left</align>
@@ -156,9 +156,9 @@
             <visible>Player.HasVideo | Player.HasAudio</visible>
             <ondown condition="Control.IsVisible(1000) + Integer.IsGreater(Container(1000).NumItems,0)">Control.setFocus(1000, $INFO[Container(1001).Position])</ondown>
             <orientation>horizontal</orientation>
-            <itemlayout width="285" height="40">
+            <itemlayout width="228" height="40">
                 <control type="image">
-                    <width>275</width>
+                    <width>218</width>
                     <height>40</height>
                     <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                 </control>
@@ -180,9 +180,9 @@
                     <info>ListItem.Label</info>
                 </control>
             </itemlayout>
-            <focusedlayout width="285" height="40">
+            <focusedlayout width="228" height="40">
                 <control type="image">
-                    <width>275</width>
+                    <width>218</width>
                     <height>40</height>
                     <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                 </control>
@@ -214,9 +214,9 @@
             <height>465</height>
             <onup condition="Control.IsVisible(1001) + Integer.IsGreater(Container(1001).NumItems,0)">Control.setFocus(1001, $INFO[Container(1000).Position])</onup>
             <orientation>vertical</orientation>
-            <itemlayout width="285" height="150">
+            <itemlayout width="228" height="150">
                 <control type="image">
-                    <width>275</width>
+                    <width>218</width>
                     <height>140</height>
                     <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                 </control>
@@ -230,7 +230,7 @@
                 </control>
                 <control type="label">
                     <top>95</top>
-                    <width>275</width>
+                    <width>218</width>
                     <height>30</height>
                     <textcolor>FF888888</textcolor>
                     <selectedcolor>FF888888</selectedcolor>
@@ -238,9 +238,9 @@
                     <info>ListItem.Label</info>
                 </control>
             </itemlayout>
-            <focusedlayout width="285" height="150">
+            <focusedlayout width="228" height="150">
                 <control type="image">
-                    <width>275</width>
+                    <width>218</width>
                     <height>140</height>
                     <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                 </control>
@@ -254,7 +254,7 @@
                 </control>
                 <control type="label">
                     <top>95</top>
-                    <width>275</width>
+                    <width>218</width>
                     <height>30</height>
                     <textcolor>FF888888</textcolor>
                     <selectedcolor>FF888888</selectedcolor>

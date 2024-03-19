@@ -36,7 +36,11 @@ import widevine
 
 def switch_to_page():
     if var.guiMain == None:
-        var.guiMain = Gui('main.xml', var.addonpath, 'default', '720p')
+        aspectRatio = str(xbmc.getInfoLabel('Skin.AspectRatio')).replace(':', '')
+        if aspectRatio == '219':
+            var.guiMain = Gui('main-219a.xml', var.addonpath, 'default', '720p')
+        else:
+            var.guiMain = Gui('main.xml', var.addonpath, 'default', '720p')
         var.guiMain.setProperty('WebbiePlayerPage', 'Open')
         var.guiMain.doModal()
         var.guiMain = None
