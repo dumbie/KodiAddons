@@ -107,6 +107,7 @@ LaunchArgument = ''
 DialogResult = None
 
 #Cache variables
+CacheCleanLastTimeEpg = datetime(1970,1,1)
 CacheCleanTimeChannels = 240 * 60 #4h
 CacheCleanTimeEpg = 120 * 60 #2h
 def CacheCleanTimeOther():

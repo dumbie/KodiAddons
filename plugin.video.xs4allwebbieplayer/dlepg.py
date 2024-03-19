@@ -18,15 +18,21 @@ def get_epg_cache(dayDateString):
             continue
     return None
 
-def download(dayDateTime, forceUpdate=False, cleanupCache=True):
+def download(dayDateTime, forceUpdate=False):
     try:
         #Convert datetime to datestring
         dayDateString = dayDateTime.strftime('%Y-%m-%d')
 
+        #Check last cache cleanup time
+        dateTimeNow = datetime.now()
+        lastTimeSeconds = (dateTimeNow - var.CacheCleanLastTimeEpg).total_seconds()
+
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('epg' + dayDateString + '.js')
-        if cleanupCache == True and cache.cache_cleanup_files('epg', var.CacheCleanTimeEpg) == True:
-            var.EpgCacheDaysArray = []
+        if lastTimeSeconds >= 60:
+            var.CacheCleanLastTimeEpg = dateTimeNow
+            if cache.cache_cleanup_files('epg', var.CacheCleanTimeEpg) == True:
+                var.EpgCacheDaysArray = []
 
         if forceUpdate == False:
             #Check if already cached in variables
