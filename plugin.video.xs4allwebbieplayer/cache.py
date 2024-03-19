@@ -56,35 +56,13 @@ def cache_remove_all(showDialog=True, showNotification=True):
         xbmcgui.Dialog().notification(var.addonname, 'Cache bestanden verwijderen mislukt.', var.addonicon, 2500, False)
         return False
 
-def cache_cleanup_today(fileName, epochCleanupTime):
-    try:
-        fileRemoved = False
-        nowDateString = datetime.now().strftime('%Y-%m-%d')
-        for cacheFile in files.listFiles(var.addonstoragecache):
-            if cacheFile.startswith(fileName):
-                cachePath = path.addonstoragecache(cacheFile)
-                fileDateString = cacheFile.lstrip(fileName).rstrip('.js')
-                if fileDateString == nowDateString:
-                    if cache_cleanup_file(cachePath, epochCleanupTime) == True: fileRemoved = True
-                else:
-                    if files.removeFile(cachePath) == True: fileRemoved = True
-        return fileRemoved
-    except:
-        return False
-
-def cache_cleanup_days(fileName, epochCleanupTime=0):
+def cache_cleanup_files(fileName, epochCleanupTime):
     try:
         fileRemoved = False
         for cacheFile in files.listFiles(var.addonstoragecache):
             if cacheFile.startswith(fileName):
                 cachePath = path.addonstoragecache(cacheFile)
-                fileDateString = cacheFile.lstrip(fileName).rstrip('.js')
-                fileDateTime = func.datetime_from_string(fileDateString, '%Y-%m-%d')
-                daysPassed = func.day_offset_from_datetime(fileDateTime)
-                if daysPassed > var.VodDayOffsetPast:
-                    if files.removeFile(cachePath) == True: fileRemoved = True
-                elif daysPassed == 0 and epochCleanupTime != 0:
-                    if cache_cleanup_file(cachePath, epochCleanupTime) == True: fileRemoved = True
+                if cache_cleanup_file(cachePath, epochCleanupTime) == True: fileRemoved = True
         return fileRemoved
     except:
         return False

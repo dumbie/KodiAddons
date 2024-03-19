@@ -25,7 +25,7 @@ def download(dayDateTime, forceUpdate=False, cleanupCache=True):
 
         #Cleanup downloaded cache files
         filePath = path.addonstoragecache('epg' + dayDateString + '.js')
-        if cleanupCache == True and cache.cache_cleanup_today('epg', var.CacheCleanTimeEpg) == True:
+        if cleanupCache == True and cache.cache_cleanup_files('epg', var.CacheCleanTimeEpg) == True:
             var.EpgCacheDaysArray = []
 
         if forceUpdate == False:
@@ -74,10 +74,8 @@ def download(dayDateTime, forceUpdate=False, cleanupCache=True):
         var.EpgCacheDaysArray.append(classAdd)
 
         #Update file cache
-        nowDateString = datetime.now().strftime('%Y-%m-%d')
-        if dayDateString == nowDateString:
-            JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
-            files.saveFile(filePath, JsonDumpBytes)
+        JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
+        files.saveFile(filePath, JsonDumpBytes)
 
         return DownloadDataJson
     except:
