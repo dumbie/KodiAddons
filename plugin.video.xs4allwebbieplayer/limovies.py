@@ -48,7 +48,8 @@ def list_load_vod_append(listContainer, remoteMode=False):
             if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
 
             #Check if program is already added
-            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower())
+            ProgramYear = metadatainfo.programyear_from_json_metadata(program, False)
+            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower() and x[1].getProperty('ProgramYear') == ProgramYear)
             if duplicateProgram == True: continue
 
             #Combine program details
@@ -72,6 +73,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
                 'StreamAssetId': StreamAssetId,
                 'ProgramId': ProgramId,
                 "ProgramName": ProgramName,
+                "ProgramYear": ProgramYear,
                 "ProgramDetails": ProgramDetails,
                 "ProgramAvailability": ProgramAvailability,
                 "ProgramDescription": ProgramDescription,

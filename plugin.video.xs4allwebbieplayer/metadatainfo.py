@@ -241,11 +241,14 @@ def programseason_from_json_metadata(metaData, incBrackets=True):
         return ''
 
 #Get program year from json metadata
-def programyear_from_json_metadata(metaData):
+def programyear_from_json_metadata(metaData, incBrackets=True):
     try:
         ProgramYear = str(metaData['metadata']['year'])
         if ProgramYear != '0':
-            return '(' + ProgramYear + ')'
+            if incBrackets:
+                return '(' + ProgramYear + ')'
+            else:
+                return ProgramYear
         return ''
     except:
         return ''

@@ -3,7 +3,6 @@ import xbmcgui
 import dlchanneltelevision
 import dlepg
 import func
-import getset
 import lifunc
 import metadatacombine
 import metadatafunc

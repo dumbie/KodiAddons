@@ -35,7 +35,7 @@ def list_update(listItem):
                 dateTimeSeek -= timedelta(seconds=playerSeconds)
 
         #Get json epg for datetime
-        jsonEpg = dlepg.download(dateTimeSeek, cleanupCache=False)
+        jsonEpg = dlepg.download(dateTimeSeek)
 
         #Get json epg for channelid
         jsonEpgChannel = metadatafunc.search_channelid_jsonepg(jsonEpg, channelId)
