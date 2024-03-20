@@ -26,25 +26,9 @@ def ApiGenerateDeviceId():
     except:
         return False
 
-def ApiSetEndpointAdresNumber():
+def ApiSetEndpoint():
     try:
-        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint_number())
-        var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
-        return True
-    except:
-        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
-        return False
-
-def ApiSetEndpointAdresEmail():
-    try:
-        apiEndpoint = classes.Class_ApiEndpoint()
-        apiEndpoint.username = getset.setting_get('LoginEmail')
-        apiEndpoint.password = getset.setting_get('LoginPasswordEmail')
-        apiEndpoint = apiEndpoint.__dict__
-
-        DownloadDataSend = json.dumps(apiEndpoint).encode('ascii')
-        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint_email(), DownloadDataSend)
+        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint())
         var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:
@@ -99,14 +83,14 @@ def ApiLogin(showNotification=False, forceLogin=False):
         if forceLogin == False and var.ApiLoggedIn() == True and loginCookieExpired == False and loginUsernameChanged == False:
             return True
 
-        #Generate the device id
+        #Generate device id
         ApiGenerateDeviceId()
+
+        #Download and set api endpoint adres
+        ApiSetEndpoint()
 
         #Check the login type
         if getset.setting_get('LoginType') == 'Abonnementsnummer':
-            #Download and set api endpoint adres
-            ApiSetEndpointAdresNumber()
-
             loginDevice = classes.Class_ApiLogin_deviceRegistrationData()
             loginDevice.deviceId = getset.setting_get('LoginDeviceId120')
             loginDevice.vendor = "Webbie Player"
@@ -125,9 +109,6 @@ def ApiLogin(showNotification=False, forceLogin=False):
             loginData.credentialsStdAuth = loginAuth
             loginData = loginData.__dict__
         else:
-            #Download and set api endpoint adres
-            ApiSetEndpointAdresEmail()
-
             loginDevice = classes.Class_ApiLogin_deviceInfo()
             loginDevice.deviceId = getset.setting_get('LoginDeviceId120')
             loginDevice.deviceVendor = "Webbie Player"

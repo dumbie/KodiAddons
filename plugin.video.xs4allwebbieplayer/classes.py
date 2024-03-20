@@ -1,9 +1,3 @@
-#Endpoint
-class Class_ApiEndpoint:
-    def __init__(self, username=None, password=None):
-        self.username = username
-        self.password = password
-
 #ExtAuth
 class Class_ApiLogin_extAuth:
     def __init__(self, credentialsExtAuth=None):
