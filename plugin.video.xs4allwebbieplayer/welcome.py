@@ -66,11 +66,11 @@ class Gui(xbmcgui.WindowXMLDialog):
     def save_settings(self):
         #Get settings
         newLoginTypeAbonnementsnummer = self.getControl(1001).isSelected()
-        newLoginUsername = self.getControl(1002).getText()
-        newLoginPassword = self.getControl(1003).getText()
+        newLoginUsername = self.getControl(1002).getText().replace(' ', '')
+        newLoginPassword = self.getControl(1003).getText().replace(' ', '')
         newLoginTypeEmailadres = self.getControl(1004).isSelected()
-        newLoginEmail = self.getControl(1005).getText()
-        newLoginPasswordEmail = self.getControl(1006).getText()
+        newLoginEmail = self.getControl(1005).getText().replace(' ', '')
+        newLoginPasswordEmail = self.getControl(1006).getText().replace(' ', '')
 
         #Check settings
         if newLoginTypeEmailadres == False and newLoginTypeAbonnementsnummer == False:
