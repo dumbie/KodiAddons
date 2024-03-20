@@ -19,15 +19,18 @@ def alarm_notification():
             ProgramTimeStartDateTime = func.datetime_from_string(StartTime, '%Y-%m-%d %H:%M:%S')
             ProgramTimeStartPlusThreeDateTime = (ProgramTimeStartDateTime + timedelta(minutes=3))
             ProgramTimeStartMinOneString = (ProgramTimeStartDateTime - timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M')
+            ProgramTimeStartMinTwoString = (ProgramTimeStartDateTime - timedelta(minutes=2)).strftime('%Y-%m-%d %H:%M')
             ProgramTimeStartMinThreeString = (ProgramTimeStartDateTime - timedelta(minutes=3)).strftime('%Y-%m-%d %H:%M')
             ProgramTimeStartMinFiveString = (ProgramTimeStartDateTime - timedelta(minutes=5)).strftime('%Y-%m-%d %H:%M')
             ProgramTimeStartMinTenString = (ProgramTimeStartDateTime - timedelta(minutes=10)).strftime('%Y-%m-%d %H:%M')
 
             #Check alarm times
             if DateTimeNowDateTime >= ProgramTimeStartDateTime and DateTimeNowDateTime < ProgramTimeStartPlusThreeDateTime:
-                xbmcgui.Dialog().notification(var.addonname, ProgramName + ' is begonnen.', path.icon_television(ExternalId), 5000, True)
+                xbmcgui.Dialog().notification(var.addonname, ProgramName + ' is begonnen.', path.icon_television(ExternalId), 10000, True)
             elif DateTimeNowString == ProgramTimeStartMinOneString:
                 xbmcgui.Dialog().notification(var.addonname, ProgramName + ' begint over 1 minuut.', path.icon_television(ExternalId), 5000, True)
+            elif DateTimeNowString == ProgramTimeStartMinTwoString:
+                xbmcgui.Dialog().notification(var.addonname, ProgramName + ' begint over 2 minuten.', path.icon_television(ExternalId), 5000, True)
             elif DateTimeNowString == ProgramTimeStartMinThreeString:
                 xbmcgui.Dialog().notification(var.addonname, ProgramName + ' begint over 3 minuten.', path.icon_television(ExternalId), 5000, True)
             elif DateTimeNowString == ProgramTimeStartMinFiveString:
