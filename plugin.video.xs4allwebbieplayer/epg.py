@@ -315,8 +315,10 @@ class Gui(xbmcgui.WindowXML):
         ChannelName = listItemSelected.getProperty('ChannelName')
         ProgramName = listItemSelected.getProperty('ProgramName')
 
+        #Set or remove the program alarm
         alarmAdded = alarm.alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramName, True)
-        #Update alarm icon in the channel and epg list
+
+        #Update alarm icon in the information
         if alarmAdded == True:
             #Force manual epg update
             self.ProgramManualUpdate = True

@@ -182,7 +182,7 @@ class Gui(xbmcgui.WindowXML):
         epg.switch_to_page()
 
     def search_program_history(self, listItemSelected):
-        ProgramName = listItemSelected.getProperty("ProgramNowName")
+        ProgramName = listItemSelected.getProperty("ProgramNowNameRaw")
         if var.SearchTermDownload != ProgramName:
             var.SearchSelectIdentifier = ''
             var.SearchTermResult = ''
@@ -195,19 +195,17 @@ class Gui(xbmcgui.WindowXML):
         ExternalId = listItemSelected.getProperty("ExternalId")
         ChannelId = listItemSelected.getProperty("ChannelId")
         ChannelName = listItemSelected.getProperty("ChannelName")
-        ProgramNextName = listItemSelected.getProperty("ProgramNextNameRaw")
+        ProgramNextNameRaw = listItemSelected.getProperty("ProgramNextNameRaw")
         ProgramNextTimeStartDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramNextTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
 
-        #Check the next program time
-        if ProgramNextTimeStartDateTime != datetime(1970,1,1):
-            #Set or remove the next program alarm
-            alarmAdded = alarm.alarm_add(ProgramNextTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramNextName, True)
+        #Set or remove the program alarm
+        alarmAdded = alarm.alarm_add(ProgramNextTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramNextNameRaw, True)
 
-            #Update alarm icon in the information
-            if alarmAdded == True:
-                listItemSelected.setProperty("ProgramNextAlarm", 'true')
-            elif alarmAdded == 'Remove':
-                listItemSelected.setProperty("ProgramNextAlarm", 'false')
+        #Update alarm icon in the information
+        if alarmAdded == True:
+            listItemSelected.setProperty("ProgramNextAlarm", 'true')
+        elif alarmAdded == 'Remove':
+            listItemSelected.setProperty("ProgramNextAlarm", 'false')
 
     def buttons_add_navigation(self):
         listContainer = self.getControl(1001)

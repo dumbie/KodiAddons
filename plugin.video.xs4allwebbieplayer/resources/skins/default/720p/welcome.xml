@@ -75,7 +75,7 @@
                     <textureradiooffnofocus>common/checkoff.png</textureradiooffnofocus>
                     <texturefocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
-                    <label>Inloggen met abonnementsnummer:</label>
+                    <label>Inloggen met abonnementsnummer</label>
                 </control>
                 <control type="edit" id="1002">
                     <onup>1001</onup>
@@ -137,7 +137,7 @@
                     <textureradiooffnofocus>common/checkoff.png</textureradiooffnofocus>
                     <texturefocus colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
-                    <label>Inloggen met emailadres:</label>
+                    <label>Inloggen met emailadres</label>
                 </control>
                 <control type="edit" id="1005">
                     <onup>1004</onup>

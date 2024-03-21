@@ -98,8 +98,8 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
             ChannelRecordEvent = 'false'
             ChannelRecordSeries = 'false'
             ChannelAlarm = 'false'
-            ProgramNowName = 'Informatie wordt geladen'
-            ProgramNextName = 'Informatie wordt geladen'
+            ProgramNowNameRaw = 'Informatie wordt geladen'
+            ProgramNextNameRaw = 'Informatie wordt geladen'
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramProgressPercent = '100'
             ProgramGenre = 'Televisie'
@@ -118,10 +118,10 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 ProgramStartString = ProgramStartDateTime.strftime('%H:%M')
                 ProgramEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
                 ProgramEndString = ProgramEndDateTime.strftime('%H:%M')
-                ProgramNowName = metadatainfo.programtitle_from_json_metadata(metaData)
+                ProgramNowNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
 
                 #Combine program name
-                ProgramGenre = '[COLOR FF888888](' + ProgramStartString + '/' + ProgramEndString + ') ' + ProgramNowName + '[/COLOR]'
+                ProgramGenre = '[COLOR FF888888](' + ProgramStartString + '/' + ProgramEndString + ') ' + ProgramNowNameRaw + '[/COLOR]'
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
@@ -138,8 +138,8 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 'ChannelRecordEvent': ChannelRecordEvent,
                 'ChannelRecordSeries': ChannelRecordSeries,
                 'ChannelAlarm': ChannelAlarm,
-                "ProgramNowName": ProgramNowName,
-                "ProgramNextName": ProgramNextName,
+                "ProgramNowName": ProgramNowNameRaw,
+                "ProgramNextName": ProgramNextNameRaw,
                 "ProgramDescription": ProgramDescription,
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,

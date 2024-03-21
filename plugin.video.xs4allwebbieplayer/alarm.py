@@ -90,6 +90,7 @@ def alarm_duplicate_channel_check(ChannelId):
 
 def alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramName, removeDuplicate=False):
     notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
+    dateTimeNow = datetime.now()
 
     #Check if alarm start time already exists
     if removeDuplicate == True and alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId):
@@ -99,8 +100,18 @@ def alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, Prog
         xbmcgui.Dialog().notification(var.addonname, 'Er is al een alarm voor dit tijdstip.', notificationIcon, 2500, False)
         return False
 
-    #Check if program is more than 3 minutes away
-    ProgramTimeLeft = int((ProgramTimeStartDateTime - datetime.now()).total_seconds())
+    #Check if program time is valid
+    if ProgramTimeStartDateTime == datetime(1970,1,1):
+        xbmcgui.Dialog().notification(var.addonname, 'Ongeldig programma begin tijd', notificationIcon, 2500, False)
+        return False
+
+    #Check if program time is in future
+    if dateTimeNow > ProgramTimeStartDateTime:
+        xbmcgui.Dialog().notification(var.addonname, 'Programma is al afgelopen', notificationIcon, 2500, False)
+        return False
+
+    #Check if program time is atleast 3 minutes away
+    ProgramTimeLeft = int((ProgramTimeStartDateTime - dateTimeNow).total_seconds())
     if ProgramTimeLeft <= 180:
         xbmcgui.Dialog().notification(var.addonname, 'Programma begint binnen 3 minuten.', notificationIcon, 2500, False)
         return False

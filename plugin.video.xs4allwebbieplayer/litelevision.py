@@ -136,7 +136,6 @@ def list_update(listItem):
             ProgramNextName = 'Onbekend programma'
             ProgramNextNameRaw = 'Onbekend programma'
             ProgramNextTimeStartDateTime = datetime(1970,1,1)
-            ProgramNextTimeStartString = 'Onbekend'
             ProgramNextAlarm = 'false'
             ProgramNextRerun = 'false'
             ProgramNextRecordEvent = 'false'

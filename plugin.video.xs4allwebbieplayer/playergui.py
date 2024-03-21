@@ -304,20 +304,14 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Get and check the list container
         listContainer = self.getControl(1001)
         selectedItem = listContainer.getSelectedItem()
-        ProgramNextName = selectedItem.getProperty('ProgramNextNameRaw')
+        ProgramNextNameRaw = selectedItem.getProperty('ProgramNextNameRaw')
         ProgramNextTimeStartDateTime = func.datetime_from_string(selectedItem.getProperty("ProgramNextTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
         ChannelId = selectedItem.getProperty('ChannelId')
         ExternalId = selectedItem.getProperty('ExternalId')
         ChannelName = selectedItem.getProperty('ChannelName')
 
-        #Check the program time
-        if ProgramNextTimeStartDateTime != datetime(1970,1,1) and datetime.now() > ProgramNextTimeStartDateTime:
-            notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Programma is al afgelopen.', notificationIcon, 2500, False)
-            return
-
-        #Set or remove the next program alarm
-        alarmAdded = alarm.alarm_add(ProgramNextTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramNextName, True)
+        #Set or remove the program alarm
+        alarmAdded = alarm.alarm_add(ProgramNextTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramNextNameRaw, True)
 
         #Update alarm icon in the information
         if alarmAdded == True:
