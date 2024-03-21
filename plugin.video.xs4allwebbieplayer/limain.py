@@ -107,7 +107,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and ApiLoggedIn == True and getset.setting_get('MainShowSearch') == 'true':
+        if ApiLoggedIn == True and getset.setting_get('MainShowSearch') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/search.png')
 

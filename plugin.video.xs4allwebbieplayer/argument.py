@@ -11,6 +11,7 @@ import likidsprogram
 import limain
 import limovies
 import lirecorded
+import lisearch
 import liseriesepisode
 import liseriesprogram
 import lisport
@@ -76,6 +77,8 @@ def handle_launch_argument_source():
             lichanneltelevision.list_load_combined(downloadEpg=True)
         elif actionItem == "page_radio":
             lichannelradio.list_load_combined()
+        elif actionItem == "page_search":
+            lisearch.list_load_remote()
         elif actionItem == "page_movies":
             limovies.list_load_combined()
         elif actionItem == "page_series":

@@ -35,7 +35,7 @@ def list_load_append(listContainer, remoteMode=False):
         try:
             #Load program basics
             ProgramNameRaw = metadatainfo.programtitle_from_json_metadata(program)
-            ProgramName = ProgramNameRaw
+            ProgramNameStatus = ProgramNameRaw
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermResult) == False:
@@ -48,7 +48,7 @@ def list_load_append(listContainer, remoteMode=False):
             if recordingStatus == 'ScheduleSuccess' or recordingStatus == 'RescheduleSuccess' or recordingStatus == 'NoAssets':
                 continue
             elif recordingStatus == 'RecordFailed':
-                ProgramName = '(Opname mislukt) ' + ProgramName
+                ProgramNameStatus = '(Opname mislukt) ' + ProgramNameStatus
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
@@ -73,7 +73,7 @@ def list_load_append(listContainer, remoteMode=False):
             ProgramDetails = metadatacombine.program_details(program, True, False, True, True, True, True, True)
 
             #Update program name string
-            ProgramNameList = ProgramName + ' ' + ProgramDetails
+            ProgramNameList = ProgramNameStatus + ' ' + ProgramDetails
             ProgramNameDesc = ProgramNameRaw + '\n' + ProgramDetails
 
             #Update program availability
@@ -94,8 +94,8 @@ def list_load_append(listContainer, remoteMode=False):
                 "ProgramNameRaw": ProgramNameRaw,
                 "ProgramDetails": ProgramTiming,
                 'ProgramDescription': ProgramDescription,
-                'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramTiming, 'Title': ProgramName, 'Plot': ProgramDescription, 'Duration': ProgramDurationSeconds},
+                'ItemLabel': ProgramNameStatus,
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramTiming, 'Title': ProgramNameStatus, 'Plot': ProgramDescription, 'Duration': ProgramDurationSeconds},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
                 'ItemAction': 'play_stream_recorded'
             }

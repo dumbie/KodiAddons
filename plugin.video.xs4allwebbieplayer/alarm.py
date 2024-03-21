@@ -102,12 +102,12 @@ def alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, Prog
 
     #Check if program time is valid
     if ProgramTimeStartDateTime == datetime(1970,1,1):
-        xbmcgui.Dialog().notification(var.addonname, 'Ongeldig programma begin tijd', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Ongeldig programma begin tijd.', notificationIcon, 2500, False)
         return False
 
     #Check if program time is in future
     if dateTimeNow > ProgramTimeStartDateTime:
-        xbmcgui.Dialog().notification(var.addonname, 'Programma is al afgelopen', notificationIcon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, 'Programma is al afgelopen.', notificationIcon, 2500, False)
         return False
 
     #Check if program time is atleast 3 minutes away
