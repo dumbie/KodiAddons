@@ -48,6 +48,9 @@ def icon_addon(iconName):
     else:
         return resources('resources/skins/default/media/common/' + iconName + '.png')
 
+def icon_fanart():
+    return resources('resources/fanart.jpg')
+
 def api_url_120(arguments):
     return 'https://' + var.ApiEndpointUrl() + '/101/1.2.0/A/nld/pctv/kpn/' + arguments
 
