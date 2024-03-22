@@ -1,11 +1,10 @@
-from datetime import datetime
 import xbmcgui
 import dialog
 import files
 import func
+import getset
 import path
 import var
-import getset
 
 def cache_check_folder():
     try:

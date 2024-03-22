@@ -1,110 +1,20 @@
-import json
 import xbmc
 import classes
 import dialog
-import files
-import func
 import hybrid
-import var
+import searchhistory
 
-def search_history_search_json_load(forceLoad=False):
-    try:
-        if var.SearchHistorySearchJson == [] or forceLoad == True:
-            if files.existFileUser('SearchHistorySearch.js') == True:
-                SearchHistoryJsonString = files.openFileUser('SearchHistorySearch.js')
-                var.SearchHistorySearchJson = json.loads(SearchHistoryJsonString)
-    except:
-        var.SearchHistorySearchJson = []
-
-def search_history_channel_json_load(forceLoad=False):
-    try:
-        if var.SearchHistoryChannelJson == [] or forceLoad == True:
-            if files.existFileUser('SearchHistoryChannel.js') == True:
-                SearchHistoryJsonString = files.openFileUser('SearchHistoryChannel.js')
-                var.SearchHistoryChannelJson = json.loads(SearchHistoryJsonString)
-    except:
-        var.SearchHistoryChannelJson = []
-
-def search_history_radio_json_load(forceLoad=False):
-    try:
-        if var.SearchHistoryRadioJson == [] or forceLoad == True:
-            if files.existFileUser('SearchHistoryRadio.js') == True:
-                SearchHistoryJsonString = files.openFileUser('SearchHistoryRadio.js')
-                var.SearchHistoryRadioJson = json.loads(SearchHistoryJsonString)
-    except:
-        var.SearchHistoryRadioJson = []
-
-def search_history_add(searchTerm, searchJsonFileName):
-    #Check search term
-    if func.string_isnullorempty(searchTerm) == True:
-        return
-
-    #Set Json target list variable
-    if searchJsonFileName == 'SearchHistoryChannel.js':
-        searchHistoryTargetJson = var.SearchHistoryChannelJson
-    elif searchJsonFileName == 'SearchHistoryRadio.js':
-        searchHistoryTargetJson = var.SearchHistoryRadioJson
-    elif searchJsonFileName == 'SearchHistorySearch.js':
-        searchHistoryTargetJson = var.SearchHistorySearchJson
-    else:
-        return
-
-    #Remove search term from Json
-    search_history_remove(searchTerm, searchJsonFileName, False)
-
-    #Add search history to Json
-    searchHistoryTargetJson.insert(0, searchTerm)
-
-    #Trim search history length
-    if len(searchHistoryTargetJson) > 40:
-        searchHistoryTargetJson = searchHistoryTargetJson[:40]
-
-    #Save the raw json data to storage
-    JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
-    files.saveFileUser(searchJsonFileName, JsonDumpBytes)
-
-def search_history_remove(searchTerm, searchJsonFileName, saveJson=True):
-    #Set Json target list variable
-    if searchJsonFileName == 'SearchHistoryChannel.js':
-        searchHistoryTargetJson = var.SearchHistoryChannelJson
-    elif searchJsonFileName == 'SearchHistoryRadio.js':
-        searchHistoryTargetJson = var.SearchHistoryRadioJson
-    elif searchJsonFileName == 'SearchHistorySearch.js':
-        searchHistoryTargetJson = var.SearchHistorySearchJson
-    else:
-        return
-
-    #Remove search term from Json
-    for search in searchHistoryTargetJson:
-        try:
-            if search == searchTerm:
-                searchHistoryTargetJson.remove(search)
-                break
-        except:
-            continue
-
-    #Save the raw json data to storage
-    if saveJson == True:
-        JsonDumpBytes = json.dumps(searchHistoryTargetJson).encode('ascii')
-        files.saveFileUser(searchJsonFileName, JsonDumpBytes)
-
-def search_keyboard(searchJsonFileName, headerText='Zoeken'):
+def search_keyboard(headerText='Zoeken'):
     keyboard = xbmc.Keyboard('default', 'heading')
     keyboard.setHeading(headerText)
     keyboard.setDefault('')
     keyboard.setHiddenInput(False)
     keyboard.doModal()
     if keyboard.isConfirmed() == True:
-        #Get keyboard text
-        keyboardText = keyboard.getText()
-
-        #Add search history to Json
-        search_history_add(keyboardText, searchJsonFileName)
-
         #Return search result
         searchResult = classes.Class_SearchResult()
         searchResult.cancelled = False
-        searchResult.string = keyboardText
+        searchResult.string = keyboard.getText()
         return searchResult
     else:
         #Return search result
@@ -116,31 +26,37 @@ def search_keyboard(searchJsonFileName, headerText='Zoeken'):
 def search_dialog(searchJsonFileName, headerText='Zoeken'):
     #Set Json target list variable
     if searchJsonFileName == 'SearchHistoryChannel.js':
-        search_history_channel_json_load()
-        searchHistoryTargetJson = var.SearchHistoryChannelJson
+        searchHistoryJson = searchhistory.search_history_channel_json_load()
     elif searchJsonFileName == 'SearchHistoryRadio.js':
-        search_history_radio_json_load()
-        searchHistoryTargetJson = var.SearchHistoryRadioJson
+        searchHistoryJson = searchhistory.search_history_radio_json_load()
     elif searchJsonFileName == 'SearchHistorySearch.js':
-        search_history_search_json_load()
-        searchHistoryTargetJson = var.SearchHistorySearchJson
+        searchHistoryJson = searchhistory.search_history_search_json_load()
+    else:
+        searchHistoryJson = []
 
     #Set search history
-    dialogAnswers = hybrid.deep_copy_list(searchHistoryTargetJson)
-    dialogAnswers.insert(0, '- Leeg zoek term gebruiken')
-    dialogAnswers.insert(0, '+ Nieuw zoek term gebruiken')
+    dialogAnswers = hybrid.deep_copy_list(searchHistoryJson)
+    dialogAnswers.insert(0, '- Leeg zoekterm gebruiken')
+    dialogAnswers.insert(0, '+ Nieuw zoekterm gebruiken')
 
     dialogHeader = headerText
-    dialogSummary = 'Selecteer een eerder gebruikte zoek term of klik op nieuw zoek term.'
+    dialogSummary = 'Selecteer een eerder gebruikte zoekterm of klik op nieuw zoekterm.'
     dialogFooter = ''
 
     #Select search string
     searchString = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
 
     #Check search string
-    if searchString == '+ Nieuw zoek term gebruiken':
-        return search_keyboard(searchJsonFileName)
-    elif searchString == '- Leeg zoek term gebruiken':
+    if searchString == '+ Nieuw zoekterm gebruiken':
+        #Set search result
+        searchResult = search_keyboard()
+
+        #Add search history to Json
+        searchhistory.search_history_add(searchResult.string, searchJsonFileName)
+
+        #Return search result
+        return searchResult
+    elif searchString == '- Leeg zoekterm gebruiken':
         #Return search result
         searchResult = classes.Class_SearchResult()
         searchResult.cancelled = False
@@ -153,11 +69,13 @@ def search_dialog(searchJsonFileName, headerText='Zoeken'):
         searchResult.string = ''
         return searchResult
     else:
-        #Add search history to Json
-        search_history_add(searchString, searchJsonFileName)
-
-        #Return search result
+        #Set search result
         searchResult = classes.Class_SearchResult()
         searchResult.cancelled = False
         searchResult.string = searchString
+
+        #Add search history to Json
+        searchhistory.search_history_add(searchResult.string, searchJsonFileName)
+
+        #Return search result
         return searchResult

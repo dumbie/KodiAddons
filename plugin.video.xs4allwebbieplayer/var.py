@@ -189,9 +189,6 @@ SearchSelectIdentifier = ''
 SearchTermResult = ''
 SearchTermDownload = ''
 SearchProgramDataJson = []
-SearchHistorySearchJson = []
-SearchHistoryChannelJson = []
-SearchHistoryRadioJson = []
 
 #Kids variables
 KidsProgramSelectIdentifier = ''

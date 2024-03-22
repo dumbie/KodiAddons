@@ -9,7 +9,7 @@ class Class_ThreadSafe:
         self.thread = None
         self.eventSleep = None
         self.threadName = ""
-        self.loopCount = 0
+        self.threadLooped = False
 
     #Start thread
     def Start(self, threadTarget, threadArgs=None, threadForce=False):
@@ -65,7 +65,7 @@ class Class_ThreadSafe:
             self.thread = None
             self.eventSleep = None
             self.threadName = ""
-            self.loopCount = 0
+            self.threadLooped = False
             return True
         except:
             xbmc.log("Thread failed to stop.", xbmc.LOGINFO)
@@ -81,9 +81,10 @@ class Class_ThreadSafe:
 
     #Check if thread is allowed to loop
     def Allowed(self, sleepDelayMs=0):
-        if self.loopCount != 0 and sleepDelayMs != 0:
+        if self.threadLooped != False and sleepDelayMs != 0:
             self.Sleep(sleepDelayMs)
-        self.loopCount += 1
+        else:
+            self.threadLooped = True
         return self.allowed == True and func.check_loop_allowed()
 
     #Sleep thread until set or timeout

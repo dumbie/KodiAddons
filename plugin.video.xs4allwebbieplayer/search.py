@@ -35,7 +35,7 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1000)
         if listContainer.size() == 0:
             if func.string_isnullorempty(var.SearchTermDownload) == True:
-                guifunc.updateLabelText(self, 1, 'Geen zoek term')
+                guifunc.updateLabelText(self, 1, 'Geen zoekterm')
                 guifunc.updateLabelText(self, 3, "")
                 listContainer = self.getControl(1001)
                 guifunc.controlFocus(self, listContainer)
@@ -170,7 +170,7 @@ class Gui(xbmcgui.WindowXML):
         #Check search term
         if func.string_isnullorempty(searchDialogTerm.string) == True:
             notificationIcon = path.resources('resources/skins/default/media/common/search.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Leeg zoek term', notificationIcon, 2500, False)
+            xbmcgui.Dialog().notification(var.addonname, 'Leeg zoekterm', notificationIcon, 2500, False)
             return
 
         #Update search term

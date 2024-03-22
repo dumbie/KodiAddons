@@ -72,13 +72,19 @@ def handle_launch_argument_source():
         elif actionItem == "cache_remove_all":
             cache.cache_remove_all(False)
 
+        #Search actions
+        elif actionItem == "page_search":
+            lisearch.list_load_history()
+        elif actionItem == "load_search_keyboard":
+            lisearch.list_load_keyboard()
+        elif actionItem == "load_search_term":
+            lisearch.list_load_term(jsonItem['SearchTerm'])
+
         #List pages
         elif actionItem == "page_television":
             lichanneltelevision.list_load_combined(downloadEpg=True)
         elif actionItem == "page_radio":
             lichannelradio.list_load_combined()
-        elif actionItem == "page_search":
-            lisearch.list_load_remote()
         elif actionItem == "page_movies":
             limovies.list_load_combined()
         elif actionItem == "page_series":
