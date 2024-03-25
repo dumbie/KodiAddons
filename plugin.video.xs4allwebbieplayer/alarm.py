@@ -37,29 +37,32 @@ def alarm_clean_expired(delayed=False):
         xbmc.sleep(2000)
 
     #Check if alarm has already passed
-    for alarm in var.AlarmDataJson:
+    alarmRemoved = False
+    for alarm in var.AlarmDataJson[:]:
         try:
             ProgramTimeStartDateTime = func.datetime_from_string(alarm['starttime'], '%Y-%m-%d %H:%M:%S')
 
             #Remove the alarm if it has passed
             if datetime.now() >= ProgramTimeStartDateTime:
                 var.AlarmDataJson.remove(alarm)
+                alarmRemoved = True
         except:
             continue
 
-    #Save the raw json data to storage
-    JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
-    files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
+    if alarmRemoved == True:
+        #Save the raw json data to storage
+        JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
+        files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
 
-    #Update the main page count
-    if var.guiMain != None:
-        var.guiMain.count_alarm()
+        #Update the main page count
+        if var.guiMain != None:
+            var.guiMain.count_alarm()
 
-    #Update the alarm window count
-    if var.guiAlarm != None:
-        var.guiAlarm.count_alarm()
+        #Update the alarm window count
+        if var.guiAlarm != None:
+            var.guiAlarm.count_alarm()
 
-    return True
+    return alarmRemoved
 
 def alarm_duplicate_time_check(ProgramTimeStart):
     for alarm in var.AlarmDataJson:
@@ -138,30 +141,33 @@ def alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, Prog
 
 def alarm_remove(ProgramTimeStart):
     #Check if the alarm start exists
-    for alarm in var.AlarmDataJson:
+    alarmRemoved = False
+    for alarm in var.AlarmDataJson[:]:
         try:
             if str(ProgramTimeStart) == alarm['starttime']:
                 var.AlarmDataJson.remove(alarm)
+                alarmRemoved = True
         except:
             continue
 
-    #Save the raw json data to storage
-    JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
-    files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
+    if alarmRemoved == True:
+        #Save the raw json data to storage
+        JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
+        files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
 
-    #Alarm has been removed notification
-    notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
-    xbmcgui.Dialog().notification(var.addonname, 'Programma alarm is geannuleerd.', notificationIcon, 2500, False)
+        #Alarm has been removed notification
+        notificationIcon = path.resources('resources/skins/default/media/common/alarm.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Programma alarm is geannuleerd.', notificationIcon, 2500, False)
 
-    #Update the main page count
-    if var.guiMain != None:
-        var.guiMain.count_alarm()
+        #Update the main page count
+        if var.guiMain != None:
+            var.guiMain.count_alarm()
 
-    #Update the alarm window count
-    if var.guiAlarm != None:
-        var.guiAlarm.count_alarm()
+        #Update the alarm window count
+        if var.guiAlarm != None:
+            var.guiAlarm.count_alarm()
 
-    return True
+    return alarmRemoved
 
 def alarm_remove_all():
     if len(var.AlarmDataJson) > 0:

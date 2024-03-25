@@ -201,10 +201,13 @@ SportSelectIdentifier = ''
 SportProgramDataJson = []
 
 #Radio variables
+RadioChannelIdsPlayableArray = []
+RadioChannelIdsPlayableString = ''
 RadioChannelsDataJson = []
 
 #Television variables
-TelevisionChannelIdsPlayable = ''
+TelevisionChannelIdsPlayableArray = []
+TelevisionChannelIdsPlayableString = ''
 TelevisionChannelsDataJson = []
 
 #Vod variables

@@ -66,22 +66,22 @@ def hidden_remove(listItem, hiddenJsonFile):
         hiddenTargetJson = var.HiddenRadioJson
 
     hiddenRemoved = False
-    for hidden in hiddenTargetJson:
+    for hidden in hiddenTargetJson[:]:
         try:
             if hidden == ChannelId:
                 hiddenTargetJson.remove(hidden)
                 hiddenRemoved = True
-                break
         except:
             continue
 
-    #Save the raw json data to storage
-    JsonDumpBytes = json.dumps(hiddenTargetJson).encode('ascii')
-    files.saveFileUser(hiddenJsonFile, JsonDumpBytes)
+    if hiddenRemoved == True:
+        #Save the raw json data to storage
+        JsonDumpBytes = json.dumps(hiddenTargetJson).encode('ascii')
+        files.saveFileUser(hiddenJsonFile, JsonDumpBytes)
 
-    #Hidden has been removed notification
-    notificationIcon = path.resources('resources/skins/default/media/common/vodyes.png')
-    xbmcgui.Dialog().notification(var.addonname, 'Zender niet meer verborgen.', notificationIcon, 2500, False)
+        #Hidden has been removed notification
+        notificationIcon = path.resources('resources/skins/default/media/common/vodyes.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Zender niet meer verborgen.', notificationIcon, 2500, False)
     return hiddenRemoved
 
 def switch_to_page(hiddenMode='HiddenTelevision.js'):

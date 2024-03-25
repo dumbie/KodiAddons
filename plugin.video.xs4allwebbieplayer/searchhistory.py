@@ -61,13 +61,16 @@ def search_history_remove(searchTerm, searchJsonFileName):
         return
 
     #Remove search term from Json
-    for search in searchHistoryJson:
+    searchRemoved = False
+    for search in searchHistoryJson[:]:
         try:
             if search == searchTerm:
                 searchHistoryJson.remove(search)
+                searchRemoved = True
         except:
             continue
 
-    #Save json data to storage
-    JsonDumpBytes = json.dumps(searchHistoryJson).encode('ascii')
-    files.saveFileUser(searchJsonFileName, JsonDumpBytes)
+    if searchRemoved == True:
+        #Save json data to storage
+        JsonDumpBytes = json.dumps(searchHistoryJson).encode('ascii')
+        files.saveFileUser(searchJsonFileName, JsonDumpBytes)

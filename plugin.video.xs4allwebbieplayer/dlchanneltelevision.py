@@ -10,7 +10,7 @@ import path
 import var
 
 def update_playable_channel_identifiers():
-    ChannelIdsPlayable = []
+    var.TelevisionChannelIdsPlayableArray = []
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
@@ -20,12 +20,12 @@ def update_playable_channel_identifiers():
             #Check if channel is streamable
             if func.string_isnullorempty(StreamAssetId) == False:
                 #Add channelId to playable id list
-                ChannelIdsPlayable.append(ChannelId)
+                var.TelevisionChannelIdsPlayableArray.append(ChannelId)
         except:
             pass
 
     #Convert playable identifiers to string
-    var.TelevisionChannelIdsPlayable = ','.join(filter(None, ChannelIdsPlayable))
+    var.TelevisionChannelIdsPlayableString = ','.join(filter(None, var.TelevisionChannelIdsPlayableArray))
 
 def download(forceUpdate=False):
     try:
