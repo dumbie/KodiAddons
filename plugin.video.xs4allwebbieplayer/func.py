@@ -21,6 +21,12 @@ def run_addon(showNotification=True):
 def check_addon_running():
     return getset.get_addon_windowId_bottom() != 0
 
+#Check for add-on updates
+def check_addon_updates(showNotification=True):
+    if showNotification == True:
+        xbmcgui.Dialog().notification(var.addonname, 'Controleren add-on updates gestart.', var.addonicon, 2500, False)
+    xbmc.executebuiltin('UpdateAddonRepos')
+
 #Check if loop is allowed
 def check_loop_allowed():
     try:

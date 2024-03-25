@@ -62,7 +62,8 @@
   <category label="Onderhoud">
     <setting id="ResetUserdata" type="action" label="Verwijder userdata bestanden" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetUserdata)"/>
     <setting id="ResetThumbnails" type="action" label="Alle opgeslagen zenderlogo's vernieuwen" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?ResetThumbnails)"/>
-    <setting id="UpdateWidevineFiles" type="action" label="Update de benodigde Widevine-beveiligingsbestanden" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
+    <setting id="UpdateWidevineFiles" type="action" label="Update benodigde Widevine-beveiligingsbestanden" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateWidevineFiles)"/>
+    <setting id="UpdateKodiAddons" type="action" label="Controleren als er add-on updates beschikbaar zijn" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?UpdateKodiAddons)"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Stream">

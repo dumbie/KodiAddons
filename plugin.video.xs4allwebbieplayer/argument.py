@@ -40,6 +40,9 @@ def handle_launch_argument_source():
         elif var.LaunchArgument == "UpdateWidevineFiles":
             widevine.enable_widevine_support(True)
             return True
+        elif var.LaunchArgument == "UpdateKodiAddons":
+            func.check_addon_updates()
+            return True
         elif var.LaunchArgument == "ResetUserdata":
             settings.reset_userdata()
             return True

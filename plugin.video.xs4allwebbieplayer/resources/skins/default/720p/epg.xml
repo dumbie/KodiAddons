@@ -428,7 +428,7 @@
                 <onup>1000</onup>
                 <onleft>2001</onleft>
                 <onright>2002</onright>
-                <itemlayout width="735" height="70">
+                <itemlayout width="735" height="72">
                     <control type="image">
                         <width>730</width>
                         <height>68</height>
@@ -536,7 +536,7 @@
                         <info>ListItem.Property(ProgramEpgList)</info>
                     </control>
                 </itemlayout>
-                <focusedlayout width="735" height="70">
+                <focusedlayout width="735" height="72">
                     <control type="image">
                         <width>730</width>
                         <height>68</height>
