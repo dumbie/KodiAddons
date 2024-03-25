@@ -302,7 +302,7 @@
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramNowName)</info>
+                        <info>ListItem.Property(ProgramNowNameRaw)</info>
                     </control>
                     <control type="progress">
                         <top>150</top>
@@ -396,7 +396,7 @@
                         <aligny>center</aligny>
                         <textcolor>FFFFFFFF</textcolor>
                         <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramNowName)</info>
+                        <info>ListItem.Property(ProgramNowNameRaw)</info>
                         <autoscroll delay="0" time="1000" repeat="1000"/>
                     </control>
                     <control type="progress">

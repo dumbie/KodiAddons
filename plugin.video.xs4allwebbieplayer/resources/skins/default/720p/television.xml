@@ -268,7 +268,7 @@
                 <onright>2001</onright>
                 <pagecontrol>2001</pagecontrol>
                 <orientation>vertical</orientation>
-                <itemlayout width="800" height="73">
+                <itemlayout width="800" height="70">
                     <control type="image">
                         <width>800</width>
                         <height>68</height>
@@ -297,37 +297,6 @@
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
-                    <control type="label">
-                        <left>60</left>
-                        <width>635</width>
-                        <height>30</height>
-                        <align>left</align>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramNowName)</info>
-                    </control>
-                    <control type="progress">
-                        <top>31</top>
-                        <left>60</left>
-                        <width>730</width>
-                        <height>5</height>
-                        <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
-                        <lefttexture>-</lefttexture>
-                        <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
-                        <righttexture>-</righttexture>
-                        <overlaytexture>-</overlaytexture>
-                        <info>ListItem.Property(ProgramProgressPercent)</info>
-                    </control>
-                    <control type="label">
-                        <top>36</top>
-                        <left>60</left>
-                        <width>635</width>
-                        <height>30</height>
-                        <align>left</align>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramNextName)</info>
-                    </control>
                     <control type="image">
                         <top>2</top>
                         <left>40</left>
@@ -337,18 +306,49 @@
                         <texture>common/star.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
                     </control>
-                    <control type="image">
-                        <top>6</top>
-                        <left>727</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/rerun.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNowRerun), true)</visible>
+                    <control type="progress">
+                        <top>30</top>
+                        <left>60</left>
+                        <width>730</width>
+                        <height>7</height>
+                        <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
+                        <lefttexture>-</lefttexture>
+                        <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
+                        <righttexture>-</righttexture>
+                        <overlaytexture>-</overlaytexture>
+                        <info>ListItem.Property(ProgramProgressPercent)</info>
+                    </control>
+                    <!-- Program Now -->
+                    <control type="label">
+                        <left>60</left>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNowNameRaw)</info>
+                    </control>
+                    <control type="label">
+                        <right>10</right>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>right</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNowTimingList)</info>
                     </control>
                     <control type="image">
                         <top>6</top>
-                        <left>750</left>
+                        <right>150</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNowRecordSeries), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>6</top>
+                        <right>172</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -357,51 +357,72 @@
                     </control>
                     <control type="image">
                         <top>6</top>
-                        <left>773</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/recordseries.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNowRecordSeries), true)</visible>
-                    </control>
-                    <control type="image">
-                        <top>42</top>
-                        <left>704</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/alarm.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
-                    </control>
-                    <control type="image">
-                        <top>42</top>
-                        <left>727</left>
+                        <right>194</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/rerun.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextRerun), true)</visible>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNowRerun), true)</visible>
+                    </control>
+                    <!-- Program Next -->
+                    <control type="label">
+                        <top>36</top>
+                        <left>60</left>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNextNameRaw)</info>
+                    </control>
+                    <control type="label">
+                        <top>36</top>
+                        <right>10</right>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>right</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNextTimingList)</info>
                     </control>
                     <control type="image">
                         <top>42</top>
-                        <left>750</left>
+                        <right>150</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
-                        <texture>common/record.png</texture>
+                        <texture colordiffuse="FF888888">common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextRecordSeries), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>42</top>
+                        <right>172</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture colordiffuse="FF888888">common/record.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ProgramNextRecordEvent), true)</visible>
                     </control>
                     <control type="image">
                         <top>42</top>
-                        <left>773</left>
+                        <right>194</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
-                        <texture>common/recordseries.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextRecordSeries), true)</visible>
+                        <texture colordiffuse="FF888888">common/rerun.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextRerun), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>42</top>
+                        <right>216</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture colordiffuse="FF888888">common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
                     </control>
                 </itemlayout>
-                <focusedlayout width="800" height="73">
+                <focusedlayout width="800" height="70">
                     <control type="image">
                         <width>800</width>
                         <height>68</height>
@@ -430,41 +451,6 @@
                         <selectedcolor>FF888888</selectedcolor>
                         <info>ListItem.Property(ChannelNumberAccent)</info>
                     </control>
-                    <control type="label">
-                        <left>60</left>
-                        <width>635</width>
-                        <height>30</height>
-                        <align>left</align>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramNowName)</info>
-                        <scroll>true</scroll>
-                        <scrollspeed>60</scrollspeed>
-                    </control>
-                    <control type="progress">
-                        <top>31</top>
-                        <left>60</left>
-                        <width>730</width>
-                        <height>5</height>
-                        <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
-                        <lefttexture>-</lefttexture>
-                        <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
-                        <righttexture>-</righttexture>
-                        <overlaytexture>-</overlaytexture>
-                        <info>ListItem.Property(ProgramProgressPercent)</info>
-                    </control>
-                    <control type="label">
-                        <top>36</top>
-                        <left>60</left>
-                        <width>635</width>
-                        <height>30</height>
-                        <align>left</align>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <selectedcolor>FF888888</selectedcolor>
-                        <info>ListItem.Property(ProgramNextName)</info>
-                        <scroll>true</scroll>
-                        <scrollspeed>60</scrollspeed>
-                    </control>
                     <control type="image">
                         <top>2</top>
                         <left>40</left>
@@ -474,18 +460,51 @@
                         <texture>common/star.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ChannelFavorite), true)</visible>
                     </control>
-                    <control type="image">
-                        <top>6</top>
-                        <left>727</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/rerun.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNowRerun), true)</visible>
+                    <control type="progress">
+                        <top>30</top>
+                        <left>60</left>
+                        <width>730</width>
+                        <height>7</height>
+                        <texturebg colordiffuse="FF888888">common/background_light.png</texturebg>
+                        <lefttexture>-</lefttexture>
+                        <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
+                        <righttexture>-</righttexture>
+                        <overlaytexture>-</overlaytexture>
+                        <info>ListItem.Property(ProgramProgressPercent)</info>
+                    </control>
+                    <!-- Program Now -->
+                    <control type="label">
+                        <left>60</left>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNowNameRaw)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
+                    </control>
+                    <control type="label">
+                        <right>10</right>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>right</align>
+                        <textcolor>FFFFFFFF</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNowTimingList)</info>
                     </control>
                     <control type="image">
                         <top>6</top>
-                        <left>750</left>
+                        <right>150</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNowRecordSeries), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>6</top>
+                        <right>172</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -494,48 +513,71 @@
                     </control>
                     <control type="image">
                         <top>6</top>
-                        <left>773</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/recordseries.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNowRecordSeries), true)</visible>
-                    </control>
-                    <control type="image">
-                        <top>42</top>
-                        <left>704</left>
-                        <width>18</width>
-                        <height>18</height>
-                        <aspectratio>keep</aspectratio>
-                        <texture>common/alarm.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
-                    </control>
-                    <control type="image">
-                        <top>42</top>
-                        <left>727</left>
+                        <right>194</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
                         <texture>common/rerun.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextRerun), true)</visible>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNowRerun), true)</visible>
+                    </control>
+                    <!-- Program Next -->
+                    <control type="label">
+                        <top>36</top>
+                        <left>60</left>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>left</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNextNameRaw)</info>
+                        <scroll>true</scroll>
+                        <scrollspeed>60</scrollspeed>
+                    </control>
+                    <control type="label">
+                        <top>36</top>
+                        <right>10</right>
+                        <width>500</width>
+                        <height>30</height>
+                        <align>right</align>
+                        <textcolor>FF888888</textcolor>
+                        <selectedcolor>FF888888</selectedcolor>
+                        <info>ListItem.Property(ProgramNextTimingList)</info>
                     </control>
                     <control type="image">
                         <top>42</top>
-                        <left>750</left>
+                        <right>150</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
-                        <texture>common/record.png</texture>
+                        <texture colordiffuse="FF888888">common/recordseries.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextRecordSeries), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>42</top>
+                        <right>172</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture colordiffuse="FF888888">common/record.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ProgramNextRecordEvent), true)</visible>
                     </control>
                     <control type="image">
                         <top>42</top>
-                        <left>773</left>
+                        <right>194</right>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
-                        <texture>common/recordseries.png</texture>
-                        <visible>String.IsEqual(ListItem().Property(ProgramNextRecordSeries), true)</visible>
+                        <texture colordiffuse="FF888888">common/rerun.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextRerun), true)</visible>
+                    </control>
+                    <control type="image">
+                        <top>42</top>
+                        <right>216</right>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture colordiffuse="FF888888">common/alarm.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramNextAlarm), true)</visible>
                     </control>
                 </focusedlayout>
             </control>

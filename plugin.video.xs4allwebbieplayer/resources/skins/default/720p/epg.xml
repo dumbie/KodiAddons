@@ -431,7 +431,7 @@
                 <itemlayout width="735" height="70">
                     <control type="image">
                         <width>730</width>
-                        <height>65</height>
+                        <height>68</height>
                         <texture colordiffuse="BEFFFFFF">common/background_dark.png</texture>
                     </control>
                     <control type="image">
@@ -444,7 +444,7 @@
                     </control>
                     <control type="image">
                         <right>15</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -453,7 +453,7 @@
                     </control>
                     <control type="image">
                         <right>35</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -462,7 +462,7 @@
                     </control>
                     <control type="image">
                         <right>55</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -471,7 +471,7 @@
                     </control>
                     <control type="image">
                         <right>75</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -480,7 +480,7 @@
                     </control>
                     <control type="image">
                         <right>95</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -489,7 +489,7 @@
                     </control>
                     <control type="image">
                         <right>95</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -509,14 +509,14 @@
                         <top>30</top>
                         <left>60</left>
                         <width>660</width>
-                        <height>5</height>
+                        <height>7</height>
                         <texture colordiffuse="FF888888">common/background_light.png</texture>
                     </control>
                     <control type="progress">
                         <top>30</top>
                         <left>60</left>
                         <width>660</width>
-                        <height>5</height>
+                        <height>7</height>
                         <texturebg>common/background_transp.png</texturebg>
                         <lefttexture>-</lefttexture>
                         <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
@@ -526,7 +526,7 @@
                         <info>ListItem.Property(ProgramProgressPercent)</info>
                     </control>
                     <control type="label">
-                        <top>33</top>
+                        <top>36</top>
                         <left>60</left>
                         <width>450</width>
                         <height>30</height>
@@ -539,7 +539,7 @@
                 <focusedlayout width="735" height="70">
                     <control type="image">
                         <width>730</width>
-                        <height>65</height>
+                        <height>68</height>
                         <texture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorFocused)]">common/background_light.png</texture>
                     </control>
                     <control type="image">
@@ -552,7 +552,7 @@
                     </control>
                     <control type="image">
                         <right>15</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -561,7 +561,7 @@
                     </control>
                     <control type="image">
                         <right>35</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -570,7 +570,7 @@
                     </control>
                     <control type="image">
                         <right>55</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -579,7 +579,7 @@
                     </control>
                     <control type="image">
                         <right>75</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -588,7 +588,7 @@
                     </control>
                     <control type="image">
                         <right>95</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -597,7 +597,7 @@
                     </control>
                     <control type="image">
                         <right>95</right>
-                        <bottom>13</bottom>
+                        <top>42</top>
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
@@ -619,14 +619,14 @@
                         <top>30</top>
                         <left>60</left>
                         <width>660</width>
-                        <height>5</height>
+                        <height>7</height>
                         <texture colordiffuse="FF888888">common/background_light.png</texture>
                     </control>
                     <control type="progress">
                         <top>30</top>
                         <left>60</left>
                         <width>660</width>
-                        <height>5</height>
+                        <height>7</height>
                         <texturebg>common/background_transp.png</texturebg>
                         <lefttexture>-</lefttexture>
                         <midtexture colordiffuse="$INFO[Window(10000).Property(WebbiePlayerColorAccent)]">common/background_light.png</midtexture>
@@ -636,7 +636,7 @@
                         <info>ListItem.Property(ProgramProgressPercent)</info>
                     </control>
                     <control type="label">
-                        <top>33</top>
+                        <top>36</top>
                         <left>60</left>
                         <width>450</width>
                         <height>30</height>

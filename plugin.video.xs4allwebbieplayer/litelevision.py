@@ -41,11 +41,9 @@ def list_update(listItem):
             ProgramNowDuration = metadatainfo.programdurationstring_from_json_metadata(metaData)
             ProgramProgressPercent = str(int(((dateTimeNow - ProgramNowTimeStartDateTime).total_seconds() / 60) * 100 / ((ProgramNowTimeEndDateTime - ProgramNowTimeStartDateTime).total_seconds() / 60)))
 
-            #Combine program name
-            ProgramNowName = ProgramNowNameRaw + ' [COLOR FF888888]' + ProgramNowTimeStartString + ' ' + ProgramNowDuration + '[/COLOR]'
-
             #Combine program timing
-            ProgramNowTiming = metadatacombine.program_timing_program_metadata(metaData, dateTimeNow, dateTimeNow)
+            ProgramNowTimingList = ProgramNowTimeStartString + ' ' + ProgramNowDuration
+            ProgramNowTimingDesc = metadatacombine.program_timing_program_metadata(metaData, dateTimeNow, dateTimeNow)
 
             #Combine program description extended
             ProgramNowDescription = metadatacombine.program_description_extended(metaData)
@@ -78,9 +76,9 @@ def list_update(listItem):
         except:
             ProgramNowId = ''
             ProgramNowSeriesId = ''
-            ProgramNowName = 'Onbekend programma'
             ProgramNowNameRaw = 'Onbekend programma'
-            ProgramNowTiming = '[COLOR FF888888]onbekend programmaduur[/COLOR]'
+            ProgramNowTimingList = '(?)'
+            ProgramNowTimingDesc = '[COLOR FF888888]onbekend programmaduur[/COLOR]'
             ProgramNowDescription = 'Programmabeschrijving is niet geladen of beschikbaar.'
             ProgramNowDetails = 'Onbekend seizoen en aflevering'
             ProgramNowTimeStartDateTime = datetime(1970,1,1)
@@ -100,8 +98,8 @@ def list_update(listItem):
             ProgramNextTimeStartString = ProgramNextTimeStartDateTime.strftime('%H:%M')
             ProgramNextDuration = metadatainfo.programdurationstring_from_json_metadata(metaData)
 
-            #Combine program name
-            ProgramNextName = ProgramNextNameRaw + ' [COLOR FF888888]' + ProgramNextTimeStartString + ' ' + ProgramNextDuration + '[/COLOR]'
+            #Combine program timing
+            ProgramNextTimingList = ProgramNextTimeStartString + ' ' + ProgramNextDuration
 
             #Check if program has active alarm
             if alarm.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
@@ -133,8 +131,8 @@ def list_update(listItem):
         except:
             ProgramNextId = ''
             ProgramNextSeriesId = ''
-            ProgramNextName = 'Onbekend programma'
             ProgramNextNameRaw = 'Onbekend programma'
+            ProgramNextTimingList = '(?)'
             ProgramNextTimeStartDateTime = datetime(1970,1,1)
             ProgramNextAlarm = 'false'
             ProgramNextRerun = 'false'
@@ -154,7 +152,7 @@ def list_update(listItem):
             ProgramEarlier = ''
 
         #Combine program description
-        ProgramDescription = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowNameRaw + ' ' + ProgramNowTiming + '\n\n' + ProgramNowDetails + '\n\n' + ProgramNowDescription
+        ProgramDescription = channelNumberAccent + ' ' + channelName + '\n\n' + ProgramNowNameRaw + ' ' + ProgramNowTimingDesc + '\n\n' + ProgramNowDetails + '\n\n' + ProgramNowDescription
 
         #Append upcoming programs to the description
         if func.string_isnullorempty(ProgramUpcoming) == False:
@@ -167,14 +165,14 @@ def list_update(listItem):
         #Update the information in list item
         listItem.setProperty("ProgramNowId", ProgramNowId)
         listItem.setProperty("ProgramNowSeriesId", ProgramNowSeriesId)
-        listItem.setProperty("ProgramNowName", ProgramNowName)
         listItem.setProperty("ProgramNowNameRaw", ProgramNowNameRaw)
+        listItem.setProperty("ProgramNowTimingList", ProgramNowTimingList)
         listItem.setProperty("ProgramNowTimeStartDateTime", str(ProgramNowTimeStartDateTime))
         listItem.setProperty("ProgramDescription", ProgramDescription)
         listItem.setProperty("ProgramNextId", ProgramNextId)
         listItem.setProperty("ProgramNextSeriesId", ProgramNextSeriesId)
-        listItem.setProperty("ProgramNextName", ProgramNextName)
         listItem.setProperty("ProgramNextNameRaw", ProgramNextNameRaw)
+        listItem.setProperty("ProgramNextTimingList", ProgramNextTimingList)
         listItem.setProperty("ProgramNextTimeStartDateTime", str(ProgramNextTimeStartDateTime))
         listItem.setProperty("ProgramNextAlarm", ProgramNextAlarm)
         listItem.setProperty("ProgramNowRerun", ProgramNowRerun)
