@@ -69,7 +69,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
                 'ItemAction': 'load_series_episodes_vod'
             }
             dirIsfolder = True
-            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
@@ -119,7 +119,7 @@ def list_load_program_append(listContainer, remoteMode=False):
                 'ItemAction': 'load_series_episodes_program'
             }
             dirIsfolder = True
-            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

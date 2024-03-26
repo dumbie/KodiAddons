@@ -53,6 +53,9 @@ def close_the_page():
         #Stop and reset all threads
         threadfunc.stop_reset_threads()
 
+        #Switch to main window
+        func.open_window_id(var.WINDOW_HOME)
+
         #Close the shown window
         var.guiMain.close()
 

@@ -3,6 +3,7 @@ import xbmcaddon
 import cache
 import favorite
 import func
+import hybrid
 import lichannelradio
 import lichanneltelevision
 import lifunc
@@ -26,7 +27,7 @@ def set_launch_argument_source():
     try:
         var.LaunchUrl = str(sys.argv[0])
         var.LaunchHandle = int(sys.argv[1])
-        var.LaunchArgument = str(sys.argv[2]).lstrip("?")
+        var.LaunchArgument = hybrid.urllib_unquote(str(sys.argv[2])).lstrip("?json=")
         return True
     except:
         return False
@@ -52,14 +53,11 @@ def handle_launch_argument_source():
         elif var.LaunchArgument == "OpenWelcomeScreen":
             welcome.show_welcome()
             return True
-        elif var.LaunchArgument == "SwitchAdultFilter":
-            settings.switch_adultfilter_onoff()
-            return True
 
         #List main menu
         elif func.string_isnullorempty(var.LaunchArgument):
-            func.run_addon()
             limain.list_load_combined()
+            func.run_addon(False)
             return True
 
         #Decode pickle directory url

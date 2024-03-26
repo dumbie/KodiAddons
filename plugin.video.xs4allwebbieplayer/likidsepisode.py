@@ -77,7 +77,7 @@ def list_load_vod_append(listContainer, downloadResult, selectedPictureUrl, remo
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
-            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
@@ -158,7 +158,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False
-            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

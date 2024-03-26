@@ -28,7 +28,7 @@ def list_load_history(listContainer=None):
             'ItemAction': 'load_search_keyboard'
         }
         dirIsfolder = True
-        dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+        dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
         listItem = lifunc.jsonitem_to_listitem(jsonItem)
         listContainerSort.append((dirUrl, listItem, dirIsfolder))
 
@@ -45,7 +45,7 @@ def list_load_history(listContainer=None):
                     'ItemAction': 'load_search_term'
                 }
                 dirIsfolder = True
-                dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+                dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
                 listItem = lifunc.jsonitem_to_listitem(jsonItem)
                 listContainerSort.append((dirUrl, listItem, dirIsfolder))
             except:
@@ -185,7 +185,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False
-            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:

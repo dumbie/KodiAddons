@@ -85,7 +85,7 @@ def list_load_append(listContainer, remoteMode=False):
                 'ItemAction': 'play_stream_radio'
             }
             dirIsfolder = False
-            dirUrl = (var.LaunchUrl + '?' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
