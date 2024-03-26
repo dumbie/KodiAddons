@@ -202,7 +202,7 @@ def epg_day(dayDateTime):
     datetimeMidnight = func.datetime_to_midnight(dayDateTime)
     startTimeEpoch = func.datetime_to_ticks(datetimeMidnight - timedelta(hours=2))
     endTimeEpoch = func.datetime_to_ticks(datetimeMidnight + timedelta(hours=26))
-    downloadPath = api_url_120('TRAY/EPG?outputFormat=EXTENDED&filter_startTime=' + str(startTimeEpoch) + '&filter_endTime=' + str(endTimeEpoch) + '&filter_channelIds=' + var.TelevisionChannelIdsPlayable)
+    downloadPath = api_url_120('TRAY/EPG?outputFormat=EXTENDED&filter_startTime=' + str(startTimeEpoch) + '&filter_endTime=' + str(endTimeEpoch) + '&filter_channelIds=' + var.TelevisionChannelIdsPlayableString)
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'

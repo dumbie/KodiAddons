@@ -113,15 +113,21 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 metaData = metadatafunc.search_program_airingtime_jsonepg(jsonEpgChannel, datetime.now())
 
                 #Get the current program information
+                ProgramNowNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
                 ProgramDuration = metadatainfo.programdurationint_from_json_metadata(metaData) * 60
                 ProgramStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
-                ProgramStartString = ProgramStartDateTime.strftime('%H:%M')
                 ProgramEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
-                ProgramEndString = ProgramEndDateTime.strftime('%H:%M')
-                ProgramNowNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
+
+                #Combine program timing
+                if ProgramStartDateTime != datetime(1970,1,1) and ProgramEndDateTime != datetime(1970,1,1):
+                    ProgramStartString = ProgramStartDateTime.strftime('%H:%M')
+                    ProgramEndString = ProgramEndDateTime.strftime('%H:%M')
+                    ProgramTimingString = ProgramStartString + '/' + ProgramEndString
+                else:
+                    ProgramTimingString = '?'
 
                 #Combine program name
-                ProgramGenre = '[COLOR FF888888](' + ProgramStartString + '/' + ProgramEndString + ') ' + ProgramNowNameRaw + '[/COLOR]'
+                ProgramGenre = '[COLOR FF888888](' + ProgramTimingString + ') ' + ProgramNowNameRaw + '[/COLOR]'
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
