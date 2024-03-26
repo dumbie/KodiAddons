@@ -174,7 +174,7 @@ class Gui(xbmcgui.WindowXML):
         dialogAnswers = []
 
         for x in range(var.VodDayOffsetPast + var.EpgDaysOffsetFuture):
-            dayString = func.day_string_from_day_offset(x - var.VodDayOffsetPast)
+            dayString = func.day_string_from_day_offset(var.EpgDaysOffsetFuture - x)
             dialogAnswers.append(dayString)
 
         dialogHeader = 'Selecteer dag'
@@ -182,14 +182,14 @@ class Gui(xbmcgui.WindowXML):
         dialogFooter = ''
 
         #Get day selection index
-        selectIndex = var.VodDayOffsetPast + -func.day_offset_from_datetime(var.EpgCurrentLoadDateTime)
+        currentIndex = var.EpgDaysOffsetFuture + func.day_offset_from_datetime(var.EpgCurrentLoadDateTime)
 
-        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, selectIndex)
+        dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers, currentIndex)
         if dialogResult == 'DialogCancel':
             return
 
         #Calculate selected day offset
-        selectedIndex = (dialogAnswers.index(dialogResult) - var.VodDayOffsetPast)
+        selectedIndex = var.EpgDaysOffsetFuture - dialogAnswers.index(dialogResult)
 
         #Update selected day loading time
         var.EpgCurrentLoadDateTime = func.datetime_from_day_offset(selectedIndex)

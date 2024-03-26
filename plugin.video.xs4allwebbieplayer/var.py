@@ -215,7 +215,6 @@ TelevisionChannelsDataJson = []
 VodSelectIdentifier = ''
 VodDayLoadDateTime = datetime.now()
 VodDayOffsetPast = 10
-VodDayOffsetFuture = 1
 VodCacheDaysArray = []
 
 #Movies variables
@@ -263,7 +262,7 @@ EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
 EpgSelectIdentifier = ''
 EpgNavigateIdentifier = ''
-EpgDaysOffsetFuture = 7
+EpgDaysOffsetFuture = 5
 EpgCacheDaysArray = []
 
 #Program variables
