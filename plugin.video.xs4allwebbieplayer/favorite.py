@@ -53,6 +53,10 @@ def favorite_check_available(favoriteJsonFile):
         favoriteTargetJson = var.FavoriteRadioJson
         channelTargetArray = var.RadioChannelIdsPlayableArray
 
+    #Check playable channel identifier array
+    if channelTargetArray == []:
+        return
+
     #Check if favorite channel is available
     favoriteRemoved = False
     for favorite in favoriteTargetJson[:]:
