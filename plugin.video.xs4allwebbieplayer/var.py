@@ -6,6 +6,7 @@ import xbmcaddon
 import xbmcgui
 import getset
 import hybrid
+import monitorclass
 import threadclass
 
 #Action variables
@@ -88,7 +89,7 @@ WINDOW_ADDON = 13000
 
 #Add-on variables
 addon = xbmcaddon.Addon()
-addonmonitor = xbmc.Monitor()
+addonmonitor = monitorclass.Class_MonitorCustom()
 addonid = addon.getAddonInfo('id')
 addonname = addon.getAddonInfo('name')
 addonicon = addon.getAddonInfo('icon')

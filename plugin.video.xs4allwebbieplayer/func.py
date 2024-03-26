@@ -7,8 +7,8 @@ import time
 import xbmc
 import xbmcgui
 import dialog
-import hybrid
 import getset
+import hybrid
 import var
 
 #Run this add-on

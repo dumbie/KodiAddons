@@ -1,5 +1,4 @@
 import xbmcgui
-import cache
 import dialog
 import files
 import func
@@ -23,25 +22,6 @@ def open_settings():
 def reset_global_variables():
     try:
         getset.global_clear('SleepTimer')
-    except:
-        pass
-
-def switch_adultfilter_onoff():
-    try:
-        #Check kids lock
-        if kids.lock_check() == False:
-            return
-
-        #Switch adult filter setting
-        if getset.setting_get('TelevisionChannelNoErotic') == 'false':
-            getset.setting_set('TelevisionChannelNoErotic', 'true')
-            xbmcgui.Dialog().notification(var.addonname, "Erotische media uitgeschakeld, herstart de add-on.", var.addonicon, 2500, False)
-        else:
-            getset.setting_set('TelevisionChannelNoErotic', 'false')
-            xbmcgui.Dialog().notification(var.addonname, "Erotische media ingeschakeld, herstart de add-on.", var.addonicon, 2500, False)
-
-        #Remove current cache
-        cache.cache_remove_all(False, False)
     except:
         pass
 

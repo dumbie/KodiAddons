@@ -2,13 +2,13 @@
 <settings>
   <category label="Algemeen">
     <setting id="OpenWelcomeScreen" type="action" label="Open het inlog scherm" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?OpenWelcomeScreen)"/>
-    <setting id="SwitchAdultFilter" type="action" label="Erotische media in- of uitschakelen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?SwitchAdultFilter)"/>
     <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Rood|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="RadioChannelView" type="select" label="Radiozenders weergavestijl" default="Blokken" values="Lijst|Blokken"/>
     <setting id="TelevisionHideEarlierAired" label="Toon geen eerder uitgezonden programma's" type="bool" default="false"/>
     <setting id="TelevisionHideUpcomingAired" label="Toon geen later uitgezonden programma's" type="bool" default="false"/>
     <setting id="SearchFilterFuzzy" label="Toon vergelijkbare en niet identieke zoekresultaten" type="bool" default="false"/>
+    <setting id="TelevisionChannelNoErotic" label="Toon geen erotische media-inhoud" type="bool" default="true"/>
     <setting id="CacheCleanTimeOther" label="Media automatisch vernieuw tijd in minuten" type="slider" default="10" range="1,1,20" option="int"/>
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
@@ -86,6 +86,5 @@
     <setting id="CurrentChannelId" type="text" visible="false" default=""/>
     <setting id="LastChannelId" type="text" visible="false" default=""/>
     <setting id="LoadChannelFavoritesOnly" type="text" visible="false" default="false"/>
-    <setting id="TelevisionChannelNoErotic" type="text" visible="false" default="true"/>
   </category>
 </settings>
