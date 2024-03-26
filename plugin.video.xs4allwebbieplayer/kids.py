@@ -143,7 +143,7 @@ class Gui(xbmcgui.WindowXML):
                 self.program_show_in_epg(listItemSelected)
 
     def program_show_in_epg(self, listItemSelected):
-        var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramId")
+        var.EpgNavigateIdentifier = listItemSelected.getProperty("ProgramId")
         var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
         var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
         if close_the_page() == True:

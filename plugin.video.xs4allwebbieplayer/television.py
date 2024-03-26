@@ -175,7 +175,7 @@ class Gui(xbmcgui.WindowXML):
         streamplay.play_tv(listItemSelected, SeekOffsetSecEnd=SeekOffsetSecEnd)
     
     def program_show_in_epg(self, listItemSelected):
-        var.EpgNavigateProgramId = listItemSelected.getProperty("ProgramNowId")
+        var.EpgNavigateIdentifier = listItemSelected.getProperty("ProgramNowId")
         var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")
         var.EpgCurrentLoadDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
         close_the_page()

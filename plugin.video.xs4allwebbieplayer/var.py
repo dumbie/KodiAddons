@@ -261,7 +261,8 @@ EpgPreviousLoadDateTime = datetime(1970,1,1)
 EpgCurrentChannelName = ''
 EpgCurrentChannelId = ''
 EpgPreviousChannelId = ''
-EpgNavigateProgramId = ''
+EpgSelectIdentifier = ''
+EpgNavigateIdentifier = ''
 EpgDaysOffsetFuture = 7
 EpgCacheDaysArray = []
 

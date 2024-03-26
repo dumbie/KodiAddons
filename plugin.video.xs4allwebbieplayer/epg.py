@@ -32,6 +32,9 @@ def close_the_page():
         var.thread_update_epg_program.Stop()
         var.thread_update_epg_channel.Stop()
 
+        #Save select index
+        var.guiEpg.save_select_index()
+
         #Close the shown window
         var.guiEpg.close()
         var.guiEpg = None
@@ -193,6 +196,14 @@ class Gui(xbmcgui.WindowXML):
 
         #Load the channel epg
         self.load_programs(False)
+
+    def save_select_index(self):
+        try:
+            listContainer = self.getControl(1002)
+            listItemSelected = listContainer.getSelectedItem()
+            var.EpgSelectIdentifier = listItemSelected.getProperty("ProgramId")
+        except:
+            pass
 
     def open_context_menu(self, clickedControl):
         listItemSelected = clickedControl.getSelectedItem()
@@ -498,15 +509,20 @@ class Gui(xbmcgui.WindowXML):
         programSelectIndexAiring = 0
         programSelectIndexUpcoming = 0
         programSelectIndexNavigate = 0
+        programSelectIndexSelect = 0
 
         #Check if program is airing or matches navigate index
         for itemNum in range(0, listItemCount):
             listItem = listContainer.getListItem(itemNum)
 
             #Check if program matches navigate id
-            if var.EpgNavigateProgramId == listItem.getProperty('ProgramId'):
+            if var.EpgNavigateIdentifier == listItem.getProperty('ProgramId'):
                 programSelectIndexNavigate = itemNum
                 break
+
+            #Check if program matches select id
+            if var.EpgSelectIdentifier == listItem.getProperty('ProgramId'):
+                programSelectIndexSelect = itemNum
 
             #Check if program is still to come
             if programSelectIndexUpcoming == 0 and listItem.getProperty('ProgramIsUpcoming') == 'true':
@@ -524,6 +540,8 @@ class Gui(xbmcgui.WindowXML):
             guifunc.listSelectIndex(listContainer, programSelectIndexAiring)
         elif programSelectIndexUpcoming != 0:
             guifunc.listSelectIndex(listContainer, programSelectIndexUpcoming)
+        elif programSelectIndexSelect != 0:
+            guifunc.listSelectIndex(listContainer, programSelectIndexSelect)
         else:
             guifunc.listSelectIndex(listContainer, 0)
 
@@ -532,7 +550,7 @@ class Gui(xbmcgui.WindowXML):
             guifunc.controlFocus(self, listContainer)
 
         #Reset navigate variable
-        var.EpgNavigateProgramId = ''
+        var.EpgNavigateIdentifier = ''
 
     #Update the status
     def count_epg(self):

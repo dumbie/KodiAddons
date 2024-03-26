@@ -84,7 +84,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 ChannelFavorite = 'true'
             elif ChannelId == getset.setting_get('CurrentChannelId') and xbmc.Player().isPlayingVideo():
                 ChannelFavorite = 'false'
-            elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateProgramId) == False:
+            elif ChannelId == var.EpgCurrentChannelId and func.string_isnullorempty(var.EpgNavigateIdentifier) == False:
                 ChannelFavorite = 'false'
             elif getset.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermResult):
                 continue
