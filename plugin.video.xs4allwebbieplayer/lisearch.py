@@ -17,6 +17,7 @@ def list_load_history(listContainer=None):
         remoteMode = listContainer == None
 
         #Set item icons
+        iconFanart = path.icon_fanart()
         iconSearchAdd = path.resources('resources/skins/default/media/common/searchadd.png')
         iconSearchDefault = path.resources('resources/skins/default/media/common/search.png')
 
@@ -24,7 +25,7 @@ def list_load_history(listContainer=None):
         jsonItem = {
             'ItemLabel': 'Nieuw zoekterm gebruiken',
             'ItemInfoVideo': {'Genre': 'Zoeken', 'Title': 'Nieuw zoekterm gebruiken'},
-            'ItemArt': {'thumb': iconSearchAdd, 'icon': iconSearchAdd, 'poster': iconSearchAdd},
+            'ItemArt': {'thumb': iconSearchAdd, 'icon': iconSearchAdd, 'poster': iconSearchAdd, 'fanart': iconFanart},
             'ItemAction': 'load_search_keyboard'
         }
         dirIsfolder = True
@@ -41,7 +42,7 @@ def list_load_history(listContainer=None):
                     'SearchTerm': searchTerm,
                     'ItemLabel': searchTerm,
                     'ItemInfoVideo': {'Genre': 'Zoeken', 'Title': searchTerm},
-                    'ItemArt': {'thumb': iconSearchDefault, 'icon': iconSearchDefault, 'poster': iconSearchDefault},
+                    'ItemArt': {'thumb': iconSearchDefault, 'icon': iconSearchDefault, 'poster': iconSearchDefault, 'fanart': iconFanart},
                     'ItemAction': 'load_search_term'
                 }
                 dirIsfolder = True
@@ -167,6 +168,7 @@ def list_load_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
+            iconFanart = path.icon_fanart()
 
             #Set item details
             jsonItem = {
@@ -181,7 +183,7 @@ def list_load_append(listContainer, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramNameRaw,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramTiming, 'Title': ProgramNameRaw, 'Plot': ProgramDescription, 'Duration': ProgramDurationSeconds},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False

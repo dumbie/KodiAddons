@@ -60,6 +60,7 @@ def list_load_vod_append(listContainer, downloadResult, selectedPictureUrl, remo
 
             #Set item icons
             iconDefault = path.icon_vod(selectedPictureUrl)
+            iconFanart = path.icon_fanart()
 
             #Set item details
             jsonItem = {
@@ -73,7 +74,7 @@ def list_load_vod_append(listContainer, downloadResult, selectedPictureUrl, remo
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': EpisodeTitleRaw,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramTitleRaw, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
@@ -138,6 +139,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
 
             #Set item icons
             iconDefault = path.icon_epg(selectedPictureUrl)
+            iconFanart = path.icon_fanart()
 
             #Set item details
             jsonItem = {
@@ -154,7 +156,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': EpisodeTitleRaw,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramTitleRaw, 'Title': EpisodeTitleRaw, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False

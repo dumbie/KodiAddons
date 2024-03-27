@@ -56,6 +56,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_vod(PictureUrl)
+            iconFanart = path.icon_fanart()
             iconProgramType = path.icon_addon('series')
             iconStreamType = path.icon_addon('vod')
 
@@ -67,7 +68,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': {'MediaType': 'tvshow', 'Genre': ProgramDetails},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart, 'image1': iconStreamType, 'image2': iconProgramType},
                 'ItemAction': 'load_kids_episodes_vod'
             }
             dirIsfolder = True
@@ -122,6 +123,7 @@ def list_load_program_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_epg(PictureUrl)
+            iconFanart = path.icon_fanart()
             iconChannel = path.icon_television(ExternalId)
             iconStreamType = path.icon_addon('calendarweek')
 
@@ -138,7 +140,7 @@ def list_load_program_append(listContainer, remoteMode=False):
                 'ProgramDescription': ProgramDescription,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': ItemInfoVideo,
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart, 'image1': iconStreamType, 'image2': iconProgramType, 'image3': iconChannel},
                 'ItemAction': ItemAction
             }
             dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''

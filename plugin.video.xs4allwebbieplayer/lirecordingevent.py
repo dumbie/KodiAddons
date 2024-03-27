@@ -57,6 +57,7 @@ def list_load_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
+            iconFanart = path.icon_fanart()
 
             #Set item details
             jsonItem = {
@@ -67,7 +68,7 @@ def list_load_append(listContainer, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Duration': ProgramDurationSeconds},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                 'ItemAction': 'action_none'
             }
             dirIsfolder = False

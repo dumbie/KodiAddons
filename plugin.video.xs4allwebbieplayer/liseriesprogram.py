@@ -55,6 +55,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_vod(PictureUrl)
+            iconFanart = path.icon_fanart()
             iconStreamType = path.icon_addon('vod')
 
             #Set item details
@@ -65,7 +66,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': {'MediaType': 'tvshow', 'Genre': ProgramDetails},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart, 'image1': iconStreamType},
                 'ItemAction': 'load_series_episodes_vod'
             }
             dirIsfolder = True
@@ -102,6 +103,7 @@ def list_load_program_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_epg(PictureUrl)
+            iconFanart = path.icon_fanart()
             iconChannel = path.icon_television(ExternalId)
             iconStreamType = path.icon_addon('calendarweek')
 
@@ -115,7 +117,7 @@ def list_load_program_append(listContainer, remoteMode=False):
                 'ProgramDetails': ProgramDetails,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': {'MediaType': 'tvshow', 'Genre': ProgramDetails},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart, 'image1': iconStreamType, 'image2': iconChannel},
                 'ItemAction': 'load_series_episodes_program'
             }
             dirIsfolder = True

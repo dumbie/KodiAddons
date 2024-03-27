@@ -143,6 +143,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
+            iconFanart = path.icon_fanart()
 
             #Set item details
             jsonItem = {
@@ -162,7 +163,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
                 'ItemInfoVideo': ItemInfoVideo,
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                 'ItemAction': ItemAction
             }
             dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''

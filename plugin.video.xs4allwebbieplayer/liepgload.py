@@ -18,6 +18,7 @@ def list_load_days(listContainer=None):
 
         #Set item icons
         iconDefault = path.resources('resources/skins/default/media/common/calendar.png')
+        iconFanart = path.icon_fanart()
 
         #Set epg days
         for x in range(var.VodDayOffsetPast + var.EpgDaysOffsetFuture):
@@ -31,7 +32,7 @@ def list_load_days(listContainer=None):
                     'DateTime': str(dateTime),
                     'ItemLabel': dayString,
                     'ItemInfoVideo': {'Title': dayString},
-                    'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                    'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                     'ItemAction': 'load_epg_channels'
                 }
                 dirIsfolder = True
@@ -179,6 +180,7 @@ def list_load_append(listContainer, jsonEpgChannel, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_television(ChannelExternalId)
+            iconFanart = path.icon_fanart()
 
             #Set item details
             jsonItem = {
@@ -202,7 +204,7 @@ def list_load_append(listContainer, jsonEpgChannel, remoteMode=False):
                 "ProgramTimeEnd": str(ProgramTimeEndDateTime),
                 'ItemLabel': ProgramNameRaw,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescriptionRaw, 'Duration': ProgramDurationSeconds},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                 'ItemAction': 'action_none'
             }
             dirIsfolder = False

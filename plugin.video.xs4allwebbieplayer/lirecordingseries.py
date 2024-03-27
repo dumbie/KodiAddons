@@ -55,11 +55,15 @@ def list_load_append(listContainer, remoteMode=False):
 
             #Get channel basics
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
-            ChannelIcon = path.resources('resources/skins/default/media/common/unknown.png')
             ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
-            if ChannelDetails:
+            if ChannelDetails != None:
                 ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
                 ChannelIcon = path.icon_television(ExternalId)
+            else:
+                ChannelIcon = path.resources('resources/skins/default/media/common/unknown.png')
+
+            #Set item icons
+            iconFanart = path.icon_fanart()
 
             #Set item details
             jsonItem = {
@@ -68,7 +72,7 @@ def list_load_append(listContainer, remoteMode=False):
                 "ProgramDescription": ProgramDetails,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName},
-                'ItemArt': {'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon},
+                'ItemArt': {'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon, 'fanart': iconFanart},
                 'ItemAction': 'action_none'
             }
             dirIsfolder = False

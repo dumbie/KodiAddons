@@ -66,6 +66,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_vod(PictureUrl)
+            iconFanart = path.icon_fanart()
             iconStreamType = path.icon_addon('vod')
 
             #Set item details
@@ -79,7 +80,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart, 'image1': iconStreamType},
                 'ItemAction': 'play_stream_vod'
             }
             dirIsfolder = False
@@ -122,6 +123,7 @@ def list_load_program_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_epg(PictureUrl)
+            iconFanart = path.icon_fanart()
             iconStreamType = path.icon_addon('calendarweek')
             iconChannel = path.icon_television(ExternalId)
 
@@ -138,7 +140,7 @@ def list_load_program_append(listContainer, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramName,
                 'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
-                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart, 'image1': iconStreamType, 'image2': iconChannel},
                 'ItemAction': 'play_stream_program'
             }
             dirIsfolder = False
