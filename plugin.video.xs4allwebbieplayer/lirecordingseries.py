@@ -1,6 +1,7 @@
-import xbmcgui
 import dlchanneltelevision
 import dlrecordingseries
+import dlrecordingevent
+import func
 import lifunc
 import metadatacombine
 import metadatafunc
@@ -13,16 +14,18 @@ def list_load_combined(listContainer=None):
     try:
         #Download record series
         downloadResultChannels = dlchanneltelevision.download()
-        downloadResultSeries = dlrecordingseries.download()
-        if downloadResultChannels == False or downloadResultSeries == False:
+        downloadResultRecordingSeries = dlrecordingseries.download()
+        downloadResultRecordingEvent = dlrecordingevent.download()
+        if downloadResultChannels == False or downloadResultRecordingSeries == False or downloadResultRecordingEvent == False:
             return False
 
         #Add items to sort list
         listContainerSort = []
-        list_load_append(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_append(listContainerSort, remoteMode)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: x.getProperty('ProgramName'))
+        listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramName'))
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -31,7 +34,7 @@ def list_load_combined(listContainer=None):
     except:
         return False
 
-def list_load_append(listContainer):
+def list_load_append(listContainer, remoteMode=False):
     for program in var.RecordingSeriesDataJson["resultObj"]["containers"]:
         try:
             #Load program basics
@@ -59,11 +62,18 @@ def list_load_append(listContainer):
                 ChannelIcon = path.icon_television(ExternalId)
 
             #Set item details
-            listItem = xbmcgui.ListItem()
-            listItem.setProperty('ProgramSeriesId', ProgramSeriesId)
-            listItem.setProperty('ProgramName', ProgramName)
-            listItem.setProperty('ProgramDescription', ProgramDetails)
-            listItem.setArt({'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon})
-            listContainer.append(listItem)
+            jsonItem = {
+                'ProgramSeriesId': ProgramSeriesId,
+                'ProgramName': ProgramName,
+                "ProgramDescription": ProgramDetails,
+                'ItemLabel': ProgramName,
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName},
+                'ItemArt': {'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon},
+                'ItemAction': 'action_none'
+            }
+            dirIsfolder = False
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

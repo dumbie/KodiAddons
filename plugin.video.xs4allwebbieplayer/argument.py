@@ -14,6 +14,8 @@ import likidsprogram
 import limain
 import limovies
 import lirecorded
+import lirecordingevent
+import lirecordingseries
 import lisearch
 import liseriesepisode
 import liseriesprogram
@@ -74,6 +76,8 @@ def handle_launch_argument_source():
             favorite.favorite_switch_mode('', True)
         elif actionItem == "cache_remove_all":
             cache.cache_remove_all(False)
+        elif actionItem == "action_none":
+            xbmcgui.Dialog().notification(var.addonname, "Geen functie via afstandsbediening.", var.addonicon, 2500, False)
 
         #Search actions
         elif actionItem == "page_search":
@@ -90,8 +94,6 @@ def handle_launch_argument_source():
             liepgload.list_load_channels(jsonItem['DateTime'])
         elif actionItem == "load_epg_programs":
             liepgload.list_load_combined(channelId=jsonItem['ChannelId'])
-        elif actionItem == "action_epg":
-            xbmcgui.Dialog().notification(var.addonname, "Geen functie via afstandsbediening.", var.addonicon, 2500, False)
 
         #Vod actions
         elif actionItem == "page_vod":
@@ -114,6 +116,10 @@ def handle_launch_argument_source():
             lisport.list_load_combined()
         elif actionItem == "page_recorded":
             lirecorded.list_load_combined()
+        elif actionItem == "page_recording_event":
+            lirecordingevent.list_load_combined()
+        elif actionItem == "page_recording_series":
+            lirecordingseries.list_load_combined()
 
         #List programs
         elif actionItem == "load_series_episodes_program":

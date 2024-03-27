@@ -191,7 +191,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and apiLoggedIn == True and recordingAccess == True and getset.setting_get('MainShowRecordEvent') == 'true':
+        if apiLoggedIn == True and recordingAccess == True and getset.setting_get('MainShowRecordEvent') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/recordevent.png')
 
@@ -206,7 +206,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and apiLoggedIn == True and recordingAccess == True and getset.setting_get('MainShowRecordSeries') == 'true':
+        if apiLoggedIn == True and recordingAccess == True and getset.setting_get('MainShowRecordSeries') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/recordseries.png')
 

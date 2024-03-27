@@ -104,17 +104,6 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
             ProgramProgressPercent = '100'
             ProgramDurationSeconds = ''
 
-            if epgMode == True:
-                dirIsfolder = True
-                ProgramGenre = ''
-                ItemAction = 'load_epg_programs'
-                ItemInfoVideo = {'MediaType': 'tvshow', 'TrackNumber': ChannelNumberInt}
-            else:
-                dirIsfolder = False
-                ProgramGenre = 'Televisie'
-                ItemAction = 'play_stream_tv'
-                ItemInfoVideo = {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt, 'Duration': ProgramDurationSeconds}
-
             if remoteMode == True and epgMode == False:
                 #Get json epg for channel identifier
                 jsonEpgChannel = metadatafunc.search_channelid_jsonepg(jsonEpg, ChannelId)
@@ -138,6 +127,19 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
 
                 #Combine program name
                 ProgramGenre = '[COLOR FF888888](' + ProgramTimingString + ') ' + ProgramNowNameRaw + '[/COLOR]'
+            elif epgMode == True:
+                ProgramGenre = 'TV Gids'
+            else:
+                ProgramGenre = 'Televisie'
+
+            if epgMode == True:
+                dirIsfolder = True
+                ItemAction = 'load_epg_programs'
+                ItemInfoVideo = {'MediaType': 'tvshow', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt}
+            else:
+                dirIsfolder = False
+                ItemAction = 'play_stream_tv'
+                ItemInfoVideo = {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt, 'Duration': ProgramDurationSeconds}
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)

@@ -78,7 +78,7 @@ def list_load_vod_append(listContainer, remoteMode=False):
                 "ProgramAvailability": ProgramAvailability,
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType},
                 'ItemAction': 'play_stream_vod'
             }
@@ -137,7 +137,7 @@ def list_load_program_append(listContainer, remoteMode=False):
                 "ProgramAvailability": ProgramAvailability,
                 "ProgramDescription": ProgramDescription,
                 'ItemLabel': ProgramName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramName, 'Plot': ProgramDescription},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'image1': iconStreamType, 'image2': iconChannel},
                 'ItemAction': 'play_stream_program'
             }

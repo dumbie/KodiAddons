@@ -201,9 +201,9 @@ def list_load_append(listContainer, jsonEpgChannel, remoteMode=False):
                 "ProgramTimeStart": str(ProgramTimeStartDateTime),
                 "ProgramTimeEnd": str(ProgramTimeEndDateTime),
                 'ItemLabel': ProgramNameRaw,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescriptionRaw, 'Duration': ProgramDurationSeconds},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDetails, 'Tagline': ProgramDetails, 'Title': ProgramNameRaw, 'Plot': ProgramDescriptionRaw, 'Duration': ProgramDurationSeconds},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
-                'ItemAction': 'action_epg'
+                'ItemAction': 'action_none'
             }
             dirIsfolder = False
             dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
