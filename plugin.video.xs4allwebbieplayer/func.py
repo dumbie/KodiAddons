@@ -96,7 +96,7 @@ def day_offset_from_datetime(dayDateTime):
 
 #Datetime from day offset
 def datetime_from_day_offset(numberDayOffset):
-    return datetime.now() + timedelta(days=numberDayOffset)
+    return datetime_remove_seconds(datetime.now() + timedelta(days=numberDayOffset))
 
 #Day description from datetime
 def day_string_from_datetime(dayDateTime, includeYear=True):
@@ -173,14 +173,12 @@ def datetime_to_ticks(dateTime, utcCorrection=False):
     return int((dateTime - datetime(1970,1,1)).total_seconds() - timeOffsetUtcSeconds) * 1000
 
 #Remove seconds from datetime
-def datetime_remove_seconds(datetimeFull):
-    DateTimeString = datetimeFull.strftime('%Y-%m-%d %H:%M')
-    return datetime_from_string(DateTimeString, '%Y-%m-%d %H:%M')
+def datetime_remove_seconds(datetime):
+    return datetime.replace(second=0, microsecond=0)
 
 #Get datetime midnight
-def datetime_to_midnight(datetimeFull):
-    DateTimeString = datetimeFull.strftime('%Y-%m-%d')
-    return datetime_from_string(DateTimeString, '%Y-%m-%d')
+def datetime_to_midnight(datetime):
+    return datetime.replace(hour=0, minute=0, second=0, microsecond=0)
 
 #Get days in current year
 def days_in_year():
