@@ -1,11 +1,13 @@
 import sys
 import xbmcaddon
+import xbmcgui
 import cache
 import favorite
 import func
 import hybrid
 import lichannelradio
 import lichanneltelevision
+import liepgload
 import lifunc
 import likidsepisode
 import likidsprogram
@@ -81,6 +83,22 @@ def handle_launch_argument_source():
         elif actionItem == "load_search_term":
             lisearch.list_load_term(jsonItem['SearchTerm'])
 
+        #Epg actions
+        elif actionItem == "page_epg":
+            liepgload.list_load_days()
+        elif actionItem == "load_epg_channels":
+            liepgload.list_load_channels(jsonItem['DateTime'])
+        elif actionItem == "load_epg_programs":
+            liepgload.list_load_combined(channelId=jsonItem['ChannelId'])
+        elif actionItem == "action_epg":
+            xbmcgui.Dialog().notification(var.addonname, "Geen functie via afstandsbediening.", var.addonicon, 2500, False)
+
+        #Vod actions
+        elif actionItem == "page_vod":
+            livod.list_load_days()
+        elif actionItem == "load_vod_programs":
+            livod.list_load_combined(dateTime=jsonItem['DateTime'])
+
         #List pages
         elif actionItem == "page_television":
             lichanneltelevision.list_load_combined(downloadEpg=True)
@@ -94,8 +112,6 @@ def handle_launch_argument_source():
             likidsprogram.list_load_combined()
         elif actionItem == "page_sport":
             lisport.list_load_combined()
-        elif actionItem == "page_vod":
-            livod.list_load_combined()
         elif actionItem == "page_recorded":
             lirecorded.list_load_combined()
 

@@ -15,7 +15,7 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg=False):
+def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg=False, epgMode=False):
     try:
         #Download channels
         downloadResultChannels = dlchanneltelevision.download()
@@ -47,7 +47,7 @@ def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg
         #Add items to sort list
         listContainerSort = []
         remoteMode = listContainer == None
-        list_load_append(listContainerSort, downloadResultEpg, remoteMode)
+        list_load_append(listContainerSort, downloadResultEpg, remoteMode, epgMode)
 
         #Sort list items
         listContainerSort.sort(key=lambda x: int(x[1].getProperty('ChannelNumber')))
@@ -59,7 +59,7 @@ def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg
     except:
         return False
 
-def list_load_append(listContainer, jsonEpg, remoteMode=False):
+def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
     for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
@@ -102,10 +102,20 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
             ProgramNextNameRaw = 'Informatie wordt geladen'
             ProgramDescription = 'Programmabeschrijving wordt geladen.'
             ProgramProgressPercent = '100'
-            ProgramGenre = 'Televisie'
-            ProgramDuration = ''
+            ProgramDurationSeconds = ''
 
-            if remoteMode == True:
+            if epgMode == True:
+                dirIsfolder = True
+                ProgramGenre = ''
+                ItemAction = 'load_epg_programs'
+                ItemInfoVideo = {'MediaType': 'tvshow', 'TrackNumber': ChannelNumberInt}
+            else:
+                dirIsfolder = False
+                ProgramGenre = 'Televisie'
+                ItemAction = 'play_stream_tv'
+                ItemInfoVideo = {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt, 'Duration': ProgramDurationSeconds}
+
+            if remoteMode == True and epgMode == False:
                 #Get json epg for channel identifier
                 jsonEpgChannel = metadatafunc.search_channelid_jsonepg(jsonEpg, ChannelId)
 
@@ -114,7 +124,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
 
                 #Get the current program information
                 ProgramNowNameRaw = metadatainfo.programtitle_from_json_metadata(metaData)
-                ProgramDuration = metadatainfo.programdurationint_from_json_metadata(metaData) * 60
+                ProgramDurationSeconds = metadatainfo.programdurationint_from_json_metadata(metaData) * 60
                 ProgramStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
                 ProgramEndDateTime = metadatainfo.programenddatetime_from_json_metadata(metaData)
 
@@ -149,11 +159,10 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False):
                 "ProgramDescription": ProgramDescription,
                 "ProgramProgressPercent": ProgramProgressPercent,
                 'ItemLabel': ChannelName,
-                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt, 'Duration': ProgramDuration},
+                'ItemInfoVideo': ItemInfoVideo,
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
-                'ItemAction': 'play_stream_tv'
+                'ItemAction': ItemAction
             }
-            dirIsfolder = False
             dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))

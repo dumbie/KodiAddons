@@ -169,11 +169,10 @@ class Gui(xbmcgui.WindowXML):
             self.switch_all_favorites()
 
     def program_watch_beginning(self, listItemSelected):
-        ProgramTimeStart = listItemSelected.getProperty('ProgramNowTimeStartDateTime')
-        ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
+        ProgramTimeStartDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramNowTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
         SeekOffsetSecEnd = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
         streamplay.play_tv(listItemSelected, SeekOffsetSecEnd=SeekOffsetSecEnd)
-    
+
     def program_show_in_epg(self, listItemSelected):
         var.EpgNavigateIdentifier = listItemSelected.getProperty("ProgramNowId")
         var.EpgCurrentChannelId = listItemSelected.getProperty("ChannelId")

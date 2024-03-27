@@ -11,8 +11,50 @@ import metadatainfo
 import path
 import var
 
-def list_load_combined(listContainer=None):
+def list_load_days(listContainer=None):
     try:
+        #Add items to sort list
+        listContainerSort = []
+        remoteMode = listContainer == None
+
+        #Set item icons
+        iconDefault = path.resources('resources/skins/default/media/common/calendar.png')
+
+        #Set epg days
+        for x in range(var.VodDayOffsetPast):
+            try:
+                #Set day string
+                dateTime = func.datetime_from_day_offset(-x)
+                dayString = func.day_string_from_datetime(dateTime)
+
+                #Set item details
+                jsonItem = {
+                    'DateTime': str(dateTime),
+                    'ItemLabel': dayString,
+                    'ItemInfoVideo': {'Title': dayString},
+                    'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
+                    'ItemAction': 'load_vod_programs'
+                }
+                dirIsfolder = True
+                dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+                listItem = lifunc.jsonitem_to_listitem(jsonItem)
+                listContainerSort.append((dirUrl, listItem, dirIsfolder))
+            except:
+                continue
+
+        #Add items to container
+        lifunc.auto_add_items(listContainerSort, listContainer)
+        lifunc.auto_end_items()
+        return True
+    except:
+        return False
+
+def list_load_combined(listContainer=None, dateTime=''):
+    try:
+        #Update variables
+        if func.string_isnullorempty(dateTime) == False:
+            var.VodDayLoadDateTime = func.datetime_from_string(dateTime, '%Y-%m-%d %H:%M:%S')
+
         #Download channels
         downloadResultChannels = dlchanneltelevision.download()
         if downloadResultChannels == False:
