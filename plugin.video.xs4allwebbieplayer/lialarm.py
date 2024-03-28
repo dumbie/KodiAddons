@@ -1,7 +1,6 @@
 import alarm
 import func
 import lifunc
-import xbmcgui
 import path
 import var
 
@@ -12,10 +11,11 @@ def list_load_combined(listContainer=None, forceLoad=False):
 
         #Add items to sort list
         listContainerSort = []
-        list_load_append(listContainerSort)
+        remoteMode = listContainer == None
+        list_load_append(listContainerSort, remoteMode)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: x.getProperty('ProgramTimeStart'))
+        listContainerSort.sort(key=lambda x: x[1].getProperty('ProgramTimeStart'))
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -24,7 +24,7 @@ def list_load_combined(listContainer=None, forceLoad=False):
     except:
         return False
 
-def list_load_append(listContainer):
+def list_load_append(listContainer, remoteMode=False):
     for alarm in var.AlarmDataJson:
         try:
             ExternalId = alarm['externalid']
@@ -32,17 +32,25 @@ def list_load_append(listContainer):
             ProgramTimeStart = alarm['starttime']
 
             ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStart, '%Y-%m-%d %H:%M:%S')
-            ProgramDescription = 'Om ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' op ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
+            ProgramDescription = '[COLOR FF888888]Om[/COLOR] ' + ProgramTimeStartDateTime.strftime('%H:%M') + ' [COLOR FF888888]op[/COLOR] ' + ProgramTimeStartDateTime.strftime('%a, %d %B %Y')
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
+            iconFanart = path.icon_fanart()
 
             #Set item details
-            listItem = xbmcgui.ListItem()
-            listItem.setProperty('ProgramTimeStart', ProgramTimeStart)
-            listItem.setProperty('ProgramName', ProgramName)
-            listItem.setProperty('ProgramDescription', ProgramDescription)
-            listItem.setArt({'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault})
-            listContainer.append(listItem)
+            jsonItem = {
+                'ProgramTimeStart': ProgramTimeStart,
+                'ProgramName': ProgramName,
+                'ProgramDescription': ProgramDescription,
+                'ItemLabel': ProgramName,
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramDescription, 'Tagline': ProgramDescription, 'Title': ProgramName},
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
+                'ItemAction': 'alarm_remove'
+            }
+            dirIsfolder = False
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
         except:
             continue

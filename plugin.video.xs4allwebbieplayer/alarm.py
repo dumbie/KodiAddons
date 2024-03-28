@@ -140,6 +140,9 @@ def alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, Prog
     return True
 
 def alarm_remove(ProgramTimeStart):
+    #Load set program alarms
+    alarm_json_load()
+
     #Check if the alarm start exists
     alarmRemoved = False
     for alarm in var.AlarmDataJson[:]:

@@ -226,8 +226,14 @@ def list_load_append(listContainer, remoteMode=False):
             iconDefault = path.resources('resources/skins/default/media/common/alarm.png')
 
             #Set item details
+            if remoteMode == False:
+                itemLabel = 'Alarmen'
+            else:
+                itemLabel = 'Alarmen annuleren'
+
+            #Set item details
             jsonItem = {
-                'ItemLabel': 'Alarmen',
+                'ItemLabel': itemLabel,
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
                 'ItemAction': 'page_alarm'
             }

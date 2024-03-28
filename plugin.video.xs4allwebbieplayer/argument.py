@@ -1,10 +1,12 @@
 import sys
 import xbmcaddon
 import xbmcgui
+import alarm
 import cache
 import favorite
 import func
 import hybrid
+import lialarm
 import lichannelradio
 import lichanneltelevision
 import liepgload
@@ -100,6 +102,12 @@ def handle_launch_argument_source():
             livod.list_load_days()
         elif actionItem == "load_vod_programs":
             livod.list_load_combined(dateTime=jsonItem['DateTime'])
+
+        #Alarm actions
+        elif actionItem == "page_alarm":
+            lialarm.list_load_combined()
+        elif actionItem == "alarm_remove":
+            alarm.alarm_remove(jsonItem['ProgramTimeStart'])
 
         #List pages
         elif actionItem == "page_television":
