@@ -26,3 +26,5 @@ class Class_MonitorCustom(xbmc.Monitor):
         if sender == 'WebbiePlayer' and method == 'Other.alarm_reload':
             alarmfunc.alarm_json_load(True)
             alarmfunc.alarm_update_interface()
+        elif sender == 'WebbiePlayer' and method == 'Other.cache_reset':
+            cache.cache_reset_variables(data)

@@ -108,7 +108,6 @@ LaunchArgument = ''
 DialogResult = None
 
 #Cache variables
-CacheCleanLastTimeEpg = datetime(1970,1,1)
 CacheCleanTimeChannels = 240 * 60 #4h
 CacheCleanTimeEpg = 120 * 60 #2h
 def CacheCleanTimeOther():
@@ -215,7 +214,6 @@ TelevisionChannelsDataJson = []
 VodSelectIdentifier = ''
 VodDayLoadDateTime = datetime.now()
 VodDayOffsetPast = 10
-VodCacheDaysArray = []
 
 #Movies variables
 MovieSelectIdentifier = ''
@@ -289,6 +287,9 @@ WidevineUpdating = False
 
 #Service - Alarm variables
 thread_alarm_timer = threadclass.Class_ThreadSafe()
+
+#Service - Cache variables
+thread_cache_clean = threadclass.Class_ThreadSafe()
 
 #Service - Proxy variables
 ProxyServer = None

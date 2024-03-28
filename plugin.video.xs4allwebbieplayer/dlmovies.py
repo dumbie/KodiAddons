@@ -1,7 +1,6 @@
 import json
 import xbmcgui
 import apilogin
-import cache
 import dlfunc
 import files
 import path
@@ -9,10 +8,8 @@ import var
 
 def download_vod(forceUpdate=False):
     try:
-        #Cleanup downloaded cache files
+        #Set cache file path
         filePath = path.addonstoragecache('moviesvod.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
-            var.MoviesVodDataJson = []
 
         if forceUpdate == False:
             #Check if already cached in variables
@@ -59,10 +56,8 @@ def download_vod(forceUpdate=False):
 
 def download_program(forceUpdate=False):
     try:
-        #Cleanup downloaded cache files
+        #Set cache file path
         filePath = path.addonstoragecache('moviesprogram.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
-            var.MoviesProgramDataJson = []
 
         if forceUpdate == False:
             #Check if already cached in variables

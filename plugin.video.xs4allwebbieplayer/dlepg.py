@@ -1,8 +1,6 @@
-from datetime import datetime, timedelta
 import json
 import xbmcgui
 import apilogin
-import cache
 import classes
 import dlfunc
 import files
@@ -23,16 +21,8 @@ def download(dayDateTime, forceUpdate=False):
         #Convert datetime to datestring
         dayDateString = dayDateTime.strftime('%Y-%m-%d')
 
-        #Check last cache cleanup time
-        dateTimeNow = datetime.now()
-        lastTimeSeconds = (dateTimeNow - var.CacheCleanLastTimeEpg).total_seconds()
-
-        #Cleanup downloaded cache files
+        #Set cache file path
         filePath = path.addonstoragecache('epg' + dayDateString + '.js')
-        if lastTimeSeconds >= 60:
-            var.CacheCleanLastTimeEpg = dateTimeNow
-            if cache.cache_cleanup_files('epg', var.CacheCleanTimeEpg) == True:
-                var.EpgCacheDaysArray = []
 
         if forceUpdate == False:
             #Check if already cached in variables

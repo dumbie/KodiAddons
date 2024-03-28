@@ -14,6 +14,40 @@ def cache_check_folder():
     except:
         return False
 
+def cache_reset_variables(jsonData):
+    try:
+        cleanedCacheFiles = jsonData.lstrip('["').rstrip('"]')
+        cleanedCacheFiles = func.jsonstring_to_dictionary(cleanedCacheFiles)
+        if any(x.startswith('epg') for x in cleanedCacheFiles):
+            var.EpgCacheDaysArray = []
+        if 'kidsprogram.js' in cleanedCacheFiles:
+            var.KidsProgramDataJson = []
+        if 'kidsvod.js' in cleanedCacheFiles:
+            var.KidsVodDataJson = []
+        if 'moviesprogram.js' in cleanedCacheFiles:
+            var.MoviesProgramDataJson = []
+        if 'moviesvod.js' in cleanedCacheFiles:
+            var.MoviesVodDataJson = []
+        if 'radio.js' in cleanedCacheFiles:
+            var.RadioChannelsDataJson = []
+        if 'recordingevent.js' in cleanedCacheFiles:
+            var.RecordingEventDataJson = []
+        if 'recordingseries.js' in cleanedCacheFiles:
+            var.RecordingSeriesDataJson = []
+        if 'searchprogram.js' in cleanedCacheFiles:
+            var.SearchProgramDataJson = []
+        if 'seriesprogram.js' in cleanedCacheFiles:
+            var.SeriesProgramDataJson = []
+        if 'seriesvod.js' in cleanedCacheFiles:
+            var.SeriesVodDataJson = []
+        if 'sportprogram.js' in cleanedCacheFiles:
+            var.SportProgramDataJson = []
+        if 'television.js' in cleanedCacheFiles:
+            var.TelevisionChannelsDataJson = []
+        return True
+    except:
+        return False
+
 def cache_remove_all(showDialog=True, showNotification=True):
     try:
         if showDialog == True:
@@ -29,24 +63,22 @@ def cache_remove_all(showDialog=True, showNotification=True):
                 return
 
         #Reset cache variables 
-        var.SearchProgramDataJson = []
+        var.EpgCacheDaysArray = []
         var.KidsProgramDataJson = []
         var.KidsVodDataJson = []
-        var.SportProgramDataJson = []
-        var.RadioChannelsDataJson = []
-        var.TelevisionChannelsDataJson = []
-        var.VodCacheDaysArray = []
         var.MoviesProgramDataJson = []
         var.MoviesVodDataJson = []
-        var.SeriesProgramDataJson = []
-        var.SeriesVodDataJson = []
+        var.RadioChannelsDataJson = []
         var.RecordingEventDataJson = []
         var.RecordingSeriesDataJson = []
-        var.EpgCacheDaysArray = []
+        var.SearchProgramDataJson = []
+        var.SeriesProgramDataJson = []
+        var.SeriesVodDataJson = []
+        var.SportProgramDataJson = []
+        var.TelevisionChannelsDataJson = []
 
         #Remove cache files
-        cacheFiles = files.listFiles(var.addonstoragecache)
-        for cacheFile in cacheFiles:
+        for cacheFile in files.listFiles(var.addonstoragecache):
             files.removeFile(path.addonstoragecache(cacheFile))
 
         if showNotification == True:
@@ -55,16 +87,19 @@ def cache_remove_all(showDialog=True, showNotification=True):
         xbmcgui.Dialog().notification(var.addonname, 'Cache bestanden verwijderen mislukt.', var.addonicon, 2500, False)
         return False
 
-def cache_cleanup_files(fileName, epochCleanupTime):
+def cache_cleanup_files():
+    cacheCleaned = []
     try:
-        fileRemoved = False
         for cacheFile in files.listFiles(var.addonstoragecache):
-            if cacheFile.startswith(fileName):
-                cachePath = path.addonstoragecache(cacheFile)
-                if cache_cleanup_file(cachePath, epochCleanupTime) == True: fileRemoved = True
-        return fileRemoved
+            if cacheFile.startswith('epg'):
+                if cache_cleanup_file(path.addonstoragecache(cacheFile), var.CacheCleanTimeEpg) == True: cacheCleaned.append(cacheFile)
+            elif cacheFile == 'radio.js' or cacheFile == 'television.js':
+                if cache_cleanup_file(path.addonstoragecache(cacheFile), var.CacheCleanTimeChannels) == True: cacheCleaned.append(cacheFile)
+            else:
+                if cache_cleanup_file(path.addonstoragecache(cacheFile), var.CacheCleanTimeOther()) == True: cacheCleaned.append(cacheFile)
+        return cacheCleaned
     except:
-        return False
+        return cacheCleaned
 
 def cache_cleanup_file(filePath, epochCleanupTime):
     try:

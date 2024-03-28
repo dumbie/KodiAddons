@@ -1,7 +1,6 @@
 import json
 import xbmcgui
 import apilogin
-import cache
 import dlfunc
 import files
 import func
@@ -29,10 +28,8 @@ def update_playable_channel_identifiers():
 
 def download(forceUpdate=False):
     try:
-        #Cleanup downloaded cache files
+        #Set cache file path
         filePath = path.addonstoragecache('television.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeChannels) == True:
-            var.TelevisionChannelsDataJson = []
 
         if forceUpdate == False:
             #Check if already cached in variables

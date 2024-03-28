@@ -3,6 +3,7 @@ import cache
 import func
 import getset
 import servicealarm
+import servicecache
 import serviceproxy
 import var
 
@@ -21,6 +22,9 @@ if __name__ == '__main__':
     #Start alarm check thread
     servicealarm.start_alarm_check()
 
+    #Start cache clean thread
+    servicecache.start_cache_clean()
+
     #Wait for service stop request
     while var.addonmonitor.abortRequested() == False:
         xbmc.sleep(100)
@@ -30,3 +34,6 @@ if __name__ == '__main__':
 
     #Stop alarm check thread
     servicealarm.stop_alarm_check()
+
+    #Stop cache clean thread
+    servicecache.stop_cache_clean()

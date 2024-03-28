@@ -1,7 +1,6 @@
 import json
 import xbmcgui
 import apilogin
-import cache
 import dlfunc
 import files
 import path
@@ -9,10 +8,8 @@ import var
 
 def download(forceUpdate=False):
     try:
-        #Cleanup downloaded cache files
-        filePath = path.addonstoragecache('sport.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeOther()) == True:
-            var.SportProgramDataJson = []
+        #Set cache file path
+        filePath = path.addonstoragecache('sportprogram.js')
 
         if forceUpdate == False:
             #Check if already cached in variables

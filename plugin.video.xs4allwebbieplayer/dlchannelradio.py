@@ -1,6 +1,5 @@
 import json
 import xbmcgui
-import cache
 import dlfunc
 import files
 import path
@@ -23,10 +22,8 @@ def update_playable_channel_identifiers():
 
 def download(forceUpdate=False):
     try:
-        #Cleanup downloaded cache files
+        #Set cache file path
         filePath = path.addonstoragecache('radio.js')
-        if cache.cache_cleanup_file(filePath, var.CacheCleanTimeChannels) == True:
-            var.RadioChannelsDataJson = []
 
         if forceUpdate == False:
             #Check if already cached in variables
