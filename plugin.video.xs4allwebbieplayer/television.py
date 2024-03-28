@@ -114,19 +114,19 @@ class Gui(xbmcgui.WindowXML):
         listContainer = self.getControl(1000)
         listItemSelected = listContainer.getSelectedItem()
 
-        #Add watch program from beginning
-        dialogAnswers.append('Programma vanaf begin kijken')
-        dialogAnswers.append('Programma in de TV Gids tonen')
-        dialogAnswers.append('Programma uitzendingen terugzoeken')
-
-        #Add record program
+        #Add current program
+        dialogAnswers.append('Huidig programma vanaf begin kijken')
+        dialogAnswers.append('Huidig programma in de TV Gids tonen')
+        dialogAnswers.append('Huidig programma uitzendingen terugzoeken')
         if var.RecordingAccess() == True:
             dialogAnswers.append('Huidig programma opnemen of annuleren')
             dialogAnswers.append('Huidig serie seizoen opnemen of annuleren')
+
+        #Add next program
+        dialogAnswers.append('Volgend programma uitzendingen terugzoeken')
+        if var.RecordingAccess() == True:
             dialogAnswers.append('Volgend programma opnemen of annuleren')
             dialogAnswers.append('Volgend serie seizoen opnemen of annuleren')
-
-        #Add set alarm for next program
         dialogAnswers.append('Volgend programma alarm zetten of annuleren')
 
         #Add hide channel
@@ -145,12 +145,14 @@ class Gui(xbmcgui.WindowXML):
             dialogAnswers.append('Toon favorieten zenders')
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-        if dialogResult == 'Programma vanaf begin kijken':
+        if dialogResult == 'Huidig programma vanaf begin kijken':
             self.program_watch_beginning(listItemSelected)
-        elif dialogResult == 'Programma in de TV Gids tonen':
+        elif dialogResult == 'Huidig programma in de TV Gids tonen':
             self.program_show_in_epg(listItemSelected)
-        elif dialogResult == 'Programma uitzendingen terugzoeken':
+        elif dialogResult == 'Huidig programma uitzendingen terugzoeken':
             self.search_program_history(listItemSelected)
+        elif dialogResult == 'Volgend programma uitzendingen terugzoeken':
+            self.search_program_history(listItemSelected, True)
         elif dialogResult == 'Zender verbergen in zenderlijst':
             self.hide_channel(listContainer, listItemSelected)
         elif dialogResult == 'Zender markeren als favoriet' or dialogResult == 'Zender onmarkeren als favoriet':
@@ -180,8 +182,11 @@ class Gui(xbmcgui.WindowXML):
         close_the_page()
         epg.switch_to_page()
 
-    def search_program_history(self, listItemSelected):
-        ProgramName = listItemSelected.getProperty("ProgramNowNameRaw")
+    def search_program_history(self, listItemSelected, nextProgram=False):
+        if nextProgram == False:
+            ProgramName = listItemSelected.getProperty("ProgramNowNameRaw")
+        else:
+            ProgramName = listItemSelected.getProperty("ProgramNextNameRaw")
         if var.SearchTermDownload != ProgramName:
             var.SearchSelectIdentifier = ''
             var.SearchTermResult = ''
