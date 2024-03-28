@@ -1,6 +1,7 @@
 import xbmc
 import xbmcgui
 import alarm
+import alarmfunc
 import apilogin
 import cache
 import dialog
@@ -114,7 +115,7 @@ class Gui(xbmcgui.WindowXML):
         guifunc.controlFocus(self, listContainer)
 
         #Update the active alarms count
-        self.count_alarm(True)
+        self.count_alarm()
 
         #Update the recorded events count
         self.count_recorded_events()
@@ -255,7 +256,7 @@ class Gui(xbmcgui.WindowXML):
             if listContainer.size() == 0 or var.ApiLoggedIn() == False:
                 return False
 
-            #Load and count the planned recording
+            #Load and count the planned series
             recordingCount = recordingfunc.count_recording_series()
 
             #Update the list count
@@ -264,19 +265,19 @@ class Gui(xbmcgui.WindowXML):
         except:
             pass
 
-    def count_alarm(self, forceLoad=False):
+    def count_alarm(self):
         try:
             #Get and check the main list container
             listContainer = self.getControl(1000)
             if listContainer.size() == 0 or var.ApiLoggedIn() == False:
                 return False
 
-            #Load set program alarms
-            alarm.alarm_json_load(forceLoad)
+            #Load and count the set alarms
+            alarmCount = alarmfunc.alarm_get_count()
 
             #Update the list count
             countItem = lifunc.search_listcontainer_label_listitem(listContainer, 'Alarmen')
-            countItem.setLabel('Alarmen (' + str(len(var.AlarmDataJson)) + ')')
+            countItem.setLabel('Alarmen (' + str(alarmCount) + ')')
         except:
             pass
 

@@ -221,7 +221,7 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if remoteMode == False and apiLoggedIn == True and getset.setting_get('MainShowAlarm') == 'true':
+        if apiLoggedIn == True and getset.setting_get('MainShowAlarm') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/alarm.png')
 

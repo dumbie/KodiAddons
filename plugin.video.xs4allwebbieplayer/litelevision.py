@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-import alarm
+import alarmfunc
 import dlepg
 import func
 import getset
@@ -102,7 +102,7 @@ def list_update(listItem):
             ProgramNextTimingList = ProgramNextTimeStartString + ' ' + ProgramNextDuration
 
             #Check if program has active alarm
-            if alarm.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
+            if alarmfunc.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
                 ProgramNextAlarm = 'true'
             else:
                 ProgramNextAlarm = 'false'

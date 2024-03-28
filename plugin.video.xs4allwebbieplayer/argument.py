@@ -1,7 +1,7 @@
 import sys
 import xbmcaddon
 import xbmcgui
-import alarm
+import alarmfunc
 import cache
 import favorite
 import func
@@ -107,7 +107,7 @@ def handle_launch_argument_source():
         elif actionItem == "page_alarm":
             lialarm.list_load_combined()
         elif actionItem == "alarm_remove":
-            alarm.alarm_remove(jsonItem['ProgramTimeStart'])
+            alarmfunc.alarm_remove(jsonItem['ProgramTimeStart'], True)
 
         #List pages
         elif actionItem == "page_television":

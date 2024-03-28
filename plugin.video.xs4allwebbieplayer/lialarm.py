@@ -1,4 +1,4 @@
-import alarm
+import alarmfunc
 import func
 import lifunc
 import path
@@ -7,7 +7,7 @@ import var
 def list_load_combined(listContainer=None, forceLoad=False):
     try:
         #Load set program alarms
-        alarm.alarm_json_load(forceLoad)
+        alarmfunc.alarm_json_load(forceLoad)
 
         #Add items to sort list
         listContainerSort = []

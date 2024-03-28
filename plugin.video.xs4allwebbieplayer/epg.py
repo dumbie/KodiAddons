@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
-import alarm
+import alarmfunc
 import dialog
 import favorite
 import func
@@ -216,7 +216,7 @@ class Gui(xbmcgui.WindowXML):
         dateTimeNow = datetime.now()
         if var.RecordingAccess() == True:
             if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                dialogAnswers = ['Live programma kijken', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
+                dialogAnswers = ['Programma live kijken', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
                 dialogHeader = 'Programma Menu'
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
@@ -226,13 +226,13 @@ class Gui(xbmcgui.WindowXML):
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
             else:
-                dialogAnswers = ['Alarm zetten of annuleren', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
+                dialogAnswers = ['Programma alarm zetten of annuleren', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
                 dialogHeader = 'Programma Menu'
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
         else:
             if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                dialogAnswers = ['Live programma kijken', 'Programma uitzendingen terugzoeken']
+                dialogAnswers = ['Programma live kijken', 'Programma uitzendingen terugzoeken']
                 dialogHeader = 'Programma Menu'
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
@@ -242,7 +242,7 @@ class Gui(xbmcgui.WindowXML):
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
             else:
-                dialogAnswers = ['Alarm zetten of annuleren', 'Programma uitzendingen terugzoeken']
+                dialogAnswers = ['Programma alarm zetten of annuleren', 'Programma uitzendingen terugzoeken']
                 dialogHeader = 'Programma Menu'
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
@@ -254,13 +254,13 @@ class Gui(xbmcgui.WindowXML):
             dialogAnswers.append('Toon favorieten zenders')
 
         dialogResult = dialog.show_dialog(dialogHeader, dialogSummary, dialogFooter, dialogAnswers)
-        if dialogResult == 'Alarm zetten of annuleren':
+        if dialogResult == 'Programma alarm zetten of annuleren':
             self.program_alarm_set(listItemSelected)
         elif dialogResult == 'Programma opnemen of annuleren':
             recordingfunc.record_event_epg(self, listItemSelected)
         elif dialogResult == 'Serie seizoen opnemen of annuleren':
             recordingfunc.record_series_epg(self, listItemSelected)
-        elif dialogResult == 'Live programma kijken':
+        elif dialogResult == 'Programma live kijken':
             streamplay.play_tv(listItemSelected)
         elif dialogResult == 'Programma uitzending terugkijken':
             streamplay.play_program(listItemSelected)
@@ -283,9 +283,6 @@ class Gui(xbmcgui.WindowXML):
             pass
 
     def update_channel_status(self):
-        #Clear expired alarms from Json
-        alarm.alarm_clean_expired()
-
         #Get and check the list container
         listContainer = self.getControl(1001)
         listItemCount = listContainer.size()
@@ -327,7 +324,7 @@ class Gui(xbmcgui.WindowXML):
         ProgramName = listItemSelected.getProperty('ProgramName')
 
         #Set or remove the program alarm
-        alarmAdded = alarm.alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramName, True)
+        alarmAdded = alarmfunc.alarm_add(ProgramTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramName, True)
 
         #Update alarm icon in the information
         if alarmAdded == True:

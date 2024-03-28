@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import xbmc
-import alarm
+import alarmfunc
 import dlepg
 import func
 import getset
@@ -109,7 +109,7 @@ def list_update(listItem):
             ProgramNextTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(metaData)
 
             #Check if program has active alarm
-            if alarm.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
+            if alarmfunc.alarm_duplicate_program_check(ProgramNextTimeStartDateTime, channelId) == True:
                 ProgramNextAlarm = 'true'
             else:
                 ProgramNextAlarm = 'false'

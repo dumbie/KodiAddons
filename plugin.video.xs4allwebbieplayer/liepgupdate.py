@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-import alarm
+import alarmfunc
 import func
 import getset
 import metadatacombine
@@ -11,7 +11,7 @@ def list_update_channel(listItem):
         ChannelId = listItem.getProperty('ChannelId')
 
         #Check if channel has active alarm
-        if alarm.alarm_duplicate_channel_check(ChannelId) == True:
+        if alarmfunc.alarm_duplicate_channel_check(ChannelId) == True:
             ChannelAlarm = 'true'
         else:
             ChannelAlarm = 'false'
@@ -64,7 +64,7 @@ def list_update_program(listItem):
         ProgramTimingDescription = metadatacombine.program_timing_program_property(listItem, dateTimeNow, False)
 
         #Check if program has active alarm
-        if alarm.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:
+        if alarmfunc.alarm_duplicate_program_check(ProgramTimeStartDateTime, ChannelId) == True:
             ProgramAlarm = 'true'
         else:
             ProgramAlarm = 'false'

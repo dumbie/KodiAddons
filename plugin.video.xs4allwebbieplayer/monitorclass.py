@@ -1,6 +1,7 @@
 import xbmc
 import xbmcaddon
 import accent
+import alarmfunc
 import cache
 
 class Class_MonitorCustom(xbmc.Monitor):
@@ -19,3 +20,9 @@ class Class_MonitorCustom(xbmc.Monitor):
         if self.TelevisionChannelNoEroticCache != TelevisionChannelNoEroticCurrent:
             self.TelevisionChannelNoEroticCache = TelevisionChannelNoEroticCurrent
             cache.cache_remove_all(False, True)
+
+    #Check incoming notifications
+    def onNotification(self, sender, method, data):
+        if sender == 'WebbiePlayer' and method == 'Other.alarm_reload':
+            alarmfunc.alarm_json_load(True)
+            alarmfunc.alarm_update_interface()

@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
+import json
+import xbmc
 import xbmcgui
-import alarm
+import alarmfunc
+import files
 import func
 import path
 import var
@@ -40,16 +43,40 @@ def alarm_notification():
         except:
             continue
 
+def alarm_clean_expired():
+    #Check if alarm has already passed
+    alarmRemoved = False
+    for alarm in var.AlarmDataJson[:]:
+        try:
+            ProgramTimeStartDateTime = func.datetime_from_string(alarm['starttime'], '%Y-%m-%d %H:%M:%S')
+
+            #Remove the alarm if it has passed
+            if datetime.now() >= ProgramTimeStartDateTime:
+                var.AlarmDataJson.remove(alarm)
+                alarmRemoved = True
+        except:
+            continue
+
+    if alarmRemoved == True:
+        #Save the raw json data to storage
+        JsonDumpBytes = json.dumps(var.AlarmDataJson).encode('ascii')
+        files.saveFileUser('AlarmDataString1.js', JsonDumpBytes)
+
+        #Notify to reload alarms
+        xbmc.executebuiltin('NotifyAll(WebbiePlayer, alarm_reload)')
+
+    return alarmRemoved
+
 def thread_alarm_timer():
     threadLastTime = ''
-    while var.thread_alarm_timer.Allowed(sleepDelayMs=2000):
+    while var.thread_alarm_timer.Allowed(sleepDelayMs=1000):
         try:
             threadCurrentTime = datetime.now().strftime('%H:%M')
             if threadLastTime != threadCurrentTime:
                 threadLastTime = threadCurrentTime
-                alarm.alarm_json_load(True)
+                alarmfunc.alarm_json_load(True)
                 alarm_notification()
-                alarm.alarm_clean_expired(True)
+                alarm_clean_expired()
         except:
             pass
 

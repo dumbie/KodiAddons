@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import xbmc
 import xbmcgui
-import alarm
+import alarmfunc
 import dialog
 import epg
 import favorite
@@ -203,7 +203,7 @@ class Gui(xbmcgui.WindowXML):
         ProgramNextTimeStartDateTime = func.datetime_from_string(listItemSelected.getProperty("ProgramNextTimeStartDateTime"), '%Y-%m-%d %H:%M:%S')
 
         #Set or remove the program alarm
-        alarmAdded = alarm.alarm_add(ProgramNextTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramNextNameRaw, True)
+        alarmAdded = alarmfunc.alarm_add(ProgramNextTimeStartDateTime, ChannelId, ExternalId, ChannelName, ProgramNextNameRaw, True)
 
         #Update alarm icon in the information
         if alarmAdded == True:
