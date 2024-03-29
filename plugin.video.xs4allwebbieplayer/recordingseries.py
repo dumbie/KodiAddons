@@ -65,9 +65,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Update the status
         self.count_recording(True)
 
-        #Update the main page count
-        if var.guiMain != None:
-            var.guiMain.count_recording_series()
+        #Update interface information
+        recordingfunc.recording_update_interface()
 
     #Update the status
     def count_recording(self, resetSelect=False):

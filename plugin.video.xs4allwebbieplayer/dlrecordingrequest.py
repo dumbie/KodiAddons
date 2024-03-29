@@ -8,6 +8,7 @@ import dlrecordingseries
 import func
 import metadatainfo
 import path
+import recordingfunc
 import var
 
 def series_add(channelId, seriesId):
@@ -52,11 +53,8 @@ def series_add(channelId, seriesId):
         dlrecordingevent.download(True)
         dlrecordingprofile.download(True)
 
-        #Update the main page count
-        if var.guiMain != None:
-            var.guiMain.count_recorded_events()
-            var.guiMain.count_recording_events()
-            var.guiMain.count_recording_series()
+        #Update interface information
+        recordingfunc.recording_update_interface()
 
         return True
     except:
@@ -100,11 +98,8 @@ def series_remove(seriesId, keepRecordings=True):
         dlrecordingevent.download(True)
         dlrecordingprofile.download(True)
 
-        #Update the main page count
-        if var.guiMain != None:
-            var.guiMain.count_recorded_events()
-            var.guiMain.count_recording_events()
-            var.guiMain.count_recording_series()
+        #Update interface information
+        recordingfunc.recording_update_interface()
 
         return True
     except:
@@ -147,10 +142,8 @@ def event_add(programId):
         dlrecordingevent.download(True)
         dlrecordingprofile.download(True)
 
-        #Update the main page count
-        if var.guiMain != None:
-            var.guiMain.count_recorded_events()
-            var.guiMain.count_recording_events()
+        #Update interface information
+        recordingfunc.recording_update_interface()
 
         return metadatainfo.contentId_from_json_metadata(DownloadDataJson['resultObj']['containers'][0])
     except:
@@ -193,10 +186,8 @@ def event_remove(recordEventId, startDeltaTime=0):
         dlrecordingevent.download(True)
         dlrecordingprofile.download(True)
 
-        #Update the main page count
-        if var.guiMain != None:
-            var.guiMain.count_recorded_events()
-            var.guiMain.count_recording_events()
+        #Update interface information
+        recordingfunc.recording_update_interface()
 
         return True
     except:

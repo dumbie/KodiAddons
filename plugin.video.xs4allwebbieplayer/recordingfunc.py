@@ -28,6 +28,13 @@ def check_status_scheduled(program):
     else:
         return False
 
+def recording_update_interface():
+    #Update the main page count
+    if var.guiMain != None:
+        var.guiMain.count_recorded_events()
+        var.guiMain.count_recording_events()
+        var.guiMain.count_recording_series()
+
 def count_recording_events():
     try:
         #Download the recording programs

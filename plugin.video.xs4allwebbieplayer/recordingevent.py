@@ -2,6 +2,7 @@ import xbmcgui
 import dlrecordingrequest
 import guifunc
 import lirecordingevent
+import recordingfunc
 import var
 
 def switch_to_page():
@@ -67,10 +68,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         #Update the status
         self.count_recording(True)
 
-        #Update the main page count
-        if var.guiMain != None:
-            var.guiMain.count_recorded_events()
-            var.guiMain.count_recording_events()
+        #Update interface information
+        recordingfunc.recording_update_interface()
 
     #Update the status
     def count_recording(self, resetSelect=False):

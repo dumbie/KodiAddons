@@ -8,6 +8,7 @@ import lifunc
 import lirecorded
 import path
 import player
+import recordingfunc
 import searchdialog
 import streamplay
 import var
@@ -161,10 +162,8 @@ class Gui(xbmcgui.WindowXML):
         #Update the status
         self.count_program(True, selectIdentifier)
 
-        #Update the main page count
-        if var.guiMain != None:
-            var.guiMain.count_recorded_events()
-            var.guiMain.count_recording_events()
+        #Update interface information
+        recordingfunc.recording_update_interface()
 
     #Update the status
     def count_program(self, resetSelect=False, selectIdentifier=""):
