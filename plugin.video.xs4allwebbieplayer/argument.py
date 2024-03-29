@@ -91,11 +91,11 @@ def handle_launch_argument_source():
 
         #Epg actions
         elif actionItem == "page_epg":
-            liepgload.list_load_days()
-        elif actionItem == "load_epg_channels":
-            liepgload.list_load_channels(jsonItem['DateTime'])
+            lichanneltelevision.list_load_combined(epgMode=True)
+        elif actionItem == "load_epg_days":
+            liepgload.list_load_days(channelId=jsonItem['ChannelId'])
         elif actionItem == "load_epg_programs":
-            liepgload.list_load_combined(channelId=jsonItem['ChannelId'])
+            liepgload.list_load_combined(channelId=jsonItem['ChannelId'], dateTime=jsonItem['DateTime'])
 
         #Vod actions
         elif actionItem == "page_vod":

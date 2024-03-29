@@ -134,7 +134,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
 
             if epgMode == True:
                 dirIsfolder = True
-                ItemAction = 'load_epg_programs'
+                ItemAction = 'load_epg_days'
                 ItemInfoVideo = {'MediaType': 'tvshow', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt}
             else:
                 dirIsfolder = False

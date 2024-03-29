@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 import dlchanneltelevision
 import dlepg
 import func
-import lichanneltelevision
 import lifunc
 import metadatacombine
 import metadatafunc
@@ -10,7 +9,7 @@ import metadatainfo
 import path
 import var
 
-def list_load_days(listContainer=None):
+def list_load_days(listContainer=None, channelId=''):
     try:
         #Add items to sort list
         listContainerSort = []
@@ -29,11 +28,12 @@ def list_load_days(listContainer=None):
 
                 #Set item details
                 jsonItem = {
+                    'ChannelId': channelId,
                     'DateTime': str(dateTime),
                     'ItemLabel': dayString,
                     'ItemInfoVideo': {'Title': dayString},
                     'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
-                    'ItemAction': 'load_epg_channels'
+                    'ItemAction': 'load_epg_programs'
                 }
                 dirIsfolder = True
                 dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
@@ -49,21 +49,14 @@ def list_load_days(listContainer=None):
     except:
         return False
 
-def list_load_channels(dateTime):
+def list_load_combined(listContainer=None, channelId='', dateTime=''):
     try:
         #Update epg variables
-        var.EpgCurrentLoadDateTime = func.datetime_from_string(dateTime, '%Y-%m-%d %H:%M:%S')
-
-        #Load and add channels
-        return lichanneltelevision.list_load_combined(epgMode=True)
-    except:
-        return False
-
-def list_load_combined(listContainer=None, channelId=''):
-    try:
-        #Update variables
         if func.string_isnullorempty(channelId) == False:
             var.EpgCurrentChannelId = channelId
+
+        if func.string_isnullorempty(dateTime) == False:
+            var.EpgCurrentLoadDateTime = func.datetime_from_string(dateTime, '%Y-%m-%d %H:%M:%S')
 
         #Download channels
         downloadResultChannels = dlchanneltelevision.download()
