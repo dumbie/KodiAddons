@@ -187,13 +187,9 @@ class Gui(xbmcgui.WindowXML):
     def search_program_history(self):
         listContainer = self.getControl(1000)
         listItemSelected = listContainer.getSelectedItem()
-        ProgramNameRaw = listItemSelected.getProperty("ProgramNameRaw")
-        if var.SearchTermDownload != ProgramNameRaw:
-            var.SearchSelectIdentifier = ''
-            var.SearchTermResult = ''
-            var.SearchTermDownload = ProgramNameRaw
-            var.SearchProgramDataJson = []
+        ProgramName = listItemSelected.getProperty("ProgramNameRaw")
         close_the_page()
+        search.search_update_term(ProgramName)
         search.switch_to_page()
 
     def search_program(self):

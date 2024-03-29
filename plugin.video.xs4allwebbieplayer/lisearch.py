@@ -1,4 +1,3 @@
-import xbmcgui
 import dlsearch
 import func
 import getset
@@ -6,6 +5,7 @@ import lifunc
 import metadatacombine
 import metadatainfo
 import path
+import search
 import searchdialog
 import searchhistory
 import var
@@ -68,44 +68,36 @@ def list_load_keyboard():
         if searchDialogTerm.cancelled == True:
             return False
 
-        #Check search term
-        if func.string_isnullorempty(searchDialogTerm.string) == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/search.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Leeg zoekterm', notificationIcon, 2500, False)
-            return False
-
         #Update search term
-        var.SearchTermDownload = searchDialogTerm.string
+        if search.search_update_term(searchDialogTerm.string) == False:
+            return False
 
         #List search items
         return list_load_combined(searchJsonFileName='SearchHistorySearch.js')
     except:
         return False
-    
+
 def list_load_term(searchTerm):
     try:
-        #Check search term
-        if func.string_isnullorempty(searchTerm) == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/search.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Leeg zoekterm', notificationIcon, 2500, False)
-            return False
-
         #Update search term
-        var.SearchTermDownload = searchTerm
+        if search.search_update_term(searchTerm) == False:
+            return False
 
         #List search items
         return list_load_combined(searchJsonFileName='SearchHistorySearch.js')
     except:
         return False
 
-def list_load_combined(listContainer=None, forceUpdate=True, searchJsonFileName=''):
+def list_load_combined(listContainer=None, forceUpdate=False, searchJsonFileName=''):
     try:
+        #Get current search term
+        searchTermDownload = getset.setting_get('SearchTermDownload', True)
+
         #Add search history to Json
-        if func.string_isnullorempty(searchJsonFileName) == False:
-            searchhistory.search_history_add(var.SearchTermDownload, searchJsonFileName)
+        searchhistory.search_history_add(searchTermDownload, searchJsonFileName)
 
         #Download search programs
-        downloadResult = dlsearch.download(var.SearchTermDownload, forceUpdate)
+        downloadResult = dlsearch.download(searchTermDownload, forceUpdate)
         if downloadResult == False:
             return False
 

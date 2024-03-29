@@ -3,12 +3,24 @@ import apilogin
 import dlfunc
 import path
 import var
+import files
+import json
 
-def download(programName, forceUpdate=False):
+def download(searchTerm, forceUpdate=False):
     try:
-        #Check if already cached in variables
-        if var.SearchProgramDataJson != [] and forceUpdate == False:
-            return True
+        #Set cache file path
+        filePath = path.addonstoragecache('searchprogram.js')
+
+        if forceUpdate == False:
+            #Check if already cached in variables
+            if var.SearchProgramDataJson != []:
+                return var.SearchProgramDataJson
+
+            #Check if already cached in files
+            fileCache = files.openFile(filePath)
+            if fileCache != None:
+                var.SearchProgramDataJson = json.loads(fileCache)
+                return var.SearchProgramDataJson
 
         #Check if user needs to login
         if apilogin.ApiLogin(False) == False:
@@ -17,7 +29,7 @@ def download(programName, forceUpdate=False):
             return False
 
         #Download json data
-        DownloadDataJson = dlfunc.download_gzip_json(path.program_search(programName))
+        DownloadDataJson = dlfunc.download_gzip_json(path.program_search(searchTerm))
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -31,6 +43,10 @@ def download(programName, forceUpdate=False):
 
         #Update variable cache
         var.SearchProgramDataJson = DownloadDataJson
+
+        #Update file cache
+        JsonDumpBytes = json.dumps(DownloadDataJson).encode('ascii')
+        files.saveFile(filePath, JsonDumpBytes)
 
         return True
     except:

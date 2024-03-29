@@ -2,7 +2,9 @@ import xbmc
 import xbmcgui
 import dialog
 import epg
+import files
 import func
+import getset
 import guifunc
 import lifunc
 import lisearch
@@ -27,6 +29,24 @@ def close_the_page():
         var.guiSearch.close()
         var.guiSearch = None
 
+def search_update_term(searchTerm):
+    #Check search term
+    if func.string_isnullorempty(searchTerm) == True:
+        notificationIcon = path.resources('resources/skins/default/media/common/search.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Leeg zoekterm.', notificationIcon, 2500, False)
+        return False
+
+    #Update search term
+    if getset.setting_get('SearchTermDownload', True) != searchTerm:
+        getset.setting_set('SearchTermDownload', searchTerm)
+        files.removeFile(path.addonstoragecache('searchprogram.js'))
+        var.SearchSelectIdentifier = ''
+        var.SearchTermResult = ''
+        var.SearchProgramDataJson = []
+        cleanedCacheFiles = '["' + func.dictionary_to_jsonstring('searchprogram.js') + '"]'
+        xbmc.executebuiltin('NotifyAll(WebbiePlayer, cache_reset, ' + cleanedCacheFiles + ')')
+    return True
+
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         #Prepare the search page
@@ -34,7 +54,7 @@ class Gui(xbmcgui.WindowXML):
         self.buttons_add_navigation()
         listContainer = self.getControl(1000)
         if listContainer.size() == 0:
-            if func.string_isnullorempty(var.SearchTermDownload) == True:
+            if func.string_isnullorempty(getset.setting_get('SearchTermDownload', True)) == True:
                 guifunc.updateLabelText(self, 1, 'Geen zoekterm')
                 guifunc.updateLabelText(self, 3, "")
                 listContainer = self.getControl(1001)
@@ -167,19 +187,14 @@ class Gui(xbmcgui.WindowXML):
         if searchDialogTerm.cancelled == True:
             return
 
-        #Check search term
-        if func.string_isnullorempty(searchDialogTerm.string) == True:
-            notificationIcon = path.resources('resources/skins/default/media/common/search.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Leeg zoekterm', notificationIcon, 2500, False)
+        #Update search term
+        if search_update_term(searchDialogTerm.string) == False:
             return
 
-        #Update search term
-        var.SearchTermDownload = searchDialogTerm.string
-
         #List search results
-        self.search_list(True)
+        self.search_list(False)
 
-    def search_list(self, forceUpdate=True, selectIdentifier=""):
+    def search_list(self, forceUpdate=False, selectIdentifier=""):
         #Get and check the list container
         listContainer = self.getControl(1000)
         guifunc.listReset(listContainer)
@@ -204,9 +219,9 @@ class Gui(xbmcgui.WindowXML):
         if listContainer.size() > 0:
             guifunc.updateLabelText(self, 1, str(listContainer.size()) + " zoekresultaten")
             if func.string_isnullorempty(var.SearchTermResult):
-                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Zoekresultaten voor[/COLOR] " + var.SearchTermDownload)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Zoekresultaten voor[/COLOR] " + getset.setting_get('SearchTermDownload', True))
             else:
-                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]in[/COLOR] " + var.SearchTermDownload)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]in[/COLOR] " + getset.setting_get('SearchTermDownload', True))
             if resetSelect == True:
                 guifunc.controlFocus(self, listContainer)
                 listIndex = lifunc.search_listcontainer_property_listindex(listContainer, 'ProgramId', selectIdentifier)
@@ -214,9 +229,9 @@ class Gui(xbmcgui.WindowXML):
         else:
             guifunc.updateLabelText(self, 1, "Geen zoekresultaten")
             if func.string_isnullorempty(var.SearchTermResult):
-                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Geen zoekresultaten voor[/COLOR] " + var.SearchTermDownload)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Geen zoekresultaten voor[/COLOR] " + getset.setting_get('SearchTermDownload', True))
             else:
-                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]in[/COLOR] " + var.SearchTermDownload)
+                guifunc.updateLabelText(self, 3, "[COLOR FF888888]Geen zoekresultaten voor[/COLOR] " + var.SearchTermResult + " [COLOR FF888888]in[/COLOR] " + getset.setting_get('SearchTermDownload', True))
 
             #Focus on menu
             listContainer = self.getControl(1001)

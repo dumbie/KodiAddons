@@ -366,12 +366,8 @@ class Gui(xbmcgui.WindowXML):
 
     def search_program_history(self, listItemSelected):
         ProgramName = listItemSelected.getProperty("ProgramName")
-        if var.SearchTermDownload != ProgramName:
-            var.SearchSelectIdentifier = ''
-            var.SearchTermResult = ''
-            var.SearchTermDownload = ProgramName
-            var.SearchProgramDataJson = []
         close_the_page()
+        search.search_update_term(ProgramName)
         search.switch_to_page()
 
     def load_channels(self, forceLoad=False):

@@ -187,7 +187,6 @@ HiddenRadioJson = []
 #Search variables
 SearchSelectIdentifier = ''
 SearchTermResult = ''
-SearchTermDownload = ''
 SearchProgramDataJson = []
 
 #Kids variables

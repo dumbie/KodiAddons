@@ -187,12 +187,8 @@ class Gui(xbmcgui.WindowXML):
             ProgramName = listItemSelected.getProperty("ProgramNowNameRaw")
         else:
             ProgramName = listItemSelected.getProperty("ProgramNextNameRaw")
-        if var.SearchTermDownload != ProgramName:
-            var.SearchSelectIdentifier = ''
-            var.SearchTermResult = ''
-            var.SearchTermDownload = ProgramName
-            var.SearchProgramDataJson = []
         close_the_page()
+        search.search_update_term(ProgramName)
         search.switch_to_page()
 
     def program_alarm_set_next(self, listItemSelected):

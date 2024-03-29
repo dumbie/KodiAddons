@@ -85,6 +85,7 @@
     <setting id="CurrentRadioId" type="text" visible="false" default=""/>
     <setting id="CurrentChannelId" type="text" visible="false" default=""/>
     <setting id="LastChannelId" type="text" visible="false" default=""/>
+    <setting id="SearchTermDownload" type="text" visible="false" default=""/>
     <setting id="LoadChannelFavoritesOnly" type="text" visible="false" default="false"/>
   </category>
 </settings>
