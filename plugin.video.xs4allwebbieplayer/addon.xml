@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.32.0">
+<addon id="plugin.video.xs4allwebbieplayer" name="Webbie Player" provider-name="Arnold Vink" version="1.34.0">
   <requires>
     <import addon="inputstream.adaptive" version="2.0.10"/>
   </requires>
@@ -15,6 +15,7 @@
     <website>https://arnoldvink.com</website>
     <assets>
       <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
       <screenshot>resources/screenshot1.jpg</screenshot>
     </assets>
     <summary>KPN internet television player.</summary>
@@ -24,9 +25,15 @@
     <disclaimer>This is not an official add-on made by KPN but developed by Arnold Vink, use this add-on at your own risk.</disclaimer>
     <disclaimer lang="nl">Dit is geen officiële add-on gemaakt door KPN maar ontwikkeld door Arnold Vink, gebruik deze add-on op eigen risico.</disclaimer>
     <news>
-v1.32.0 (? Maart 2024)
+v1.34.0 (29 Maart 2024)
+- Basis TV Gids toegevoegd voor afstandsbediening.
+
+v1.33.0 (22 Maart 2024)
+- Vernieuw knoppen vervangen door automatisch vernieuwen.
 - Radio zendernummers zijn nu gelijk aan KPN zenderlijst.
 - Programma Gemist pagina past nu ook aan favorieten zenders.
+- Inlog scherm toegevoegd bij eerste keer opstarten.
+- Achtergrond aangepast en meer kleuren toegevoegd.
 
 v1.31.0 (2 Maart 2024)
 - Functie toegevoegd om programma terug te zoeken vanaf tv en gids.
