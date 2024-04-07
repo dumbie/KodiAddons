@@ -1,9 +1,9 @@
 import json
 import xbmc
 import xbmcgui
-import default
 import download
 import func
+import path
 import var
 
 def switch_to_page():
@@ -16,9 +16,6 @@ def close_the_page():
     if var.guiMain != None:
         #Stop the playing media
         xbmc.Player().stop()
-
-        #Clear used global variables
-        default.clear_home_variables()
 
         #Close the shown window
         var.guiMain.close()
@@ -49,6 +46,9 @@ class Gui(xbmcgui.WindowXML):
         #Update the load status
         func.updateLabelText(self, 1, 'Adding streams')
 
+        #Sort streams by name
+        json_streams.sort(key=lambda x: (x['source'], x['name'], x["location"]))
+
         #Add streams to the list
         for channel in json_streams:
             try:
@@ -60,7 +60,7 @@ class Gui(xbmcgui.WindowXML):
                 StreamTokenUrl = channel['token']
                 StreamName += ' [COLOR ff71c6fe]' + StreamLocation + '[/COLOR]'
                 StreamName += ' [COLOR ff26671e]' + StreamSource + '[/COLOR]'
-                StreamImage = 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.vogelspot/streams/' + channel['id'] + '.png'
+                StreamImage = path.ImageUrl + channel['id'] + '.png'
 
                 #Add stream to the list
                 listitem = xbmcgui.ListItem(StreamName)

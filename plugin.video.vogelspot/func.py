@@ -1,6 +1,3 @@
-import os
-import var
-
 #Update controls
 def updateLabelText(_self, controlId, string):
     _self.getControl(controlId).setLabel(string)

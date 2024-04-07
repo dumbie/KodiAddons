@@ -1,9 +1,7 @@
 import os
-import hybrid
-import xbmc
-import xbmcgui
 import xbmcaddon
-import xbmcvfs
+import xbmcgui
+import hybrid
 
 #Action variables
 ACTION_PREVIOUS_MENU = 10

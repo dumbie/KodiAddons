@@ -1,4 +1,3 @@
-import xbmc
 import xbmcgui
 import hybrid
 import path
@@ -6,8 +5,10 @@ import var
 
 def download_streams():
     try:
-        DownloadHeaders = { }
-        DownloadRequest = hybrid.urllib_request('https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.vogelspot/streams/streams.js', headers=DownloadHeaders)
+        DownloadHeaders = {
+            "User-Agent": "Vogelspot"
+        }
+        DownloadRequest = hybrid.urllib_request(path.StreamsUrl, headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadString = hybrid.string_decode_utf8(DownloadDataHttp.read())
         return DownloadString
@@ -18,7 +19,9 @@ def download_streams():
 
 def download_token(tokenUrl):
     try:
-        DownloadHeaders = { }
+        DownloadHeaders = {
+            "User-Agent": "Vogelspot"
+        }
         DownloadRequest = hybrid.urllib_request(tokenUrl, headers=DownloadHeaders)
         DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
         DownloadString = hybrid.string_decode_utf8(DownloadDataHttp.read())
