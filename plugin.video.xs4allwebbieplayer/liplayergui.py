@@ -31,7 +31,7 @@ def list_update(listItem):
             playerSeconds = totalSeconds - seekSeconds
 
             #Set the current seek date time
-            if seekSeconds - streamDelaySeconds > 1:
+            if seekSeconds - streamDelaySeconds > 1 and playerSeconds > -1000:
                 dateTimeSeek -= timedelta(seconds=playerSeconds)
 
         #Get json epg for datetime
