@@ -54,8 +54,14 @@ def icon_fanart():
 def api_url_120(arguments):
     return 'https://' + var.ApiEndpointUrl() + '/101/1.2.0/A/nld/pctv/kpn/' + arguments
 
-def api_endpoint():
+def api_endpoint_deviceid():
     return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott&deviceid=' + getset.setting_get('LoginDeviceId120')[:40]
+
+def api_endpoint_number():
+    return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott&tan=' + getset.setting_get('LoginUsername')
+
+def api_endpoint_email():
+    return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott'
 
 def api_login():
     return api_url_120('USER/SESSIONS/')

@@ -26,9 +26,35 @@ def ApiGenerateDeviceId():
     except:
         return False
 
-def ApiSetEndpoint():
+def ApiSetEndpointDeviceId():
     try:
-        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint())
+        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint_deviceid())
+        var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
+        return True
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
+        return False
+
+def ApiSetEndpointNumber():
+    try:
+        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint_number())
+        var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
+        return True
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/error.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Mislukt om api adres te downloaden.', notificationIcon, 2500, False)
+        return False
+
+def ApiSetEndpointEmail():
+    try:
+        apiEndpoint = classes.Class_ApiEndpoint_Email()
+        apiEndpoint.username = getset.setting_get('LoginEmail')
+        apiEndpoint.password = getset.setting_get('LoginPasswordEmail')
+        apiEndpoint = apiEndpoint.__dict__
+
+        DownloadDataSend = json.dumps(apiEndpoint).encode('ascii')
+        DownloadDataJson = dlfunc.download_gzip_json(path.api_endpoint_email(), DownloadDataSend)
         var.ApiEndpointUrl(str(DownloadDataJson['result']['url']))
         return True
     except:
@@ -75,8 +101,10 @@ def ApiLogin(showNotification=False, forceLogin=False):
         #Check if login username changed
         if getset.setting_get('LoginType') == 'Abonnementsnummer':
             loginUsername = getset.setting_get('LoginUsername')
-        else:
+        elif getset.setting_get('LoginType') == 'Emailadres':
             loginUsername = getset.setting_get('LoginEmail')
+        elif getset.setting_get('LoginType') == 'DeviceId':
+            loginUsername = getset.setting_get('LoginDeviceId120')
         loginUsernameChanged = loginUsername != var.ApiLoginLastUsername()
 
         #Check if login is needed
@@ -86,12 +114,12 @@ def ApiLogin(showNotification=False, forceLogin=False):
         #Generate device id
         ApiGenerateDeviceId()
 
-        #Download and set api endpoint adres
-        ApiSetEndpoint()
-
         #Check the login type
         if getset.setting_get('LoginType') == 'Abonnementsnummer':
-            loginDevice = classes.Class_ApiLogin_deviceRegistrationData()
+            #Download and set api endpoint adres
+            ApiSetEndpointNumber()
+
+            loginDevice = classes.Class_ApiLogin_deviceRegistration()
             loginDevice.deviceId = getset.setting_get('LoginDeviceId120')
             loginDevice.vendor = "Webbie Player"
             loginDevice.model = str(var.addonversion)
@@ -99,8 +127,8 @@ def ApiLogin(showNotification=False, forceLogin=False):
             loginDevice.appVersion = str(var.kodiversion)
             loginDevice = loginDevice.__dict__
 
-            loginAuth = classes.Class_ApiLogin_credentialsStdAuth()
-            loginAuth.username = loginUsername
+            loginAuth = classes.Class_ApiLogin_credentialsStdAuth_Full()
+            loginAuth.username = getset.setting_get('LoginUsername')
             loginAuth.password = getset.setting_get('LoginPassword')
             loginAuth.deviceRegistrationData = loginDevice
             loginAuth = loginAuth.__dict__
@@ -108,7 +136,10 @@ def ApiLogin(showNotification=False, forceLogin=False):
             loginData = classes.Class_ApiLogin_stdAuth()
             loginData.credentialsStdAuth = loginAuth
             loginData = loginData.__dict__
-        else:
+        elif getset.setting_get('LoginType') == 'Emailadres':
+            #Download and set api endpoint adres
+            ApiSetEndpointEmail()
+
             loginDevice = classes.Class_ApiLogin_deviceInfo()
             loginDevice.deviceId = getset.setting_get('LoginDeviceId120')
             loginDevice.deviceVendor = "Webbie Player"
@@ -118,7 +149,7 @@ def ApiLogin(showNotification=False, forceLogin=False):
             loginDevice = loginDevice.__dict__
 
             loginCredentials = classes.Class_ApiLogin_credentials()
-            loginCredentials.username = loginUsername
+            loginCredentials.username = getset.setting_get('LoginEmail')
             loginCredentials.password = getset.setting_get('LoginPasswordEmail')
             loginCredentials = loginCredentials.__dict__
 
@@ -129,6 +160,21 @@ def ApiLogin(showNotification=False, forceLogin=False):
 
             loginData = classes.Class_ApiLogin_extAuth()
             loginData.credentialsExtAuth = loginAuth
+            loginData = loginData.__dict__
+        elif getset.setting_get('LoginType') == 'DeviceId':
+            #Download and set api endpoint adres
+            ApiSetEndpointDeviceId()
+
+            loginDevice = classes.Class_ApiLogin_deviceAuth()
+            loginDevice.deviceId = getset.setting_get('LoginDeviceId120')
+            loginDevice = loginDevice.__dict__
+
+            loginAuth = classes.Class_ApiLogin_credentialsStdAuth_Device()
+            loginAuth.deviceRegistrationData = loginDevice
+            loginAuth = loginAuth.__dict__
+
+            loginData = classes.Class_ApiLogin_stdAuth()
+            loginData.credentialsStdAuth = loginAuth
             loginData = loginData.__dict__
 
         #Request login by sending data

@@ -1,3 +1,9 @@
+#Endpoint
+class Class_ApiEndpoint_Email:
+    def __init__(self, username=None, password=None):
+        self.username = username
+        self.password = password
+
 #ExtAuth
 class Class_ApiLogin_extAuth:
     def __init__(self, credentialsExtAuth=None):
@@ -31,14 +37,22 @@ class Class_ApiLogin_stdAuth:
     def __init__(self, credentialsStdAuth=None):
         self.credentialsStdAuth = credentialsStdAuth
 
-class Class_ApiLogin_credentialsStdAuth:
+class Class_ApiLogin_credentialsStdAuth_Full:
     def __init__(self, username=None, password=None, deviceRegistrationData=None):
         self.username = username
         self.password = password
         self.remember = "Y"
         self.deviceRegistrationData = deviceRegistrationData
 
-class Class_ApiLogin_deviceRegistrationData:
+class Class_ApiLogin_credentialsStdAuth_Device:
+    def __init__(self, deviceRegistrationData=None):
+        self.deviceRegistrationData = deviceRegistrationData
+
+class Class_ApiLogin_deviceAuth:
+    def __init__(self, deviceId=None):
+        self.deviceId = deviceId
+
+class Class_ApiLogin_deviceRegistration:
     def __init__(self, deviceId=None, vendor=None, model=None, deviceFirmVersion=None, appVersion=None):
         self.deviceId = deviceId
         self.accountDeviceIdType = "DEVICEID"

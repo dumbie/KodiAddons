@@ -135,7 +135,7 @@ def ApiLoginFailCount(setObject=None):
 def ApiEndpointUrl(setObject=None):
     varName = str(sys._getframe().f_code.co_name)
     if setObject == None:
-         return getset.global_pickle_get(varName, 'api.tv.prod.itvavs.prod.aws.kpn.com')
+         return getset.global_pickle_get(varName, '')
     else:
          return getset.global_pickle_set(varName, setObject)
 
