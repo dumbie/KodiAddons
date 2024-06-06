@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
   <category label="Algemeen">
-    <setting id="OpenWelcomeScreen" type="action" label="Open het inlog scherm" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?OpenWelcomeScreen)"/>
+    <setting id="OpenWelcomeScreen" type="action" label="Open het KPN inlog scherm" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?OpenWelcomeScreen)"/>
     <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Rood|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="RadioChannelView" type="select" label="Radiozenders weergavestijl" default="Blokken" values="Lijst|Blokken"/>
