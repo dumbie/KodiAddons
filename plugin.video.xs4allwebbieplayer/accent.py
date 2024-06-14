@@ -11,6 +11,8 @@ def get_accent_color_string():
         return '[COLOR FF007300]'
     elif currentProvider == 'rood':
         return '[COLOR FF981C26]'
+    elif currentProvider == 'oranje':
+        return '[COLOR FFCC5200]'
     elif currentProvider == 'grijs':
         return '[COLOR FF888888]'
 
@@ -32,4 +34,7 @@ def change_addon_accent():
     elif currentProvider == 'grijs':
         getset.global_set('ColorAccent', 'FF404040')
         getset.global_set('ColorFocused', 'F5313131')
+    elif currentProvider == 'oranje':
+        getset.global_set('ColorAccent', 'FFCC5200')
+        getset.global_set('ColorFocused', 'F5662900')
     getset.global_set('ColorNoFocus', 'FF181818')
