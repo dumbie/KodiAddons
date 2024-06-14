@@ -60,6 +60,10 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         #Get downloaded stream url
         StreamUrl = DownloadDataJson['resultObj']['src']['sources']['src']
 
+        #Update stream url with uhd workaround
+        if NewChannelId == "2495":
+            StreamUrl = streamadjust.adjust_workaround_uhd(StreamUrl)
+
         #Update stream url with bitrate setting
         StreamUrl = streamadjust.adjust_streamurl_bitrate(StreamUrl)
 

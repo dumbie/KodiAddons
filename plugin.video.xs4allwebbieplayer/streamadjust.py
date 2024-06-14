@@ -3,6 +3,24 @@ import xbmc
 import getset
 import hybrid
 import metadatainfo
+import var
+
+#Update stream url with uhd workaround
+def adjust_workaround_uhd(streamUrl):
+    try:
+        #Set the download headers
+        DownloadHeaders = {
+            "User-Agent": var.addon.getSetting('CustomUserAgent')
+        }
+
+        #Download original mpd to gain access
+        DownloadRequest = hybrid.urllib_request(streamUrl, headers=DownloadHeaders)
+        DownloadDataHttp = hybrid.urllib_urlopen(DownloadRequest)
+
+        #Replace original streamurl
+        return streamUrl.replace("18/18.isml/18.mpd?", "2495/2495.isml/2495.mpd?")
+    except:
+        pass
 
 #Update stream url with bitrate setting
 def adjust_streamurl_bitrate(streamUrl):

@@ -2,7 +2,7 @@
 <settings>
   <category label="Algemeen">
     <setting id="OpenWelcomeScreen" type="action" label="Open het KPN inlog scherm" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?OpenWelcomeScreen)"/>
-    <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Rood|Grijs"/>
+    <setting id="AddonAccent" type="select" label="Gebruikte kleurenschema" default="Groen" values="Groen|Blauw|Geel|Rood|Oranje|Grijs"/>
     <setting id="TelevisionChannelView" type="select" label="Televisiezenders weergavestijl" default="Lijst" values="Lijst|Blokken|Minimaal"/>
     <setting id="RadioChannelView" type="select" label="Radiozenders weergavestijl" default="Blokken" values="Lijst|Blokken"/>
     <setting id="TelevisionHideEarlierAired" label="Toon geen eerder uitgezonden programma's" type="bool" default="false"/>
@@ -67,7 +67,7 @@
     <setting label="* Sommige opties werken pas na een herstart." type="lsep"/>
   </category>
   <category label="Stream">
-    <setting id="StreamResolution" type="select" label="Maximale resolutie van de videostream" default="1080pNormal" values="1080pBest|1080pHigh|1080pNormal|720p|576p|432p|360p|180p"/>
+    <setting id="StreamResolution" type="select" label="Maximale resolutie van de videostream" default="2160p" values="2160p|1080pHigh|1080pNormal|720p|576p|432p|360p|180p"/>
     <setting id="CustomUserAgent" type="text" label="User-agent verbindingsidentificatie" default="Webbie Player"/>
     <setting id="UseLocalhostProxy" label="Gebruik lokale proxy server voor stream verbinding" type="bool" default="false"/>
     <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream-adaptive add-on instellingen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?InputAdaptiveSettings)"/>

@@ -488,11 +488,11 @@ def stream_targetprofile(playReadyStream=False):
 def stream_targetbitrate():
     try:
         streamResolutionSetting = getset.setting_get('StreamResolution')
-        if streamResolutionSetting == '2160p' or streamResolutionSetting == '1080pBest':
+        if streamResolutionSetting == '2160p':
             return '100000000'
         elif streamResolutionSetting == '1080pHigh':
             return '8000000'
-        elif streamResolutionSetting == '1080p' or streamResolutionSetting == '1080pNormal':
+        elif streamResolutionSetting == '1080pNormal':
             return '6000000'
         elif streamResolutionSetting == '720p':
             return '4000000'
