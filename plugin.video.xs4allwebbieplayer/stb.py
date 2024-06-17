@@ -7,7 +7,7 @@ import getset
 import guifunc
 import hidden
 import hiddenfunc
-import lichannelradio
+import lichannelstb
 import lifunc
 import path
 import player
@@ -17,24 +17,20 @@ import var
 import zap
 
 def switch_to_page():
-    if var.guiRadio == None:
-        channelView = getset.setting_get('RadioChannelView').lower()
-        if channelView == 'lijst':
-            var.guiRadio = Gui('radio.xml', var.addonpath, 'default', '720p')
-        elif channelView == 'blokken':
-            var.guiRadio = Gui('radio-grid.xml', var.addonpath, 'default', '720p')
-        var.guiRadio.setProperty('WebbiePlayerPage', 'Open')
-        var.guiRadio.show()
+    if var.guiStb == None:
+        var.guiStb = Gui('radio-grid.xml', var.addonpath, 'default', '720p')
+        var.guiStb.setProperty('WebbiePlayerPage', 'Open')
+        var.guiStb.show()
 
 def close_the_page():
-    if var.guiRadio != None:
+    if var.guiStb != None:
         #Close the shown window
-        var.guiRadio.close()
-        var.guiRadio = None
+        var.guiStb.close()
+        var.guiStb = None
 
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
-        guifunc.updateLabelText(self, 2, "Radio")
+        guifunc.updateLabelText(self, 2, "Ontvanger")
         self.buttons_add_navigation()
         self.load_channels(False)
 
@@ -44,15 +40,15 @@ class Gui(xbmcgui.WindowXML):
             if clickId == 1000:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('ItemAction')
-                if listItemAction == 'play_stream_radio':
-                    streamplay.play_radio(listItemSelected, True)
+                if listItemAction == 'play_stream_stb':
+                    streamplay.play_stb(listItemSelected)
             elif clickId == 1001:
                 listItemSelected = clickedControl.getSelectedItem()
                 listItemAction = listItemSelected.getProperty('ItemAction')
                 if listItemAction == 'go_back':
                     close_the_page()
                 elif listItemAction == 'hidden_channels':
-                    hidden.switch_to_page('HiddenRadio.js')
+                    hidden.switch_to_page('HiddenTelevision.js')
                 elif listItemAction == "switch_all_favorites":
                     self.switch_all_favorites()
                 elif listItemAction == "search_channelprogram":
@@ -142,7 +138,7 @@ class Gui(xbmcgui.WindowXML):
         listContainer.addItem(listItem)
 
     def hide_channel(self, listContainer, listItemSelected):
-        hiddenResult = hiddenfunc.hidden_add_channel(listItemSelected, 'HiddenRadio.js')
+        hiddenResult = hiddenfunc.hidden_add_channel(listItemSelected, 'HiddenTelevision.js')
         if hiddenResult == True:
             #Remove item from the list
             removeListItemIndex = listContainer.getSelectedPosition()
@@ -153,7 +149,7 @@ class Gui(xbmcgui.WindowXML):
             self.count_channels(False)
 
     def switch_favorite_channel(self, listContainer, listItemSelected):
-        favoriteResult = favoritefunc.favorite_toggle_channel(listItemSelected, 'FavoriteRadio.js')
+        favoriteResult = favoritefunc.favorite_toggle_channel(listItemSelected, 'FavoriteTelevision.js')
         if favoriteResult == 'Removed' and getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
             removeListItemIndex = listContainer.getSelectedPosition()
@@ -169,14 +165,14 @@ class Gui(xbmcgui.WindowXML):
             if favoritefunc.favorite_switch_mode() == False:
                 return
 
-            #Load radio channels
+            #Load stb channels
             self.load_channels(True)
         except:
             pass
 
     def search_channelprogram(self):
         #Open the search dialog
-        searchDialogTerm = searchdialog.search_dialog('SearchHistoryRadio.js', 'Zoek naar zender')
+        searchDialogTerm = searchdialog.search_dialog('SearchHistoryChannel.js', 'Zoek naar zender')
 
         #Check the search term
         if searchDialogTerm.cancelled == True:
@@ -197,7 +193,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Add items to list container
         guifunc.updateLabelText(self, 1, 'Zenders laden')
-        if lichannelradio.list_load_combined(listContainer) == False:
+        if lichannelstb.list_load_combined(listContainer) == False:
             guifunc.updateLabelText(self, 1, 'Niet beschikbaar')
             listContainer = self.getControl(1001)
             guifunc.controlFocus(self, listContainer)
@@ -223,7 +219,7 @@ class Gui(xbmcgui.WindowXML):
                 guifunc.updateLabelText(self, 1, str(listContainer.size()) + ' ' + channelTypeString)
 
             if resetSelect == True:
-                currentChannelId = getset.setting_get('CurrentRadioId', True)
+                currentChannelId = getset.setting_get('CurrentStbId', True)
                 lifunc.focus_listcontainer_value(self, 1000, 0, True, 'ChannelId', currentChannelId)
         else:
             listContainer = self.getControl(1001)

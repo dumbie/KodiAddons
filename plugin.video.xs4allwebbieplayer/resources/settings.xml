@@ -16,6 +16,7 @@
     <setting id="AfsluitschermOverslaan" label="Afsluitscherm op hoofdpagina overslaan" type="bool" default="false"/>
     <setting id="MainShowTelevision" label="Toon Televisie op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowRadio" label="Toon Radio op hoofdpagina" type="bool" default="true"/>
+    <setting id="MainShowStb" label="Toon Ontvanger op hoofdpagina" type="bool" default="false"/>
     <setting id="MainShowMovies" label="Toon Films op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowSeries" label="Toon Series op hoofdpagina" type="bool" default="true"/>
     <setting id="MainShowEpg" label="Toon TV Gids op hoofdpagina" type="bool" default="true"/>
@@ -82,6 +83,7 @@
     <setting id="LoginEmail" type="text" visible="false" default=""/>
     <setting id="LoginPasswordEmail" type="text" visible="false" default=""/>
     <setting id="WidevineVersion" type="text" visible="false" default=""/>
+    <setting id="CurrentStbId" type="text" visible="false" default=""/>
     <setting id="CurrentRadioId" type="text" visible="false" default=""/>
     <setting id="CurrentChannelId" type="text" visible="false" default=""/>
     <setting id="LastChannelId" type="text" visible="false" default=""/>

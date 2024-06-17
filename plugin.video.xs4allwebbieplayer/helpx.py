@@ -52,9 +52,6 @@ class Gui(xbmcgui.WindowXMLDialog):
         helpText += '\n\nGebruik Webbie Player op eigen risico'
         helpText += '\n[COLOR FF888888]Als er een DDoS aanval wordt uitgevoerd op de interactieve tv server kan Webbie Player door een onbekende reden als aanvaller beschouwt worden en is er een kleine kans dat uw internet verbinding tijdelijk kan worden uitgeschakeld door uw provider.[/COLOR]'
 
-        helpText += '\n\nRadio zender werkt niet meer'
-        helpText += '\n[COLOR FF888888]Als een bepaalde radio zender niet meer werkt kunt u dit aan de ontwikkelaar van Webbie Player melden via https://contact.arnoldvink.com zodat de radio zender aangepast kan worden in de lijst.[/COLOR]'
-
         helpText += '\n\nOndersteuning en fouten melden'
         helpText += '\n[COLOR FF888888]Als u tegen een probleem aanloopt of een fout tegen komt kunt u die melden via https://help.arnoldvink.com zodat ik u kan proberen te helpen om alles weer aan de gang te krijgen.[/COLOR]'
 

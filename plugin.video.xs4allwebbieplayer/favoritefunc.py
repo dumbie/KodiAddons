@@ -1,18 +1,11 @@
 import json
 import xbmcgui
 import files
-import func
 import getset
 import path
 import var
 
-def favorite_switch_mode(favoriteJsonFile, showNotification=False):
-    #Set Json target list variable
-    if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionJson
-    elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioJson
-
+def favorite_switch_mode(showNotification=False):
     #Switch favorites mode on or off
     if getset.setting_get('LoadChannelFavoritesOnly') == 'true':
         getset.setting_set('LoadChannelFavoritesOnly', 'false')
@@ -20,57 +13,11 @@ def favorite_switch_mode(favoriteJsonFile, showNotification=False):
             notificationIcon = path.resources('resources/skins/default/media/common/star.png')
             xbmcgui.Dialog().notification(var.addonname, 'Toon alle zenders.', notificationIcon, 2500, False)
     else:
-        #Check if there are favorites set
-        if func.string_isnullorempty(favoriteJsonFile) == False and favoriteTargetJson == []:
-            notificationIcon = path.resources('resources/skins/default/media/common/star.png')
-            xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
-            return False
         getset.setting_set('LoadChannelFavoritesOnly', 'true')
         if showNotification == True:
             notificationIcon = path.resources('resources/skins/default/media/common/star.png')
             xbmcgui.Dialog().notification(var.addonname, 'Toon favorieten zenders.', notificationIcon, 2500, False)
     return True
-
-def favorite_check_set(favoriteJsonFile):
-    #Set Json target list variable
-    if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionJson
-    elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioJson
-
-    #Check if there are favorites set
-    if favoriteTargetJson == [] and getset.setting_get('LoadChannelFavoritesOnly') == 'true':
-        notificationIcon = path.resources('resources/skins/default/media/common/star.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Geen favorieten zenders.', notificationIcon, 2500, False)
-        getset.setting_set('LoadChannelFavoritesOnly', 'false')
-
-def favorite_check_available(favoriteJsonFile):
-    #Set Json target list variable
-    if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionJson
-        channelTargetArray = var.TelevisionChannelIdsPlayableArray
-    elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioJson
-        channelTargetArray = var.RadioChannelIdsPlayableArray
-
-    #Check playable channel identifier array
-    if channelTargetArray == []:
-        return
-
-    #Check if favorite channel is available
-    favoriteRemoved = False
-    for favorite in favoriteTargetJson[:]:
-        try:
-            if (favorite in channelTargetArray) == False:
-                favoriteTargetJson.remove(favorite)
-                favoriteRemoved = True
-        except:
-            continue
-
-    if favoriteRemoved == True:
-        #Save the raw json data to storage
-        JsonDumpBytes = json.dumps(favoriteTargetJson).encode('ascii')
-        files.saveFileUser(favoriteJsonFile, JsonDumpBytes)
 
 def favorite_television_json_load(forceLoad=False):
     try:
@@ -78,7 +25,6 @@ def favorite_television_json_load(forceLoad=False):
             if files.existFileUser('FavoriteTelevision.js') == True:
                 FavoriteJsonString = files.openFileUser('FavoriteTelevision.js')
                 var.FavoriteTelevisionJson = json.loads(FavoriteJsonString)
-                favorite_check_available('FavoriteTelevision.js')
     except:
         var.FavoriteTelevisionJson = []
 
@@ -88,16 +34,19 @@ def favorite_radio_json_load(forceLoad=False):
             if files.existFileUser('FavoriteRadio.js') == True:
                 FavoriteJsonString = files.openFileUser('FavoriteRadio.js')
                 var.FavoriteRadioJson = json.loads(FavoriteJsonString)
-                favorite_check_available('FavoriteRadio.js')
     except:
         var.FavoriteRadioJson = []
 
-def favorite_check_channel(ChannelId, favoriteJsonFile):
+def favorite_target_variable(favoriteJsonFile):
     #Set Json target list variable
     if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionJson
+        return var.FavoriteTelevisionJson
     elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioJson
+        return var.FavoriteRadioJson
+
+def favorite_check_channel(ChannelId, favoriteJsonFile):
+    #Set Json target list variable
+    favoriteTargetJson = favorite_target_variable(favoriteJsonFile)
     return ChannelId in favoriteTargetJson
 
 def favorite_toggle_channel(listItem, favoriteJsonFile):
@@ -115,10 +64,7 @@ def favorite_add_channel(listItem, favoriteJsonFile):
     ChannelId = listItem.getProperty('ChannelId')
 
     #Set Json target list variable
-    if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionJson
-    elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioJson
+    favoriteTargetJson = favorite_target_variable(favoriteJsonFile)
 
     #Append the new favorite to Json
     favoriteTargetJson.append(ChannelId)
@@ -140,10 +86,7 @@ def favorite_remove_channel(listItem, favoriteJsonFile):
     ChannelId = listItem.getProperty('ChannelId')
 
     #Set Json target list variable
-    if favoriteJsonFile == 'FavoriteTelevision.js':
-        favoriteTargetJson = var.FavoriteTelevisionJson
-    elif favoriteJsonFile == 'FavoriteRadio.js':
-        favoriteTargetJson = var.FavoriteRadioJson
+    favoriteTargetJson = favorite_target_variable(favoriteJsonFile)
 
     favoriteRemoved = False
     for favorite in favoriteTargetJson[:]:

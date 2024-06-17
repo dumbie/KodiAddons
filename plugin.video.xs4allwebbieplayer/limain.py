@@ -31,6 +31,7 @@ def list_load_append(listContainer, remoteMode=False):
     try:
         #Set item variables
         apiLoggedIn = var.ApiLoggedIn()
+        apiHomeAccess = var.ApiHomeAccess()
         recordingAccess = var.RecordingAccess()
 
         #Set item icons
@@ -51,7 +52,22 @@ def list_load_append(listContainer, remoteMode=False):
             listItem = lifunc.jsonitem_to_listitem(jsonItem)
             listContainer.append((dirUrl, listItem, dirIsfolder))
 
-        if getset.setting_get('MainShowRadio') == 'true':
+        if apiLoggedIn == True and apiHomeAccess == True and getset.setting_get('MainShowStb') == 'true':
+            #Set item icons
+            iconDefault = path.resources('resources/skins/default/media/common/stb.png')
+
+            #Set item details
+            jsonItem = {
+                'ItemLabel': 'Ontvanger',
+                'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault, 'fanart': iconFanart},
+                'ItemAction': 'page_stb'
+            }
+            dirIsfolder = True
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
+
+        if apiLoggedIn == True and apiHomeAccess == True and getset.setting_get('MainShowRadio') == 'true':
             #Set item icons
             iconDefault = path.resources('resources/skins/default/media/common/radio.png')
 

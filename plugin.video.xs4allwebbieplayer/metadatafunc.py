@@ -126,22 +126,11 @@ def search_seriesid_jsonrecording_series(searchSeriesId):
     except:
         return None
 
-#Search for stream asset id by ChannelId
-def search_stream_assetid_by_channelid(searchChannelId):
+#Search for ChannelId in json web
+def search_channelid_json_web(searchChannelId):
     try:
-        channelDetails = search_channelid_jsontelevision(searchChannelId)
-        if channelDetails != None:
-            return metadatainfo.stream_assetid_from_json_metadata(channelDetails)
-        else:
-            return ''
-    except:
-        return ''
-
-#Search for ChannelId in json television
-def search_channelid_jsontelevision(searchChannelId):
-    try:
-        if var.TelevisionChannelsDataJson == []: return None
-        for channel in var.TelevisionChannelsDataJson["resultObj"]["containers"]:
+        if var.WebChannelsDataJson == []: return None
+        for channel in var.WebChannelsDataJson["resultObj"]["containers"]:
             try:
                 if metadatainfo.channelId_from_json_metadata(channel) == searchChannelId:
                     return channel
@@ -151,13 +140,13 @@ def search_channelid_jsontelevision(searchChannelId):
     except:
         return None
 
-#Search for ChannelId in json radio
-def search_channelid_jsonradio(searchChannelId):
+#Search for ChannelId in json stb
+def search_channelid_json_stb(searchChannelId):
     try:
-        if var.RadioChannelsDataJson == []: return None
-        for channel in var.RadioChannelsDataJson['radios']:
+        if var.StbChannelsDataJson == []: return None
+        for channel in var.StbChannelsDataJson["resultObj"]["containers"]:
             try:
-                if str(channel['id']) == searchChannelId:
+                if metadatainfo.channelId_from_json_metadata(channel) == searchChannelId:
                     return channel
             except:
                 continue

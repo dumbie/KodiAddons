@@ -1,4 +1,4 @@
-import dlchanneltelevision
+import dlchannelweb
 import dlrecordingseries
 import dlrecordingevent
 import func
@@ -13,7 +13,7 @@ import var
 def list_load_combined(listContainer=None):
     try:
         #Download record series
-        downloadResultChannels = dlchanneltelevision.download()
+        downloadResultChannels = dlchannelweb.download()
         downloadResultRecordingSeries = dlrecordingseries.download()
         downloadResultRecordingEvent = dlrecordingevent.download()
         if downloadResultChannels == False or downloadResultRecordingSeries == False or downloadResultRecordingEvent == False:
@@ -55,7 +55,7 @@ def list_load_append(listContainer, remoteMode=False):
 
             #Get channel basics
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
-            ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
+            ChannelDetails = metadatafunc.search_channelid_json_web(ChannelId)
             if ChannelDetails != None:
                 ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
                 ChannelIcon = path.icon_television(ExternalId)

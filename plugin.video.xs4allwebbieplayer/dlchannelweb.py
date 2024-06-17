@@ -10,7 +10,7 @@ import var
 
 def update_playable_channel_identifiers():
     var.TelevisionChannelIdsPlayableArray = []
-    for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
+    for channel in var.WebChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
             StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channel)
@@ -29,18 +29,18 @@ def update_playable_channel_identifiers():
 def download(forceUpdate=False):
     try:
         #Set cache file path
-        filePath = path.addonstoragecache('television.js')
+        filePath = path.addonstoragecache('web.js')
 
         if forceUpdate == False:
             #Check if already cached in variables
-            if var.TelevisionChannelsDataJson != []:
+            if var.WebChannelsDataJson != []:
                 return True
 
             #Check if already cached in files
             fileCache = files.openFile(filePath)
             if fileCache != None:
                 #Update variable cache
-                var.TelevisionChannelsDataJson = json.loads(fileCache)
+                var.WebChannelsDataJson = json.loads(fileCache)
 
                 #Update playable channel identifiers
                 update_playable_channel_identifiers()
@@ -53,7 +53,7 @@ def download(forceUpdate=False):
             return False
 
         #Download json data
-        DownloadDataJson = dlfunc.download_gzip_json(path.channels_list_tv())
+        DownloadDataJson = dlfunc.download_gzip_json(path.channels_list_web())
 
         #Check if connection is successful
         if DownloadDataJson['resultCode'] and DownloadDataJson['errorDescription']:
@@ -66,7 +66,7 @@ def download(forceUpdate=False):
                 return False
 
         #Update variable cache
-        var.TelevisionChannelsDataJson = DownloadDataJson
+        var.WebChannelsDataJson = DownloadDataJson
 
         #Update playable channel identifiers
         update_playable_channel_identifiers()

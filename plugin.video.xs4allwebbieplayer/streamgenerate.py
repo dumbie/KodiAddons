@@ -1,4 +1,4 @@
-import dlchanneltelevision
+import dlchannelweb
 import lifunc
 import metadatafunc
 import metadatainfo
@@ -7,11 +7,11 @@ import path
 def generate_listitem_tv(channelId):
     try:
         #Download channels
-        if dlchanneltelevision.download() == False:
+        if dlchannelweb.download() == False:
             return None
 
         #Get channel json
-        channelJson = metadatafunc.search_channelid_jsontelevision(channelId)
+        channelJson = metadatafunc.search_channelid_json_web(channelId)
 
         #Load channel basics
         StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channelJson)

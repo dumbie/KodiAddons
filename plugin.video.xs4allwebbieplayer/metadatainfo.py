@@ -97,10 +97,20 @@ def externalChannelId_from_json_metadata(metaData):
     except:
         return 'unknown'
 
-#Get contentSubtype from json metadata
-def contentSubtype_from_json_metadata(metaData):
+#Get type from json metadata
+def type_from_json_metadata(metaData):
     try:
-        return str(metaData['metadata']['contentSubtype'])
+        return str(metaData['metadata']['type'])
+    except:
+        return 'unknown'
+
+#Get subType from json metadata
+def subtype_from_json_metadata(metaData):
+    try:
+        if 'contentSubtype' in metaData['metadata']:
+            return str(metaData['metadata']['contentSubtype'])
+        if 'subType' in metaData['metadata']:
+            return str(metaData['metadata']['subType'])
     except:
         return 'unknown'
 
@@ -413,6 +423,15 @@ def isAdult_from_json_metadata(metaData):
     except:
         return False
 
+#Get stream multicast url
+def stream_multicast_url(metaData):
+    try:
+        ip = metaData['assets'][0]['multicast']['ip']
+        port = str(metaData['assets'][0]['multicast']['port'])
+        return "rtp://" + ip + ":" + port
+    except:
+        return ""
+
 #Get stream assets array from json metadata
 def stream_assets_array_from_json_metadata(metaData):
     try:
@@ -438,7 +457,7 @@ def stream_assetid_from_assets_array(assetsArray):
     try:
         for asset in assetsArray:
             try:
-                if asset['videoType'] == 'SD_DASH_WV':
+                if asset['videoType'] == 'SD_DASH_WV' or asset['videoType'] == 'HD_DASH_WV' or asset['videoType'] == 'UHD_DASH_WV':
                     if 'rights' in asset and asset['rights'] != 'watch': continue
                     if 'programType' in asset and asset['programType'] != 'CUTV': continue
                     if 'assetType' in asset and asset['assetType'] != 'MASTER': continue
@@ -478,11 +497,8 @@ def stream_assetstatus_from_json_metadata(metaData):
         return ''
 
 #Get stream target profile
-def stream_targetprofile(playReadyStream=False):
-    if playReadyStream:
-        return 'M03'
-    else:
-        return 'G03'
+def stream_targetprofile():
+    return 'G11'
 
 #Get stream target bitrate
 def stream_targetbitrate():

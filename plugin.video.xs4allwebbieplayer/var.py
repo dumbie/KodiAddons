@@ -74,6 +74,7 @@ guiSport = None
 guiSeries = None
 guiSeriesSeason = None
 guiRadio = None
+guiStb = None
 guiEpg = None
 guiHelp = None
 guiHidden = None
@@ -199,15 +200,13 @@ KidsVodDataJson = []
 SportSelectIdentifier = ''
 SportProgramDataJson = []
 
-#Radio variables
-RadioChannelIdsPlayableArray = []
-RadioChannelIdsPlayableString = ''
-RadioChannelsDataJson = []
-
 #Television variables
 TelevisionChannelIdsPlayableArray = []
 TelevisionChannelIdsPlayableString = ''
-TelevisionChannelsDataJson = []
+
+#Channel variables
+StbChannelsDataJson = []
+WebChannelsDataJson = []
 
 #Vod variables
 VodSelectIdentifier = ''

@@ -36,12 +36,6 @@ def icon_epg(pictureUrl):
     else:
         return 'https://images.tv.kpn.com/epg/' + pictureUrl + '/220x325.jpg'
 
-def icon_radio(channelId):
-    if func.string_isnullorempty(channelId):
-         return icon_addon('unknown')
-    else:
-        return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/' + channelId + '.png'
-
 def icon_addon(iconName):
     if func.string_isnullorempty(iconName):
         return resources('resources/skins/default/media/common/unknown.png')
@@ -51,8 +45,11 @@ def icon_addon(iconName):
 def icon_fanart():
     return resources('resources/fanart.jpg')
 
-def api_url_120(arguments):
+def api_url_web(arguments):
     return 'https://' + var.ApiEndpointUrl() + '/101/1.2.0/A/nld/pctv/kpn/' + arguments
+
+def api_url_stb(arguments):
+    return 'https://' + var.ApiEndpointUrl() + '/101/1.2.0/A/nld/stb/kpn/' + arguments
 
 def api_endpoint_deviceid():
     return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott&deviceid=' + getset.setting_get('LoginDeviceId120')[:40]
@@ -64,61 +61,65 @@ def api_endpoint_email():
     return 'https://ausar.tcloud-itv-prd1.prod.aws.kpn.com/public/v1/ear?type=ott'
 
 def api_login():
-    return api_url_120('USER/SESSIONS/')
+    return api_url_web('USER/SESSIONS/')
 
 def stream_url_tv(channelId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_web('CONTENT/VIDEOURL/LIVE/' + channelId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_recording(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_web('CONTENT/VIDEOURL/RECORDING/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_vod(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_web('CONTENT/VIDEOURL/VOD/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def stream_url_program(programId, assetId):
-    return api_url_120('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
+    return api_url_web('CONTENT/VIDEOURL/PROGRAM/' + programId + '/' + assetId + '/?deviceId=' + getset.setting_get('LoginDeviceId120') + '&profile=' + metadatainfo.stream_targetprofile())
 
 def detail_vod(programId):
-    return api_url_120('CONTENT/DETAIL/VOD/' + programId)
+    return api_url_web('CONTENT/DETAIL/VOD/' + programId)
 
 def detail_program(programId):
-    return api_url_120('CONTENT/DETAIL/PROGRAM/' + programId)
+    return api_url_web('CONTENT/DETAIL/PROGRAM/' + programId)
 
 def recording_profile():
-    return api_url_120('USER/PROFILE/RECORDING')
+    return api_url_web('USER/PROFILE/RECORDING')
 
 def recording_event_add_remove():
-    return api_url_120('CONTENT/RECORDING/EVENT')
+    return api_url_web('CONTENT/RECORDING/EVENT')
 
 def recording_series_add_remove():
-    return api_url_120('CONTENT/RECORDING/SERIES')
+    return api_url_web('CONTENT/RECORDING/SERIES')
 
-def channels_list_radio():
-    return 'https://raw.githubusercontent.com/dumbie/kodirepo/master/plugin.video.xs4allwebbieplayer/radio/listradios.js'
+def channels_list_web():
+    downloadPath = api_url_web('TRAY/LIVECHANNELS?dfilter_channels=subscription&from=0&to=9999')
 
-def channels_list_tv():
-    downloadPath = api_url_120('TRAY/LIVECHANNELS?dfilter_channels=subscription&from=0&to=9999')
+    if getset.setting_get('TelevisionChannelNoErotic') == 'true':
+        downloadPath += '&filter_isAdult=false'
+    return downloadPath
+
+def channels_list_stb():
+    downloadPath = api_url_stb('TRAY/LIVECHANNELS?dfilter_channels=subscription&from=0&to=9999')
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'
     return downloadPath
 
 def recording_event():
-    downloadPath = api_url_120('TRAY/USER/RECORDING/EVENT?outputFormat=EXTENDED&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/USER/RECORDING/EVENT?outputFormat=EXTENDED&from=0&to=9999')
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'
     return downloadPath
 
 def recording_series():
-    downloadPath = api_url_120('TRAY/USER/RECORDING/SERIES?outputFormat=EXTENDED&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/USER/RECORDING/SERIES?outputFormat=EXTENDED&from=0&to=9999')
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'
     return downloadPath
 
 def vod_movies():
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentSubtype=VOD&dfilter_packageType=SVOD&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/VOD?filter_contentSubtype=VOD&dfilter_packageType=SVOD&from=0&to=9999')
     downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
@@ -126,7 +127,7 @@ def vod_movies():
     return downloadPath
 
 def vod_series():
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999')
     downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
@@ -134,14 +135,14 @@ def vod_series():
     return downloadPath
 
 def vod_episodes(parentId):
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_parentId=' + parentId + '&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/VOD?filter_parentId=' + parentId + '&from=0&to=9999')
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'
     return downloadPath
 
 def vod_kids():
-    downloadPath = api_url_120('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/VOD?filter_contentType=GROUP_OF_BUNDLES&dfilter_packageType=SVOD&from=0&to=9999')
     downloadPath += '&filter_genre=kinderen,kids&filter_genres=kinderen,kids'
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
@@ -149,7 +150,7 @@ def vod_kids():
     return downloadPath
 
 def program_kids():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     downloadPath += '&filter_genre=kinderen,kids&filter_genres=kinderen,kids'
@@ -159,7 +160,7 @@ def program_kids():
     return downloadPath
 
 def program_sport():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     downloadPath += '&filter_genre=sport&filter_genres=sport'
@@ -169,7 +170,7 @@ def program_sport():
     return downloadPath
 
 def program_movies():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
@@ -180,7 +181,7 @@ def program_movies():
     return downloadPath
 
 def program_series():
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
@@ -192,7 +193,7 @@ def program_series():
 
 def program_search(programName):
     programName = hybrid.urllib_quote(programName)
-    downloadPath = api_url_120('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
+    downloadPath = api_url_web('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&query=' + programName + '&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
 
@@ -208,7 +209,7 @@ def epg_day(dayDateTime):
     datetimeMidnight = func.datetime_to_midnight(dayDateTime)
     startTimeEpoch = func.datetime_to_ticks(datetimeMidnight - timedelta(hours=2))
     endTimeEpoch = func.datetime_to_ticks(datetimeMidnight + timedelta(hours=26))
-    downloadPath = api_url_120('TRAY/EPG?outputFormat=EXTENDED&filter_startTime=' + str(startTimeEpoch) + '&filter_endTime=' + str(endTimeEpoch) + '&filter_channelIds=' + var.TelevisionChannelIdsPlayableString)
+    downloadPath = api_url_web('TRAY/EPG?outputFormat=EXTENDED&filter_startTime=' + str(startTimeEpoch) + '&filter_endTime=' + str(endTimeEpoch) + '&filter_channelIds=' + var.TelevisionChannelIdsPlayableString)
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'

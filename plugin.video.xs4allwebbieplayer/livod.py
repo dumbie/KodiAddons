@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-import dlchanneltelevision
+import dlchannelweb
 import dlepg
-import favorite
+import favoritefunc
 import func
 import getset
-import hidden
+import hiddenfunc
 import lifunc
 import metadatacombine
 import metadatainfo
@@ -57,7 +57,7 @@ def list_load_combined(listContainer=None, dateTime=''):
             var.VodDayLoadDateTime = func.datetime_from_string(dateTime, '%Y-%m-%d %H:%M:%S')
 
         #Download channels
-        downloadResultChannels = dlchanneltelevision.download()
+        downloadResultChannels = dlchannelweb.download()
         if downloadResultChannels == False:
             return False
 
@@ -67,11 +67,8 @@ def list_load_combined(listContainer=None, dateTime=''):
             return False
 
         #Load favorite and hidden channels
-        favorite.favorite_television_json_load()
-        hidden.hidden_television_json_load()
-
-        #Check if there are favorites set
-        favorite.favorite_check_set('FavoriteTelevision.js')
+        favoritefunc.favorite_television_json_load()
+        hiddenfunc.hidden_television_json_load()
 
         #Add items to sort list
         listContainerSort = []
@@ -111,10 +108,10 @@ def list_load_append_program(listContainer, downloadResult, remoteMode=False):
                 if searchResultFound == False: continue
             else:
                 #Check if channel is marked as favorite
-                if getset.setting_get('LoadChannelFavoritesOnly') == 'true' and favorite.favorite_check_channel(ChannelId, 'FavoriteTelevision.js') == False: continue
+                if getset.setting_get('LoadChannelFavoritesOnly') == 'true' and favoritefunc.favorite_check_channel(ChannelId, 'FavoriteTelevision.js') == False: continue
 
             #Check if channel is hidden
-            if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
+            if hiddenfunc.hidden_check_channel(ChannelId, 'HiddenTelevision.js'): continue
 
             #Check if program vod playback is allowed
             contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)

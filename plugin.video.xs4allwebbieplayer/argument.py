@@ -3,11 +3,12 @@ import xbmcaddon
 import xbmcgui
 import alarmfunc
 import cache
-import favorite
+import favoritefunc
 import func
 import hybrid
 import lialarm
 import lichannelradio
+import lichannelstb
 import lichanneltelevision
 import liepgload
 import lifunc
@@ -75,7 +76,7 @@ def handle_launch_argument_source():
         if actionItem == "addon_launch":
             func.run_addon()
         elif actionItem == "switch_all_favorites":
-            favorite.favorite_switch_mode('', True)
+            favoritefunc.favorite_switch_mode(True)
         elif actionItem == "cache_remove_all":
             cache.cache_remove_all(False)
         elif actionItem == "action_none":
@@ -114,6 +115,8 @@ def handle_launch_argument_source():
             lichanneltelevision.list_load_combined(downloadEpg=True)
         elif actionItem == "page_radio":
             lichannelradio.list_load_combined()
+        elif actionItem == "page_stb":
+            lichannelstb.list_load_combined()
         elif actionItem == "page_movies":
             limovies.list_load_combined()
         elif actionItem == "page_series":
@@ -144,6 +147,8 @@ def handle_launch_argument_source():
             streamplay.play_tv(listItem, ShowInformation=True)
         elif actionItem == "play_stream_radio":
             streamplay.play_radio(listItem)
+        elif actionItem == "play_stream_stb":
+            streamplay.play_stb(listItem)
         elif actionItem == "play_stream_program":
             streamplay.play_program(listItem)
         elif actionItem == "play_stream_vod":

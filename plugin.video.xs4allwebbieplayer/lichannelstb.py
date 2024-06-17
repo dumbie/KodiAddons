@@ -17,8 +17,8 @@ def list_load_combined(listContainer=None):
             return False
 
         #Load favorite and hidden channels
-        favoritefunc.favorite_radio_json_load()
-        hiddenfunc.hidden_radio_json_load()
+        favoritefunc.favorite_television_json_load()
+        hiddenfunc.hidden_television_json_load()
 
         #Add items to sort list
         listContainerSort = []
@@ -42,16 +42,12 @@ def list_load_append(listContainer, remoteMode=False):
             ChannelId = metadatainfo.channelId_from_json_metadata(channel)
             ChannelName = metadatainfo.channelName_from_json_metadata(channel)
 
-            #Check radio channel start number
-            ChannelNumberInt = int(metadatainfo.orderId_from_json_metadata(channel))
-            if ChannelNumberInt < 800: continue
-
             #Check if channel is radio type
             ChannelType = metadatainfo.type_from_json_metadata(channel)
-            if ChannelType != "MUSIC": continue
+            if ChannelType == "MUSIC": continue
 
             #Check if channel is hidden
-            if hiddenfunc.hidden_check_channel(ChannelId, 'HiddenRadio.js'): continue
+            if hiddenfunc.hidden_check_channel(ChannelId, 'HiddenTelevision.js'): continue
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermResult) == False:
@@ -62,10 +58,11 @@ def list_load_append(listContainer, remoteMode=False):
             #Load channel details
             ChannelStream = metadatainfo.stream_multicast_url(channel)
             ExternalId = metadatainfo.externalId_from_json_metadata(channel)
+            ChannelNumberInt = int(metadatainfo.orderId_from_json_metadata(channel))
             ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + str(ChannelNumberInt) + '[/COLOR][/B]'
 
             #Check if channel is marked as favorite
-            if favoritefunc.favorite_check_channel(ChannelId, 'FavoriteRadio.js'):
+            if favoritefunc.favorite_check_channel(ChannelId, 'FavoriteTelevision.js'):
                 ChannelFavorite = 'true'
             elif getset.setting_get('LoadChannelFavoritesOnly') == 'true' and func.string_isnullorempty(var.SearchTermResult):
                 continue
@@ -74,7 +71,7 @@ def list_load_append(listContainer, remoteMode=False):
 
             #Set item icons
             iconDefault = path.icon_television(ExternalId)
-            ProgramGenre = 'Radio'
+            ProgramGenre = 'Ontvanger'
 
             #Set item details
             jsonItem = {
@@ -85,9 +82,9 @@ def list_load_append(listContainer, remoteMode=False):
                 'ChannelFavorite': ChannelFavorite,
                 'StreamUrl': ChannelStream,
                 'ItemLabel': ChannelName,
-                'ItemInfoMusic': {'MediaType': 'music', 'Genre': ProgramGenre, 'TrackNumber': str(ChannelNumberInt)},
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ProgramGenre, 'Tagline': ProgramGenre, 'Title': ChannelName, 'TrackNumber': ChannelNumberInt},
                 'ItemArt': {'thumb': iconDefault, 'icon': iconDefault, 'poster': iconDefault},
-                'ItemAction': 'play_stream_radio'
+                'ItemAction': 'play_stream_stb'
             }
             dirIsfolder = False
             dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''

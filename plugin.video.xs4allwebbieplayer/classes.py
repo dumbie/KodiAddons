@@ -26,7 +26,7 @@ class Class_ApiLogin_deviceInfo:
     def __init__(self, deviceId=None, deviceVendor=None, deviceModel=None, deviceFirmVersion=None, appVersion=None):
         self.deviceId = deviceId
         self.deviceIdType = "DEVICEID"
-        self.deviceType = "PCTV"
+        self.deviceType = "KODI"
         self.deviceVendor = deviceVendor
         self.deviceModel = deviceModel
         self.deviceFirmVersion = deviceFirmVersion
@@ -56,7 +56,7 @@ class Class_ApiLogin_deviceRegistration:
     def __init__(self, deviceId=None, vendor=None, model=None, deviceFirmVersion=None, appVersion=None):
         self.deviceId = deviceId
         self.accountDeviceIdType = "DEVICEID"
-        self.deviceType = "PCTV"
+        self.deviceType = "KODI"
         self.vendor = vendor
         self.model = model
         self.deviceFirmVersion = deviceFirmVersion

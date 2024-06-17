@@ -1,8 +1,8 @@
 import accent
-import dlchannelradio
-import dlchanneltelevision
+import dlchannelstb
+import dlchannelweb
 import func
-import hidden
+import hiddenfunc
 import lifunc
 import metadatafunc
 import metadatainfo
@@ -13,20 +13,21 @@ def list_load_combined(listContainer, hiddenJsonFile):
     try:
         if hiddenJsonFile == 'HiddenTelevision.js':
             #Download channels
-            downloadResultChannels = dlchanneltelevision.download()
-            if downloadResultChannels == False:
+            downloadResultChannelsWeb = dlchannelweb.download()
+            downloadResultChannelsStb = dlchannelstb.download()
+            if downloadResultChannelsWeb == False or downloadResultChannelsStb == False:
                 return False
 
             #Load hidden channels
-            hidden.hidden_television_json_load()
-        else:
+            hiddenfunc.hidden_television_json_load()
+        elif hiddenJsonFile == 'HiddenRadio.js':
             #Download channels
-            downloadResultChannels = dlchannelradio.download()
+            downloadResultChannels = dlchannelstb.download()
             if downloadResultChannels == False:
                 return False
 
             #Load hidden channels
-            hidden.hidden_radio_json_load()
+            hiddenfunc.hidden_radio_json_load()
 
         #Add items to sort list
         listContainerSort = []
@@ -44,70 +45,40 @@ def list_load_combined(listContainer, hiddenJsonFile):
         return False
 
 def list_load_append(listContainer, hiddenJsonFile, remoteMode=False):
-    if hiddenJsonFile == 'HiddenTelevision.js':
-        for hiddenChannelId in var.HiddenTelevisionJson:
-            try:
-                ChannelId = hiddenChannelId
-                ChannelDetails = metadatafunc.search_channelid_jsontelevision(ChannelId)
-                if ChannelDetails != None:
-                    ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
-                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + metadatainfo.orderId_from_json_metadata(ChannelDetails) + '[/COLOR][/B]'
-                    ChannelName = metadatainfo.channelName_from_json_metadata(ChannelDetails)
-                    ChannelIcon = path.icon_television(ExternalId)
-                else:
-                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + '?[/COLOR][/B]'
-                    ChannelName = "Onbekende zender"
-                    ChannelIcon = path.icon_addon('unknown')
+    hiddenJson = hiddenfunc.hidden_target_variable(hiddenJsonFile)
+    for hiddenChannelId in hiddenJson:
+        try:
+            ChannelId = hiddenChannelId
+            ChannelDetails = metadatafunc.search_channelid_json_stb(ChannelId)
+            if ChannelDetails == None:
+                ChannelDetails = metadatafunc.search_channelid_json_web(ChannelId)
 
-                #Set item icons
-                iconFanart = path.icon_fanart()
+            if ChannelDetails != None:
+                ExternalId = metadatainfo.externalId_from_json_metadata(ChannelDetails)
+                ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + metadatainfo.orderId_from_json_metadata(ChannelDetails) + '[/COLOR][/B]'
+                ChannelName = metadatainfo.channelName_from_json_metadata(ChannelDetails)
+                ChannelIcon = path.icon_television(ExternalId)
+            else:
+                ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + '?[/COLOR][/B]'
+                ChannelName = "Onbekende zender"
+                ChannelIcon = path.icon_addon('unknown')
 
-                #Set item details
-                jsonItem = {
-                    'ChannelId': ChannelId,
-                    'ProgramName': ChannelName,
-                    'ProgramDescription': ChannelNumberAccent,
-                    'ItemLabel': ChannelName,
-                    'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ChannelNumberAccent, 'Tagline': ChannelNumberAccent, 'Title': ChannelName},
-                    'ItemArt': {'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon, 'fanart': iconFanart},
-                    'ItemAction': 'action_none'
-                }
-                dirIsfolder = False
-                dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
-                listItem = lifunc.jsonitem_to_listitem(jsonItem)
-                listContainer.append((dirUrl, listItem, dirIsfolder))
-            except:
-                continue
-    elif hiddenJsonFile == 'HiddenRadio.js':
-        for hiddenChannelId in var.HiddenRadioJson:
-            try:
-                ChannelId = hiddenChannelId
-                ChannelDetails = metadatafunc.search_channelid_jsonradio(ChannelId)
-                if ChannelDetails != None:
-                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + ChannelDetails['id'] + '[/COLOR][/B]'
-                    ChannelName = ChannelDetails['name']
-                    ChannelIcon = path.icon_radio(ChannelId)
-                else:
-                    ChannelNumberAccent = '[B]' + accent.get_accent_color_string() + '?[/COLOR][/B]'
-                    ChannelName = "Onbekende zender"
-                    ChannelIcon = path.icon_addon('unknown')
+            #Set item icons
+            iconFanart = path.icon_fanart()
 
-                #Set item icons
-                iconFanart = path.icon_fanart()
-
-                #Set item details
-                jsonItem = {
-                    'ChannelId': ChannelId,
-                    'ProgramName': ChannelName,
-                    'ProgramDescription': ChannelNumberAccent,
-                    'ItemLabel': ChannelName,
-                    'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ChannelNumberAccent, 'Tagline': ChannelNumberAccent, 'Title': ChannelName},
-                    'ItemArt': {'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon, 'fanart': iconFanart},
-                    'ItemAction': 'action_none'
-                }
-                dirIsfolder = False
-                dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
-                listItem = lifunc.jsonitem_to_listitem(jsonItem)
-                listContainer.append((dirUrl, listItem, dirIsfolder))
-            except:
-                continue
+            #Set item details
+            jsonItem = {
+                'ChannelId': ChannelId,
+                'ProgramName': ChannelName,
+                'ProgramDescription': ChannelNumberAccent,
+                'ItemLabel': ChannelName,
+                'ItemInfoVideo': {'MediaType': 'movie', 'Genre': ChannelNumberAccent, 'Tagline': ChannelNumberAccent, 'Title': ChannelName},
+                'ItemArt': {'thumb': ChannelIcon, 'icon': ChannelIcon, 'poster': ChannelIcon, 'fanart': iconFanart},
+                'ItemAction': 'action_none'
+            }
+            dirIsfolder = False
+            dirUrl = (var.LaunchUrl + '?json=' + func.dictionary_to_jsonstring(jsonItem)) if remoteMode else ''
+            listItem = lifunc.jsonitem_to_listitem(jsonItem)
+            listContainer.append((dirUrl, listItem, dirIsfolder))
+        except:
+            continue

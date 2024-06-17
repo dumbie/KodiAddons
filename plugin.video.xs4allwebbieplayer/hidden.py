@@ -1,88 +1,10 @@
-import json
 import xbmcgui
-import files
 import guifunc
+import hiddenfunc
 import kids
 import lihidden
 import path
 import var
-
-def hidden_television_json_load(forceLoad=False):
-    try:
-        if var.HiddenTelevisionJson == [] or forceLoad == True:
-            if files.existFileUser('HiddenTelevision.js') == True:
-                HiddenJsonString = files.openFileUser('HiddenTelevision.js')
-                var.HiddenTelevisionJson = json.loads(HiddenJsonString)
-    except:
-        var.HiddenTelevisionJson = []
-
-def hidden_radio_json_load(forceLoad=False):
-    try:
-        if var.HiddenRadioJson == [] or forceLoad == True: 
-            if files.existFileUser('HiddenRadio.js') == True:
-                HiddenJsonString = files.openFileUser('HiddenRadio.js')
-                var.HiddenRadioJson = json.loads(HiddenJsonString)
-    except:
-        var.HiddenRadioJson = []
-
-def hidden_check(ChannelId, hiddenJsonFile):
-    #Set Json target list variable
-    if hiddenJsonFile == 'HiddenTelevision.js':
-        hiddenTargetJson = var.HiddenTelevisionJson
-    elif hiddenJsonFile == 'HiddenRadio.js':
-        hiddenTargetJson = var.HiddenRadioJson
-    return ChannelId in hiddenTargetJson
-
-def hidden_add(listItem, hiddenJsonFile):
-    #Get channel identifier
-    ChannelId = listItem.getProperty('ChannelId')
-
-    #Set Json target list variable
-    if hiddenJsonFile == 'HiddenTelevision.js':
-        hiddenTargetJson = var.HiddenTelevisionJson
-    elif hiddenJsonFile == 'HiddenRadio.js':
-        hiddenTargetJson = var.HiddenRadioJson
-
-    #Append the new hidden to Json
-    hiddenTargetJson.append(ChannelId)
-
-    #Save the raw json data to storage
-    JsonDumpBytes = json.dumps(hiddenTargetJson).encode('ascii')
-    files.saveFileUser(hiddenJsonFile, JsonDumpBytes)
-
-    #Hidden has been set notification
-    notificationIcon = path.resources('resources/skins/default/media/common/vodno.png')
-    xbmcgui.Dialog().notification(var.addonname, 'Zender is verborgen.', notificationIcon, 2500, False)
-    return True
-
-def hidden_remove(listItem, hiddenJsonFile):
-    #Get channel identifier
-    ChannelId = listItem.getProperty('ChannelId')
-
-    #Set Json target list variable
-    if hiddenJsonFile == 'HiddenTelevision.js':
-        hiddenTargetJson = var.HiddenTelevisionJson
-    elif hiddenJsonFile == 'HiddenRadio.js':
-        hiddenTargetJson = var.HiddenRadioJson
-
-    hiddenRemoved = False
-    for hidden in hiddenTargetJson[:]:
-        try:
-            if hidden == ChannelId:
-                hiddenTargetJson.remove(hidden)
-                hiddenRemoved = True
-        except:
-            continue
-
-    if hiddenRemoved == True:
-        #Save the raw json data to storage
-        JsonDumpBytes = json.dumps(hiddenTargetJson).encode('ascii')
-        files.saveFileUser(hiddenJsonFile, JsonDumpBytes)
-
-        #Hidden has been removed notification
-        notificationIcon = path.resources('resources/skins/default/media/common/vodyes.png')
-        xbmcgui.Dialog().notification(var.addonname, 'Zender niet meer verborgen.', notificationIcon, 2500, False)
-    return hiddenRemoved
 
 def switch_to_page(hiddenMode='HiddenTelevision.js'):
     #Check kids lock
@@ -122,6 +44,11 @@ def close_the_page():
             var.guiRadio.load_channels(True)
             var.HiddenChannelChanged = False
 
+        #Refresh stb channels on change
+        if var.guiStb != None and var.HiddenChannelChanged == True:
+            var.guiStb.load_channels(True)
+            var.HiddenChannelChanged = False
+
         #Close the shown window
         var.guiHidden.close()
         var.guiHidden = None
@@ -145,7 +72,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         clickedControl = self.getControl(clickId)
         if clickId == 1000:
             listItemSelected = clickedControl.getSelectedItem()
-            hiddenRemoved = hidden_remove(listItemSelected, var.HiddenChannelMode)
+            hiddenRemoved = hiddenfunc.hidden_remove_channel(listItemSelected, var.HiddenChannelMode)
             if hiddenRemoved == True:
                 #Remove item from the list
                 removeListItemIndex = clickedControl.getSelectedPosition()
@@ -181,8 +108,9 @@ class Gui(xbmcgui.WindowXMLDialog):
         listContainer = self.getControl(1000)
         if var.HiddenChannelMode == 'HiddenTelevision.js':
             channelcount = len(var.HiddenTelevisionJson)
-        else:
+        elif var.HiddenChannelMode == 'HiddenRadio.js':
             channelcount = len(var.HiddenRadioJson)
+
         if channelcount > 0:
             guifunc.updateLabelText(self, 3000, 'Verborgen Zenders (' + str(channelcount) + ')')
             guifunc.updateLabelText(self, 3001, 'Huidige verborgen zenders, u kunt een zender weer laten verschijnen in de zenderlijst door er op te klikken.')

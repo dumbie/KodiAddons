@@ -4,11 +4,12 @@ import xbmcgui
 import alarmfunc
 import dialog
 import epg
-import favorite
+import favoritefunc
 import func
 import getset
 import guifunc
 import hidden
+import hiddenfunc
 import lichanneltelevision
 import lifunc
 import litelevision
@@ -238,7 +239,7 @@ class Gui(xbmcgui.WindowXML):
         self.ProgramPauseUpdate = False
 
     def hide_channel_code(self, listContainer, listItemSelected):
-        hiddenResult = hidden.hidden_add(listItemSelected, 'HiddenTelevision.js')
+        hiddenResult = hiddenfunc.hidden_add_channel(listItemSelected, 'HiddenTelevision.js')
         if hiddenResult == True:
             #Remove item from the list
             removeListItemIndex = listContainer.getSelectedPosition()
@@ -255,7 +256,7 @@ class Gui(xbmcgui.WindowXML):
         self.ProgramPauseUpdate = False
 
     def switch_favorite_channel_code(self, listContainer, listItemSelected):
-        favoriteResult = favorite.favorite_toggle_channel(listItemSelected, 'FavoriteTelevision.js')
+        favoriteResult = favoritefunc.favorite_toggle_channel(listItemSelected, 'FavoriteTelevision.js')
         if favoriteResult == 'Removed' and getset.setting_get('LoadChannelFavoritesOnly') == 'true':
             #Remove item from the list
             removeListItemIndex = listContainer.getSelectedPosition()
@@ -268,7 +269,7 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if favorite.favorite_switch_mode('FavoriteTelevision.js') == False:
+            if favoritefunc.favorite_switch_mode() == False:
                 return
 
             #Load television channels

@@ -1,14 +1,14 @@
 from datetime import date, datetime, timedelta
 import xbmc
 import accent
-import dlchanneltelevision
+import dlchannelweb
 import dlepg
 import dlrecordingevent
 import dlrecordingseries
-import favorite
+import favoritefunc
 import func
 import getset
-import hidden
+import hiddenfunc
 import lifunc
 import metadatafunc
 import metadatainfo
@@ -18,7 +18,7 @@ import var
 def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg=False, epgMode=False):
     try:
         #Download channels
-        downloadResultChannels = dlchanneltelevision.download()
+        downloadResultChannels = dlchannelweb.download()
         if downloadResultChannels == False:
             return False
 
@@ -38,11 +38,8 @@ def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg
             downloadResultEpg = None
 
         #Load favorite and hidden channels
-        favorite.favorite_television_json_load()
-        hidden.hidden_television_json_load()
-
-        #Check if there are favorites set
-        favorite.favorite_check_set('FavoriteTelevision.js')
+        favoritefunc.favorite_television_json_load()
+        hiddenfunc.hidden_television_json_load()
 
         #Add items to sort list
         listContainerSort = []
@@ -60,7 +57,7 @@ def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg
         return False
 
 def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
-    for channel in var.TelevisionChannelsDataJson['resultObj']['containers']:
+    for channel in var.WebChannelsDataJson['resultObj']['containers']:
         try:
             #Load channel basics
             StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channel)
@@ -71,7 +68,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
             if func.string_isnullorempty(StreamAssetId): continue
 
             #Check if channel is hidden
-            if hidden.hidden_check(ChannelId, 'HiddenTelevision.js'): continue
+            if hiddenfunc.hidden_check_channel(ChannelId, 'HiddenTelevision.js'): continue
 
             #Check if there are search results
             if func.string_isnullorempty(var.SearchTermResult) == False:
@@ -80,7 +77,7 @@ def list_load_append(listContainer, jsonEpg, remoteMode=False, epgMode=False):
                 if searchResultFound == False: continue
 
             #Check if channel is marked as favorite or epg navigate
-            if favorite.favorite_check_channel(ChannelId, 'FavoriteTelevision.js'):
+            if favoritefunc.favorite_check_channel(ChannelId, 'FavoriteTelevision.js'):
                 ChannelFavorite = 'true'
             elif ChannelId == getset.setting_get('CurrentChannelId') and xbmc.Player().isPlayingVideo():
                 ChannelFavorite = 'false'

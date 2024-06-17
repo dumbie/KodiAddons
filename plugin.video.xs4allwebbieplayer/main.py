@@ -27,6 +27,7 @@ import series
 import settings
 import sleep
 import sport
+import stb
 import streamgenerate
 import streamplay
 import television
@@ -323,6 +324,8 @@ class Gui(xbmcgui.WindowXML):
                 television.switch_to_page()
             elif listItemAction == 'page_radio':
                 radio.switch_to_page()
+            elif listItemAction == 'page_stb':
+                stb.switch_to_page()
             elif listItemAction == 'page_vod':
                 vod.switch_to_page()
             elif listItemAction == 'page_kids':

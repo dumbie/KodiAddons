@@ -108,6 +108,32 @@ def play_radio(listItem, Windowed=False):
         notificationIcon = path.resources('resources/skins/default/media/common/radio.png')
         xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
 
+def play_stb(listItem, Windowed=False):
+    try:
+        #Get channel properties
+        ChannelId = listItem.getProperty('ChannelId')
+        StreamUrl = listItem.getProperty('StreamUrl')
+
+        #Check channel properties
+        if func.string_isnullorempty(ChannelId):
+            notificationIcon = path.resources('resources/skins/default/media/common/stb.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Ongeldige zender informatie.', notificationIcon, 2500, False)
+            return
+
+        if func.string_isnullorempty(StreamUrl):
+            notificationIcon = path.resources('resources/skins/default/media/common/stb.png')
+            xbmcgui.Dialog().notification(var.addonname, 'Ongeldige stream informatie.', notificationIcon, 2500, False)
+            return
+
+        #Update channel settings and variables
+        getset.setting_set('CurrentStbId', ChannelId)
+
+        #Start playing the media
+        player.PlayCustom(StreamUrl, listItem, Windowed)
+    except:
+        notificationIcon = path.resources('resources/skins/default/media/common/stb.png')
+        xbmcgui.Dialog().notification(var.addonname, 'Stream afspelen mislukt.', notificationIcon, 2500, False)
+
 def play_program(listItem, Windowed=False):
     try:
         #Check if user needs to login

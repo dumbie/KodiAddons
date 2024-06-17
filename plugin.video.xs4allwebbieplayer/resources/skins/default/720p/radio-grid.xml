@@ -88,7 +88,7 @@
             </control>
         </control>
         <!-- Information -->
-        <control type="label">
+        <control type="label" id="2">
             <top>70</top>
             <left>325</left>
             <width>500</width>

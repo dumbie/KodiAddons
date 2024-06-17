@@ -106,7 +106,7 @@ def list_update_program(listItem):
             listItem.setProperty('ProgramIsAiring', 'true')
 
             #Set channel stream asset identifier
-            channelJson = metadatafunc.search_channelid_jsontelevision(ChannelId)
+            channelJson = metadatafunc.search_channelid_json_web(ChannelId)
             StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(channelJson)
             listItem.setProperty('StreamAssetId', StreamAssetId)
 

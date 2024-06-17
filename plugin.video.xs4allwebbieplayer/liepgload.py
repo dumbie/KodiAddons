@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-import dlchanneltelevision
+import dlchannelweb
 import dlepg
 import func
 import lifunc
@@ -59,7 +59,7 @@ def list_load_combined(listContainer=None, channelId='', dateTime=''):
             var.EpgCurrentLoadDateTime = func.datetime_from_string(dateTime, '%Y-%m-%d %H:%M:%S')
 
         #Download channels
-        downloadResultChannels = dlchanneltelevision.download()
+        downloadResultChannels = dlchannelweb.download()
         if downloadResultChannels == False:
             return False
 

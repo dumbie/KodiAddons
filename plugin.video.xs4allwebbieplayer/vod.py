@@ -2,7 +2,7 @@ import xbmc
 import xbmcgui
 import dialog
 import epg
-import favorite
+import favoritefunc
 import func
 import getset
 import guifunc
@@ -208,7 +208,7 @@ class Gui(xbmcgui.WindowXML):
     def switch_all_favorites(self):
         try:
             #Switch favorites mode on or off
-            if favorite.favorite_switch_mode('FavoriteTelevision.js') == False:
+            if favoritefunc.favorite_switch_mode() == False:
                 return
 
             #Load programs

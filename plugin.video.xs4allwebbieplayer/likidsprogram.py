@@ -101,7 +101,7 @@ def list_load_program_append(listContainer, remoteMode=False):
             ProgramSeriesId = metadatainfo.seriesId_from_json_metadata(program)
 
             #Check if program is serie or movie
-            ContentSubtype = metadatainfo.contentSubtype_from_json_metadata(program)
+            ContentSubtype = metadatainfo.subtype_from_json_metadata(program)
             if ContentSubtype == "VOD":
                 ProgramDetails = metadatacombine.program_details(program, True, True, True, False, False, False, True)
                 ProgramDescription = metadatacombine.program_description_extended(program)

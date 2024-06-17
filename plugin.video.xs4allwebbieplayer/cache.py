@@ -28,8 +28,6 @@ def cache_reset_variables(jsonData):
             var.MoviesProgramDataJson = []
         if 'moviesvod.js' in cleanedCacheFiles:
             var.MoviesVodDataJson = []
-        if 'radio.js' in cleanedCacheFiles:
-            var.RadioChannelsDataJson = []
         if 'recordingevent.js' in cleanedCacheFiles:
             var.RecordingEventDataJson = []
         if 'recordingseries.js' in cleanedCacheFiles:
@@ -42,8 +40,10 @@ def cache_reset_variables(jsonData):
             var.SeriesVodDataJson = []
         if 'sportprogram.js' in cleanedCacheFiles:
             var.SportProgramDataJson = []
-        if 'television.js' in cleanedCacheFiles:
-            var.TelevisionChannelsDataJson = []
+        if 'stb.js' in cleanedCacheFiles:
+            var.StbChannelsDataJson = []
+        if 'web.js' in cleanedCacheFiles:
+            var.WebChannelsDataJson = []
         return True
     except:
         return False
@@ -68,14 +68,14 @@ def cache_remove_all(showDialog=True, showNotification=True):
         var.KidsVodDataJson = []
         var.MoviesProgramDataJson = []
         var.MoviesVodDataJson = []
-        var.RadioChannelsDataJson = []
         var.RecordingEventDataJson = []
         var.RecordingSeriesDataJson = []
         var.SearchProgramDataJson = []
         var.SeriesProgramDataJson = []
         var.SeriesVodDataJson = []
         var.SportProgramDataJson = []
-        var.TelevisionChannelsDataJson = []
+        var.StbChannelsDataJson = []
+        var.WebChannelsDataJson = []
 
         #Remove cache files
         for cacheFile in files.listFiles(var.addonstoragecache):
@@ -93,7 +93,7 @@ def cache_cleanup_files():
         for cacheFile in files.listFiles(var.addonstoragecache):
             if cacheFile.startswith('epg'):
                 if cache_cleanup_file(path.addonstoragecache(cacheFile), var.CacheCleanTimeEpg) == True: cacheCleaned.append(cacheFile)
-            elif cacheFile == 'radio.js' or cacheFile == 'television.js':
+            elif cacheFile == 'stb.js' or cacheFile == 'web.js':
                 if cache_cleanup_file(path.addonstoragecache(cacheFile), var.CacheCleanTimeChannels) == True: cacheCleaned.append(cacheFile)
             else:
                 if cache_cleanup_file(path.addonstoragecache(cacheFile), var.CacheCleanTimeOther()) == True: cacheCleaned.append(cacheFile)
