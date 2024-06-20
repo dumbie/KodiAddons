@@ -73,6 +73,8 @@ class Gui(xbmcgui.WindowXML):
         elif actionId == var.ACTION_PREV_ITEM:
             xbmc.executebuiltin('Action(PageUp)')
         elif actionId == var.ACTION_PLAYER_PLAY:
+            self.switch_all_favorites()
+        elif actionId == var.ACTION_PAUSE:
             self.dialog_set_day()
         elif actionId == var.ACTION_PLAYER_FORWARD:
             self.dialog_set_day()

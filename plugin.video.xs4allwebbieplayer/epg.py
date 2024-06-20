@@ -99,6 +99,8 @@ class Gui(xbmcgui.WindowXML):
             guifunc.listSelectIndex(listContainer, listContainer.getSelectedPosition() - 1)
             self.load_programs(False)
         elif actionId == var.ACTION_PLAYER_PLAY:
+            self.switch_all_favorites()
+        elif actionId == var.ACTION_PAUSE:
             self.dialog_set_day()
         elif actionId == var.ACTION_PLAYER_FORWARD:
             self.dialog_set_day()
