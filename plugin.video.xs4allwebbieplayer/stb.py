@@ -31,6 +31,7 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         guifunc.updateLabelText(self, 2, "Ontvanger")
+        guifunc.updateLabelText(self, 3, 'Meeste zenders zijn beveiligd en kunnen niet worden afgespeeld.')
         self.buttons_add_navigation()
         self.load_channels(False)
 

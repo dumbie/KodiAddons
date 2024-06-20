@@ -45,6 +45,7 @@ def list_load_append(listContainer, remoteMode=False):
             #Check radio channel start number
             ChannelNumberInt = int(metadatainfo.orderId_from_json_metadata(channel))
             if ChannelNumberInt < 800: continue
+            elif ChannelNumberInt > 8000: continue
 
             #Check if channel is radio type
             ChannelType = metadatainfo.type_from_json_metadata(channel)

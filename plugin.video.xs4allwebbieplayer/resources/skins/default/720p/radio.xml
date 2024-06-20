@@ -105,6 +105,13 @@
             <align>left</align>
             <textcolor>FF888888</textcolor>
         </control>
+        <control type="label" id="3">
+            <top>162</top>
+            <left>50</left>
+            <width>1230</width>
+            <height>30</height>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
         <!-- Volume Muted -->
         <control type="image">
             <top>162</top>
