@@ -371,6 +371,7 @@ def programdescription_from_json_metadata(metaData):
 def check_program_playback_allowed_from_json_metadata(metaData):
     try:
         array = contentOptions_array_from_json_metadata(metaData)
+        if array == []: return True
         if ('CATCHUP' in array) == False: return False
         return True
     except:
@@ -380,6 +381,7 @@ def check_program_playback_allowed_from_json_metadata(metaData):
 def check_vod_playback_allowed_from_json_metadata(metaData):
     try:
         array = technicalPackageIds_array_from_json_metadata(metaData)
+        if array == []: return True
         if (101 in array) == False: return False
         if (10078 in array) == False: return False
         return True
