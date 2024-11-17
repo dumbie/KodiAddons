@@ -46,6 +46,9 @@ def list_load_vod_append(listContainer, remoteMode=False):
             duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower())
             if duplicateProgram == True: continue
 
+            #Check if program playback is allowed
+            if metadatainfo.check_vod_playback_allowed_from_json_metadata(program) == False: continue
+
             #Load program details
             PictureUrl = metadatainfo.pictureUrl_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
@@ -91,6 +94,9 @@ def list_load_program_append(listContainer, remoteMode=False):
             #Check if program is already added
             duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower())
             if duplicateProgram == True: continue
+
+            #Check if program playback is allowed
+            if metadatainfo.check_program_playback_allowed_from_json_metadata(program) == False: continue
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)

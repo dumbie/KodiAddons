@@ -122,14 +122,14 @@ def pictureUrl_from_json_metadata(metaData):
         return 'unknown'
 
 #Get contentOptions from json metadata
-def contentOptions_from_json_metadata(metaData):
+def contentOptions_array_from_json_metadata(metaData):
     try:
         return metaData["metadata"]["contentOptions"]
     except:
         return []
 
-#Get technical packages from json metadata
-def technicalPackageIds_from_json_metadata(metaData):
+#Get technicalPackageIds from json metadata
+def technicalPackageIds_array_from_json_metadata(metaData):
     try:
         return metaData['technicalPackageIds']
     except:
@@ -367,12 +367,21 @@ def programdescription_from_json_metadata(metaData):
 
     return 'Programmabeschrijving is niet geladen of beschikbaar.'
 
-#Check if program is pay to play
-def program_check_paytoplay(technicalPackageIds):
+#Check if program playback is allowed
+def check_program_playback_allowed_from_json_metadata(metaData):
     try:
-        technicalPackageIdsInt = technicalPackageIds.astype(int)
-        if 101 and 10078 in technicalPackageIdsInt:
-            return False
+        array = contentOptions_array_from_json_metadata(metaData)
+        if ('CATCHUP' in array) == False: return False
+        return True
+    except:
+        return False
+
+#Check if vod playback is allowed
+def check_vod_playback_allowed_from_json_metadata(metaData):
+    try:
+        array = technicalPackageIds_array_from_json_metadata(metaData)
+        if (101 in array) == False: return False
+        if (10078 in array) == False: return False
         return True
     except:
         return False

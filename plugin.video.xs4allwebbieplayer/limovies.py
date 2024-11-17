@@ -43,14 +43,13 @@ def list_load_vod_append(listContainer, remoteMode=False):
                 searchResultFound = var.SearchTermResult in searchMatch
                 if searchResultFound == False: continue
 
-            #Check if content is pay to play
-            TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
-            if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
-
             #Check if program is already added
             ProgramYear = metadatainfo.programyear_from_json_metadata(program, False)
             duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower() and x[1].getProperty('ProgramYear') == ProgramYear)
             if duplicateProgram == True: continue
+
+            #Check if program playback is allowed
+            if metadatainfo.check_vod_playback_allowed_from_json_metadata(program) == False: continue
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)
@@ -105,6 +104,9 @@ def list_load_program_append(listContainer, remoteMode=False):
             #Check if program is already added
             duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramName').lower() == ProgramName.lower())
             if duplicateProgram == True: continue
+
+            #Check if program playback is allowed
+            if metadatainfo.check_program_playback_allowed_from_json_metadata(program) == False: continue
 
             #Combine program details
             ProgramDetails = metadatacombine.program_details(program, True, True, True, True, False, False, True)

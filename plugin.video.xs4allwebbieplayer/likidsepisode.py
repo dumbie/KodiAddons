@@ -34,16 +34,15 @@ def list_load_vod_append(listContainer, downloadResult, selectedPictureUrl, remo
     for program in downloadResult["resultObj"]["containers"]:
         try:
             #Load program basics
-            TechnicalPackageIds = metadatainfo.technicalPackageIds_from_json_metadata(program)
             ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
             ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
-
-            #Check if content is pay to play
-            if metadatainfo.program_check_paytoplay(TechnicalPackageIds): continue
 
             #Check if program is already added
             duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt)
             if duplicateProgram == True: continue
+
+            #Check if program playback is allowed
+            if metadatainfo.check_vod_playback_allowed_from_json_metadata(program) == False: continue
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
@@ -122,6 +121,9 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             #Check if program is already added
             duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt)
             if duplicateProgram == True: continue
+
+            #Check if program playback is allowed
+            if metadatainfo.check_program_playback_allowed_from_json_metadata(program) == False: continue
 
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)

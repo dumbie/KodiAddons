@@ -113,11 +113,6 @@ def list_load_append_program(listContainer, downloadResult, remoteMode=False):
             #Check if channel is hidden
             if hiddenfunc.hidden_check_channel(ChannelId, 'HiddenTelevision.js'): continue
 
-            #Check if program vod playback is allowed
-            contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
-            if ('CATCHUP' in contentOptionsArray) == False: continue
-            if ('TV_PREMIERE' in contentOptionsArray) == False: continue
-
             #Check if program has finished airing and processing
             ProgramTimeEndDateTime = metadatainfo.programenddatetime_from_json_metadata(program)
             if dateTimeNow < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
@@ -125,6 +120,9 @@ def list_load_append_program(listContainer, downloadResult, remoteMode=False):
             #Check if program is starting or ending on target day
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
             if ProgramTimeStartDateTime.date() != var.VodDayLoadDateTime.date() and ProgramTimeEndDateTime.date() != var.VodDayLoadDateTime.date(): continue
+
+            #Check if program playback is allowed
+            if metadatainfo.check_program_playback_allowed_from_json_metadata(program) == False: continue
 
             #Load program details
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)

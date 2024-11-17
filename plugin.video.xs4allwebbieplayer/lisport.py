@@ -51,6 +51,9 @@ def list_load_append(listContainer, remoteMode=False):
             #Check if program has finished airing and processing
             if dateTimeNow < (ProgramTimeEndDateTime + timedelta(minutes=var.RecordingProcessMinutes)): continue
 
+            #Check if program playback is allowed
+            if metadatainfo.check_program_playback_allowed_from_json_metadata(program) == False: continue
+
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)

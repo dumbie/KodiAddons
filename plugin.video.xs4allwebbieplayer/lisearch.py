@@ -130,6 +130,9 @@ def list_load_append(listContainer, remoteMode=False):
                 searchResultFound = var.SearchTermResult in searchMatch1 or var.SearchTermResult in searchMatch2
                 if searchResultFound == False: continue
 
+            #Check if program playback is allowed
+            if metadatainfo.check_program_playback_allowed_from_json_metadata(program) == False: continue
+
             #Load program details
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ExternalId = metadatainfo.externalChannelId_from_json_metadata(program)
