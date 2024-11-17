@@ -143,30 +143,44 @@ def list_load_append(listContainer, jsonEpgChannel, remoteMode=False):
             else:
                 ProgramRerun = 'false'
 
-            #Check if program vod playback is allowed
-            contentOptionsArray = metadatainfo.contentOptions_from_json_metadata(program)
-            if 'CATCHUP' in contentOptionsArray:
+            #Check if program playback is allowed
+            if metadatainfo.check_program_playback_allowed_from_json_metadata(program):
                 ProgramIsCatchup = 'true'
             else:
                 ProgramIsCatchup = 'false'
 
-            #Check if program finished airing
-            if ProgramProgressPercent >= 100:
-                ProgramIsAvailable = ProgramIsCatchup
-            else:
-                ProgramIsAvailable = 'false'
-
             #Check if program is still to come
             if ProgramProgressPercent <= 0:
+                #Set program available status
+                ProgramIsAvailable = 'false'
+
+                #Set program upcoming status
                 ProgramIsUpcoming = 'true'
-            else:
+
+                #Set program airing status
+                ProgramIsAiring = 'false'
+
+            #Check if program finished airing
+            if ProgramProgressPercent >= 100:
+                #Set program available status
+                ProgramIsAvailable = ProgramIsCatchup
+
+                #Set program upcoming status
                 ProgramIsUpcoming = 'false'
+
+                #Set program airing status
+                ProgramIsAiring = 'false'
 
             #Check if program is currently airing
             if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
+                #Set program available status
+                ProgramIsAvailable = 'live'
+
+                #Set program upcoming status
+                ProgramIsUpcoming = 'false'
+
+                #Set program airing status
                 ProgramIsAiring = 'true'
-            else:
-                ProgramIsAiring = 'false'
 
             if remoteMode == True:
                 ProgramNameRaw = '[COLOR FF888888](' + ProgramTimeStartDateTime.strftime('%H:%M') + ')[/COLOR] ' + ProgramNameRaw

@@ -89,12 +89,25 @@ def list_update_program(listItem):
 
         #Check if program is still to come
         if ProgramProgressPercent <= 0:
+            #Set program available status
+            listItem.setProperty('ProgramIsAvailable', 'false')
+
+            #Set program upcoming status
             listItem.setProperty('ProgramIsUpcoming', 'true')
+
+            #Set program airing status
+            listItem.setProperty('ProgramIsAiring', 'false')
 
         #Check if program finished airing
         if ProgramProgressPercent >= 100:
             #Set program available status
             listItem.setProperty('ProgramIsAvailable', ProgramIsCatchup)
+
+            #Set program upcoming status
+            listItem.setProperty('ProgramIsUpcoming', 'false')
+
+            #Set program airing status
+            listItem.setProperty('ProgramIsAiring', 'false')
 
             #Set program seek offset start
             StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
@@ -102,6 +115,12 @@ def list_update_program(listItem):
 
         #Check if program is currently airing
         if ProgramProgressPercent > 0 and ProgramProgressPercent < 100:
+            #Set program available status
+            listItem.setProperty('ProgramIsAvailable', 'live')
+
+            #Set program upcoming status
+            listItem.setProperty('ProgramIsUpcoming', 'false')
+
             #Set program airing status
             listItem.setProperty('ProgramIsAiring', 'true')
 

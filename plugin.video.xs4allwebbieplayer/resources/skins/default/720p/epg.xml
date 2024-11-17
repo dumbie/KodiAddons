@@ -484,6 +484,15 @@
                         <width>18</width>
                         <height>18</height>
                         <aspectratio>keep</aspectratio>
+                        <texture>common/seeklive.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), live)</visible>
+                    </control>
+                    <control type="image">
+                        <right>95</right>
+                        <top>42</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
                         <texture>common/vodno.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), false)</visible>
                     </control>
@@ -585,6 +594,15 @@
                         <aspectratio>keep</aspectratio>
                         <texture>common/rerun.png</texture>
                         <visible>String.IsEqual(ListItem().Property(ProgramRerun), true)</visible>
+                    </control>
+                    <control type="image">
+                        <right>95</right>
+                        <top>42</top>
+                        <width>18</width>
+                        <height>18</height>
+                        <aspectratio>keep</aspectratio>
+                        <texture>common/seeklive.png</texture>
+                        <visible>String.IsEqual(ListItem().Property(ProgramIsAvailable), live)</visible>
                     </control>
                     <control type="image">
                         <right>95</right>
