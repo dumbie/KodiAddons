@@ -218,7 +218,7 @@ class Gui(xbmcgui.WindowXML):
         dateTimeNow = datetime.now()
         if var.RecordingAccess() == True:
             if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                dialogAnswers = ['Programma live kijken', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
+                dialogAnswers = ['Programma live kijken', 'Programma vanaf begin kijken', 'Programma uitzendingen terugzoeken', 'Programma opnemen of annuleren', 'Serie seizoen opnemen of annuleren']
                 dialogHeader = 'Programma Menu'
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
@@ -234,7 +234,7 @@ class Gui(xbmcgui.WindowXML):
                 dialogFooter = ''
         else:
             if func.date_time_between(dateTimeNow, ProgramTimeStartDateTime, ProgramTimeEndDateTime):
-                dialogAnswers = ['Programma live kijken', 'Programma uitzendingen terugzoeken']
+                dialogAnswers = ['Programma live kijken', 'Programma vanaf begin kijken', 'Programma uitzendingen terugzoeken']
                 dialogHeader = 'Programma Menu'
                 dialogSummary = 'Wat wilt u doen met de geselecteerde programma?'
                 dialogFooter = ''
@@ -264,12 +264,20 @@ class Gui(xbmcgui.WindowXML):
             recordingfunc.record_series_epg(self, listItemSelected)
         elif dialogResult == 'Programma live kijken':
             streamplay.play_tv(listItemSelected)
+        elif dialogResult == 'Programma vanaf begin kijken':
+            self.program_watch_beginning(listItemSelected)
         elif dialogResult == 'Programma uitzending terugkijken':
             streamplay.play_program(listItemSelected)
         elif dialogResult == 'Programma uitzendingen terugzoeken':
             self.search_program_history(listItemSelected)
         elif dialogResult == 'Toon alle zenders' or dialogResult == 'Toon favorieten zenders':
             self.switch_all_favorites()
+
+    def program_watch_beginning(self, listItemSelected):
+        ProgramTimeStartString = listItemSelected.getProperty('ProgramTimeStart')
+        ProgramTimeStartDateTime = func.datetime_from_string(ProgramTimeStartString, '%Y-%m-%d %H:%M:%S')
+        SeekOffsetSecEnd = int((datetime.now() - ProgramTimeStartDateTime).total_seconds())
+        streamplay.play_tv(listItemSelected, SeekOffsetSecEnd=SeekOffsetSecEnd)
 
     def switch_all_favorites(self):
         try:
