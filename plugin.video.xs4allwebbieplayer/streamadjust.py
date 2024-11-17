@@ -34,12 +34,17 @@ def adjust_streamurl_bitrate(streamUrl):
         streamUrl += "&max_bitrate=" + metadatainfo.stream_targetbitrate()
     return streamUrl
 
+#Update stream url with audio setting
+def adjust_streamurl_audio(streamUrl):
+    if getset.setting_get('DisableAudioAC3') == 'true':
+        streamUrl += "&filter=%28FourCC%21%3D%22ac-3%22%29"
+    return streamUrl
+
 #Update stream url with localhost proxy
 def adjust_streamurl_proxy(streamUrl):
-    if xbmc.getCondVisibility('System.Platform.Android') or getset.setting_get('UseLocalhostProxy') == 'true':
+    if getset.setting_get('UseLocalhostProxy') == 'true':
         return 'http://127.0.0.1:4444/redir/' + str(streamUrl)
-    else:
-        return streamUrl
+    return streamUrl
 
 #Update listitem with input stream properties
 def adjust_listitem_properties(listItem):

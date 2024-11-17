@@ -67,6 +67,9 @@ def play_tv(listItem, Windowed=False, OpenOverlay=True, ShowInformation=False, S
         #Update stream url with bitrate setting
         StreamUrl = streamadjust.adjust_streamurl_bitrate(StreamUrl)
 
+        #Update stream url with audio setting
+        StreamUrl = streamadjust.adjust_streamurl_audio(StreamUrl)
+
         #Update stream url with localhost proxy
         StreamUrl = streamadjust.adjust_streamurl_proxy(StreamUrl)
 
@@ -182,6 +185,9 @@ def play_program(listItem, Windowed=False):
         #Update stream url with bitrate setting
         StreamUrl = streamadjust.adjust_streamurl_bitrate(StreamUrl)
 
+        #Update stream url with audio setting
+        StreamUrl = streamadjust.adjust_streamurl_audio(StreamUrl)
+
         #Update stream url with localhost proxy
         StreamUrl = streamadjust.adjust_streamurl_proxy(StreamUrl)
 
@@ -239,6 +245,9 @@ def play_vod(listItem, Windowed=False):
         #Update stream url with bitrate setting
         StreamUrl = streamadjust.adjust_streamurl_bitrate(StreamUrl)
 
+        #Update stream url with audio setting
+        StreamUrl = streamadjust.adjust_streamurl_audio(StreamUrl)
+
         #Update stream url with localhost proxy
         StreamUrl = streamadjust.adjust_streamurl_proxy(StreamUrl)
 
@@ -295,6 +304,9 @@ def play_recorded(listItem, Windowed=False):
 
         #Update stream url with bitrate setting
         StreamUrl = streamadjust.adjust_streamurl_bitrate(StreamUrl)
+
+        #Update stream url with audio setting
+        StreamUrl = streamadjust.adjust_streamurl_audio(StreamUrl)
 
         #Update stream url with localhost proxy
         StreamUrl = streamadjust.adjust_streamurl_proxy(StreamUrl)

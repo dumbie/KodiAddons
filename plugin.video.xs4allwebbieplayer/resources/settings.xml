@@ -69,8 +69,9 @@
   </category>
   <category label="Stream">
     <setting id="StreamResolution" type="select" label="Maximale resolutie van de videostream" default="2160p" values="2160p|1080pHigh|1080pNormal|720p|576p|432p|360p|180p"/>
-    <setting id="CustomUserAgent" type="text" label="User-agent verbindingsidentificatie" default="Webbie Player"/>
+    <setting id="DisableAudioAC3" label="AC3 6-kanaals geluid uitschakelen" type="bool" default="false"/>
     <setting id="UseLocalhostProxy" label="Gebruik lokale proxy server voor stream verbinding" type="bool" default="false"/>
+    <setting id="CustomUserAgent" type="text" label="User-agent verbindingsidentificatie" default="Webbie Player"/>
     <setting id="InputAdaptiveSettings" type="action" label="Open de inputstream-adaptive add-on instellingen" option="close" action="RunPlugin(plugin://plugin.video.xs4allwebbieplayer?InputAdaptiveSettings)"/>
     <setting label="* Hier kunt u de streamkwaliteit-instellingen optimaliseren." type="lsep"/>
   </category>
