@@ -25,6 +25,11 @@
     <disclaimer>This is not an official add-on made by KPN but developed by Arnold Vink, use this add-on at your own risk.</disclaimer>
     <disclaimer lang="nl">Dit is geen officiële add-on gemaakt door KPN maar ontwikkeld door Arnold Vink, gebruik deze add-on op eigen risico.</disclaimer>
     <news>
+v1.35.1 (17 November 2024)
+- Programma vanaf begin kijken toegevoegd op tv gids pagina.
+- Instelling toegevoegd om AC3 6-kanaals geluid uit te zetten.
+- Programma's die niet teruggekeken kunnen worden niet weergeven.
+
 v1.35.0 (20 Juni 2024)
 - Radio zenders worden nu geladen via ontvanger zenderlijst.
 
