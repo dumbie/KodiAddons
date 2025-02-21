@@ -174,7 +174,7 @@ def program_movies():
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
-    downloadPath += '&filter_programType=film'
+    downloadPath += '&filter_programType=feature+film,short+film,theatre+event,tv+movie'
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'
@@ -185,7 +185,7 @@ def program_series():
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
-    downloadPath += '&filter_programType=serie'
+    downloadPath += '&filter_programType=miniseries,series'
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'
