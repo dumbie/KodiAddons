@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.acie" name="Acie" provider-name="Arnold Vink" version="1.0.0">
+	<extension point="xbmc.python.pluginsource" library="default.py">
+		<provides>video</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>Ace Stream Kodi add-on</summary>
+		<description>Ace Stream Kodi add-on</description>
+		<assets>
+			<icon>resources/icon.png</icon>
+			<fanart>resources/icon.png</fanart>
+		</assets>
+		<news>
+v1.0.0 (13 March 2025)
+- First public released test version.
+		</news>
+	</extension>
+</addon>
