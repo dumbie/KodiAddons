@@ -62,10 +62,15 @@ def list_main():
         load_history()
         clean_history()
 
+        #Set icon paths
+        iconAdd = func.path_addon('resources/add.png')
+        iconPlay = func.path_addon('resources/play.png')
+
         #Add default item
-        ace_name = "+ Add ace stream id"
+        ace_name = "Add ace stream id"
         list_item = xbmcgui.ListItem()
         list_item.setLabel(ace_name)
+        list_item.setArt({'thumb': iconAdd, 'icon': iconAdd})
         list_item_url = func.generate_addon_url(action="add")
         xbmcplugin.addDirectoryItem(var.LaunchHandle, list_item_url, list_item, False)
 
@@ -75,7 +80,8 @@ def list_main():
             ace_name = x["name"]
             list_item = xbmcgui.ListItem()
             list_item.setLabel(ace_name)
-            list_item.setInfo("video", {"title": ace_name})
+            list_item.setArt({'thumb': iconPlay, 'icon': iconPlay})
+            list_item.setInfo("video", {'Genre': 'Ace Stream', "Title": ace_name})
             list_item_url = func.generate_addon_url(action="play", name=ace_name, id=ace_id)
             xbmcplugin.addDirectoryItem(var.LaunchHandle, list_item_url, list_item, False)
 
@@ -89,16 +95,34 @@ def play_ace_stream(ace_name, ace_id):
         #Cleanup stream id
         ace_id = ace_id.lower().replace("acestream://", "")
 
+        #Set icon paths
+        iconPlay = func.path_addon('resources/play.png')
+
+        #Set stream item
+        list_item = xbmcgui.ListItem()
+        list_item.setLabel(ace_name)
+        list_item.setArt({'thumb': iconPlay, 'icon': iconPlay})
+        list_item.setInfo("video", {'Genre': 'Ace Stream', "Title": ace_name})
+
         #Set stream url
         if getset.setting_get("UseHlsStream") == "false":
             stream_url = "http://127.0.0.1:6878/ace/getstream?id=" + ace_id
+            if getset.setting_get("UseInputStream") == "true":
+                list_item.setProperty(hybrid.inputstreamname, 'inputstream.ffmpegdirect')
+                list_item.setProperty('inputstream.ffmpegdirect.manifest_type', 'ts')
+                list_item.setMimeType('video/mp2t')
+                list_item.setContentLookup(False)
         else:
             stream_url = "http://127.0.0.1:6878/ace/manifest.m3u8?id=" + ace_id
+            if getset.setting_get("UseInputStream") == "true":
+                #list_item.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
+                #list_item.setProperty('inputstream.adaptive.manifest_type', 'hls')
+                list_item.setProperty(hybrid.inputstreamname, 'inputstream.ffmpegdirect')
+                list_item.setProperty('inputstream.ffmpegdirect.manifest_type', 'hls')
+                list_item.setMimeType('application/vnd.apple.mpegurl')
+                list_item.setContentLookup(False)
 
         #Play stream url
-        list_item = xbmcgui.ListItem()
-        list_item.setLabel(ace_name)
-        list_item.setInfo("video", {"title": ace_name})
         xbmc.Player().play(stream_url, list_item, False)
 
         #Notification
