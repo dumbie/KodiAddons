@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
 	<category label="General">
+		<setting id="UseInputStream" label="Use InputStream Adaptive/Direct" type="bool" default="true"/>
 		<setting id="UseHlsStream" label="Use HLS stream" type="bool" default="false"/>
 	</category>
 </settings>

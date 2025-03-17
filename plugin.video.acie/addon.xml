@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acie" name="Acie" provider-name="Arnold Vink" version="1.0.0">
+	<requires>
+		<import addon="inputstream.adaptive" version="2.0.0"/>
+		<import addon="inputstream.ffmpegdirect" version="2.0.0"/>
+	</requires>
 	<extension point="xbmc.python.pluginsource" library="default.py">
 		<provides>video</provides>
 	</extension>
+	<extension point='xbmc.service' library='service.py' start='login'/>
 	<extension point="xbmc.addon.metadata">
 		<summary>Ace Stream Kodi add-on</summary>
 		<description>Ace Stream Kodi add-on</description>
