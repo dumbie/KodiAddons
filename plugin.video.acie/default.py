@@ -22,7 +22,7 @@ def clean_history():
     except:
         xbmcgui.Dialog().notification(var.addonname, "Failed cleaning history", var.addonicon, 2500, False)
 
-def remove_history(ace_id):
+def remove_history(ace_id, saveJson=True):
     try:
         #Clean and load json history
         load_history()
@@ -35,7 +35,7 @@ def remove_history(ace_id):
                 var.HistoryJson.remove(x)
                 removed = True
 
-        if removed == True:
+        if removed == True and saveJson == True:
             #Save history
             JsonDumpBytes = json.dumps(var.HistoryJson).encode("ascii")
             files.saveFileUser("acestream_history.js", JsonDumpBytes)
@@ -65,9 +65,18 @@ def add_history():
         if func.string_isnullorempty(ace_id):
             return
 
+        if len(ace_id) < 40:
+            return
+
+        #Cleanup stream id
+        ace_id = ace_id.lower().replace("acestream://", "")
+
         #Clean and load json history
         load_history()
         clean_history()
+
+        #Remove double stream id
+        remove_history(ace_id, saveJson=False)
 
         #Insert stream id
         var.HistoryJson.insert(0, {"id": ace_id, "name": ace_id})
@@ -141,8 +150,8 @@ def list_main():
 
 def play_ace_stream(ace_id, ace_icon, ace_name):
     try:
-        #Cleanup stream id
-        ace_id = ace_id.lower().replace("acestream://", "")
+        #Download stream title
+        ace_name = title_ace_stream(ace_id)
 
         #Set stream item
         list_item = xbmcgui.ListItem()
@@ -193,11 +202,27 @@ def play_ace_stream(ace_id, ace_icon, ace_name):
 
         #Play stream url
         xbmc.Player().play(stream_url, list_item, False)
-
-        #Notification
-        xbmcgui.Dialog().notification(var.addonname, "Playing ace stream " + ace_id, var.addonicon, 2500, False)
     except:
         xbmcgui.Dialog().notification(var.addonname, "Failed playing ace stream", var.addonicon, 2500, False)
+
+def title_ace_stream(ace_id):
+    try:
+        #Download stream title
+        info_url = "http://127.0.0.1:6878/server/api?method=analyze_content&query=acestream%3A%3Fcontent_id%3D" + ace_id
+        downloadRequest = hybrid.urllib_request(info_url)
+        downloadDataHttp = hybrid.urllib_urlopen(downloadRequest)
+        downloadJson = json.load(downloadDataHttp)
+
+        #Set stream title
+        stream_title = str(downloadJson['result']['title'])
+
+        #Check and return stream title
+        if func.string_isnullorempty(stream_title):
+            return ace_id
+        else:
+            return stream_title
+    except:
+        return ace_id
 
 def info_ace_stream():
     try:
@@ -224,7 +249,7 @@ def info_ace_stream():
             #Notification
             xbmcgui.Dialog().notification(var.addonname, "No stream running", var.addonicon, 2500, False)
     except:
-        xbmcgui.Dialog().notification(var.addonname, "Failed info ace stream", var.addonicon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, "Failed getting ace stream info", var.addonicon, 2500, False)
 
 if __name__ == "__main__":
     argumentDict = dict(hybrid.parse_qsl(sys.argv[2][1:]))
