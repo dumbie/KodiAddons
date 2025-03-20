@@ -159,12 +159,16 @@ def play_ace_stream(ace_id, ace_icon, ace_name):
         list_item.setArt({'thumb': ace_icon, 'icon': ace_icon})
         list_item.setInfo("video", {'Genre': 'Ace Stream', "Title": ace_name, "Plot": ace_id})
 
+        #Get stream settings
+        ace_ip = str(getset.setting_get('AceIp'))
+        ace_port = str(getset.setting_get('AcePort'))
+
         #Get stream url
         if getset.setting_get("UseHlsStream") == "false":
-            stream_url = "http://127.0.0.1:6878/ace/getstream?id=" + ace_id
+            stream_url = "http://" + ace_ip + ":" + ace_port + "/ace/getstream?id=" + ace_id
             stream_url += "&format=json&force_session_restart=1"
         else:
-            stream_url = "http://127.0.0.1:6878/ace/manifest.m3u8?id=" + ace_id
+            stream_url = "http://" + ace_ip + ":" + ace_port + "/ace/manifest.m3u8?id=" + ace_id
             stream_url += "&format=json&force_session_restart=1&transcode_audio=1&preferred_audio_language=ENG"
 
         #Download stream info
@@ -207,8 +211,12 @@ def play_ace_stream(ace_id, ace_icon, ace_name):
 
 def title_ace_stream(ace_id):
     try:
+        #Get stream settings
+        ace_ip = str(getset.setting_get('AceIp'))
+        ace_port = str(getset.setting_get('AcePort'))
+
         #Download stream title
-        info_url = "http://127.0.0.1:6878/server/api?method=analyze_content&query=acestream%3A%3Fcontent_id%3D" + ace_id
+        info_url = "http://" + ace_ip + ":" + ace_port  + "/server/api?method=analyze_content&query=acestream%3A%3Fcontent_id%3D" + ace_id
         downloadRequest = hybrid.urllib_request(info_url)
         downloadDataHttp = hybrid.urllib_urlopen(downloadRequest)
         downloadJson = json.load(downloadDataHttp)
@@ -229,9 +237,11 @@ def info_ace_stream():
         #Get stream settings
         infohash = str(getset.setting_get('infohash'))
         playback_session_id = str(getset.setting_get('playback_session_id'))
+        ace_ip = str(getset.setting_get('AceIp'))
+        ace_port = str(getset.setting_get('AcePort'))
 
         #Download stream info
-        info_url = "http://127.0.0.1:6878/ace/stat/" + infohash + "/" + playback_session_id
+        info_url = "http://" + ace_ip + ":" + ace_port + "/ace/stat/" + infohash + "/" + playback_session_id
         downloadRequest = hybrid.urllib_request(info_url)
         downloadDataHttp = hybrid.urllib_urlopen(downloadRequest)
         downloadJson = json.load(downloadDataHttp)
