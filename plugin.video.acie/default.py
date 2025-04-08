@@ -11,31 +11,54 @@ import xbmcplugin
 
 def load_history():
     try:
+        #Load file to string
         jsonString = files.openFileUser("acestream_history.js")
+
+        #Convert string to json
         var.HistoryJson = json.loads(jsonString)
+
+        #Limit loaded items
+        history_limit = int(getset.setting_get("HistoryLimit"))
+        if history_limit > 0:
+            var.HistoryJson = var.HistoryJson[:history_limit]
     except:
         var.HistoryJson = []
 
-def clean_history():
+def update_history_title(ace_id, ace_title):
     try:
-        var.HistoryJson = var.HistoryJson[:100]
+        #Clean and load json history
+        load_history()
+
+        #Update ace stream
+        updatedJson = False
+        for x in var.HistoryJson[:]:
+            if x["id"] == ace_id:
+                x["title"] = ace_title
+                updatedJson = True
+
+        if updatedJson == True:
+            #Save history
+            JsonDumpBytes = json.dumps(var.HistoryJson).encode("ascii")
+            files.saveFileUser("acestream_history.js", JsonDumpBytes)
+
+            #Refresh list
+            xbmc.executebuiltin("Container.Refresh")
     except:
-        xbmcgui.Dialog().notification(var.addonname, "Failed cleaning history", var.addonicon, 2500, False)
+        xbmcgui.Dialog().notification(var.addonname, "Failed updating ace stream title", var.addonicon, 2500, False)
 
 def remove_history(ace_id, saveJson=True):
     try:
         #Clean and load json history
         load_history()
-        clean_history()
 
         #Remove ace stream
-        removed = False
+        updatedJson = False
         for x in var.HistoryJson[:]:
             if x["id"] == ace_id:
                 var.HistoryJson.remove(x)
-                removed = True
+                updatedJson = True
 
-        if removed == True and saveJson == True:
+        if updatedJson == True and saveJson == True:
             #Save history
             JsonDumpBytes = json.dumps(var.HistoryJson).encode("ascii")
             files.saveFileUser("acestream_history.js", JsonDumpBytes)
@@ -61,25 +84,36 @@ def add_history():
         else:
             return
 
-        #Check ace identifier
+        #Check stream id empty
         if func.string_isnullorempty(ace_id):
+            xbmcgui.Dialog().notification(var.addonname, "Empty ace stream id", var.addonicon, 2500, False)
             return
 
+        #Check stream id length
         if len(ace_id) < 40:
+            xbmcgui.Dialog().notification(var.addonname, "Invalid ace stream id", var.addonicon, 2500, False)
             return
 
         #Cleanup stream id
-        ace_id = ace_id.lower().replace("acestream://", "")
+        ace_id = ace_id.strip()
+        ace_id = ace_id.lower()
+        ace_id = ace_id.replace("acestream://", "")
+        if "?id=" in ace_id:
+            ace_id = ace_id.split("?id=")[1]
+
+        #Check stream id length
+        if len(ace_id) > 40:
+            xbmcgui.Dialog().notification(var.addonname, "Invalid ace stream id", var.addonicon, 2500, False)
+            return
 
         #Clean and load json history
         load_history()
-        clean_history()
 
         #Remove double stream id
         remove_history(ace_id, saveJson=False)
 
         #Insert stream id
-        var.HistoryJson.insert(0, {"id": ace_id, "name": ace_id})
+        var.HistoryJson.insert(0, {"id": ace_id, "icon": "", "title": ""})
 
         #Save history
         JsonDumpBytes = json.dumps(var.HistoryJson).encode("ascii")
@@ -97,44 +131,48 @@ def list_main():
     try:
         #Clean and load json history
         load_history()
-        clean_history()
 
         #Set launch handle
         LaunchHandle = int(sys.argv[1])
 
         #Set icon paths
         iconAdd = func.path_addon('resources/add.png')
-        iconPlay = func.path_addon('resources/play.png')
         iconInfo = func.path_addon('resources/info.png')
 
         #Add default items
-        ace_name = "Add ace stream id"
+        list_label = "Add ace stream id"
         list_item = xbmcgui.ListItem()
-        list_item.setLabel(ace_name)
+        list_item.setLabel(list_label)
         list_item.setArt({'thumb': iconAdd, 'icon': iconAdd})
         list_item_url = func.generate_addon_url(action="add")
         xbmcplugin.addDirectoryItem(LaunchHandle, list_item_url, list_item, False)
 
-        ace_name = "Show ace stream info"
+        list_label = "Show ace stream info"
         list_item = xbmcgui.ListItem()
-        list_item.setLabel(ace_name)
+        list_item.setLabel(list_label)
         list_item.setArt({'thumb': iconInfo, 'icon': iconInfo})
         list_item_url = func.generate_addon_url(action="info")
         xbmcplugin.addDirectoryItem(LaunchHandle, list_item_url, list_item, False)
 
         #Add history items
         for x in var.HistoryJson:
-            if x.get("icon"):
-                iconPlay = x["icon"]
             ace_id = x["id"]
-            ace_name = x["name"]
-            list_item = xbmcgui.ListItem()
-            list_item.setLabel(ace_name)
-            list_item.setArt({'thumb': iconPlay, 'icon': iconPlay})
-            list_item.setInfo("video", {'Genre': 'Ace Stream', "Title": ace_name, "Plot": ace_id})
-            list_item_url = func.generate_addon_url(action="play", id=ace_id, icon=iconPlay, name=ace_name)
+            if x.get("icon"):
+                ace_icon = x["icon"]
+            else:
+                ace_icon = func.path_addon('resources/play.png')
+            if x.get("title"):
+                ace_title = x["title"]
+            else:
+                ace_title = " "
+                #Fix load stream title here?
 
-            #Fix add rename stream feature
+            list_item = xbmcgui.ListItem()
+            list_item.setLabel(ace_id + " [COLOR grey]" + ace_title + "[/COLOR]")
+            list_item.setArt({'thumb': ace_icon, 'icon': ace_icon})
+            list_item.setInfo("video", {'Genre': 'Ace Stream', "Title": ace_title, "Plot": ace_id})
+            list_item_url = func.generate_addon_url(action="play", id=ace_id, icon=ace_icon, title=ace_title)
+
             context_items = []
             context_name = "Remove ace stream id"
             context_run = 'RunPlugin(' + func.generate_addon_url(action="remove", id=ace_id) + ')'
@@ -148,16 +186,22 @@ def list_main():
     except:
         xbmcgui.Dialog().notification(var.addonname, "Failed listing items", var.addonicon, 2500, False)
 
-def play_ace_stream(ace_id, ace_icon, ace_name):
+def play_ace_stream(ace_id, ace_icon, ace_title):
     try:
-        #Download stream title
-        ace_name = title_ace_stream(ace_id)
+        #Check stream title
+        if func.string_isnullorempty(ace_title):
+            ace_title = get_title_ace_stream(ace_id)
+            update_history_title(ace_id, ace_title)
+
+        #Check stream icon
+        if func.string_isnullorempty(ace_icon):
+            ace_icon = func.path_addon('resources/play.png')
 
         #Set stream item
         list_item = xbmcgui.ListItem()
-        list_item.setLabel(ace_name)
+        list_item.setLabel(ace_title)
         list_item.setArt({'thumb': ace_icon, 'icon': ace_icon})
-        list_item.setInfo("video", {'Genre': 'Ace Stream', "Title": ace_name, "Plot": ace_id})
+        list_item.setInfo("video", {'Genre': 'Ace Stream', "Title": ace_title, "Plot": ace_id})
 
         #Get stream settings
         ace_ip = str(getset.setting_get('AceIp'))
@@ -209,7 +253,7 @@ def play_ace_stream(ace_id, ace_icon, ace_name):
     except:
         xbmcgui.Dialog().notification(var.addonname, "Failed playing ace stream", var.addonicon, 2500, False)
 
-def title_ace_stream(ace_id):
+def get_title_ace_stream(ace_id):
     try:
         #Get stream settings
         ace_ip = str(getset.setting_get('AceIp'))
@@ -232,7 +276,7 @@ def title_ace_stream(ace_id):
     except:
         return ace_id
 
-def info_ace_stream():
+def show_info_ace_stream():
     try:
         #Get stream settings
         infohash = str(getset.setting_get('infohash'))
@@ -265,11 +309,11 @@ if __name__ == "__main__":
     argumentDict = dict(hybrid.parse_qsl(sys.argv[2][1:]))
     if argumentDict:
         if argumentDict["action"] == "play":
-            play_ace_stream(argumentDict["id"], argumentDict["icon"], argumentDict["name"])
+            play_ace_stream(argumentDict["id"], argumentDict["icon"], argumentDict["title"])
         elif argumentDict["action"] == "add":
             add_history()
         elif argumentDict["action"] == "info":
-            info_ace_stream()
+            show_info_ace_stream()
         elif argumentDict["action"] == "remove":
             remove_history(argumentDict["id"])
     else:

@@ -2,7 +2,8 @@
 <settings>
 	<category label="General">
 		<setting id="UseInputStream" label="Use InputStream Adaptive/Direct" type="bool" default="true"/>
-		<setting id="UseHlsStream" label="Use HLS stream" type="bool" default="false"/>
+		<setting id="UseHlsStream" label="Use HLS M3U8 stream" type="bool" default="false"/>
+		<setting id="HistoryLimit" label="Stream history limit" type="slider" default="100" range="0,10,1000" option="int"/>
 		<setting id="AceIp" type="text" label="Ace Stream IP" default="127.0.0.1"/>
 		<setting id="AcePort" type="number" label="Ace Stream Port" default="6878"/>
 	</category>
