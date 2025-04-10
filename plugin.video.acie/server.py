@@ -49,7 +49,7 @@ def run_server():
         runResult = os.system(aceCommand)
 
         #Linux RPI ARM docker
-        aceCommand = "docker run -d -t -p 6878:6878 futebas/acestream-engine-arm:3.2.7.6"
+        aceCommand = "docker run --tty --privileged --detach --publish 6878:6878 futebas/acestream-engine-arm:3.2.7.6"
         runResult = os.system(aceCommand)
     except:
         xbmcgui.Dialog().notification(var.addonname, "Failed running ace stream server", var.addonicon, 2500, False)
