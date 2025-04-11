@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/__pycache__": true,
+			"**/*.code-workspace": true
+			"**/*.pyo": true
+			"**/*.pyc": true
+		}
+	}
+}

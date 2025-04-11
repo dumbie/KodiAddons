@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.urlplay" name="URL Play" provider-name="Arnold Vink" version="1.0.0">
+	<requires>
+		<import addon="plugin.video.sendtokodi" version="0.9.0"/>
+	</requires>
+	<extension point="xbmc.python.script" library="default.py">
+		<provides>video</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary>Forward URL to SendToLink Kodi add-on using remote app</summary>
+		<description>Forward URL to SendToLink Kodi add-on using remote app</description>
+		<assets>
+			<icon>resources/icon.png</icon>
+			<fanart>resources/icon.png</fanart>
+		</assets>
+		<news>
+v1.0.0 (8 April 2025)
+- First public released test version.
+		</news>
+	</extension>
+</addon>
