@@ -2,6 +2,7 @@ import sys
 import getset
 import history
 import ace
+import server
 import func
 import var
 import hybrid
@@ -82,4 +83,11 @@ if __name__ == "__main__":
         elif argumentDict["action"] == "remove":
             history.remove_history(argumentDict["id"])
     else:
+        #Check user folders
+        func.check_user_folders()
+
+        #Run ace stream server
+        server.run_server()
+
+        #List main menu
         list_main()

@@ -16,3 +16,24 @@ def setting_get(setName, reloadSettings=False):
         return var.addon.getSetting(setName)
     except:
         return ''
+
+#Global properties
+def global_clear(propName):
+    try:
+        var.windowHome.clearProperty('Acie' + propName)
+        return True
+    except:
+        return False
+
+def global_set(propName, propValue):
+    try:
+        var.windowHome.setProperty('Acie' + propName, propValue)
+        return True
+    except:
+        return False
+
+def global_get(propName):
+    try:
+        return var.windowHome.getProperty('Acie' + propName)
+    except:
+        return ''

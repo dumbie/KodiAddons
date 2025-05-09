@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.acie" name="Acie" provider-name="Dumbie" version="1.0.0">
+<addon id="plugin.video.acie" name="Acie" provider-name="Dumbie" version="1.0.2">
 	<requires>
 		<import addon="inputstream.adaptive" version="2.0.0"/>
 	</requires>
 	<extension point="xbmc.python.pluginsource" library="default.py">
 		<provides>video</provides>
 	</extension>
-	<extension point='xbmc.service' library='service.py' start='login'/>
 	<extension point="xbmc.addon.metadata">
 		<platform>all</platform>
 		<summary>Ace Stream Kodi add-on</summary>

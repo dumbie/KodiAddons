@@ -1,6 +1,7 @@
 import os
 import var
 import getpass
+import getset
 import xbmc
 import xbmcgui
 
@@ -30,6 +31,12 @@ def install_server():
 
 def run_server():
     try:
+        #Check if started
+        if getset.global_get("AceRunning") == 'true':
+            return
+        else:
+            getset.global_set("AceRunning", 'true')
+
         #Notification
         xbmcgui.Dialog().notification(var.addonname, "Running ace stream server", var.addonicon, 2500, False)
 
