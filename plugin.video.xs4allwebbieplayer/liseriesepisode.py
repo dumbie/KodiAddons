@@ -34,11 +34,12 @@ def list_load_vod_append(listContainer, downloadResult, selectedPictureUrl, remo
     for program in downloadResult["resultObj"]["containers"]:
         try:
             #Load program basics
+            EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
             ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
 
             #Check if program is already added
-            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt)
+            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt and x[1].getProperty('ProgramName').lower() == EpisodeTitleRaw.lower())
             if duplicateProgram == True: continue
 
             #Check if program playback is allowed
@@ -46,7 +47,6 @@ def list_load_vod_append(listContainer, downloadResult, selectedPictureUrl, remo
 
             #Load program details
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
-            EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramTitleRaw = metadatainfo.programtitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_vod(program)
             StreamAssetId = metadatainfo.stream_assetid_from_json_metadata(program)
@@ -110,6 +110,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
         try:
             #Load program basics
             ProgramTitleRaw = metadatainfo.programtitle_from_json_metadata(program)
+            EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramSeasonInt = metadatainfo.programseason_from_json_metadata(program, False)
             ProgramEpisodeInt = metadatainfo.episodenumber_from_json_metadata(program, False)
 
@@ -119,7 +120,7 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             if checkSerie1 != checkSerie2: continue
 
             #Check if program is already added
-            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt)
+            duplicateProgram = any(True for x in listContainer if x[1].getProperty('ProgramSeasonInt') == ProgramSeasonInt and x[1].getProperty('ProgramEpisodeInt') == ProgramEpisodeInt and x[1].getProperty('ProgramName').lower() == EpisodeTitleRaw.lower())
             if duplicateProgram == True: continue
 
             #Check if program playback is allowed
@@ -129,7 +130,6 @@ def list_load_program_append(listContainer, selectedProgramName, selectedPicture
             ChannelId = metadatainfo.channelId_from_json_metadata(program)
             ProgramId = metadatainfo.contentId_from_json_metadata(program)
             ProgramTimeStartDateTime = metadatainfo.programstartdatetime_from_json_metadata(program)
-            EpisodeTitleRaw = metadatainfo.episodetitle_from_json_metadata(program)
             ProgramAvailability = metadatainfo.available_time_program(program)
             StartOffset = str(int(getset.setting_get('PlayerSeekOffsetStartMinutes')) * 60)
 
