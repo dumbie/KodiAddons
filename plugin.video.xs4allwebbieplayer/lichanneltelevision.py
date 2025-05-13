@@ -47,7 +47,7 @@ def list_load_combined(listContainer=None, downloadRecordings=False, downloadEpg
         list_load_append(listContainerSort, downloadResultEpg, remoteMode, epgMode)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: int(x[1].getProperty('ChannelNumber')))
+        listContainerSort.sort(key=lambda x: func.to_type(int, x[1].getProperty('ChannelNumber'), 0))
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)

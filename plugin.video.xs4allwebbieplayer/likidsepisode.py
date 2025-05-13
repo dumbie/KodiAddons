@@ -21,7 +21,7 @@ def list_load_vod_combined(selectedProgramId, selectedPictureUrl, listContainer=
         list_load_vod_append(listContainerSort, downloadResult, selectedPictureUrl, remoteMode)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: (int(x[1].getProperty('ProgramSeasonInt')), int(x[1].getProperty('ProgramEpisodeInt'))))
+        listContainerSort.sort(key=lambda x: (func.to_type(int, x[1].getProperty('ProgramSeasonInt'), 0), func.to_type(int, x[1].getProperty('ProgramEpisodeInt'), 0)))
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)
@@ -96,7 +96,7 @@ def list_load_program_combined(selectedProgramName, selectedPictureUrl, listCont
         list_load_program_append(listContainerSort, selectedProgramName, selectedPictureUrl, remoteMode)
 
         #Sort list items
-        listContainerSort.sort(key=lambda x: (int(x[1].getProperty('ProgramSeasonInt')), int(x[1].getProperty('ProgramEpisodeInt'))))
+        listContainerSort.sort(key=lambda x: (func.to_type(int, x[1].getProperty('ProgramSeasonInt'), 0), func.to_type(int, x[1].getProperty('ProgramEpisodeInt'), 0)))
 
         #Add items to container
         lifunc.auto_add_items(listContainerSort, listContainer)

@@ -66,6 +66,13 @@ def close_window_id(windowId):
     except:
         pass
 
+#Convert object to type with backup value
+def to_type(convertType, convertObject, defaultValue=None):
+    try:
+        return convertType(convertObject)
+    except:
+        return defaultValue
+
 #String replace regex
 def string_replace_regex(regex, new, text):
     pattern = re.compile(regex, re.IGNORECASE|re.MULTILINE)
