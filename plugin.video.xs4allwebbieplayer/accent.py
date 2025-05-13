@@ -32,8 +32,8 @@ def change_addon_accent():
         getset.global_set('ColorAccent', 'FF981C26')
         getset.global_set('ColorFocused', 'F5611118')
     elif currentProvider == 'grijs':
-        getset.global_set('ColorAccent', 'FF404040')
-        getset.global_set('ColorFocused', 'F5313131')
+        getset.global_set('ColorAccent', 'FF454545')
+        getset.global_set('ColorFocused', 'F5353535')
     elif currentProvider == 'oranje':
         getset.global_set('ColorAccent', 'FFCC5200')
         getset.global_set('ColorFocused', 'F5662900')
