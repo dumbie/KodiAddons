@@ -185,6 +185,8 @@ def program_series():
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
     downloadPath += '&filter_excludedGenre=kinderen,kids&filter_excludedGenres=kinderen,kids'
+    includeGenres = 'actie,drama,komisch%20drama,sitcom,mysterie,thriller,horror,misdaad,avontuur,komedie,fantasy,familie,soap,sciencefiction,collectibles,veiling'
+    downloadPath += '&filter_genre=' + includeGenres + '&filter_genres=' + includeGenres
     downloadPath += '&filter_programType=miniseries,series'
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
