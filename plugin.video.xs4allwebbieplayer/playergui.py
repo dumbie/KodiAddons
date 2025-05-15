@@ -103,6 +103,8 @@ class Gui(xbmcgui.WindowXMLDialog):
                     func.open_window_id(var.WINDOW_DIALOG_AUDIO_OSD_SETTINGS)
                 elif listItemAction == 'settings_video':
                     func.open_window_id(var.WINDOW_DIALOG_VIDEO_OSD_SETTINGS)
+                elif listItemAction == 'settings_codec':
+                    func.open_window_id(var.WINDOW_DIALOG_PLAYER_PROCESS_INFO)
             elif clickId == 4000 and playerFull == True:
                 self.hide_epg()
 
@@ -134,7 +136,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif actionId == var.ACTION_MOVE_RIGHT and playerFull == False:
             self.seek_forward(True)
             return
-        elif actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM:
+        elif actionId == var.ACTION_CONTEXT_MENU or actionId == var.ACTION_DELETE_ITEM or actionId == var.ACTION_SEARCH_FUNCTION:
             self.switch_channel_lasttv()
             return
         elif actionId == var.ACTION_NEXT_ITEM:
@@ -201,33 +203,36 @@ class Gui(xbmcgui.WindowXMLDialog):
 
         listItem = xbmcgui.ListItem('Ga naar vorige scherm')
         listItem.setProperty('ItemAction', 'media_previousscreen')
+        #listItem.setProperty('ItemColor', 'FFEF4343') #Red
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/back.png'),'icon': path.resources('resources/skins/default/media/common/back.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Zap naar vorige zender')
+        listItem.setProperty('ItemAction', 'media_lastchannel')
+        #listItem.setProperty('ItemColor', 'FF3A55CA') #Blue
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/last.png'),'icon': path.resources('resources/skins/default/media/common/last.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Afspelen of pauzeren')
         listItem.setProperty('ItemAction', 'media_playpause')
+        #listItem.setProperty('ItemColor', 'FF52DD44') #Green
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/playpause.png'),'icon': path.resources('resources/skins/default/media/common/playpause.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Stop met afspelen')
         listItem.setProperty('ItemAction', 'media_stop')
+        #listItem.setProperty('ItemColor', 'FFE2E448') #Yellow
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/stop.png'),'icon': path.resources('resources/skins/default/media/common/stop.png')})
-        listContainer.addItem(listItem)
-
-        if xbmc.getCondVisibility('System.Platform.Android') == False and xbmc.getCondVisibility('System.Platform.IOS') == False:
-            listItem = xbmcgui.ListItem('Schakel tussen scherm modus')
-            listItem.setProperty('ItemAction', 'media_fullscreen')
-            listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
-            listContainer.addItem(listItem)
-
-        listItem = xbmcgui.ListItem('Zap naar vorige zender')
-        listItem.setProperty('ItemAction', 'media_lastchannel')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/last.png'),'icon': path.resources('resources/skins/default/media/common/last.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Volgend programma alarm')
         listItem.setProperty('ItemAction', 'media_alarmnext')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/alarm.png'),'icon': path.resources('resources/skins/default/media/common/alarm.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Beheer de slaap timer')
+        listItem.setProperty('ItemAction', 'media_sleep')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/sleep.png'),'icon': path.resources('resources/skins/default/media/common/sleep.png')})
         listContainer.addItem(listItem)
 
         if var.RecordingAccess() == True:
@@ -241,11 +246,6 @@ class Gui(xbmcgui.WindowXMLDialog):
             listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/recordseries.png'),'icon': path.resources('resources/skins/default/media/common/recordseries.png')})
             listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Beheer de slaap timer')
-        listItem.setProperty('ItemAction', 'media_sleep')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/sleep.png'),'icon': path.resources('resources/skins/default/media/common/sleep.png')})
-        listContainer.addItem(listItem)
-
         listItem = xbmcgui.ListItem('Stream achteruit spoelen')
         listItem.setProperty('ItemAction', 'media_seekback')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/seekback.png'),'icon': path.resources('resources/skins/default/media/common/seekback.png')})
@@ -256,19 +256,24 @@ class Gui(xbmcgui.WindowXMLDialog):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/seekforward.png'),'icon': path.resources('resources/skins/default/media/common/seekforward.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Spoel naar live stream')
-        listItem.setProperty('ItemAction', 'media_seeklive')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/seeklive.png'),'icon': path.resources('resources/skins/default/media/common/seeklive.png')})
-        listContainer.addItem(listItem)
-
         listItem = xbmcgui.ListItem('Spoel naar programma begin')
         listItem.setProperty('ItemAction', 'media_seekbegin')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/rerun.png'),'icon': path.resources('resources/skins/default/media/common/rerun.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Geluid volume omhoog')
-        listItem.setProperty('ItemAction', 'media_volumeup')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumeup.png'),'icon': path.resources('resources/skins/default/media/common/volumeup.png')})
+        listItem = xbmcgui.ListItem('Spoel naar live stream')
+        listItem.setProperty('ItemAction', 'media_seeklive')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/seeklive.png'),'icon': path.resources('resources/skins/default/media/common/seeklive.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Schakel tussen scherm modus')
+        listItem.setProperty('ItemAction', 'media_fullscreen')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/fullscreen.png'),'icon': path.resources('resources/skins/default/media/common/fullscreen.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Demp of ondemp geluid')
+        listItem.setProperty('ItemAction', 'media_togglemute')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Geluid volume omlaag')
@@ -276,9 +281,9 @@ class Gui(xbmcgui.WindowXMLDialog):
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumedown.png'),'icon': path.resources('resources/skins/default/media/common/volumedown.png')})
         listContainer.addItem(listItem)
 
-        listItem = xbmcgui.ListItem('Demp of ondemp geluid')
-        listItem.setProperty('ItemAction', 'media_togglemute')
-        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumemute.png'),'icon': path.resources('resources/skins/default/media/common/volumemute.png')})
+        listItem = xbmcgui.ListItem('Geluid volume omhoog')
+        listItem.setProperty('ItemAction', 'media_volumeup')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/volumeup.png'),'icon': path.resources('resources/skins/default/media/common/volumeup.png')})
         listContainer.addItem(listItem)
 
         listItem = xbmcgui.ListItem('Ondertiteling instellingen')
@@ -294,6 +299,11 @@ class Gui(xbmcgui.WindowXMLDialog):
         listItem = xbmcgui.ListItem('Video instellingen')
         listItem.setProperty('ItemAction', 'settings_video')
         listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingsvideo.png'),'icon': path.resources('resources/skins/default/media/common/settingsvideo.png')})
+        listContainer.addItem(listItem)
+
+        listItem = xbmcgui.ListItem('Codec informatie')
+        listItem.setProperty('ItemAction', 'settings_codec')
+        listItem.setArt({'thumb': path.resources('resources/skins/default/media/common/settingscodec.png'),'icon': path.resources('resources/skins/default/media/common/settingscodec.png')})
         listContainer.addItem(listItem)
 
         #Focus and select list item

@@ -35,9 +35,18 @@
             <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Paused | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
-            <!-- Background -->
-            <control type="image">
-                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            <!-- Background Block/Click -->
+            <control type="button">
+                <texturefocus colordiffuse="F0FFFFFF">common/background_dark.png</texturefocus>
+                <texturenofocus colordiffuse="F0FFFFFF">common/background_dark.png</texturenofocus>
+            </control>
+            <!-- Gradient Block/Click -->
+            <control type="button">
+                <top>50</top>
+                <height>80</height>
+                <width>880</width>
+                <texturefocus>common/gradient_dark.png</texturefocus>
+                <texturenofocus>common/gradient_dark.png</texturenofocus>
             </control>
             <!-- Seek amount -->
             <control type="label">
@@ -168,7 +177,7 @@
         <control type="group">
             <bottom>0</bottom>
             <right>470</right>
-            <width>60</width>
+            <width>120</width>
             <height>660</height>
             <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true)</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
@@ -191,6 +200,15 @@
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
                     </control>
+                    <control type="image">
+                        <bottom>6</bottom>
+                        <left>22</left>
+                        <width>10</width>
+                        <height>10</height>
+                        <aspectratio>keep</aspectratio>
+                        <visible>!String.IsEqual(ListItem().Property(ItemColor),)</visible>
+                        <texture colordiffuse="ListItem.Property(ItemColor)">common/round_light.png</texture>
+                    </control>
                 </itemlayout>
                 <focusedlayout width="60" height="60">
                     <control type="image">
@@ -205,6 +223,15 @@
                         <height>50</height>
                         <aspectratio>keep</aspectratio>
                         <texture>$INFO[ListItem.Art(thumb)]</texture>
+                    </control>
+                    <control type="image">
+                        <bottom>6</bottom>
+                        <left>22</left>
+                        <width>10</width>
+                        <height>10</height>
+                        <aspectratio>keep</aspectratio>
+                        <visible>!String.IsEqual(ListItem().Property(ItemColor),)</visible>
+                        <texture colordiffuse="ListItem.Property(ItemColor)">common/round_light.png</texture>
                     </control>
                 </focusedlayout>
             </control>
@@ -331,10 +358,10 @@
             <visible>String.IsEqual(Window().Property(WebbiePlayerFull), true) | String.IsEqual(Window().Property(WebbiePlayerSeek), true) | Player.Paused | Player.Forwarding | Player.Rewinding | Player.Seeking</visible>
             <animation effect="fade" time="100" start="50" end="100">Visible</animation>
             <animation effect="fade" time="100" start="100" end="50">Hidden</animation>
-            <!-- Background -->
-            <control type="image">
-                <height>720</height>
-                <texture colordiffuse="F0FFFFFF">common/background_dark.png</texture>
+            <!-- Background Block/Click -->
+            <control type="button">
+                <texturefocus colordiffuse="F0FFFFFF">common/background_dark.png</texturefocus>
+                <texturenofocus colordiffuse="F0FFFFFF">common/background_dark.png</texturenofocus>
             </control>
             <!-- Sidebar -->
             <control type="image">
