@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+    <animation effect="fade" time="200" start="50" end="100">WindowOpen</animation>
+    <animation effect="fade" time="200" start="100" end="50">WindowClose</animation>
+    <controls>
+        <control type="group">
+            <top>50</top>
+            <left>50</left>
+            <width>1180</width>
+            <height>620</height>
+            <!-- Header Background -->
+            <control type="image">
+                <height>60</height>
+                <texture colordiffuse="FF333333">common/background_light.png</texture>
+            </control>
+            <!-- Header Label -->
+            <control type="label" id="3000">
+                <left>5</left>
+                <height>60</height>
+                <align>left</align>
+                <aligny>center</aligny>
+                <textcolor>FFFFFFFF</textcolor>
+            </control>
+            <!-- Console Background -->
+            <control type="image">
+                <top>60</top>
+                <height>560</height>
+                <texture colordiffuse="FFFFFFFF">common/background_dark.png</texture>
+            </control>
+            <!-- Console Textbox -->
+            <control type="textbox" id="3001">
+                <top>60</top>
+                <left>5</left>
+                <height>560</height>
+                <width>1150</width>
+                <align>left</align>
+                <aligny>top</aligny>
+                <scrolltime>0</scrolltime>
+                <pagecontrol>3002</pagecontrol>
+                <wrapmultiline>true</wrapmultiline>
+                <textcolor>FFFFFFFF</textcolor>
+            </control>
+            <!-- Console Scrollbar -->
+            <control type="scrollbar" id="3002">
+                <top>60</top>
+                <height>560</height>
+                <width>1180</width>
+                <texturesliderbarfocus colordiffuse="DCFFFFFF">common/scrollbar_light_400.png</texturesliderbarfocus>
+                <texturesliderbar colordiffuse="DC888888">common/scrollbar_light_400.png</texturesliderbar>
+                <texturesliderbackground>-</texturesliderbackground>
+            </control>
+        </control>
+    </controls>
+</window>

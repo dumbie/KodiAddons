@@ -2,17 +2,8 @@ import subprocess
 import func
 import var
 import xbmcgui
-import hybrid
 import time
-
-#Show and update console
-def moonlight_poll_console(process, head_string):
-    poll_string = head_string + '[CR]'
-    var.guiMain.console_show(poll_string)
-    while process.poll() == None:
-        poll_string += hybrid.string_decode_utf8(process.stdout.readline())
-        var.guiMain.console_show(poll_string)
-    return poll_string
+import console
 
 #Moonlight list
 def moonlight_list():
@@ -30,13 +21,13 @@ def moonlight_list():
     process = subprocess.Popen(scriptRun + scriptFile + scriptVars, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     #Show and update console
-    pollString = moonlight_poll_console(process, 'Moonlight list')
+    pollString = console.console_process_poll(process, 'Moonlight list')
 
     #Wait for completion
     process.wait()
 
-    #Hide console
-    var.guiMain.console_hide()
+    #Close console
+    console.console_close()
 
     #Return app list
     return pollString
@@ -57,14 +48,14 @@ def moonlight_pair():
     process = subprocess.Popen(scriptRun + scriptFile + scriptVars, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     #Show and update console
-    moonlight_poll_console(process, 'Moonlight pairing')
+    console.console_process_poll(process, 'Moonlight pairing')
 
     #Wait for completion
     process.wait()
-    time.sleep(3)
 
-    #Hide console
-    var.guiMain.console_hide()
+    #Close console
+    time.sleep(3)
+    console.console_close()
 
     #Fix refresh apps after pairing
 
@@ -76,14 +67,14 @@ def moonlight_install():
     process = subprocess.Popen(scriptRun + scriptFile, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     #Show and update console
-    moonlight_poll_console(process, 'Moonlight installation')
+    console.console_process_poll(process, 'Moonlight installation')
 
     #Wait for completion
     process.wait()
-    time.sleep(3)
 
-    #Hide console
-    var.guiMain.console_hide()
+    #Close console
+    time.sleep(3)
+    console.console_close()
 
 #Moonlight stream
 def moonlight_stream(appName=''):

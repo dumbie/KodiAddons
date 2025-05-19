@@ -4,7 +4,6 @@ import moonlight
 import var
 import xbmc
 import xbmcgui
-import time
 
 def switch_to_page():
     if var.guiMain == None:
@@ -23,7 +22,7 @@ def close_the_page():
 class Gui(xbmcgui.WindowXML):
     def onInit(self):
         #Visible bug workaround
-        func.updateVisible(self, 3000, False)
+        func.setVisible(self, 3000, False)
 
         #Add menu buttons to the page
         self.list_add_menu()
@@ -55,6 +54,8 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': func.path_resources('resources/skins/default/media/common/settings.png'),'icon': func.path_resources('resources/skins/default/media/common/settings.png')})
         listcontainer.addItem(listitem)
 
+        #Fix add select host function
+
         #Focus on the menu
         self.setFocus(listcontainer)
         xbmc.sleep(200)
@@ -71,30 +72,30 @@ class Gui(xbmcgui.WindowXML):
         listcontainer.reset()
 
         #Update the load status
-        func.updateLabelText(self, 1, 'Loading apps')
+        func.setLabelText(self, 1, 'Loading apps')
 
         #Get apps from moonlight
         try:
             list_apps = moonlight.moonlight_list()
         except:
-            func.updateLabelText(self, 1, 'Load failed')
+            func.setLabelText(self, 1, 'Load failed')
             var.busy_main = False
             return
 
         #Update the load status
-        func.updateLabelText(self, 1, 'Checking apps')
+        func.setLabelText(self, 1, 'Checking apps')
 
         #Check moonlight apps
         if func.string_isnullorempty(list_apps) == True:
-            func.updateLabelText(self, 1, 'No connection')
+            func.setLabelText(self, 1, 'No connection')
             var.busy_main = False
             return
         elif "You must pair" in list_apps:
-            func.updateLabelText(self, 1, 'Not paired')
+            func.setLabelText(self, 1, 'Not paired')
             var.busy_main = False
             return
         elif "Can't connect" in list_apps:
-            func.updateLabelText(self, 1, 'Connect error')
+            func.setLabelText(self, 1, 'Connect error')
             var.busy_main = False
             return
 
@@ -107,7 +108,7 @@ class Gui(xbmcgui.WindowXML):
 
         #Update the total app count
         total_apps = listcontainer.size()
-        func.updateLabelText(self, 1, str(total_apps) + ' apps')
+        func.setLabelText(self, 1, str(total_apps) + ' apps')
 
         #Focus on the apps list or menu
         if total_apps > 0:
@@ -157,16 +158,3 @@ class Gui(xbmcgui.WindowXML):
         elif clickId == 1001:
             listItemSelected = clickedControl.getSelectedItem()
             moonlight.moonlight_stream(listItemSelected.getLabel())
-
-    def console_show(self, string, stringAdd=False):
-        if stringAdd:
-            newString = func.getTextBoxText(self, 3001) + "[CR]" + string
-            func.updateTextBoxText(self, 3001, newString)
-        else:
-            func.updateTextBoxText(self, 3001, string)
-        func.updateVisible(self, 3000, True)
-        time.sleep(0.100)
-        func.setTextBoxScroll(self, 3001, -1)
-
-    def console_hide(self):
-        func.updateVisible(self, 3000, False)

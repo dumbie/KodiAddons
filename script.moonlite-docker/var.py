@@ -26,4 +26,5 @@ busy_main = False
 
 #Window variables
 guiMain = None
+guiConsole = None
 windowHome = xbmcgui.Window(10000)
