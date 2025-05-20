@@ -18,3 +18,6 @@ windowHome = xbmcgui.Window(10000)
 
 #History variables
 HistoryJson = []
+
+#Window variables
+guiConsole = None

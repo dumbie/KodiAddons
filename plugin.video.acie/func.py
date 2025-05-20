@@ -4,6 +4,25 @@ import hybrid
 import os
 import sys
 
+#Update controls
+def setLabelText(_self, controlId, string):
+    _self.getControl(controlId).setLabel(string)
+
+def getLabelText(_self, controlId):
+    return _self.getControl(controlId).getLabel()
+
+def setTextBoxText(_self, controlId, string):
+    _self.getControl(controlId).setText(string)
+
+def getTextBoxText(_self, controlId):
+    return _self.getControl(controlId).getText()
+
+def setTextBoxScroll(_self, controlId, position):
+    _self.getControl(controlId).scroll(position)
+
+def setVisible(_self, controlId, value):
+    _self.getControl(controlId).setVisible(value)
+
 #Check user folders
 def check_user_folders():
     files.createDirectory(var.addonstorageuser)
