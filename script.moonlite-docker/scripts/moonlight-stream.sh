@@ -9,7 +9,7 @@ systemctl stop kodi
 
 #Launch and stream moonlight
 echo "Connecting to Moonlight streamer..."
-docker run --tty --volume home:/home/moonlight-user --device /dev/vchiq --device /dev/input clarkemw/moonlight-embedded-raspbian stream $1 -1080 -app $2 -fps 60 -bitrate 20000 -localaudio
+docker run --volume home:/home/moonlight-user --device /dev/vchiq --device /dev/input clarkemw/moonlight-embedded-raspbian stream $1 -1080 -app $2 -fps 60 -bitrate 20000 -localaudio
 
 sleep 2
 
