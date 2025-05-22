@@ -1,4 +1,5 @@
 #!/bin/bash
+#UTF-8 / EOL LF
 
 #Close the media center
 sudo openvt -c7 -s -f echo "Closing the media center..."

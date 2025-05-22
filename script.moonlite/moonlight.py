@@ -20,7 +20,7 @@ def moonlight_list():
     processOutput = process.communicate()
     process.wait()
 
-    return processOutput[0] + processOutput[1]
+    return hybrid.string_decode_utf8(processOutput[0] + processOutput[1])
 
 #Moonlight pair
 def moonlight_pair():

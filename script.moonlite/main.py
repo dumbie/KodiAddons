@@ -51,6 +51,12 @@ class Gui(xbmcgui.WindowXML):
         listitem.setArt({'thumb': func.path_resources('resources/skins/default/media/common/settings.png'),'icon': func.path_resources('resources/skins/default/media/common/settings.png')})
         listcontainer.addItem(listitem)
 
+        #Focus on the menu
+        self.setFocus(listcontainer)
+        xbmc.sleep(200)
+        listcontainer.selectItem(0)
+        xbmc.sleep(200)
+
     def list_add_apps(self):
         #Check if addon is busy
         if var.busy_main == True: return

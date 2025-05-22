@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
   <category label="General">
-    <setting id="host" label="Host ip address" type="ipaddress" default="192.168.0.3"/>
+    <setting id="host" label="Host ip address" type="ipaddress" default="192.168.2.3"/>
     <setting id="width" label="Screen width" type="number" default="1920"/>
     <setting id="height" label="Screen height" type="number" default="1080"/>
     <setting id="bitrate" label="Bitrate in Kbps" type="number" default="20000"/>

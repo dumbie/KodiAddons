@@ -1,4 +1,6 @@
 #!/bin/bash
+#UTF-8 / EOL LF
+
 script_args="$(printf " %q " "$@")"
 
 #Run the requested script

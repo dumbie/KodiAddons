@@ -1,4 +1,8 @@
 #!/bin/bash
+#UTF-8 / EOL LF
+
+curl -1sLf 'https://dl.cloudsmith.io/public/moonlight-game-streaming/moonlight-qt/setup.deb.sh' | distro=raspbian codename=$(lsb_release -cs) sudo -E bash
+sudo apt install moonlight-qt
 
 #Close the media center
 sudo openvt -c7 -s -f echo "Closing the media center..."
