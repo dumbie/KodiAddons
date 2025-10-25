@@ -1,4 +1,6 @@
 import subprocess
+import platform
+import struct
 import var
 import getpass
 import getset
@@ -6,30 +8,6 @@ import xbmc
 import xbmcgui
 import console
 import time
-
-def install_server():
-    try:
-        #Notification
-        xbmcgui.Dialog().notification(var.addonname, "Installing docker", var.addonicon, 2500, False)
-
-        #Manually: Add-ons > Install from repository > LibreELEC Add-ons > Services > Docker > Install
-        #service.system.docker
-
-        #Linux install docker
-        aceCommand = ""
-        #runResult = os.system(aceCommand)
-
-        #Notification
-        xbmcgui.Dialog().notification(var.addonname, "Installing ace stream server", var.addonicon, 2500, False)
-
-        #Linux RPI ARM ace stream server
-        aceCommand = "docker pull futebas/acestream-engine-arm:3.2.7.6"
-        #runResult = os.system(aceCommand)
-
-        #Notification
-        xbmcgui.Dialog().notification(var.addonname, "Installed ace stream server, reboot device", var.addonicon, 2500, False)
-    except:
-        xbmcgui.Dialog().notification(var.addonname, "Failed installing ace stream server", var.addonicon, 2500, False)
 
 def run_server():
     try:
@@ -83,10 +61,21 @@ def run_server():
             else:
                 console.console_show('Run ace stream server', "Failed to run ace stream server")
 
-        #Linux (RPI ARM docker)
+        #Linux Docker
         if xbmc.getCondVisibility('System.Platform.Linux'):
+            #Check system processor architecture
+            runArchitecture = ''
+            systemArchitecture = platform.machine().lower()
+            system32Mode = struct.calcsize('P') * 8 == 32
+            if ('arm' in systemArchitecture or 'aarch' in systemArchitecture) and system32Mode == False:
+                runArchitecture = 'arm64'
+            elif 'arm' in systemArchitecture or 'aarch' in systemArchitecture:
+                runArchitecture = 'arm32'
+            else:
+                runArchitecture = 'x64'
+
             #Launch ace stream server
-            runCommand = "docker run --detach --publish 6878:6878 futebas/acestream-engine-arm:3.2.7.6"
+            runCommand = "docker run --detach --publish 6878:6878 jopsis/acestream:" + runArchitecture
             process = subprocess.Popen(runCommand, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
             #Show and update console
