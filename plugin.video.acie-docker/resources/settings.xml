@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
 	<category label="General">
+		<setting id="UseSudo" label="Use sudo to start docker" type="bool" default="true"/>
 		<setting id="UseInputStream" label="Use InputStream Adaptive/Direct" type="bool" default="true"/>
 		<setting id="UseHlsStream" label="Use HLS M3U8 stream" type="bool" default="false"/>
 		<setting id="PlayAddStream" label="Play stream after adding" type="bool" default="true"/>
