@@ -94,6 +94,9 @@ def enable_widevine_support(forceUpdate=False):
     elif xbmc.getCondVisibility('System.Platform.IOS'):
         var.WidevineUpdating = False
         return
+    elif xbmc.getCondVisibility('System.Platform.WebOS'):
+        var.WidevineUpdating = False
+        return
     elif xbmc.getCondVisibility('System.Platform.Linux'):
         downloadOperatingSystem = 'linux'
     elif xbmc.getCondVisibility('System.Platform.OSX'):
