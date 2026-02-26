@@ -72,7 +72,7 @@ def adjust_listitem_inputstream(listItem, downloadDataJson, liveStream=False):
         listItem.setProperty(hybrid.inputstreamname, 'inputstream.adaptive')
         listItem.setProperty('inputstream.adaptive.manifest_type', 'mpd')
         listItem.setProperty('inputstream.adaptive.stream_headers', StreamHeadersString)
-        listItem.setMimeType('application/xml+dash')
+        listItem.setMimeType('application/dash+xml')
         listItem.setContentLookup(False)
 
         #Set input adaptive live property
