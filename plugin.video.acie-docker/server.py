@@ -68,11 +68,11 @@ def run_server():
             systemArchitecture = platform.machine().lower()
             system32Mode = struct.calcsize('P') * 8 == 32
             if ('arm' in systemArchitecture or 'aarch' in systemArchitecture) and system32Mode == False:
-                runArchitecture = 'arm64-v3.2.14-update'
+                runArchitecture = 'latest-arm64'
             elif 'arm' in systemArchitecture or 'aarch' in systemArchitecture:
-                runArchitecture = 'arm32-v3.2.14-update'
+                runArchitecture = 'latest-arm32'
             else:
-                runArchitecture = 'x64'
+                runArchitecture = 'latest-amd64'
 
             #Launch ace stream server
             runCommand = "docker run --detach --publish 6878:6878 jopsis/acestream:" + runArchitecture
