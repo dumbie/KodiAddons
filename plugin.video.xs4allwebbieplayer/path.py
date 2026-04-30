@@ -163,7 +163,7 @@ def program_sport():
     downloadPath = api_url_web('TRAY/SEARCH/PROGRAM?outputFormat=EXTENDED&dfilter_channels=subscription&filter_isTvPremiere=true&filter_isCatchUp=true&filter_includeRegionalChannels=true&from=0&to=9999')
     downloadPath += '&filter_endTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(minutes=var.RecordingProcessMinutes)))
     downloadPath += '&filter_startTime=' + str(func.datetime_to_ticks(datetime.utcnow() - timedelta(days=var.VodDayOffsetPast)))
-    downloadPath += '&filter_genre=sport&filter_genres=sport'
+    downloadPath += '&filter_programType=sport,sports,sports+event'
 
     if getset.setting_get('TelevisionChannelNoErotic') == 'true':
         downloadPath += '&filter_isAdult=false'
