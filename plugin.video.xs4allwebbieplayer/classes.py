@@ -13,7 +13,6 @@ class Class_ApiLogin_credentialsExtAuth:
     def __init__(self, deviceInfo=None, credentials=None):
         self.deviceInfo = deviceInfo
         self.credentials = credentials
-        self.remember = "Y"
 
 class Class_ApiLogin_credentials:
     def __init__(self, username=None, password=None):
@@ -41,7 +40,6 @@ class Class_ApiLogin_credentialsStdAuth_Full:
     def __init__(self, username=None, password=None, deviceRegistrationData=None):
         self.username = username
         self.password = password
-        self.remember = "Y"
         self.deviceRegistrationData = deviceRegistrationData
 
 class Class_ApiLogin_credentialsStdAuth_Device:
